@@ -1,0 +1,11 @@
+[1] 7665
+[1] 7670.25
+[1] 17.5
+Error from intentional typo:  object 'c_vall' not found 
+-> Extra 'l' in the object name; R cannot find this object.
+
+round(2.5) = 2 ; round(3.5) = 4 ; round(0.125, 2) = 0.12 
+(R rounds numbers exactly at the midpoint to the nearest even number: IEC 60559 standard)
+
+mean(x) = NA ; mean(x, na.rm = TRUE) = 1.5 
+R version:  R version 4.6.1 (2026-06-24) 

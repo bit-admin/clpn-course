@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.6 ggplot2 绘图与 Quarto / R Markdown 可复现报告 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-6.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.6" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L2-6">CLPN 课程大纲</a><span class="crumb">M2 R 与 RStudio：从零开始 / 2.6</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L2-6.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L2-6.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html" class="cur" aria-current="page"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 2 · R &amp; RStudio from Zero · 第 2.6 课</div>
+<h1>ggplot2 绘图与 Quarto / R Markdown 可复现报告</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L2-5.html">2.5 用 R 做描述统计、相关与回归</a></span><span>配套脚本：<a href="../R/L2-6.R">R/L2-6.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>用 ggplot2 绘制直方图、散点图、分组箱线图</li><li>理解“图层”语法：数据 + 映射 + 几何对象</li><li>用 Quarto 或 R Markdown 生成包含代码、结果和文字的报告（毕业项目将用它提交）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>图形语法</b><span class="en">grammar of graphics</span></li><li><b>映射</b><span class="en">aesthetic mapping, aes()</span></li><li><b>几何对象</b><span class="en">geom</span></li><li><b>可复现报告</b><span class="en">reproducible report</span></li><li><b>Quarto / R Markdown</b><span class="en">literate programming</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>图形是“一层层叠上去”的</h2>
+<div class="box story"><b class="bt">给机构年报画一张图</b>
+<p>机构主任请你为年报画一张“孤独感与抑郁”的图，再按性别区分颜色。用 Excel，你得一步步点选：插入图表、选数据、改颜色、加趋势线……下次数据更新又要重来。用 R 的 <code>ggplot2</code>，你写下的是一份图的“配方”：用哪份数据、哪个变量放横轴、哪个放纵轴、用什么颜色区分、画点还是画线。配方写好，数据更新后重跑一遍，图就自动更新。</p></div>
+
+<h3>图形语法：数据 + 映射 + 几何对象</h3>
+<p><code>ggplot2</code> 基于 Wilkinson 提出的<span class="term">图形语法<span class="en">（grammar of graphics）</span></span>（由 Hadley Wickham 在 R 中实现）。每张图都由几个部件组成：</p>
+<ol><li><b>数据</b>（data）：一个数据框，一行一人。</li>
+<li><b><span class="term">映射<span class="en">（aesthetic mapping, aes()）</span></span></b>：把变量对应到图上的视觉属性：横轴位置 x、纵轴位置 y、颜色 colour、填充 fill、大小 size、形状 shape。<code>aes(x = sleep, y = depress)</code> 的意思是“把睡眠变量放在横轴、抑郁变量放在纵轴”：每个人的睡眠值决定点的左右位置，抑郁值决定上下位置。</li>
+<li><b><span class="term">几何对象<span class="en">（geom）</span></span></b>：用什么图形元素表现数据，如 <code>geom_point()</code> 点、<code>geom_histogram()</code> 直方图柱、<code>geom_boxplot()</code> 箱线图、<code>geom_smooth()</code> 拟合线。</li>
+<li>其他可选层：<code>labs()</code> 标题和轴标签、<code>theme_*()</code> 外观主题、<code>facet_wrap()</code> 分面（按组拆成多个小图）。</li></ol>
+<p>各部件用 <code>+</code> 一层层叠加（注意：ggplot 用 <code>+</code>，不是 <code>|&gt;</code>）。</p>
+<div class="widget" data-widget="ggbuild"></div>
+<div class="box analogy"><b class="bt">类比：叠透明胶片</b><p>想象在投影仪上叠透明胶片：第一张只画了坐标轴（<code>ggplot(数据, aes(...))</code>），第二张画上散点（<code>+ geom_point()</code>），第三张画上回归线（<code>+ geom_smooth()</code>），第四张写上标题（<code>+ labs()</code>）。每一张都可以单独抽掉或替换。</p></div>
+<div class="box warnbox"><b class="bt">aes() 里面 vs 外面</b><p><code>aes(colour = 性别)</code>：颜色随变量变化（男女不同色），会自动生成图例。<code>geom_point(colour = "blue")</code>：所有点固定为蓝色。把固定值写进 <code>aes()</code>（如 <code>aes(colour = "blue")</code>）是常见错误，结果会是一个莫名其妙的、名为“blue”的图例。</p></div>
+
+<h3>选对图：三种最常用的图</h3>
+<div class="tablewrap"><table><thead><tr><th>目的</th><th>图</th><th>geom</th></tr></thead><tbody>
+<tr><td>看一个连续变量的分布（偏态、峰、离群值）</td><td>直方图</td><td><code>geom_histogram()</code></td></tr>
+<tr><td>看两个连续变量的关系</td><td>散点图（+ 拟合线）</td><td><code>geom_point()</code> / <code>geom_jitter()</code> + <code>geom_smooth()</code></td></tr>
+<tr><td>比较各组的分布</td><td>分组箱线图</td><td><code>geom_boxplot()</code></td></tr></tbody></table></div>
+<p>检查题目的偏态，用直方图（或条形图，对 0–3 分这类只有几个取值的题目尤其直观）：一眼就能看出大多数人集中在哪一端、尾巴拖向哪边。箱线图也能提示偏态（中位线偏向箱子一侧、一边的须更长），但会隐藏分布的细节。表中没有的两种情形：看同一批人随时间的变化，用长格式数据（4.2 课）画折线，<code>aes(x = wave, y = 分数, group = id)</code> 画每个人的轨迹，再叠加一条粗的均值线；网络图交给 qgraph（6.4 课）。</p>
+<p>量表题目只取几个整数值，散点会大量重叠在格点上。<code>geom_jitter()</code> 给每个点加一点随机抖动，让重叠的点散开，便于看出密度；但要记住点的位置被轻微挪动了。</p>
+
+<h3>可复现报告：代码、结果、文字放在一起</h3>
+<div class="box story"><b class="bt">复制粘贴的代价</b><p>小周把 SPSS 输出的数字一个个复制到 Word 论文里。后来数据更正，他要逐一找到并修改 40 多个数字，最后还漏改了 3 个，答辩时被问住。</p></div>
+<p><span class="term">可复现报告<span class="en">（reproducible report）</span></span>把文字、代码和代码的运行结果写在同一个文件里。渲染（render / knit）时，软件从头运行所有代码，把表格、图和数字自动插入文字中，生成 HTML、Word 或 PDF。数据一改，重新渲染即可，所有数字同步更新，不会遗漏，也不会抄错。这种“文字与代码交织”的写作方式叫文学化编程（<span class="term">Quarto / R Markdown<span class="en">（literate programming）</span></span>）。</p>
+<ul><li><b>R Markdown</b>（<code>.Rmd</code>）：历史较久、应用最广。在 RStudio 中点 Knit 按钮渲染。</li>
+<li><b>Quarto</b>（<code>.qmd</code>）：Posit 推出的新一代系统，语法与 R Markdown 几乎相同，支持 R、Python 等多种语言。新版 RStudio 已内置 Quarto，点 Render 按钮渲染。</li></ul>
+<p>文件由三部分组成：顶部的 YAML 头（用 <code>---</code> 包围，设定标题、输出格式）；Markdown 文字（<code>#</code> 标题、<code>**粗体**</code>、列表）；代码块（用三个反引号包围的 <code>{r}</code> 块）。文字中还可以写行内代码（反引号 + r + 代码），如 r = <code>`r round(cor(x, y), 2)`</code>，渲染时变成 r = 0.31。</p>
+<div class="box sw"><b class="bt">为什么对毕业项目重要</b><p>本课程的毕业项目（第 10 模块）要求用 Quarto 或 R Markdown 写成。任何读者（审稿人、合作者，或几个月后的你自己）打开报告，看到的每个数字都能追溯到产生它的代码；想换一种参数试试，改一行重新渲染即可。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>箱线图里的五个数</h2>
+<p>箱线图展示的是“五数概括”：</p>
+<dl class="sym"><dt>\(Q_1\)</dt><dd>第一四分位数：25% 的人低于它（箱子下沿）。</dd><dt>\(Q_2\)</dt><dd>中位数：50% 的人低于它（箱中粗线）。</dd><dt>\(Q_3\)</dt><dd>第三四分位数：75% 的人低于它（箱子上沿）。</dd><dt>\(IQR\)</dt><dd>四分位距 \(=Q_3-Q_1\)，中间 50% 的人的范围（箱子高度）。</dd></dl>
+<div class="mathbox">$$\text{上须的端点} = \text{不超过 } Q_3 + 1.5\times IQR \text{ 的最大观测值}$$</div>
+<p>超出 \(Q_1 - 1.5\,IQR\) 或 \(Q_3 + 1.5\,IQR\) 的点被单独画出，作为“可能的离群值”（这是 ggplot2 的默认规则，Tukey 提出）。例：课程数据中女性 T1 抑郁总分 \(Q_1=1,\ Q_2=4,\ Q_3=6\)，\(IQR=5\)，上须至多到 \(6+7.5=13.5\)；男性 \(Q_1=1,\ Q_2=3,\ Q_3=5\)，上须至多到 11。</p>
+<p>直方图的柱宽（<code>binwidth</code>）决定把数值分成多宽的区间来计数；对只取整数的总分，<code>binwidth = 1</code> 让每个分数各占一根柱子。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>三张图 + 一份报告</h2>
+<p>对应脚本：<a href="../R/L2-6.R">R/L2-6.R</a>（画图并渲染报告）与 <a href="../R/L2-6_report.Rmd">R/L2-6_report.Rmd</a>（报告源文件）。</p>
+<div class="codeblk"><div class="ctitle">R/L2-6.R（画图部分）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+library(tidyverse)
+dat &lt;- read_course_data()
+long &lt;- dat |&gt;
+  mutate(孤独 = rowSums(across(paste0(lone_items, &quot;_t1&quot;))),
+         抑郁 = rowSums(across(paste0(dep_items, &quot;_t1&quot;))),
+         性别 = if_else(gender == 1, &quot;女&quot;, &quot;男&quot;))
+# ggplot 的语法：数据 + 映射 aes() + 几何对象 geom_*()
+p1 &lt;- ggplot(long, aes(x = 孤独, y = 抑郁, colour = 性别)) +
+  geom_jitter(alpha = .4, width = .2, height = .2) +       # 抖动的半透明点
+  geom_smooth(method = &quot;lm&quot;, formula = y ~ x) +             # 每组一条回归线 + 95% 置信带
+  labs(title = &quot;T1 孤独感与抑郁&quot;, x = &quot;孤独总分&quot;, y = &quot;抑郁总分&quot;)
+ggsave(out(&quot;L2-6_scatter.png&quot;), p1, width = 6, height = 4.5, dpi = 200)
+p2 &lt;- ggplot(long, aes(x = 抑郁, fill = 性别)) +
+  geom_histogram(binwidth = 1, position = &quot;dodge&quot;) +        # 男女柱子并排
+  labs(title = &quot;抑郁总分分布&quot;, x = &quot;抑郁总分&quot;, y = &quot;人数&quot;)
+ggsave(out(&quot;L2-6_hist.png&quot;), p2, width = 6, height = 4, dpi = 200)</code></pre></div>
+<figure><img src="../R/output/L2-6_scatter.png" alt="孤独与抑郁散点图" style="max-width:100%"><figcaption>散点图：<code>colour = 性别</code> 写在 <code>aes()</code> 里，所以点和回归线都按性别着色，并自动生成图例。两条线大致平行，女性的线整体略高，提示性别主要影响抑郁的平均水平，而不太影响孤独–抑郁的斜率（是否真有交互需要检验，3.2 课）。灰色带是回归线的 95% 置信带。</figcaption></figure>
+<figure><img src="../R/output/L2-6_hist.png" alt="抑郁总分直方图" style="max-width:100%"><figcaption>直方图：抑郁总分明显右偏，大多数人集中在 0–5 分（与 2.5 课 skew = 0.85 一致）。</figcaption></figure>
+<div class="codeblk"><div class="ctitle">分组箱线图</div><pre><code class="language-r">p3 &lt;- ggplot(long, aes(x = 性别, y = 抑郁, fill = 性别)) +
+  geom_boxplot(alpha = .6, outlier.shape = NA) +     # 不单独画离群点（下面已画出所有点）
+  geom_jitter(width = .15, height = .2, alpha = .2) +
+  labs(title = &quot;T1 抑郁总分：按性别&quot;, x = NULL, y = &quot;抑郁总分&quot;) +
+  theme_minimal(base_family = cn_font) + theme(legend.position = &quot;none&quot;)   # 中文字体见下面的提示框
+ggsave(out(&quot;L2-6_box.png&quot;), p3, width = 5, height = 4, dpi = 150)        # 已并入 R/L2-6.R 末尾</code></pre></div>
+<figure><img src="../R/output/L2-6_box.png" alt="按性别的抑郁箱线图" style="max-width:420px;width:100%"><figcaption>箱线图：女性中位数 4、男性 3；两组箱子都是上半部分比下半部分长、上须更长，同样显示右偏。</figcaption></figure>
+<div class="box key"><b class="bt">中文字体</b><p>在部分电脑（尤其 Mac 和 Linux）上，ggplot 的中文可能显示为方框。课程的 <code>_setup.R</code> 定义了 <code>cn_font</code>，并把它设为默认主题 <code>theme_bw()</code> 的字体；换用其他主题时，要像上面那样写 <code>theme_minimal(base_family = cn_font)</code>，否则会退回不含中文的默认字体；Windows 上通常可以直接显示中文。另一个办法是安装 <code>showtext</code> 包。</p></div>
+<h3>报告源文件 R/L2-6_report.Rmd</h3>
+<pre class="out">---
+title: "我的第一份可复现报告（L2-6）"
+output:
+  html_document:
+    mathjax: null      # 不从网络加载 MathJax，离线也能打开（本报告没有公式）
+    self_contained: true
+---
+
+&#96;&#96;&#96;{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv")   # 通过 R/L2-6.R 渲染时工作目录 = 课程根目录；在 RStudio 中点 Knit 前，先把 Knit Directory 设为 Project Directory
+dat <- dat |> mutate(孤独 = rowSums(across(lone1_t1:lone4_t1)),
+                     抑郁 = rowSums(across(dep1_t1:dep5_t1)))
+&#96;&#96;&#96;
+
+## 描述统计表
+
+&#96;&#96;&#96;{r}
+dat |> summarise(across(c(孤独, 抑郁), list(均值 = mean, 标准差 = sd))) |> knitr::kable(digits = 2)
+&#96;&#96;&#96;
+
+## 两张图
+
+&#96;&#96;&#96;{r}
+ggplot(dat, aes(孤独, 抑郁)) + geom_jitter(alpha = .3) + geom_smooth(method = "lm")
+ggplot(dat, aes(抑郁)) + geom_histogram(binwidth = 1)
+&#96;&#96;&#96;
+
+## 解释
+
+孤独与抑郁总分的相关为 r = &#96;r round(cor(dat$孤独, dat$抑郁), 2)&#96;。数字直接来自代码，修改数据后重新 Knit 即自动更新——这就是“可复现”（reproducible）。</pre>
+<p>渲染后的结果：<a href="../R/output/L2-6_report.html">R/output/L2-6_report.html</a>（行内代码在报告中显示为 r = 0.31）。各部分含义：</p>
+<ul><li><code>include=FALSE</code>：运行这个代码块但不在报告中显示代码和结果（适合加载包、读数据）。</li>
+<li><code>echo = TRUE</code>：在报告中显示代码；给不懂 R 的读者时可改为 <code>FALSE</code>，只显示结果。</li>
+<li><code>knitr::kable()</code>：把数据框排成漂亮的表格。</li>
+<li>注意上面 setup 块的注释：<code>data/...</code> 这个相对路径只有在工作目录是课程根目录时才找得到。渲染时 R 默认把工作目录设为 .Rmd 所在的文件夹（这里是 R/），直接点 Knit 会报找不到文件。所以在 RStudio 中点 Knit 之前，先在 Knit 按钮旁的下拉菜单里选 Knit Directory → <b>Project Directory</b>；或在控制台（工作目录为课程根目录时）运行 <code>rmarkdown::render("R/L2-6_report.Rmd", knit_root_dir = getwd())</code>，R/L2-6.R 就是这样渲染的。</li></ul>
+<p>如果使用 Quarto，把文件存为 <code>.qmd</code>，YAML 头写 <code>format: html</code>（代替 <code>output: html_document</code>），代码块选项可以写成块内的 <code>#| echo: false</code> 形式；点 Render 或在终端运行 <code>quarto render report.qmd</code>。</p>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：从“能画出来”到“能放进报告”</h3>
+<p>下面是一张按性别比较 T1 抑郁总分的箱线图，从初稿一步步改成可以放进报告的版本。每一步都对应一个常见问题：</p>
+<div class="codeblk"><pre><code class="language-r">library(ggplot2)
+dat$dep_t1 &lt;- rowSums(dat[, paste0(dep_items, &quot;_t1&quot;)])
+dat$性别 &lt;- factor(dat$gender, levels = c(0, 1), labels = c(&quot;男&quot;, &quot;女&quot;))  # 0/1 → 有标签的因子
+p &lt;- ggplot(dat, aes(x = 性别, y = dep_t1)) +
+  geom_boxplot(outlier.shape = NA, width = 0.5) +       # 不单独画离群点，因为下一层会画出所有点
+  geom_jitter(width = 0.15, alpha = 0.2, size = 0.8) +   # 显示原始数据，避免箱线图掩盖样本量
+  labs(x = NULL, y = &quot;T1 抑郁总分（0–15）&quot;, title = &quot;图 1  T1 抑郁总分的性别比较&quot;) +
+  theme_minimal(base_size = 12)
+ggsave(&quot;R/output/fig_dep_gender.png&quot;, p, width = 12, height = 9, units = &quot;cm&quot;, dpi = 300)</code></pre></div>
+
+<ul><li><b>性别先转成因子并加标签。</b>否则 gender 是 0/1 数值，ggplot 会把它当作连续变量，x 轴会出现 0.25、0.5 这样的刻度。</li>
+<li><b>箱线图加原始点。</b>箱线图只显示五个数，看不出每组有多少人，也看不出分布是否“挤在 0 分”。叠加半透明的抖动点，能同时看到汇总和原始数据。</li>
+<li><b>轴标签写清单位和范围</b>，标题写图号。</li>
+<li><b>用 ggsave 指定尺寸和分辨率。</b>直接截图会模糊，尺寸也不统一。</li></ul>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b><code>+</code> 写在行首。</b>ggplot 的 <code>+</code> 必须放在上一行的末尾，否则 R 认为这句已经结束，下一行会报错。</li>
+<li><b>渲染时报 object not found，而 Console 里明明能运行。</b>渲染时，Quarto / R Markdown 在一个全新的 R 会话中从头运行文档里的所有代码。只在 Console 里创建过、文档里没有的对象，渲染时就找不到。这也正好检验了分析是否真正可复现。</li></ul></div>
+
+<p>小建议：把常用的主题设置（字号、字体、配色）存进一个对象，如 <code>my_theme &lt;- theme_minimal(base_size = 12)</code>，每张图都加上 <code>+ my_theme</code>。这样整篇报告的图风格一致，以后修改也只需改一处。</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">aes(x = sleep, y = depress) 在做什么？</p><ul class="opts"><li><button type="button" data-ok="0">画出散点</button><div class="ofb" hidden>aes 只建立映射，画点要靠 geom_point()。</div></li><li><button type="button" data-ok="1">把变量映射到视觉属性：sleep 决定横轴位置，depress 决定纵轴位置</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">计算 sleep 与 depress 的相关</button><div class="ofb" hidden>aes() 只建立映射，不计算任何统计量。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>映射（aes）+ 几何对象（geom）才构成一张图。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么论文分析最好用可复现报告而不是复制粘贴结果？</p><ul class="opts"><li><button type="button" data-ok="1">数字由代码直接生成，数据或分析改变后重新渲染即可全部更新，避免抄错漏改，别人也能复核</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为渲染出的报告不会有任何错误</button><div class="ofb" hidden>可复现不等于正确：代码有错，报告照样有错；好处是错误可以追溯，改一处即全部更新。</div></li><li><button type="button" data-ok="0">因为可复现报告运行更快</button><div class="ofb" hidden>渲染要从头运行全部代码，往往更慢；好处在于数字与代码始终一致。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>可复现 = 原始数据 + 代码 → 同样的结果。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">哪种图最适合检查题目的偏态？</p><ul class="opts"><li><button type="button" data-ok="0">散点图</button><div class="ofb" hidden>散点图看两个变量的关系，看不出单个变量的分布形状。</div></li><li><button type="button" data-ok="1">直方图（或条形图）</button><div class="ofb" hidden>正确：直接看到分布形状。</div></li><li><button type="button" data-ok="0">箱线图</button><div class="ofb" hidden>箱线图能提示偏态，但只画五个数；0–3 分的题目在箱线图上看不出每个分数各有多少人。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>箱线图也能提示偏态，但会隐藏细节。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">想让所有点都是红色，正确写法是？</p><ul class="opts"><li><button type="button" data-ok="0">ggplot(d, aes(x, y, colour = "red")) + geom_point()</button><div class="ofb" hidden>会生成一个名为 "red" 的图例，颜色也不一定是红色。</div></li><li><button type="button" data-ok="1">ggplot(d, aes(x, y)) + geom_point(colour = "red")</button><div class="ofb" hidden>正确：固定值写在 aes() 外面。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>变量 → 写在 aes() 里；固定值 → 写在 geom 的参数里。</div></div>
+<div class="quiz" data-kind="txt" data-ans="include=FALSE || include = FALSE || include=F || echo=FALSE || echo = FALSE"><p class="qtext">在一份 .Rmd 中，你希望读数据的代码运行但不显示在报告里。应该给这个代码块加什么选项？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>参考 L2-6_report.Rmd 的 setup 块。</div><div class="fb" role="status"></div><div class="qexp" hidden>include=FALSE 既不显示代码也不显示结果；echo=FALSE 只隐藏代码、仍显示结果。</div></div>
+<div class="quiz" data-kind="num" data-ans="12" data-tol="0"><p class="qtext">某组箱线图中 Q1 = 2，Q3 = 6。ggplot 默认会把高于多少的点当作可能的离群值单独画出？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>上限 = Q3 + 1.5 × IQR。</div><div class="fb" role="status"></div><div class="qexp" hidden>IQR = 4，6 + 1.5 × 4 = 12。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.6-A：我的第一份 Quarto 报告</h4>
+<p>用一份 Quarto 报告完成：两张图 + 一张描述统计表 + 一段解释文字，渲染为 HTML。</p>
+<details class="answer"><summary>参考模板 week06.qmd</summary>
+<p>完整文件：<a href="../R/solutions/week06.qmd">R/solutions/week06.qmd</a>。注意 setup 块里读数据的两行：Quarto 以 .qmd <b>所在的文件夹</b>为工作目录，这个文件放在 <code>R/solutions/</code> 里，数据就在 <code>../../data/</code>；如果从课程根目录渲染（例如在 RStudio 的 Terminal 窗格、位于课程根目录时运行 <code>quarto render R/solutions/week06.qmd --execute-dir .</code>），路径则是 <code>data/</code>。<code>file.exists()</code> 先试后者，不存在再用前者。你把自己的 .qmd 存在别的位置时，按它离课程根目录的层数改 <code>../</code> 的个数。</p>
+<pre class="out">---
+title: "T1 孤独感与抑郁：描述性分析"
+author: "（填写）"
+format: html
+---
+
+&#96;&#96;&#96;{r}
+#| include: false
+# Quarto 以 .qmd 所在文件夹为工作目录：本文件在 R/solutions/ 里，所以数据在 ../../data/
+library(tidyverse)
+f <- if (file.exists("data/clpn_sim_wide.csv")) "data/clpn_sim_wide.csv" else "../../data/clpn_sim_wide.csv"
+dat <- read_csv(f, show_col_types = FALSE) |>
+  mutate(孤独 = rowSums(across(lone1_t1:lone4_t1)),
+         抑郁 = rowSums(across(dep1_t1:dep5_t1)),
+         性别 = factor(gender, levels = c(0, 1), labels = c("男", "女")))
+&#96;&#96;&#96;
+
+## 描述统计
+
+&#96;&#96;&#96;{r}
+dat |> group_by(性别) |>
+  summarise(n = n(), 孤独均值 = mean(孤独), 抑郁均值 = mean(抑郁), 抑郁SD = sd(抑郁)) |>
+  knitr::kable(digits = 2, caption = "表 1 按性别分组的 T1 描述统计")
+&#96;&#96;&#96;
+
+## 图
+
+&#96;&#96;&#96;{r}
+#| echo: false
+#| fig-cap: "图 1 T1 抑郁总分的分布"
+ggplot(dat, aes(抑郁)) + geom_histogram(binwidth = 1)
+&#96;&#96;&#96;
+
+&#96;&#96;&#96;{r}
+#| echo: false
+#| fig-cap: "图 2 按性别的 T1 抑郁总分箱线图"
+ggplot(dat, aes(性别, 抑郁)) + geom_boxplot()
+&#96;&#96;&#96;
+
+## 解释
+
+样本共 &#96;r nrow(dat)&#96; 人，T1 抑郁总分的均值为 &#96;r round(mean(dat$抑郁), 2)&#96;，呈右偏分布……（写 3–5 句，避免“导致”等因果措辞）</pre>
+<p>评分要点：(1) 能成功渲染（若找不到数据，按上面的说明核对 .qmd 所在文件夹与数据路径的关系）；(2) 表和图有清楚的标题；(3) 解释文字中的数字用行内代码生成；(4) 不出现“导致”等因果措辞。</p></details></div>
+<div class="exitem"><h4>练习 2.6-B：分面</h4>
+<p>在散点图 <code>p1</code> 的基础上加 <code>+ facet_wrap(~ 性别)</code>，图会怎样变化？什么时候分面比用颜色区分更好？</p>
+<details class="answer"><summary>参考答案</summary><p>图会拆成“女”“男”两个并排的小图，各自有一组点和一条回归线，坐标轴相同便于比较。当组数较多（例如 4 个年龄段）或点很多、颜色互相遮挡时，分面更清楚；当需要直接比较两条线的位置时，画在同一张图里用颜色区分更方便。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>ggplot = 数据 + <code>aes()</code> 映射 + <code>geom_*()</code> 几何对象，用 <code>+</code> 叠加图层；变量写进 aes，固定值写在外面。</li>
+<li>分布看直方图，关系看散点图，组间比较看箱线图。</li>
+<li>用 Quarto / R Markdown 把文字、代码、结果写在一起，数字由代码生成，一键重现。下一模块：<a href="L3-1.html">3.1 简单线性回归：用一条直线做预测</a>。</li></ul>
+</section>
+<div class="box key"><b class="bt">阶段测验</b><p>本模块的核心课到这里学完了。去做 <a href="../materials/assess_m2.html">M2 阶段测验</a>，一次答对 70% 及以上再进入下一个模块。</p></div>
+<nav class="pager"><a href="L2-5.html" class="pv"><small>上一课</small>2.5 用 R 做描述统计、相关与回归</a><a href="L3-1.html" class="nx"><small>下一课</small>3.1 简单线性回归：用一条直线做预测</a></nav>
+<p class="foot">CLPN 从零开始 · 第 2.6 课 · <a href="../index.html#L2-6">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

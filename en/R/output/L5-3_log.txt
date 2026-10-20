@@ -1,0 +1,177 @@
+lavaan 0.7-3 ended normally after 116 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        26
+
+  Number of observations                           800
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                                      
+  Test statistic                                 0.333
+  Degrees of freedom                                 1
+  P-value (Chi-square)                           0.564
+                                                      
+  Browne's residual (NT model-based) test             
+  Test statistic                                 0.333
+  Degrees of freedom                                 1
+  P-value (Chi-square)                           0.564
+
+Model Test Baseline Model:
+
+  Test statistic                              1685.320
+  Degrees of freedom                                15
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.006
+                                                      
+  Robust Comparative Fit Index (CFI)             1.000
+  Robust Tucker-Lewis Index (TLI)                1.006
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -11542.526
+  Loglikelihood unrestricted model (H1)     -11542.359
+                                                      
+  Akaike (AIC)                               23137.052
+  Bayesian (BIC)                             23258.852
+  Sample-size adjusted Bayesian (SABIC)      23176.287
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.078
+  P-value H_0: RMSEA <= 0.050                    0.822
+  P-value H_0: RMSEA >= 0.080                    0.044
+                                                      
+  Robust RMSEA                                   0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.078
+  P-value H_0: Robust RMSEA <= 0.050             0.822
+  P-value H_0: Robust RMSEA >= 0.080             0.044
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.003
+
+Goodness of Fit Index:
+
+  Goodness of Fit Index (GFI)                    1.000
+  90 Percent confidence interval - lower         0.998
+  90 Percent confidence interval - upper         1.000
+                                                      
+  Robust GFI                                     1.000
+  90 Percent confidence interval - lower         0.998
+  90 Percent confidence interval - upper         1.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+  RI_lone =~                                                            
+    lone1             1.000                               1.844    0.598
+    lone2             1.000                               1.844    0.628
+    lone3             1.000                               1.844    0.613
+  RI_dep =~                                                             
+    dep1              1.000                               2.086    0.615
+    dep2              1.000                               2.086    0.620
+    dep3              1.000                               2.086    0.610
+  wl1 =~                                                                
+    lone1             1.000                               2.469    0.801
+  wl2 =~                                                                
+    lone2             1.000                               2.285    0.778
+  wl3 =~                                                                
+    lone3             1.000                               2.374    0.790
+  wd1 =~                                                                
+    dep1              1.000                               2.674    0.789
+  wd2 =~                                                                
+    dep2              1.000                               2.638    0.784
+  wd3 =~                                                                
+    dep3              1.000                               2.710    0.792
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+  wl2 ~                                                                 
+    wl1               0.322    0.070    4.607    0.000    0.348    0.348
+    wd1               0.071    0.055    1.286    0.198    0.083    0.083
+  wd2 ~                                                                 
+    wd1               0.215    0.071    3.044    0.002    0.218    0.218
+    wl1               0.284    0.064    4.452    0.000    0.265    0.265
+  wl3 ~                                                                 
+    wl2               0.206    0.086    2.395    0.017    0.198    0.198
+    wd2               0.221    0.061    3.620    0.000    0.245    0.245
+  wd3 ~                                                                 
+    wd2               0.210    0.077    2.728    0.006    0.205    0.205
+    wl2               0.231    0.083    2.790    0.005    0.195    0.195
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+  wl1 ~~                                                                
+    wd1               2.490    0.542    4.597    0.000    0.377    0.377
+ .wl2 ~~                                                                
+   .wd2               2.245    0.319    7.028    0.000    0.441    0.441
+ .wl3 ~~                                                                
+   .wd3               2.273    0.291    7.822    0.000    0.409    0.409
+  RI_lone ~~                                                            
+    RI_dep            0.770    0.522    1.476    0.140    0.200    0.200
+    wl1               0.000                               0.000    0.000
+    wd1               0.000                               0.000    0.000
+  RI_dep ~~                                                             
+    wl1               0.000                               0.000    0.000
+    wd1               0.000                               0.000    0.000
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+   .lone1             8.804    0.109   80.810    0.000    8.804    2.857
+   .lone2             8.869    0.104   85.431    0.000    8.869    3.020
+   .lone3             8.885    0.106   83.592    0.000    8.885    2.955
+   .dep1              3.836    0.120   31.993    0.000    3.836    1.131
+   .dep2              3.784    0.119   31.820    0.000    3.784    1.125
+   .dep3              3.849    0.121   31.831    0.000    3.849    1.125
+
+Variances:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+    wl1               6.094    0.612    9.953    0.000    1.000    1.000
+    wd1               7.151    0.709   10.081    0.000    1.000    1.000
+   .wl2               4.439    0.385   11.531    0.000    0.850    0.850
+   .wd2               5.834    0.511   11.414    0.000    0.838    0.838
+   .wl3               4.791    0.352   13.606    0.000    0.850    0.850
+   .wd3               6.452    0.446   14.458    0.000    0.879    0.879
+    RI_lone           3.401    0.585    5.818    0.000    1.000    1.000
+    RI_dep            4.351    0.698    6.238    0.000    1.000    1.000
+   .lone1             0.000                               0.000    0.000
+   .lone2             0.000                               0.000    0.000
+   .lone3             0.000                               0.000    0.000
+   .dep1              0.000                               0.000    0.000
+   .dep2              0.000                               0.000    0.000
+   .dep3              0.000                               0.000    0.000
+
+
+===== CLPM vs. RI-CLPM Standardized Paths =====
+CLPM:
+lone1 → lone2  dep1 → lone2   dep1 → dep2  lone1 → dep2 lone2 → lone3 
+        0.607         0.016         0.539         0.128         0.559 
+ dep2 → lone3   dep2 → dep3  lone2 → dep3 
+        0.068         0.548         0.049 
+RI-CLPM (within-person):
+wl1 → wl2 wd1 → wl2 wd1 → wd2 wl1 → wd2 wl2 → wl3 wd2 → wl3 wd2 → wd3 wl2 → wd3 
+    0.348     0.083     0.218     0.265     0.198     0.245     0.205     0.195 
+
+Chi-Squared Difference Test
+
+       Df   AIC   BIC   Chisq Chisq diff Df diff Pr(>Chisq)    
+fit_ri  1 23137 23259  0.3334                                  
+fit_c   4 23199 23306 67.9855     67.652       3  1.358e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Simulated data were generated with strong stable traits: RI-CLPM autoregressions drop markedly, showing that
+ much of the CLPM's "stability" arises from between-person differences. Standard CLPN shares this limitation (Lesson 7.5).

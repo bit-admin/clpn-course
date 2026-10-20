@@ -1,0 +1,15 @@
+  gamma edges
+1  0.00    28
+2  0.25    28
+3  0.50    28
+True number of edges in simulated data = 12 
+gamma = 0 : estimated edges = 22 ; false positives = 10 
+gamma = 0.25 : estimated edges = 15 ; false positives = 3 
+gamma = 0.5 : estimated edges = 13 ; false positives = 1 
+Larger gamma -> sparser network, fewer false-positive edges, but may also miss true weak edges.
+Number of non-zero edges in unregularized partial correlation network = 36 / 36
+
+Lambda selected by EBIC (course data, N = 800):
+gamma = 0 : lambda = 0.01375 ; sequence of 100 lambdas ( 0.005681 – 0.5681 ), selected is # 81 from largest to smallest; at minimum of sequence: No 
+gamma = 0.25 : lambda = 0.01375 ; sequence of 100 lambdas ( 0.005681 – 0.5681 ), selected is # 81 from largest to smallest; at minimum of sequence: No 
+gamma = 0.5 : lambda = 0.01375 ; sequence of 100 lambdas ( 0.005681 – 0.5681 ), selected is # 81 from largest to smallest; at minimum of sequence: No 

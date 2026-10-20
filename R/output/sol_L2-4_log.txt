@@ -1,0 +1,14 @@
+CSV 维度： 800 34 ；SPSS 维度： 800 34 
+    lone1_t1        dep1_t1            age           gender      
+ Min.   :1.000   Min.   :0.0000   Min.   :18.0   Min.   :0.0000  
+ 1st Qu.:1.000   1st Qu.:0.0000   1st Qu.:35.0   1st Qu.:0.0000  
+ Median :2.000   Median :0.0000   Median :45.0   Median :1.0000  
+ Mean   :2.191   Mean   :0.7412   Mean   :45.4   Mean   :0.5337  
+ 3rd Qu.:3.000   3rd Qu.:1.0000   3rd Qu.:55.0   3rd Qu.:1.0000  
+ Max.   :4.000   Max.   :3.0000   Max.   :85.0   Max.   :1.0000  
+缺失值个数： 0 
+变量名是否一致： TRUE 
+两份数据的数值是否一致（lone1_t1）： TRUE 
+孤独题取值范围： 1 4 ；抑郁题： 0 3 
+
+2.4-B 改正：删掉 setwd()，用项目相对路径 read.csv("data/...")；安装放在单独脚本，这里写 library(glmnet)

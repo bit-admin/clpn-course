@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3 Data Frames and Introduction to the Tidyverse · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-3.md" title="Plain text">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "Course Overview: Why Study CLPN", "short": "Course Overview", "intro": "A map of the whole course: what questions CLPN tries to answer, which problems in social work and psychology research it addresses, and how, over the next 16 weeks, you will work step by step toward completing an analysis on your own.", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "Motivation and big-picture roadmap: know where you are going and why it matters."}, {"id": "M1", "title": "Statistics Foundations", "short": "Statistics Foundations", "intro": "Build statistical intuition from scratch. The math uses only basic calculus ideas you already know (sums, functions, an intuition for derivatives); the focus is on 'what is this number telling us?'", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "Statistical language: mean, variance, correlation, standard error, p-value—the prerequisites for reading every number in CLPN output."}, {"id": "M2", "title": "R and RStudio: From Scratch", "short": "R and RStudio", "intro": "An introduction to programming for complete beginners. You study it side by side with Module 1 (Statistics), alternating in Weeks 2–5 (see 'Recommended Pacing'): as soon as you learn a statistical idea, you do it in R. Module 3 (Regression) comes after.", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R skills: from zero to writing CLPN estimation code independently."}, {"id": "M3", "title": "Regression Analysis", "short": "Regression Analysis", "intro": "Regression is the 'engine' of CLPN: at heart, a CLPN runs one (regularized) regression for each variable at time point 2. This module goes from a single straight line to LASSO. Study it after Module 1 (Statistics) and Module 2 (R).", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "Regression & LASSO: the engine of CLPN—each T2 node is a regularized regression."}, {"id": "M4", "title": "Longitudinal and Panel Data", "short": "Longitudinal and Panel Data", "intro": "A CLPN needs 'the same people, measured at several time points, with the same items.' This module explains how such data are structured and prepared, and the biggest headache: missing data and dropout.", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "Longitudinal data: how T1/T2 panel data are collected, reshaped, and checked for missingness."}, {"id": "M5", "title": "Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM", "short": "Traditional Cross-Lagged Panel Models", "intro": "A CLPN can be seen as an 'item-level network version' of the CLPM. First understand autoregressive and cross-lagged paths at the construct (total-score) level, then Hamaker et al.'s key criticism of the CLPM; only then can you read a CLPN correctly and write its limitations honestly.", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM & RI-CLPM: what cross-lagged paths mean and the between-person vs. within-person pitfall."}, {"id": "M6", "title": "Foundations of Network Psychometrics", "short": "Foundations of Network Psychometrics", "intro": "Learn all the basics of psychological networks on cross-sectional data first: partial correlations, GGMs, regularization, visualization, centrality. CLPN estimation, plotting and centrality indices build directly on these ideas.", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "Network psychometrics: nodes, edges, partial correlations, regularization, centrality."}, {"id": "M7", "title": "Cross-Lagged Panel Networks (CLPN)", "short": "Cross-Lagged Panel Networks", "intro": "The core module. CLPN was proposed by Wysocki, van Bork, Cramer and Rhemtulla (2022 preprint; published in 2025 as 'Cross-lagged panel networks'). The main line of this module teaches the simplified 'LASSO-only' version most common in applied research (e.g. Funkhouser et al., 2021): for each T2 item, run a LASSO-regularized regression on all T1 items and put the coefficients together into a directed network. Lesson 7.5 then introduces the full procedure recommended by Wysocki et al. (2025): LASSO edge selection → unpenalized re-estimation in lavaan (same-wave residual correlations, FIML, tests of equality across time) → in-/out-prediction, with runnable examples.", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN itself: estimation, visualization, out- and in-expected influence."}, {"id": "M8", "title": "Stability and Accuracy Assessment", "short": "Stability and Accuracy Assessment", "intro": "A network can easily 'look meaningful' and yet be unstable. Following the framework of Epskamp, Borsboom & Fried (2018), this module shows you how to use the bootstrap to check whether edges and centrality can be trusted.", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "Stability checks: bootstrap intervals and CS-coefficients to judge whether results are trustworthy."}, {"id": "M9", "title": "Reading, Critique, and Reporting Standards", "short": "Reading, Critique, and Reporting Standards", "intro": "Getting the analysis to run is only half the job; the other half is reading other people's CLPN papers, spotting the problems, and reporting your own analysis to the standards.", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "Reading papers, methodological critique, and reporting standards."}, {"id": "M10", "title": "Capstone Project: A Complete CLPN Analysis", "short": "Capstone Project", "intro": "Carry out a complete CLPN on your own, from the data to the written results. The default is the three-wave simulated data with a known true structure (4 loneliness items + 5 depression items, N = 800); if you can, you may use a public longitudinal dataset instead, after reading its license and citation requirements.", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "Capstone project: execute and write up a complete CLPN analysis end to end."}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.3" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L2-3">CLPN Syllabus</a><span class="crumb">M2 R and RStudio: From Scratch / 2.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L2-3.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L2-3.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html" class="cur" aria-current="page"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 2 · R &amp; RStudio from Zero · Lesson 2.3</div>
+<h1>Data Frames and Introduction to the Tidyverse</h1>
+<div class="facts"><span>Study time 2 hr</span><span>Prerequisites: <a href="L2-2.html">2.2 R Basic Syntax: Vectors, Data Types, and Functions</a></span><span>R script: <a href="../R/L2-3.R">R/L2-3.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Understand the structure of a data frame: rows = cases, columns = variables</li><li>Use the core dplyr verbs: select, filter, mutate, summarise, group_by</li><li>Chain steps together with the pipe |&gt;</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>data frame</b></li><li><b>tibble</b></li><li><b>tidyverse</b></li><li><b>pipe, |&gt;</b></li><li><b>recoding</b></li><li><b>reverse scoring</b></li></ul>
+
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>Data Frames: A Register with One Row per Person</h2>
+<div class="box story"><b class="bt">From a case register to a data frame</b>
+<p>Picture a community center's case register: each row is one client, and each column is one piece of information (ID, gender, age, item scores, …). A <span class="term">data frame</span> in R has exactly this structure: <b>rows = cases, columns = variables, a cell = one person's value on one variable</b>. The course data <code>clpn_sim_wide.csv</code> is an 800-row × 34-column data frame: 800 people and 34 variables (ID, 9 items × 3 waves, gender, age, and so on).</p></div>
+<p>Each column of a data frame is a vector (Lesson 2.2). Within a column the type is the same; different columns can have different types (<code>id</code> is character, <code>dep1_t1</code> is numeric). All columns have the same length, and row 37 is the same person in every column.</p>
+<p>There are two common ways to take out one column:</p>
+<ul><li><code>dat$dep1_t1</code>: <code>$</code> takes a column by name and gives a vector.</li>
+<li><code>dat[, "dep1_t1"]</code>: the two-dimensional form of the brackets, <code>[row, column]</code>; leaving the part before the comma empty means "all rows." On an ordinary <code>data.frame</code> this also returns a vector, but on a tibble (see below) it returns a one-column tibble. To be sure you get a vector, use <code>dat[["dep1_t1"]]</code>.</li></ul>
+<p>In the same way, <code>dat[1:5, ]</code> takes all columns of the first 5 rows, and <code>dat[dat$gender == 1, ]</code> takes the rows of all women.</p>
+
+<h3>tidyverse: a set of "verbs" for data wrangling</h3>
+<p>The <span class="term">tidyverse</span> is a family of R packages with a shared design (dplyr, ggplot2, readr, tidyr, and others), developed by Hadley Wickham and colleagues. dplyr provides the core verbs for data wrangling. Each verb does one thing, and its name is an English verb:</p>
+<div class="tablewrap"><table><thead><tr><th>Verb</th><th>Works on</th><th>What it does</th><th>Social work analogy</th></tr></thead><tbody>
+<tr><td><code>select()</code></td><td><b>columns</b></td><td>Picks variables</td><td>Photocopying only the depression-scale columns of the register</td></tr>
+<tr><td><code>filter()</code></td><td><b>rows</b></td><td>Picks cases by a condition</td><td>Looking only at clients with a depression total ≥ 10</td></tr>
+<tr><td><code>mutate()</code></td><td>columns</td><td>Creates or changes variables</td><td>Adding a "total score" column at the right edge of the sheet</td></tr>
+<tr><td><code>summarise()</code></td><td>whole table → one row</td><td>Summarizes (mean, count, …)</td><td>Writing one line: "the average score is …"</td></tr>
+<tr><td><code>group_by()</code></td><td>rows</td><td>Groups the data; later steps run within each group</td><td>Counting men and women separately</td></tr>
+<tr><td><code>arrange()</code></td><td>rows</td><td>Sorts</td><td>Ordering cases from highest to lowest risk</td></tr></tbody></table></div>
+<p>Data read with <code>read_csv()</code> (readr package), and the results of dplyr, are usually a <span class="term">tibble</span>, a souped-up data frame. When printed, it shows only the first 10 rows and the columns that fit, and marks each column's type (<code>&lt;chr&gt;</code> character, <code>&lt;dbl&gt;</code> numeric), so it doesn't flood the screen; and it never turns strings into factors automatically. Apart from the bracket difference above, you use it like a data frame. Some older functions expect a vector; if a tibble gives you a strange error, try <code>dat$column</code> or <code>dat[["column"]]</code> instead.</p>
+
+<h3>The pipe |>: read it as "then"</h3>
+<p>The <span class="term">pipe</span> <code>|&gt;</code> (built into R since 4.1) passes the result on its left as the first argument of the function on its right. <code>dat |&gt; filter(gender == 1)</code> is the same as <code>filter(dat, gender == 1)</code>. The benefit is that you can chain several steps from top to bottom, like a set of instructions:</p>
+<p><code>dat |&gt; filter(...) |&gt; group_by(...) |&gt; summarise(...)</code> reads: "take the data, then filter, then group, then summarize." Online you will also see <code>%&gt;%</code>, the older pipe from the magrittr package; in ordinary use the two do the same thing. The RStudio shortcut for a pipe is <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>), but by default it inserts <code>%&gt;%</code>. To make it insert <code>|&gt;</code>, tick "Use native pipe operator, |&gt;" under Tools → Global Options → Code → Editing. All code in this course uses <code>|&gt;</code>.</p>
+<div class="widget" data-widget="dplyr"></div>
+
+<h3>Recoding and reverse scoring</h3>
+<p><span class="term">Recoding</span> means turning raw values into the form the analysis needs, for example 0/1 into "Male / Female" (<code>if_else()</code>), ages into age groups (<code>case_when()</code>), or <span class="term">reverse scoring</span>.</p>
+<p>Many scales include reverse-worded items. On a loneliness scale, for example, the more someone agrees with "I feel there is someone I can talk to," the <i>less</i> lonely they are. If you sum the items without reversing it first, this item cancels out part of the other items' scores; in a correlation or network analysis it correlates negatively with the other items, and the network shows confusing negative edges that come only from the direction of the wording and reflect no psychological mechanism.</p>
+<div class="mathbox">$$\text{reversed score} = (\text{minimum} + \text{maximum}) - \text{raw score}$$</div>
+<p>For an item scored 1–4: reversed = 5 − raw (1↔4, 2↔3); for 0–3: 3 − raw; for 1–5: 6 − raw.</p>
+<div class="box warnbox"><b class="bt">The course data have no reverse-worded items</b><p>All 9 items in the simulated data already point the same way (higher = lonelier / more depressed). For a demonstration, the script reverses <code>social_support_t1</code> (1–5, higher = more support) into <code>support_rev = 6 − social_support_t1</code> (higher = less support), so that it points the same way as loneliness and depression. In real research, check the scale manual for which items need reversing, and after reversing, check that the items of the same scale are mostly positively correlated. Reversing only flips the sign of a correlation: if you pretend <code>lone2_t1</code> is reverse-worded (5 − raw), its correlation with <code>lone1_t1</code> goes from 0.456 to −0.456.</p></div>
+<div class="box sw"><b class="bt">Why social workers need to watch for this</b><p>Scales common in social work (social support, self-efficacy, family functioning) often mix positively and negatively worded items. Volunteers who enter the data usually type in the boxes as ticked; reverse scoring is the analyst's job. If you skip it, the usual consequences are an unusually low reliability (α) and weakened correlations between the total score and other variables.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Total Scores and Group Means</h2>
+<div class="mathbox">$$\text{depression total}_i = \sum_{k=1}^{5} \text{dep}_{k,i}$$</div>
+<dl class="sym"><dt>\(i\)</dt><dd>Person \(i\) (row \(i\) of the data frame).</dd><dt>\(k\)</dt><dd>Item \(k\) (a column).</dd><dt>\(\text{dep}_{k,i}\)</dt><dd>Person \(i\)'s score on depression item \(k\) (0–3), so the total ranges from 0 to 15.</dd></dl>
+<p>This is a sum across a row, done by <code>rowSums()</code>. A group mean:</p>
+<div class="mathbox">$$\bar y_g = \frac{1}{n_g}\sum_{i\in g} y_i$$</div>
+<p>\(g\) is a group (for example, women), \(n_g\) the number of people in it, and \(\sum_{i\in g}\) means summing only over the people in that group. In R: <code>group_by() |&gt; summarise(mean())</code>.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Chaining Five Verbs</h2>
+<p>Script for this lesson: <a href="../R/L2-3.R">R/L2-3.R</a>.</p>
+<div class="codeblk"><div class="ctitle">R/L2-3.R (core part)</div><pre><code class="language-r">library(tidyverse)
+dat &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)  # a tibble (souped-up data frame)
+
+phq &lt;- dat |&gt; select(id, gender, starts_with(&quot;dep&quot;) &amp; ends_with(&quot;_t1&quot;))  # pick columns: select
+print(phq, n = 5)
+
+# Reverse-scoring example: suppose social support needs reversing (1–5 → 5–1): new value = 6 - old value
+dat &lt;- dat |&gt;
+  mutate(support_rev = 6 - social_support_t1,                         # reverse-scoring example
+         dep_sum_t1  = rowSums(across(c(dep1_t1:dep5_t1))))           # total score
+dat |&gt;
+  mutate(gender_label = if_else(gender == 1, &quot;Female&quot;, &quot;Male&quot;)) |&gt;
+  group_by(gender_label) |&gt;                                            # group
+  summarise(n = n(), dep_mean = mean(dep_sum_t1), sd = sd(dep_sum_t1)) |&gt;  # summarize
+  print()
+n_high &lt;- dat |&gt; filter(dep_sum_t1 &gt;= 10) |&gt; nrow()   # pick rows: filter
+cat(&quot;Number of participants with depression sum score &gt;= 10: &quot;, n_high, &quot;\n&quot;, sep = &quot;&quot;)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-3_log.txt)</div><pre class="out"><code># A tibble: 800 × 7
+  id    gender dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1
+  &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 P001       0       0       0       1       0       0
+2 P002       0       0       0       1       0       1
+3 P003       1       1       2       1       2       0
+4 P004       0       1       0       2       1       0
+5 P005       1       1       2       0       3       1
+# ℹ 795 more rows
+# A tibble: 2 × 4
+  gender_label     n dep_mean    sd
+  &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt;
+1 Female         427     4.21  3.52
+2 Male           373     3.41  3.21
+Number of participants with depression sum score &gt;= 10: 65</code></pre></div>
+<div class="box key"><b class="bt">Line by line</b><ul>
+<li><code>starts_with("dep") &amp; ends_with("_t1")</code>: picks the columns that "start with dep and end with _t1," that is, the 5 depression items at T1. Other selection helpers include <code>contains()</code> and <code>matches()</code>.</li>
+<li><code>dep1_t1:dep5_t1</code>: the colon means "every column from this one to that one" (it depends on the column order). <code>across()</code> bundles these columns and hands them to <code>rowSums()</code>.</li>
+<li><code>if_else(condition, yes, no)</code>: gives "Female" when the condition is TRUE, otherwise "Male."</li>
+<li><code>n()</code>: the number of people in the group. <code>summarise()</code> shrinks each group to one row. The course data have no missing values; with real data that do, <code>mean()</code> returns NA, so write <code>mean(x, na.rm = TRUE)</code> and report how many people each group actually used with <code>sum(!is.na(x))</code>.</li>
+<li><code>dat &lt;- dat |&gt; mutate(...)</code>: the result must be assigned back to <code>dat</code>; otherwise the new variable is only printed, not saved. This is one of the most common beginner mistakes.</li></ul></div>
+<div class="codeblk"><div class="ctitle">$ vs. [ ]</div><pre><code class="language-r">dat$dep1_t1 |&gt; head()            # a vector
+dat[, &quot;dep1_t1&quot;] |&gt; head(3)      # on a tibble, a one-column tibble
+dat[[&quot;dep1_t1&quot;]] |&gt; head()       # a vector (same for tibble and data.frame)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-3_log.txt, continued)</div><pre class="out"><code>[1] 0 0 1 1 1 1
+# A tibble: 3 × 1
+  dep1_t1
+    &lt;dbl&gt;
+1       0
+2       0
+3       1
+[1] 0 0 1 1 1 1</code></pre></div>
+<div class="codeblk"><div class="ctitle">More examples: several conditions, counting, sorting</div><pre><code class="language-r">dat |&gt; filter(gender == 1, age &lt; 30) |&gt; nrow()      # comma = &quot;and&quot;: women under 30
+dat |&gt; count(gender)                                # counts
+dat |&gt; arrange(desc(dep_sum_t1)) |&gt; select(id, dep_sum_t1) |&gt; head(3)   # the 3 highest depression totals</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-3_log.txt, continued)</div><pre class="out"><code>[1] 68
+# A tibble: 2 × 2
+  gender     n
+   &lt;dbl&gt; &lt;int&gt;
+1      0   373
+2      1   427
+# A tibble: 3 × 2
+  id    dep_sum_t1
+  &lt;chr&gt;      &lt;dbl&gt;
+1 P734          15
+2 P154          14
+3 P215          14</code></pre></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: one pipe for loneliness totals by gender</h3>
+<p>Task: using the T1 data, compute each person's loneliness total, keep only people aged 60 and over, and compare the mean and the count by gender. Write out the plan first (the most important step), then turn it into code:</p>
+<ol><li><b>mutate</b>: create a column <code>lone_t1</code> = the sum of the 4 loneliness items (added across the row).</li>
+<li><b>filter</b>: keep the rows with <code>age &gt;= 60</code>.</li>
+<li><b>group_by</b>: group by <code>gender</code>.</li>
+<li><b>summarise</b>: for each group, compute the count, mean, and standard deviation.</li></ol>
+<div class="codeblk"><pre><code class="language-r">source(&quot;R/_setup.R&quot;)      # finds the course root folder and defines small helpers such as read_course_data() (Lesson 2.4)
+library(dplyr)
+dat &lt;- read_course_data()  # same as read.csv(&quot;data/clpn_sim_wide.csv&quot;)
+res &lt;- dat |&gt;
+  mutate(lone_t1 = lone1_t1 + lone2_t1 + lone3_t1 + lone4_t1) |&gt;   # added across the row
+  filter(age &gt;= 60) |&gt;
+  group_by(gender) |&gt;
+  summarise(n = n(), M = mean(lone_t1), SD = sd(lone_t1)) |&gt;
+  ungroup()
+res</code></pre></div>
+
+<p>If you don't run <code>source("R/_setup.R")</code> first, R reports <code>could not find function "read_course_data"</code>: this function does not come with R; the course defines it in <code>R/_setup.R</code>. If you'd rather not depend on it, replace the second line with <code>dat &lt;- read.csv("data/clpn_sim_wide.csv")</code>, as long as your working directory is the course root folder (Lesson 2.4).</p>
+<p>When you read the result, look at <code>n</code> first: the two group counts should add up to the total number of people aged 60 and over, which you can check with <code>sum(dat$age &gt;= 60)</code>. This "check the head count" step takes almost no time but catches many wrangling errors, such as a filter condition written the wrong way round, the wrong comparison sign (<code>&gt;</code> vs. <code>&gt;=</code>), or rows with missing values quietly dropped.</p>
+<h3>A classic trap: sum() inside mutate</h3>
+<p>Many beginners write <code>mutate(lone_t1 = sum(lone1_t1, lone2_t1, lone3_t1, lone4_t1))</code>. Every person then gets the same huge "total," because <code>sum()</code> adds up all items for <b>everyone</b>. There are two correct ways to add across a row: join the columns with <code>+</code>, or use <code>rowSums(across(lone1_t1:lone4_t1))</code>. Afterwards, glance at the result with <code>head()</code>: are the totals between 4 and 16, and do they differ from person to person?</p>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b>A single equals sign in filter.</b> <code>filter(gender = 1)</code> gives an error; you must write <code>filter(gender == 1)</code>.</li>
+<li><b>Forgetting ungroup after group_by.</b> The grouping "sticks" to the data, so a later mutate computes within groups (for example, group means), and the result is quietly wrong.</li>
+</ul></div>
+
+<h3>Many columns at once: across() and selection helpers</h3>
+<p>The CLPN data have 27 item columns (9 items × 3 waves); typing them one by one is slow and it's easy to miss one. dplyr has helpers that pick columns by a naming pattern: <code>starts_with("lone")</code> picks all loneliness items, <code>ends_with("_t1")</code> all wave-1 columns, and <code>lone1_t1:lone4_t1</code> a block of adjacent columns. With <code>across()</code> you can apply the same operation to several columns. For example, <code>summarise(across(ends_with("_t1"), mean))</code> computes the mean of every T1 item at once, and <code>mutate(across(starts_with("dep"), ~ .x / 3))</code> divides every depression item by 3. <code>~ .x / 3</code> is a short way to write a small function, where <code>.x</code> stands for "the current column."</p>
+<p>Watch out: <code>ends_with("_t1")</code> also picks up covariates such as social_support_t1 and sleep_hours_t1. After selecting, print the names to check, with <code>names(select(dat, ends_with("_t1")))</code>.</p>
+<h3>How to debug a long pipe</h3>
+<p>When a pipe of five or six steps fails, don't stare at the whole block. Starting from the first line, select one more line each time and run it, and check whether each step's output is what you expect: is the number of rows right, has the new column appeared, is the range of values sensible? The step after which the result goes wrong is where the problem is.</p>
+
+<h3>arrange and count as checks</h3>
+<p><code>arrange(dat, desc(age))</code> sorts by age from oldest to youngest, which helps you check extreme values: are the ages in the first and last few rows plausible? <code>count(dat, gender)</code> is short for <code>group_by(gender) |&gt; summarise(n = n())</code>. When you get new data, running count on every categorical variable quickly reveals coding problems, such as gender taking values other than 0 and 1.</p>
+
+<h3>rename: giving a column a name you'll remember</h3>
+<p><code>rename(dat, lone_total = lone_t1)</code> is written "new name = old name." It's easy to get this the wrong way round, so take care. Renaming doesn't change the data; it only makes later code and output easier to read.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">How are df$var and df[, "var"] alike, and how do they differ?</p><ul class="opts"><li><button type="button" data-ok="0">They are identical and always return a vector</button><div class="ofb" hidden>True for an ordinary data.frame, but on a tibble [, "var"] returns a one-column tibble.</div></li><li><button type="button" data-ok="1">Both take one column by name; $ always returns a vector, while [, "var"] returns a one-column tibble on a tibble (and a vector on an ordinary data.frame)</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">$ takes rows, [ ] takes columns</button><div class="ofb" hidden>Both take columns; to take rows, put a condition before the comma inside [ ], as in dat[1:5, ].</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>To be sure you get a vector, use df[["var"]] or df$var.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Do filter() and select() work on rows or on columns?</p><ul class="opts"><li><button type="button" data-ok="1">filter() picks rows (cases), select() picks columns (variables)</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">filter() picks columns, select() picks rows</button><div class="ofb" hidden>The other way round: select picks variables (columns), filter picks cases (rows) by a condition.</div></li><li><button type="button" data-ok="0">Both pick columns; filter just adds a condition</button><div class="ofb" hidden>filter evaluates its condition on each row and keeps the rows that meet it; the columns stay the same.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>Memory aid: filter sifts the people, select picks the questions.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Why must reverse-worded items be dealt with before computing correlations or a network?</p><ul class="opts"><li><button type="button" data-ok="0">Because a reverse-worded item measures a different construct and should be a separate node in the network</button><div class="ofb" hidden>A reverse-worded item still measures the same construct, only with the wording turned around; the negative edges you see without reversing reflect only the wording.</div></li><li><button type="button" data-ok="1">Unreversed, it correlates negatively with the other items of the same construct, cancels out part of the total, and creates negative edges in the network caused only by the wording direction</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">Because reverse-worded items must be deleted</button><div class="ofb" hidden>They don't need to be deleted; reverse-score them with the formula and use them as usual.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>After reversing, check that the items of the same scale are mostly positively correlated.</div></div>
+<div class="quiz" data-kind="num" data-ans="2" data-tol="0"><p class="qtext">An item is scored 0–3 and the raw score is 1. What is the reversed score?</p><div class="numrow"><input type="text" aria-label="Your answer" placeholder="Enter answer"><button type="button" class="qbtn">Check</button></div><div class="qhint" hidden>Reversed score = (minimum + maximum) − raw score.</div><div class="fb" role="status"></div><div class="qexp" hidden>(0 + 3) − 1 = 2.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">You run dat |> mutate(total = rowSums(across(dep1_t1:dep5_t1))), then mean(dat$total) gives NA with the warning Unknown or uninitialised column: `total`. Why?</p><ul class="opts"><li><button type="button" data-ok="0">rowSums is written wrong</button><div class="ofb" hidden>rowSums(across(...)) is written correctly; the warning says the column total does not exist.</div></li><li><button type="button" data-ok="1">The result was not assigned back to dat (dat <- dat |> mutate(...)), so the new column was never saved</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">The pipe cannot be used with mutate</button><div class="ofb" hidden>|> works fine with mutate(); this lesson's core code is written exactly that way.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>The most common beginner mistake: a pipe only prints the result; it does not change the original object.</div></div>
+<div class="quiz" data-kind="num" data-ans="2" data-tol="0"><p class="qtext">How many rows does dat |> group_by(gender) |> summarise(m = mean(dep_sum_t1)) return?</p><div class="numrow"><input type="text" aria-label="Your answer" placeholder="Enter answer"><button type="button" class="qbtn">Check</button></div><div class="qhint" hidden>summarise shrinks each group to one row.</div><div class="fb" role="status"></div><div class="qexp" hidden>gender has two values, so 2 rows.</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.3-A: Select, reverse, total, group</h4>
+<p>On the course's simulated questionnaire data: select the T1 depression items (PHQ-style), "pretend" one item is reverse-worded and rescore it (for example social support, or practice by treating <code>lone2_t1</code> as reverse-worded), create a total score, and compute means by gender.</p>
+<details class="answer"><summary>Reference code and key points</summary>
+<div class="codeblk"><pre><code class="language-r">library(tidyverse)
+dat &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)
+res &lt;- dat |&gt;
+  select(id, gender, starts_with(&quot;dep&quot;) &amp; ends_with(&quot;_t1&quot;), social_support_t1) |&gt;
+  mutate(support_rev = 6 - social_support_t1,                 # 1–5 → 5–1
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1)),
+         gender_label = factor(gender, levels = c(0, 1), labels = c(&quot;Male&quot;, &quot;Female&quot;)))
+res |&gt;
+  group_by(gender_label) |&gt;
+  summarise(n = n(), dep_mean = mean(dep_sum_t1), lack_support_mean = mean(support_rev))
+cor(res$social_support_t1, res$support_rev)    # -1: reversing only flips the direction</code></pre></div>
+<p>Key points: (1) the reverse-scoring formula is right; (2) <code>cor()</code> confirms that the correlation between the original and reversed versions is −1; (3) the depression mean is 4.21 for women and 3.41 for men (matching the script output); (4) one sentence explaining why reverse-worded items must be dealt with before the analysis.</p></details></div>
+<div class="exitem"><h4>Exercise 2.3-B: Loneliness totals and a high-risk list</h4>
+<p>Create the T1 loneliness total <code>lone_sum_t1</code> (4 items, range 4–16). Keep the people with a loneliness total ≥ 13 and a depression total ≥ 10, sort them by depression total from high to low, and keep only <code>id</code> and the two totals. How many people are there?</p>
+<details class="answer"><summary>Reference code</summary>
+<div class="codeblk"><pre><code class="language-r">high &lt;- dat |&gt;
+  mutate(lone_sum_t1 = rowSums(across(lone1_t1:lone4_t1)),
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1))) |&gt;
+  filter(lone_sum_t1 &gt;= 13, dep_sum_t1 &gt;= 10) |&gt;
+  arrange(desc(dep_sum_t1)) |&gt;
+  select(id, lone_sum_t1, dep_sum_t1)
+nrow(high)</code></pre></div>
+<p>Result: 22 people. To think about: what could a "high on both" list like this be used for in services? (Prioritizing outreach, referral for assessment.) What should you be careful about when using it? (A screening cutoff is not a diagnosis; protect privacy.)</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>Data frame: rows = cases, columns = variables; <code>$</code> takes a column as a vector, <code>[row, column]</code> indexes in two dimensions.</li>
+<li>dplyr verbs: select picks columns, filter picks rows, mutate creates variables, group_by + summarise summarize by group; chain them with <code>|&gt;</code>, and remember to assign the result to save it.</li>
+<li>Reverse reverse-worded items before analysis: reversed = minimum + maximum − raw. Next lesson: <a href="L2-4.html">2.4 Installing Packages, Importing Data, and Project Management</a>.</li></ul>
+</section>
+
+<nav class="pager"><a href="L2-2.html" class="pv"><small>Previous</small>2.2 R Basic Syntax: Vectors, Data Types, and Functions</a><a href="L2-4.html" class="nx"><small>Next</small>2.4 Installing Packages, Importing Data, and Project Management</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 2.3 · <a href="../index.html#L2-3">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

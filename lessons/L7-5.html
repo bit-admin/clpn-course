@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.5 设计选择与扩展：多波数据、协变量与被试内问题 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L7-5.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="7.5" style="--c:#ef4444">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L7-5">CLPN 课程大纲</a><span class="crumb">M7 交叉滞后面板网络（CLPN） / 7.5</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L7-5.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L7-5.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details open style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html" class="cur" aria-current="page"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 7 · Cross-Lagged Panel Networks · 第 7.5 课</div>
+<h1>设计选择与扩展：多波数据、协变量与被试内问题</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L7-4.html">7.4 出期望影响、入期望影响与跨构念桥接</a></span><span>配套脚本：<a href="../R/L7-5.R">R/L7-5.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>在 3 波及以上数据中分别估计 T1→T2 与 T2→T3 网络，并讨论结构的可重复性</li><li>理解加入协变量（如年龄、性别）的做法与理由</li><li>理解标准 CLPN 与被试间/被试内混淆的关系，了解文献中的扩展方向（如 panel GVAR、psychonetrics），知道什么情况下标准 CLPN 不够用、需要换用这些方法</li><li>了解样本量、题目数与测量间隔对 CLPN 的影响</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>多波 CLPN</b><span class="en">multi-wave CLPN</span></li><li><b>网络复现</b><span class="en">network replication</span></li><li><b>面板图形向量自回归</b><span class="en">panel graphical VAR（了解即可）</span></li><li><b>psychonetrics</b><span class="en">R package（了解即可）</span></li><li><b>惩罚因子</b><span class="en">penalty.factor</span></li><li><b>样本量规划</b><span class="en">sample size planning</span></li></ul>
+<p>本课处理真实研究中一定会遇到的三个问题：多于两波的数据怎么用？协变量怎么加？以及怎样说明“被试间 / 被试内”的局限、还有哪些更新的方法。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>一、多波数据：分别估计，再看复现</h3>
+<p>有 T1、T2、T3 三波数据时，最直接的做法是估计两个 CLPN：T1→T2 与 T2→T3，然后比较两者的结构，这叫 <span class="term">网络复现<span class="en">（network replication）</span></span>。Funkhouser 等人（2021）在 ABCD 研究中就用 T2→T3 的网络检验 T1→T2 的发现。若两个时间段的主要边和中心性排序相似，结论更可信；若差别很大，可能是：</p>
+<ol><li>抽样变异（单次估计本来就不稳定，尤其是弱边）；</li>
+<li>真实过程随时间变化（如青少年发育、疫情前后）；</li>
+<li>两个间隔长度不同（5.4 课的“间隔效应”）；</li>
+<li>流失（attrition）导致 T3 样本与 T1 不同（4.3 课）。</li></ol>
+<p>课程数据的实际结果（R/L7-5.R）：两个网络交叉滞后边权重的相关 r = 0.64；40 条 CL 边在两个网络中都非零，27 条只出现在其中一个。自回归在两段间也略有差别（例如 lone2：0.434 vs 0.330）。数据是由完全相同的过程生成的，所以这些差异全部来自抽样变异和 LASSO 选择：即使真实过程没有变化，两段网络也有 27 条边对不上。</p>
+<h3>二、协变量：控制，但不惩罚</h3>
+<p>若性别、年龄可能同时影响孤独和抑郁，可以把它们作为额外预测变量加入每个逐节点回归方程。关键细节：LASSO 默认会惩罚所有预测变量，可能把协变量压成 0，等于“没控制”。glmnet 的 <span class="term">惩罚因子<span class="en">（penalty.factor）</span></span> 参数可以给每个预测变量指定惩罚权重：题目设 1（正常惩罚），协变量设 0（不惩罚，始终保留在模型中）。</p>
+<p>课程数据中加入性别和年龄后，边权重最大变化只有 0.018，与原网络的相关为 0.997，因为模拟中性别只对抑郁题有一个跨时间不变的均值差异。真实数据中协变量的影响可能更大，但原则一样：协变量的选择应基于理论、事先确定。</p>
+<h3>三、被试间 / 被试内：CLPN 最大的“软肋”</h3>
+<p>回到 5.3 课：观测分数 = 稳定特质 + 被试内状态。标准 CLPN 对观测分数做回归，所以它的边混合了两者。课程数据让我们可以亲眼看到这一点：下面的组件可以在被试内真值（生成模型的被试内 B，true_B_within）和总体目标值（CLPN 在无限大样本中会收敛到的系数，true_B_population）之间切换。7.2 课已经把两张矩阵并排列出，这里看它们画成网络、算成 EI 之后的样子。</p>
+<div class="widget w2" data-widget="clpn" data-title="同一份数据的两份答案：被试内真值 vs 标准 CLPN 的总体目标值" data-mode="ei" data-compare="1" data-which="pop"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<p>观察：被试内真值中只有 8 条交叉滞后边，同构念内的小正边（如 lone1 → lone2）根本不存在；而总体目标值中，同构念题目之间有 28 条 0.052–0.072 的边，它们来自“长期孤独的人每道孤独题都偏高”。此外，部分被试内边被削弱（lone3 → dep1：0.180 → 0.118），负边 dep4 → lone2 也变弱（−0.150 → −0.083）。也就是说，即使样本无限大、估计完美，标准 CLPN 回答的也不完全是“被试内过程”的问题。</p>
+<div class="box story"><b class="bt">局限性段落模板：</b><p>“本研究采用的标准 CLPN 基于观测得分，未区分稳定的被试间差异与被试内变化（Hamaker et al., 2015）。因此，交叉滞后边可能部分反映了特质层面的关联，而非被试内的动态过程；结果不应被解读为被试内效应。未来研究可采用能分离两者的模型（如面板 GVAR / RI-CLPM 类方法）加以检验。”</p></div>
+<h3>四、扩展方向（了解即可，以及什么时候该换方法）</h3>
+<ul><li><b><span class="term">面板图形向量自回归<span class="en">（panel graphical VAR）</span></span></b>（了解即可）：在网络框架内加入类似随机截距的成分，同时估计被试内的时间网络（temporal）、同期网络（contemporaneous）和被试间网络（between-subjects），可以看作 RI-CLPM 的网络版本。R 包 <span class="term">psychonetrics<span class="en">（R package）</span></span>（了解即可）提供了相关实现。3 波数据即可识别，波次越多估计越稳定；样本要较大，模型也更复杂。它的关键假设是平稳性：各波之间的时间网络和同期网络都相同。这个假设不成立时它的表现会明显变差（Wysocki 等人 2025 年的模拟比较了这一点）；课程数据恰好是按平稳过程加随机截距生成的，正是它的理想情形。</li>
+<li><b>RI-CLPM 的题目层面版本</b>：节点少时可以在 lavaan 中为每题加随机截距，但参数数量增长很快。</li>
+<li><b>什么时候改用这些方法：</b>如果你的研究问题明确是“被试内过程”（例如干预设计），或审稿人要求区分被试内/间，而你有 3 波以上、间隔大致相等的数据：应当认真考虑改用这些方法，并在方法部分说明选择的理由。本课程的毕业项目使用标准 CLPN，并在局限中说明。</li></ul>
+<h3>五、<span class="term">样本量规划<span class="en">（sample size planning）</span></span>、题目数与间隔</h3>
+<div class="tablewrap"><table><tr><th>因素</th><th>影响</th><th>建议</th></tr><tr><td>样本量 N</td><td>N 小 → λ 大 → 网络稀疏、弱边漏掉、中心性不稳定</td><td>尽量数百人以上；以模拟为依据规划（参照 7.2 的“找回”分析；进阶选学 <a href="L7-6.html">7.6 课</a> 有完整示例）</td></tr><tr><td>节点数 p</td><td>p 大 → 参数 p² 增长很快，同样 N 下每条边信息更少</td><td>节点宁少而精；避免内容重叠的题目（9.2）</td></tr><tr><td>测量间隔</td><td>间隔不同 → 交叉滞后大小不同（5.4）</td><td>依据理论选择间隔；报告间隔并在讨论中考虑</td></tr><tr><td>波数</td><td>2 波只能估计一个 CLPN；3 波可复现；更多波可用更复杂模型</td><td>能多收集一波就多一波</td></tr></table></div>
+
+<h3 id="full-clpn">完整流程：Wysocki 等人（2025）推荐的四步法</h3>
+<p>到目前为止，7.2–7.4 课（以及后面的 M8、M10）用的都是应用文献中最常见的“仅 LASSO”简化版（例如 Funkhouser et al., 2021）：LASSO 选出并已收缩的系数直接当作边权，再算期望影响。这种做法简单透明，读文献时你最常遇到的也是它。但它<b>不是</b> Wysocki 等人在 2025 年正式论文中推荐的完整流程。按原文第 2 节，完整流程分四步：</p>
+<ol>
+<li><b>合并冗余题目。</b>措辞几乎相同的题目（原文的例子：“我对自己满意”“我喜欢现在的自己”）先求和或取平均，合成一个节点。作者强调：应依据题目内容与专业判断，最好在分析前决定，并报告理由。不建议用因子分析等降维方法，因为那与网络分析“关注具体症状和行为”的初衷相悖；只合并语义上高度相似的题目。自动化的辅助工具有 EGAnet 包的 unique variable analysis，与 9.2 课的 goldbricker 检查思路类似。</li>
+<li><b>LASSO 选边。</b>与 7.2 课完全相同：每个结果节点做一个 LASSO 回归，用 10 折交叉验证选 lambda.min。不同之处在于，这一步的结果只用来决定哪些路径固定为 0，系数本身不作为最终答案。</li>
+<li><b>在 SEM 中做无惩罚重估。</b>把选出的模型写成 lavaan 路径模型：LASSO 估为 0 的路径固定为 0，其余路径不加惩罚地重新估计。同一波内所有变量的残差两两相关，用来吸收同一时间段内的同期效应与共同原因。缺失值用 FIML 处理。多于两波时，先用一条规则让各时间段的 0 位置一致，作者推荐保守规则：只有在每一段都被估为 0 的路径才固定为 0。然后比较两个嵌套模型：各段路径自由估计 vs 各段路径相等（χ² 差异检验，配合 AIC、BIC），据此决定最终模型。SEM 框架同时给出整体拟合指标（χ²、CFI、TLI、RMSEA）。作者在实例中解释的是 p &lt; .01 的路径。</li>
+<li><b>用 in-prediction 与 out-prediction 概括节点。</b>in-prediction 是一个节点在本波的方差中，能被上一波全部变量解释的比例（0–1）。out-prediction 是一个节点（上一波）对下一波各变量所解释方差比例的平均。两者都可以只算交叉滞后部分（去掉自回归）、构念内部分或跨构念部分。它们以“被解释方差”为单位，与 7.4 课按系数加总的期望影响不同。</li></ol>
+<p><b>为什么要多出第 3 步？</b>原文的模拟研究比较了“只做 LASSO”（文中称 ℓ1 GLM）与“LASSO + SEM 重估”（ℓ1 SEM）。只做 LASSO 时灵敏度接近完美，但假阳性多：在非平稳条件下，特异度在所有情形中都低于 0.80 的基准。作者还指出，交叉验证选边的假阳性率不会随样本量增大而下降，LASSO 系数本身也偏向 0。加上 SEM 重估并按 p 值修剪后，假阳性明显减少，特异度和结构准确度（MCC）都比只做 LASSO 时高（具体数值随条件而变，请以原文的图表为准）；在平稳条件下，几种做法的结构准确度相近。7.2 课表格中 lambda.min 对照总体目标值的 19 条假阳性，就是这一问题在课程数据上的表现。</p>
+<div class="box warnbox"><b class="bt">本课程为什么仍以简化版为主线？</b><p>第一，它是已发表 CLPN 研究中最常见的做法，读懂它是读文献的前提。第二，它恰好是完整流程的第 2 步（LASSO 选边）。第三，M8 的 bootstrap 与 CS 系数、M10 的主分析都建立在它之上；M10 同时把完整流程列为必做的敏感性分析（<code>R/L10-2b.R</code>，见 10.2 课）。如果你的论文采用简化版，请在方法中如实写明“未进行 SEM 重估”，并把假阳性风险写进局限（10.3 课）；如果审稿人要求，可以在 <code>R/L7-5b.R</code> 的基础上改用完整流程。完整流程也有自己的假设：变量连续、近似正态；同样基于观测分数，所以也混合了被试间与被试内效应（见本课前文）。</p></div></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<h4>1. 两个时间段的一致性</h4>
+<div class="mathbox">\[r_{\text{rep}}=\mathrm{cor}\big(\{\hat\beta^{(12)}_{kj}\}_{k\neq j},\ \{\hat\beta^{(23)}_{kj}\}_{k\neq j}\big)\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\hat\beta^{(12)}_{kj}\)</td><td>T1 → T2 网络中 k → j 的估计系数</td></tr><tr><td>\(\hat\beta^{(23)}_{kj}\)</td><td>T2 → T3 网络中同一条边的估计系数</td></tr><tr><td>\(\{\cdot\}_{k\neq j}\)</td><td>把所有 72 条交叉滞后边排成一列</td></tr><tr><td>\(r_{\text{rep}}\)</td><td>复现相关：越接近 1，两个网络越相似。课程数据 = 0.64</td></tr></table>
+<h4>2. 带协变量与惩罚因子的 LASSO</h4>
+<div class="mathbox">\[\min_{\boldsymbol\beta,\boldsymbol\delta}\ \frac{1}{2N}\sum_i\Big(y_{ij}-\sum_k\beta_{kj}x_{ik}-\sum_c\delta_{cj}z_{ic}\Big)^2+\lambda\Big(\sum_k \pi_k|\beta_{kj}|+\sum_c \pi_c|\delta_{cj}|\Big)\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(z_{ic}\)</td><td>第 i 个人的第 c 个协变量（如性别、年龄）</td></tr><tr><td>\(\delta_{cj}\)</td><td>协变量 c 对 T2 节点 j 的系数（我们不画进网络）</td></tr><tr><td>\(\pi_k,\ \pi_c\)</td><td>惩罚因子（penalty.factor）：题目 π = 1，协变量 π = 0 → 协变量不受惩罚</td></tr></table>
+<h4>3. 为什么稳定特质会制造同构念小边？（直觉推导）</h4>
+<p>设 T1 的孤独题 \(x_{1}=\kappa+w_1\)、\(x_2=\kappa+w_2\)（\(\kappa\) 为孤独特质），T2 的 \(y_2=\kappa+w_2'\)。预测 \(y_2\) 时，即使被试内过程中 \(w_1\) 对 \(w_2'\) 没有作用，\(x_1\) 仍携带关于 \(\kappa\) 的信息，而 \(\kappa\) 是 \(y_2\) 的一部分。T1 的 \(x_2\) 自己虽然也含 \(\kappa\)，但它被 \(w_2\) 的“噪声”污染，无法完全代表 \(\kappa\)；于是 \(x_1\) 作为“第二个测量”获得非零系数。题目越多、特质方差越大，这种效应越明显。</p>
+
+<h3>in-prediction 与 out-prediction 的公式</h3>
+<p>沿用本课程的约定，\(B_{kj}\) 表示从 T1 的 k 指向 T2 的 j，\(\mathbf b_{\cdot j}\) 是 B 的第 j 列（所有指向 j 的路径）。对节点 j：</p>
+<div class="mathbox">\[\displaystyle \mathrm{inPred}_j=\frac{\operatorname{var}\!\left(\mathbf b_{\cdot j}^{\top}\mathbf x_{T1}\right)}{\operatorname{var}(x_{j,T2})}=\frac{\mathbf b_{\cdot j}^{\top}\,\Sigma_{T1}\,\mathbf b_{\cdot j}}{\sigma^2_{j,T2}},\qquad \mathrm{outPred}_j=\frac1p\sum_{k=1}^{p}\frac{B_{jk}^{2}\,\sigma^2_{j,T1}}{\sigma^2_{k,T2}}\]</div>
+<p>in-prediction 就是“只用上一波预测本波”时的 R²。out-prediction 对每个结果 k 计算“单靠 j 这一条路径能解释 k 多少方差”，再取平均。<b>交叉滞后版</b>：in-prediction 把 \(\mathbf b_{\cdot j}\) 中的自回归 \(B_{jj}\) 设为 0；out-prediction 只对 k ≠ j 取平均。<b>跨构念版</b>：只保留另一构念的预测变量或结果。由于题目已标准化，各方差都约等于 1，所以 out-prediction 大致就是系数平方的平均。例如 \(B=0.10\) 只对应 1% 的方差。这也提醒我们：CLPN 中的单条边，效应通常很小。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L7-5.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(glmnet)
+dat &lt;- read_course_data()
+set.seed(2026); B12 &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)])   # T1 → T2
+set.seed(2026); B23 &lt;- clpn_estimate(dat[, vars_t(2)], dat[, vars_t(3)])   # T2 → T3
+off &lt;- row(B12) != col(B12)                       # 交叉滞后边的位置
+cor(B12[off], B23[off])                           # 复现相关
+sum(B12[off] != 0 &amp; B23[off] != 0)                # 两网都非零的边数
+rbind(T1T2 = diag(B12), T2T3 = diag(B23))         # 自回归对比
+# 协变量：不惩罚（clpn_estimate 内部设置 penalty.factor = 0）
+set.seed(2026)
+B12c &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)],
+                      covariates = dat[, c(&quot;gender&quot;, &quot;age&quot;)])
+max(abs(B12c - B12)); cor(B12c[off], B12[off])
+# 直接看 penalty.factor 的写法（一个 T2 节点）
+Z   &lt;- cbind(scale(dat[, vars_t(1)]), gender = scale(dat$gender))
+cv1 &lt;- cv.glmnet(Z, scale(dat$dep1_t2)[, 1], penalty.factor = c(rep(1, 9), 0))
+coef(cv1, s = &quot;lambda.min&quot;)</code></pre></div>
+<p><b>实际结果：</b>复现相关 0.64；40 条边两网都非零、27 条只在其一出现；加协变量后最大变化 0.0177、相关 0.9967。<code>penalty.factor = c(rep(1, 9), 0)</code> 的长度必须等于预测变量个数（9 个题目 + 1 个协变量）。</p>
+<h3>完整例题：怎样判断“复现得好不好”</h3>
+<p>课程脚本分别估计了 T1 → T2 和 T2 → T3 两个网络。判断复现情况，可以按从粗到细的顺序看四个方面：</p>
+<ol><li><b>整体相似度：</b>两组交叉滞后边权的相关 = 0.64。整体模式相似，但远非完全一致。</li>
+<li><b>边的重合：</b>两个网络中同时非零的交叉滞后边有 40 条，只在其中一个网络出现的有 27 条。只出现一次的边大多很弱（较大值的中位数约 0.02），但也有例外：T1 → T2 中第三强的边 lone4 → dep4（0.108），在 T2 → T3 中被压成了 0。</li>
+<li><b>最强的边：</b>最强的两条，dep3 → dep4（0.135 与 0.139）和 lone2 → lone4（0.127 与 0.138），在两段中大小几乎一样，是最可信的发现。</li>
+<li><b>自回归：</b>例如 dep1 从 0.315 变为 0.398，dep2 从 0.310 变为 0.238。各节点自回归的大小相近，但并不相同。</li></ol>
+<p>写法示例：“T1 → T2 与 T2 → T3 网络的交叉滞后边权相关为 .64；两段共有 40 条交叉滞后边同时非零；最强的两条边（dep3 → dep4、lone2 → lone4）在两段中大小相近，而 lone4 → dep4 只在 T1 → T2 中出现。因此下文只解释在两段中都出现的边。”只解释在两段中都出现的边，是在缺少独立样本时一种很实用的保守策略。</p>
+
+<h3>在课程数据上跑一遍完整流程：R/L7-5b.R</h3>
+<p>配套脚本 <code>R/L7-5b.R</code> 用三波课程数据，依次完成上面的四步（第 1 步：9 道题措辞互不重复，不合并）。核心是用循环写出 lavaan 模型：</p>
+<div class="codeblk"><div class="ctitle">R/L7-5b.R 的核心部分（完整脚本与输出见本页末尾）</div><pre><code class="language-r">keep &lt;- (B12 != 0) | (B23 != 0); diag(keep) &lt;- TRUE     # 保守规则：两段都为 0 才固定为 0
+build &lt;- function(equal = FALSE) {
+  lines &lt;- c()
+  for (t in 2:3) for (j in seq_len(p)) {                # 每个 T2 / T3 题目一个回归方程
+    preds &lt;- which(keep[, j])
+    lab &lt;- if (equal) paste0(&quot;b&quot;, preds, &quot;_&quot;, j, &quot;*&quot;) else &quot;&quot;   # 相同标签 = 跨时间等值约束
+    lines &lt;- c(lines, paste0(items[j], &quot;_t&quot;, t, &quot; ~ &quot;, paste0(lab, items[preds], &quot;_t&quot;, t - 1, collapse = &quot; + &quot;)))
+  }
+  for (t in 2:3) { cmb &lt;- combn(items, 2)                # 同一波内所有残差两两相关
+    lines &lt;- c(lines, paste0(cmb[1, ], &quot;_t&quot;, t, &quot; ~~ &quot;, cmb[2, ], &quot;_t&quot;, t)) }
+  paste(lines, collapse = &quot;\n&quot;)
+}
+fit_free  &lt;- sem(build(FALSE), data = dat, missing = &quot;ml&quot;, fixed.x = FALSE)   # FIML
+fit_equal &lt;- sem(build(TRUE),  data = dat, missing = &quot;ml&quot;, fixed.x = FALSE)
+anova(fit_equal, fit_free)                               # 跨时间等值的嵌套 χ² 检验
+# 等值不被拒绝（p ≥ .05），且 AIC、BIC 都更支持约束模型时，用约束模型作为最终模型
+fit_final &lt;- if (use_equal) fit_equal else fit_free
+fitMeasures(fit_final, c(&quot;chisq&quot;, &quot;df&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))</code></pre></div><div class="codeblk"><div class="ctitle">实际输出：R/output/L7-5b_log.txt（第 2–3 步）</div><pre class="out"><code>第 2 步 LASSO（lambda.min）：T1→T2 非零交叉滞后边 52 条；T2→T3 55 条；保守规则下进入 SEM 的交叉滞后路径 67 条（每段）
+
+第 3 步 SEM（不约束）：χ²(91) = 164.70，p &lt; .001；CFI = 0.988；TLI = 0.959；RMSEA = 0.032 [0.024, 0.040]；SRMR = 0.023
+
+第 3 步 等值约束（T1→T2 的每条路径 = T2→T3 的同一路径）的嵌套 χ² 检验：
+Δχ²(76) = 84.69，p = 0.232；AIC：约束 53607.9 vs 不约束 53675.2；BIC：约束 54722.9 vs 不约束 55146.2
+最终模型： 约束模型（等值成立，后面的修剪与 prediction 都用它） 
+最终模型拟合：χ²(167) = 249.39；CFI = 0.987；TLI = 0.975；RMSEA = 0.025；SRMR = 0.027
+
+T1→T2 交叉滞后边与总体目标值的比较（总体目标值中的交叉滞后边 36 条）：
+                                      找回 假阳性 漏掉 估计CL边
+仅 LASSO（lambda.min）                  33     19    3       52
+LASSO + SEM 重估，最终模型（p &lt; .01）   16      0   20       16
+LASSO + SEM 重估，最终模型（p &lt; .05）   21      1   15       22
+对照：不约束模型（p &lt; .01）              6      1   30        7
+SEM 重估后的边权与总体目标值的相关（被保留的路径）= 0.824 ；LASSO 边权与总体目标值的相关（同一批路径）= 0.665 
+举例：lone3 → dep1 总体目标值 0.118 ；LASSO 0.073 ；SEM 重估 0.095 （p = 0.000186）</code></pre></div>
+<p><b>逐项解读：</b></p>
+<ol>
+<li><b>先决定最终模型。</b>Δχ²(76) = 84.69，p = .232，AIC 和 BIC 都更支持约束模型：课程数据中 T1→T2 与 T2→T3 的预测关系可以视为相同。这比前文“两段网络边权 r = 0.64”的描述性比较更正式。按原文的做法，后面的修剪、与答案的对照和 prediction 都用这个<b>约束模型</b>。约束让每条路径同时用两段数据估计，标准误变小，这一点在下面会看到。</li>
+<li><b>整体拟合。</b>最终模型 χ²(167) = 249.39，p &lt; .001，但近似拟合良好：CFI = .987，TLI = .975，RMSEA = .025，SRMR = .027。自由度来自 LASSO 固定为 0 的路径、“T1 不直接预测 T3”等限制，以及 76 个等值约束。简化版给不出这样的整体检验。</li>
+<li><b>假阳性（对照总体目标值）。</b>日志里的“真实交叉滞后边”沿用 7.2 课的定义：总体目标值（<code>true_B_population.csv</code>）中 |β| ≥ 0.05 的 36 条边，其中 28 条是稳定特质造成的同构念小边，被试内真值中为 0。按 p &lt; .01 解释时，假阳性从 19 条降到 0 条，找回 16 条；放宽到 p &lt; .05，找回 21 条，假阳性 1 条。作为对照，如果用不约束模型，p &lt; .01 只能找回 6 条：等值约束带来的精度提升很可观。即使如此，仍有 20 条目标边被漏掉。这 36 条目标边中有 28 条是 0.052–0.072 的特质边，都很小，N = 800 时检验力不够。这是一个取舍：完整流程用灵敏度换特异度，宁可漏掉弱边，也尽量不报告总体中不存在的边。</li>
+<li><b>换成被试内真值，结论要改写。</b>上面的“找回”把特质边也算作正确答案。对照被试内真值（8 条边）时，第 2 步的 LASSO 估计已经找回了全部 8 条，但它的 52 条边里有 44 条在被试内真值中为 0（7.2 课的找回表）。SEM 重估和按 p 值修剪能删掉不显著的小边，但删不掉“在总体中确实存在”的特质边：样本越大，它们越显著。完整流程和简化版一样，估计的都是总体目标值；要估计被试内过程，需要本课前文和 5.3 课的随机截距类模型。<code>R/L7-5b.R</code> 目前只对照了总体目标值，修剪后保留的边里有几条是特质边，可以作为练习自己数一数：把脚本中的 <code>Bt</code> 换成 <code>read.csv("data/true_B_within.csv", row.names = 1)</code>，门槛改为“非零”。</li>
+<li><b>收缩偏差变小了，但抽样误差还在。</b>lone3 → dep1 的总体目标值是 0.118（被试内真值 0.180），LASSO 估计 0.073，SEM 重估 0.095（p &lt; .001）。在保留下来的路径上，重估系数与总体目标值的相关为 0.824，高于 LASSO 系数的 0.665。无惩罚重估去掉了惩罚带来的偏差，但 0.095 离 0.118 仍有距离：这是一份样本的抽样误差，SEM 去不掉它。离被试内真值 0.180 的那一段距离来自特质混杂，重估同样去不掉。</li>
+<li><b>in-/out-prediction</b>（完整表格见本页末尾的日志，或 <code>R/output/L7-5b_in_out_prediction.csv</code>）。lone4 的 in-prediction 最高（0.318），但主要来自自回归。去掉自回归后，dep4 的交叉滞后 in-prediction 最高（0.070）。跨构念 out-prediction 最高的是 dep4（0.005），所有题目都不超过 0.005。这与 7.4 课“lone4 桥接出 EI 最高”并不一致：两种指标单位不同（被解释方差 vs 系数之和），而且这么小的数值之间的排序本来就不可靠。更重要的是数值本身：T1 的任何一道题，平均只能解释下一波另一构念各题不到 0.5% 的方差。向机构同事汇报时，要把“最具预测性”与“效应很小”放在一起说。</li></ol>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L7-5.R</code>（33 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-5.R  多波 CLPN、协变量与被试内问题  (Multi-wave CLPN, covariates)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(glmnet)
+log_open(&quot;L7-5_log.txt&quot;)
+dat &lt;- read_course_data()
+set.seed(2026); B12 &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)])   # T1 → T2
+set.seed(2026); B23 &lt;- clpn_estimate(dat[, vars_t(2)], dat[, vars_t(3)])   # T2 → T3
+off &lt;- row(B12) != col(B12)
+cat(&quot;T1→T2 与 T2→T3 交叉滞后边权重的相关 =&quot;, round(cor(B12[off], B23[off]), 3), &quot;\n&quot;)
+cat(&quot;两个网络中同时非零的 CL 边 =&quot;, sum(B12[off] != 0 &amp; B23[off] != 0),
+    &quot;；只在其一中出现 =&quot;, sum(xor(B12[off] != 0, B23[off] != 0)), &quot;\n&quot;)
+cat(&quot;自回归：\n&quot;); print(round(rbind(T1T2 = diag(B12), T2T3 = diag(B23)), 3))
+
+# 加入性别与年龄作为“不受惩罚”的协变量（penalty.factor = 0，见 _setup.R 中 clpn_estimate）
+set.seed(2026)
+B12c &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)], covariates = dat[, c(&quot;gender&quot;, &quot;age&quot;)])
+cat(&quot;\n加协变量前后边权重的最大差异 =&quot;, round(max(abs(B12c - B12)), 4),
+    &quot;；相关 =&quot;, round(cor(B12c[off], B12[off]), 4), &quot;\n&quot;)
+# 直接看 penalty.factor 的写法（一个 T2 节点的例子）
+Z &lt;- cbind(scale(dat[, vars_t(1)]), gender = as.numeric(scale(dat$gender)))
+cv1 &lt;- cv.glmnet(Z, scale(dat$dep1_t2)[, 1], penalty.factor = c(rep(1, 9), 0))
+print(round(as.matrix(coef(cv1, s = &quot;lambda.min&quot;)), 3))
+png_open(&quot;L7-5_replication.png&quot;, 1400, 1400)
+plot(B12[off], B23[off], pch = 16, col = &quot;steelblue&quot;, xlab = &quot;T1→T2 边权重&quot;, ylab = &quot;T2→T3 边权重&quot;,
+     main = paste0(&quot;两个时间段 CLPN 的一致性 r = &quot;, round(cor(B12[off], B23[off]), 2)))
+abline(0, 1, lty = 2)
+invisible(dev.off())
+cat(&quot;\n局限：标准 CLPN 基于观测得分，混合了被试间（稳定特质）与被试内效应；\n&quot;,
+    &quot;本数据设定了稳定特质，所以同一构念内会出现由特质带来的小边（真实被试内 B 中没有）。\n&quot;)
+saveRDS(list(B12 = B12, B23 = B23), out(&quot;L7-5_B12_B23.rds&quot;))
+log_close()</code></pre></div></details>
+<details class="more rsrc"><summary>本课补充脚本 <code>R/L7-5b.R</code>（113 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-5b.R  Wysocki 等人（2025）的完整 CLPN 流程：LASSO 选边 → lavaan 无惩罚重估 → 跨时间等值检验 → in/out-prediction
+#   (Full CLPN pipeline of Wysocki et al., 2025: l1 selection + unpenalized SEM re-fit)
+# 对应课件 lessons/L7-5.html（也在 7.2 课中引用）。课程主线（7.2–7.4、8.x、10.x）用的是应用研究中常见的
+# “仅 LASSO”简化版（如 Funkhouser et al., 2021）；本脚本演示原论文推荐的完整做法，并与简化版比较。
+#   第 1 步 冗余合并：本数据 9 道题措辞互不重复，不合并（goldbricker 检查见 R/L9-2.R）
+#   第 2 步 逐节点 LASSO（10 折 CV，lambda.min），T1→T2、T2→T3 各做一次；保守规则：两段都为 0 才固定为 0
+#   第 3 步 lavaan 路径模型：保留的路径无惩罚重估；同一波内所有残差相关；FIML（missing = &quot;ml&quot;）；
+#           跨时间等值约束（T1→T2 路径 = T2→T3 路径）的嵌套 χ² 检验与 AIC / BIC，选出最终模型，按 p &lt; .01 修剪
+#   第 4 步 in-prediction / out-prediction（被解释方差的比例），用最终模型
+# 题目先 z 标准化，使系数与 LASSO 简化版、真实总体系数可比。
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages(library(lavaan))
+log_open(&quot;L7-5b_log.txt&quot;)
+dat &lt;- read_course_data()
+for (v in c(vars_t(1), vars_t(2), vars_t(3))) dat[[v]] &lt;- as.numeric(scale(dat[[v]]))
+p &lt;- length(items)
+
+## ---- 第 1 步：冗余合并（本数据不需要）；第 2 步：LASSO 选边（两段）+ 保守规则 ----
+set.seed(2026); B12 &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)])
+set.seed(2026); B23 &lt;- clpn_estimate(dat[, vars_t(2)], dat[, vars_t(3)])
+keep &lt;- (B12 != 0) | (B23 != 0); diag(keep) &lt;- TRUE        # 自回归始终保留
+off &lt;- row(keep) != col(keep)
+cat(&quot;第 2 步 LASSO（lambda.min）：T1→T2 非零交叉滞后边&quot;, sum(B12[off] != 0), &quot;条；T2→T3&quot;, sum(B23[off] != 0),
+    &quot;条；保守规则下进入 SEM 的交叉滞后路径&quot;, sum(keep[off]), &quot;条（每段）\n&quot;)
+
+## ---- 第 3 步：lavaan 无惩罚重估 ----
+build &lt;- function(equal = FALSE) {
+  lines &lt;- c()
+  for (t in 2:3) for (j in seq_len(p)) {
+    preds &lt;- which(keep[, j])
+    lab &lt;- if (equal) paste0(&quot;b&quot;, preds, &quot;_&quot;, j, &quot;*&quot;) else &quot;&quot;
+    lines &lt;- c(lines, paste0(items[j], &quot;_t&quot;, t, &quot; ~ &quot;, paste0(lab, items[preds], &quot;_t&quot;, t - 1, collapse = &quot; + &quot;)))
+  }
+  for (t in 2:3) { cmb &lt;- combn(items, 2)                   # 同一波内所有残差两两相关
+    lines &lt;- c(lines, paste0(cmb[1, ], &quot;_t&quot;, t, &quot; ~~ &quot;, cmb[2, ], &quot;_t&quot;, t)) }
+  paste(lines, collapse = &quot;\n&quot;)
+}
+fit_free  &lt;- sem(build(FALSE), data = dat, missing = &quot;ml&quot;, fixed.x = FALSE)
+fit_equal &lt;- sem(build(TRUE),  data = dat, missing = &quot;ml&quot;, fixed.x = FALSE)
+fm &lt;- fitMeasures(fit_free, c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;rmsea.ci.lower&quot;, &quot;rmsea.ci.upper&quot;, &quot;srmr&quot;))
+cat(sprintf(&quot;\n第 3 步 SEM（不约束）：χ²(%d) = %.2f，p %s；CFI = %.3f；TLI = %.3f；RMSEA = %.3f [%.3f, %.3f]；SRMR = %.3f\n&quot;,
+            fm[&quot;df&quot;], fm[&quot;chisq&quot;], ifelse(fm[&quot;pvalue&quot;] &lt; .001, &quot;&lt; .001&quot;, sprintf(&quot;= %.3f&quot;, fm[&quot;pvalue&quot;])),
+            fm[&quot;cfi&quot;], fm[&quot;tli&quot;], fm[&quot;rmsea&quot;], fm[&quot;rmsea.ci.lower&quot;], fm[&quot;rmsea.ci.upper&quot;], fm[&quot;srmr&quot;]))
+
+# 跨时间等值检验：T1→T2 的每条路径 = T2→T3 的同一路径
+cat(&quot;\n第 3 步 等值约束（T1→T2 的每条路径 = T2→T3 的同一路径）的嵌套 χ² 检验：\n&quot;)
+av &lt;- anova(fit_equal, fit_free)
+cat(sprintf(&quot;Δχ²(%d) = %.2f，p = %.3f；AIC：约束 %.1f vs 不约束 %.1f；BIC：约束 %.1f vs 不约束 %.1f\n&quot;,
+            av$`Df diff`[2], av$`Chisq diff`[2], av$`Pr(&gt;Chisq)`[2], AIC(fit_equal), AIC(fit_free), BIC(fit_equal), BIC(fit_free)))
+# 选最终模型：χ² 检验不拒绝等值、且 AIC 与 BIC 都不反对时，用约束模型（两段信息合并，估计更精确）
+use_equal &lt;- av$`Pr(&gt;Chisq)`[2] &gt;= .05 &amp;&amp; AIC(fit_equal) &lt;= AIC(fit_free) &amp;&amp; BIC(fit_equal) &lt;= BIC(fit_free)
+fit_final &lt;- if (use_equal) fit_equal else fit_free
+cat(&quot;最终模型：&quot;, if (use_equal) &quot;约束模型（等值成立，后面的修剪与 prediction 都用它）&quot; else &quot;不约束模型（等值不成立）&quot;, &quot;\n&quot;)
+fmf &lt;- fitMeasures(fit_final, c(&quot;chisq&quot;, &quot;df&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+cat(sprintf(&quot;最终模型拟合：χ²(%d) = %.2f；CFI = %.3f；TLI = %.3f；RMSEA = %.3f；SRMR = %.3f\n&quot;,
+            fmf[&quot;df&quot;], fmf[&quot;chisq&quot;], fmf[&quot;cfi&quot;], fmf[&quot;tli&quot;], fmf[&quot;rmsea&quot;], fmf[&quot;srmr&quot;]))
+
+# 取出 T1→T2 的无惩罚系数矩阵（行 = T1 预测变量，列 = T2 结果）与 p 值
+coef12 &lt;- function(fit) {
+  pe &lt;- parameterEstimates(fit)
+  reg &lt;- pe[pe$op == &quot;~&quot; &amp; grepl(&quot;_t2$&quot;, pe$lhs), ]
+  S &lt;- P &lt;- matrix(0, p, p, dimnames = list(items, items)); P[] &lt;- 1
+  for (r in seq_len(nrow(reg))) { k &lt;- sub(&quot;_t1$&quot;, &quot;&quot;, reg$rhs[r]); j &lt;- sub(&quot;_t2$&quot;, &quot;&quot;, reg$lhs[r])
+    S[k, j] &lt;- reg$est[r]; P[k, j] &lt;- reg$pvalue[r] }
+  list(S = S, P = P)
+}
+cf &lt;- coef12(fit_final); S12 &lt;- cf$S; P12 &lt;- cf$P
+P12_free &lt;- coef12(fit_free)$P
+sig &lt;- P12 &lt; .01
+Bt &lt;- true_B(); te &lt;- abs(Bt) &gt;= 0.05                      # 总体目标值（data/true_B_population.csv）中 |β| ≥ 0.05 的边，与 R/L7-2.R 相同
+perf &lt;- function(est_nonzero) c(找回 = sum(est_nonzero[off] &amp; te[off]), 假阳性 = sum(est_nonzero[off] &amp; !te[off]),
+                               漏掉 = sum(!est_nonzero[off] &amp; te[off]), 估计CL边 = sum(est_nonzero[off]))
+cmp &lt;- rbind(`仅 LASSO（lambda.min）` = perf(B12 != 0),
+             `LASSO + SEM 重估，最终模型（p &lt; .01）` = perf(sig),
+             `LASSO + SEM 重估，最终模型（p &lt; .05）` = perf(P12 &lt; .05),
+             `对照：不约束模型（p &lt; .01）` = perf(P12_free &lt; .01))
+cat(&quot;\nT1→T2 交叉滞后边与总体目标值的比较（总体目标值中的交叉滞后边&quot;, sum(te[off]), &quot;条）：\n&quot;); print(cmp)
+cat(&quot;SEM 重估后的边权与总体目标值的相关（被保留的路径）=&quot;, round(cor(S12[off &amp; keep], Bt[off &amp; keep]), 3),
+    &quot;；LASSO 边权与总体目标值的相关（同一批路径）=&quot;, round(cor(B12[off &amp; keep], Bt[off &amp; keep]), 3), &quot;\n&quot;)
+cat(&quot;举例：lone3 → dep1 总体目标值&quot;, round(Bt[&quot;lone3&quot;, &quot;dep1&quot;], 3), &quot;；LASSO&quot;, round(B12[&quot;lone3&quot;, &quot;dep1&quot;], 3),
+    &quot;；SEM 重估&quot;, round(S12[&quot;lone3&quot;, &quot;dep1&quot;], 3), sprintf(&quot;（p = %.3g）&quot;, P12[&quot;lone3&quot;, &quot;dep1&quot;]), &quot;\n&quot;)
+
+## ---- 第 4 步：in-prediction 与 out-prediction（T1→T2，最终模型）----
+Sig &lt;- lavInspect(fit_final, &quot;cov.ov&quot;)                     # 模型隐含协方差
+S1 &lt;- Sig[vars_t(1), vars_t(1)]; v2 &lt;- diag(Sig)[vars_t(2)]
+cons &lt;- ifelse(grepl(&quot;^lone&quot;, items), &quot;孤独&quot;, &quot;抑郁&quot;)
+inpred &lt;- function(j, use) { b &lt;- S12[, j] * use; as.numeric(t(b) %*% S1 %*% b) / unname(v2[j]) }
+pred &lt;- t(sapply(seq_len(p), function(j) {
+  others &lt;- seq_len(p) != j; xc &lt;- cons != cons[j]
+  outk &lt;- sapply(seq_len(p), function(k) S12[j, k]^2 * S1[j, j] / unname(v2[k]))
+  c(inPred = inpred(j, rep(1, p)), inPred_CL = inpred(j, others), inPred_跨构念 = inpred(j, xc),
+    outPred = mean(outk), outPred_CL = mean(outk[others]), outPred_跨构念 = mean(outk[xc]))
+}))
+rownames(pred) &lt;- items
+cat(&quot;\n第 4 步 in-/out-prediction（被解释方差比例；CL = 不含自回归）：\n&quot;); print(round(pred, 3))
+cat(&quot;跨构念 out-prediction 最高：&quot;, items[which.max(pred[, &quot;outPred_跨构念&quot;])],
+    &quot;；跨构念 in-prediction 最高：&quot;, items[which.max(pred[, &quot;inPred_跨构念&quot;])], &quot;\n&quot;)
+write.csv(round(pred, 4), out(&quot;L7-5b_in_out_prediction.csv&quot;))
+
+## ---- 对照被试内真值（data/true_B_within.csv）----
+# 总体目标值里有 28 条只由稳定特质造成的边；SEM 重估和 p 值修剪去不掉它们，因为它们在总体中确实存在。
+Bw &lt;- as.matrix(read.csv(&quot;data/true_B_within.csv&quot;, row.names = 1))[items, items]
+tw &lt;- Bw != 0
+perf_w &lt;- function(est_nonzero) c(找回 = sum(est_nonzero[off] &amp; tw[off]), 假阳性 = sum(est_nonzero[off] &amp; !tw[off]),
+                                 漏掉 = sum(!est_nonzero[off] &amp; tw[off]), 估计CL边 = sum(est_nonzero[off]))
+cmp_w &lt;- rbind(`仅 LASSO（lambda.min）` = perf_w(B12 != 0),
+               `LASSO + SEM 重估，最终模型（p &lt; .01）` = perf_w(sig),
+               `LASSO + SEM 重估，最终模型（p &lt; .05）` = perf_w(P12 &lt; .05))
+cat(&quot;\nT1→T2 交叉滞后边与被试内真值的比较（被试内真值中的交叉滞后边&quot;, sum(tw[off]), &quot;条）：\n&quot;); print(cmp_w)
+cat(&quot;被保留路径上 SEM 重估边权与被试内真值的相关 =&quot;, round(cor(S12[off &amp; keep], Bw[off &amp; keep]), 3), &quot;\n&quot;)
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L7-5_replication.png" alt="L7-5_replication.png" loading="lazy"><figcaption>图：<code>R/output/L7-5_replication.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L7-5_log.txt</code></div><pre class="out"><code>T1→T2 与 T2→T3 交叉滞后边权重的相关 = 0.64 
+两个网络中同时非零的 CL 边 = 40 ；只在其一中出现 = 27 
+自回归：
+     lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5
+T1T2 0.416 0.434 0.341 0.445 0.315 0.310 0.331 0.281 0.361
+T2T3 0.384 0.330 0.345 0.385 0.398 0.238 0.366 0.278 0.279
+
+加协变量前后边权重的最大差异 = 0.0177 ；相关 = 0.9967 
+               s1
+(Intercept) 0.000
+lone1_t1    0.019
+lone2_t1    0.000
+lone3_t1    0.079
+lone4_t1    0.084
+dep1_t1     0.309
+dep2_t1     0.074
+dep3_t1     0.000
+dep4_t1     0.027
+dep5_t1     0.062
+gender      0.062
+
+局限：标准 CLPN 基于观测得分，混合了被试间（稳定特质）与被试内效应；
+ 本数据设定了稳定特质，所以同一构念内会出现由特质带来的小边（真实被试内 B 中没有）。</code></pre></div>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L7-5b_log.txt</code></div><pre class="out"><code>第 2 步 LASSO（lambda.min）：T1→T2 非零交叉滞后边 52 条；T2→T3 55 条；保守规则下进入 SEM 的交叉滞后路径 67 条（每段）
+
+第 3 步 SEM（不约束）：χ²(91) = 164.70，p &lt; .001；CFI = 0.988；TLI = 0.959；RMSEA = 0.032 [0.024, 0.040]；SRMR = 0.023
+
+第 3 步 等值约束（T1→T2 的每条路径 = T2→T3 的同一路径）的嵌套 χ² 检验：
+Δχ²(76) = 84.69，p = 0.232；AIC：约束 53607.9 vs 不约束 53675.2；BIC：约束 54722.9 vs 不约束 55146.2
+最终模型： 约束模型（等值成立，后面的修剪与 prediction 都用它） 
+最终模型拟合：χ²(167) = 249.39；CFI = 0.987；TLI = 0.975；RMSEA = 0.025；SRMR = 0.027
+
+T1→T2 交叉滞后边与总体目标值的比较（总体目标值中的交叉滞后边 36 条）：
+                                      找回 假阳性 漏掉 估计CL边
+仅 LASSO（lambda.min）                  33     19    3       52
+LASSO + SEM 重估，最终模型（p &lt; .01）   16      0   20       16
+LASSO + SEM 重估，最终模型（p &lt; .05）   21      1   15       22
+对照：不约束模型（p &lt; .01）              6      1   30        7
+SEM 重估后的边权与总体目标值的相关（被保留的路径）= 0.824 ；LASSO 边权与总体目标值的相关（同一批路径）= 0.665 
+举例：lone3 → dep1 总体目标值 0.118 ；LASSO 0.073 ；SEM 重估 0.095 （p = 0.000186） 
+
+第 4 步 in-/out-prediction（被解释方差比例；CL = 不含自回归）：
+      inPred inPred_CL inPred_跨构念 outPred outPred_CL outPred_跨构念
+lone1  0.264     0.024         0.003   0.021      0.003          0.003
+lone2  0.249     0.032         0.012   0.020      0.004          0.001
+lone3  0.256     0.049         0.010   0.015      0.002          0.002
+lone4  0.318     0.039         0.004   0.025      0.005          0.002
+dep1   0.233     0.039         0.014   0.019      0.006          0.001
+dep2   0.203     0.059         0.018   0.010      0.002          0.002
+dep3   0.196     0.017         0.001   0.018      0.004          0.000
+dep4   0.231     0.070         0.003   0.012      0.004          0.005
+dep5   0.257     0.062         0.013   0.013      0.001          0.000
+跨构念 out-prediction 最高： dep4 ；跨构念 in-prediction 最高： dep2 
+
+T1→T2 交叉滞后边与被试内真值的比较（被试内真值中的交叉滞后边 8 条）：
+                                      找回 假阳性 漏掉 估计CL边
+仅 LASSO（lambda.min）                   8     44    0       52
+LASSO + SEM 重估，最终模型（p &lt; .01）    8      8    0       16
+LASSO + SEM 重估，最终模型（p &lt; .05）    8     14    0       22
+被保留路径上 SEM 重估边权与被试内真值的相关 = 0.67 </code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L7-5b_in_out_prediction.csv</code></div><pre class="out"><code>&quot;&quot;,&quot;inPred&quot;,&quot;inPred_CL&quot;,&quot;inPred_跨构念&quot;,&quot;outPred&quot;,&quot;outPred_CL&quot;,&quot;outPred_跨构念&quot;
+&quot;lone1&quot;,0.2638,0.0236,0.0025,0.0212,0.0029,0.0033
+&quot;lone2&quot;,0.249,0.0322,0.012,0.0204,0.0035,5e-04
+&quot;lone3&quot;,0.2561,0.0491,0.0104,0.0152,0.0017,0.0021
+&quot;lone4&quot;,0.3179,0.0393,0.004,0.0247,0.0051,0.0022
+&quot;dep1&quot;,0.2328,0.0388,0.0136,0.0191,0.0056,0.0012
+&quot;dep2&quot;,0.2034,0.0591,0.0178,0.0104,0.002,0.0017
+&quot;dep3&quot;,0.1956,0.0171,7e-04,0.018,0.0037,1e-04
+&quot;dep4&quot;,0.2306,0.0702,0.0035,0.0122,0.0036,0.0047
+&quot;dep5&quot;,0.2574,0.062,0.013,0.0129,0.001,1e-04</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">两个时间段的 CLPN 结构不同，可能的原因不包括？</p><ul class="opts"><li><button type="button" data-ok="0">A. 抽样变异</button><div class="ofb" hidden>是可能原因：单次估计本来就不稳定，课程数据两段由同一过程生成，差异全部来自这一点。</div></li><li><button type="button" data-ok="0">B. 真实过程随时间变化</button><div class="ofb" hidden>是可能原因：例如发育阶段或疫情前后，真实过程可能改变。</div></li><li><button type="button" data-ok="0">C. 两段间隔不同或流失</button><div class="ofb" hidden>是可能原因：间隔不同会改变交叉滞后的大小（5.4），流失会让后一段样本与前一段不同（4.3）。</div></li><li><button type="button" data-ok="1">D. 两段都用了同一个 λ 规则（lambda.min）</button><div class="ofb" hidden>正确：规则相同不会制造差异；两段用了不同的规则才会。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">协变量在 glmnet 中应该被惩罚吗？</p><ul class="opts"><li><button type="button" data-ok="0">A. 应该，和题目一样</button><div class="ofb" hidden>被压成 0 就等于没有控制，失去了加入它的目的。</div></li><li><button type="button" data-ok="1">B. 通常不应：用 penalty.factor = 0 让它们始终留在模型中起控制作用</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 应该惩罚得更重</button><div class="ofb" hidden>惩罚更重只会让它更容易被压成 0。</div></li><li><button type="button" data-ok="0">D. 协变量不能加入 glmnet</button><div class="ofb" hidden>可以：把协变量作为额外的列放进预测变量矩阵，再用 penalty.factor 设为 0。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在课程数据中，同构念题目之间普遍出现约 0.06 的小正边，而被试内真值中没有。原因是？</p><ul class="opts"><li><button type="button" data-ok="0">A. LASSO 的假阳性</button><div class="ofb" hidden>它们在 20 万人的总体目标值中也存在，不是抽样造成的假阳性。</div></li><li><button type="button" data-ok="1">B. 稳定特质（被试间差异）使任一 T1 孤独题都携带关于特质的信息</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 协变量没有控制</button><div class="ofb" hidden>加入性别、年龄后边权最大只变 0.018，这些小边仍在；稳定特质不是协变量能控制的。</div></li><li><button type="button" data-ok="0">D. 数据录入错误</button><div class="ofb" hidden>它们是标准 CLPN 对观测分数做回归的系统性结果，与数据录入无关。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在“局限性”部分，关于被试间/被试内你应该写什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 不用写</button><div class="ofb" hidden>这是必写内容：读者需要知道边不等于被试内效应。</div></li><li><button type="button" data-ok="1">B. 说明标准 CLPN 未分离稳定个体差异与被试内变化，边不应解读为被试内效应，并指出可用的扩展方法</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 说明 CLPN 已经是被试内模型</button><div class="ofb" hidden>错误：标准 CLPN 基于观测分数，混合了被试间与被试内效应。</div></li><li><button type="button" data-ok="0">D. 说明只要 N 大就没问题</button><div class="ofb" hidden>样本量只减少抽样误差，特质混杂不会随 N 变小（7.2）。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">用 3 波数据分别估计 T1→T2 与 T2→T3 两个 CLPN，主要目的是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 把两段数据合在一起，让每条边估计得更精确</button><div class="ofb" hidden>分别估计并没有合并数据；想合并两段的信息，要用完整流程中的跨时间等值约束（本课后半部分）。</div></li><li><button type="button" data-ok="1">B. 检验网络结构与中心性的可重复性</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 让 λ 更小</button><div class="ofb" hidden>两段各自用交叉验证选 λ，分开估计不会让 λ 变小。</div></li><li><button type="button" data-ok="0">D. 代替 bootstrap</button><div class="ofb" hidden>两者互补：复现看不同时间段，bootstrap 看同一份数据的抽样变异（M8）。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Wysocki 等人（2025）为什么要在 LASSO 之后再用 SEM 重估？</p><ul class="opts"><li><button type="button" data-ok="0">A. 因为 LASSO 不能处理 9 个以上节点</button><div class="ofb" hidden>不对：LASSO 正适合多节点。</div></li><li><button type="button" data-ok="1">B. 因为交叉验证选边灵敏度高但假阳性多，且系数有收缩偏差；SEM 重估给出无惩罚估计、整体拟合与跨时间等值检验，再据 p 值修剪</button><div class="ofb" hidden>正确。课程数据上，lambda.min 对照总体目标值的 19 条假阳性在重估并按 p < .01 修剪后降为 0 条，代价是漏掉了 20 条弱的目标边（R/L7-5b.R）。</div></li><li><button type="button" data-ok="0">C. 因为 SEM 能区分被试间与被试内效应</button><div class="ofb" hidden>不对：重估模型仍基于观测分数，同样混合被试间与被试内效应。</div></li><li><button type="button" data-ok="0">D. 因为 LASSO 系数没有标准误，重估只是为了得到 p 值</button><div class="ofb" hidden>p 值只是副产品；主要原因是 LASSO 选边的假阳性和收缩偏差，以及 SEM 能给出整体拟合与跨时间等值检验。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：多波复现与协变量<span class="lvl">动手 + 写作</span></h4><p>运行 R/L7-5.R，打开 L7-5_replication.png。写一段“稳定性/复现性”讨论（150 字），并报告加入性别后的变化。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考：“T1→T2 与 T2→T3 两个 CLPN 的交叉滞后边权重呈中等程度相关（r = .64）；在 72 条可能的交叉滞后边中，40 条在两个网络中均被保留，27 条只出现在其中一个，主要为 |β| &lt; .05 的弱边。较强的边（如睡眠问题 → 疲乏）在两个时间段中均存在。考虑到两段数据来自相同的生成过程，弱边的不一致更可能反映抽样变异与正则化选择，提示对弱边应谨慎解读。将性别与年龄作为不受惩罚的协变量后，边权重几乎不变（最大差异 .018，r = .997）。”</p></details></div>
+<div class="exitem"><h4>练习 2：比较两份答案<span class="lvl">理解</span></h4><p>在本页组件中切换两个矩阵（也可以对照 7.2 课并排列出的两张表），列出：（1）只在总体目标值 true_B_population 中出现的 3 类边；（2）两者 lone3 → dep1 的数值；（3）这对你的论文解读意味着什么。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>（1）孤独题之间的小正边、抑郁题之间的小正边（两类合计 28 条，0.052–0.072），以及更小的跨构念边（|β| &lt; 0.05，如 lone4 → dep4 = 0.005），后者在被试内真值中都是 0；（2）被试内真值 0.180，总体目标值 0.118；（3）即使估计完美，CLPN 的边也是“被试间 + 被试内”的混合；同构念的弱边尤其可能来自稳定特质，不能当作“症状之间的动态作用”。写作时把研究问题限定为“总体中的预测关系”，并在局限性中写明这一点。</p></details></div>
+<div class="exitem"><h4>练习 3：给自己写一段局限<span class="lvl">写作</span></h4><p>为你的毕业项目写一段 120–180 字的“被试间/被试内”局限说明。再加一两句：对照本课第五部分的表，说明你的样本量、节点数和间隔会怎样影响结果的可信度。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考上面的“局限性段落模板”，并加入具体内容：本研究的间隔（例如 6 个月）、波数（3 波）、为什么选择标准 CLPN（样本量、学习目的、与已有文献可比），以及具体的后果（例如“同一量表内部的弱边可能主要反映稳定的个体差异”）。避免只是复制模板。补充句示例：“本研究 N = 800、9 个节点（每个回归 9 个预测变量），较强的边在两个时间段中都能找回，但很弱的边（|β| &lt; .05）可能被压成 0 或在不同时间段间不稳定；间隔（例如 6 个月）决定了边只反映这一时间尺度上的预测关系。”</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>在 3 波模拟数据上估计两个 CLPN（T1→T2、T2→T3），计算两组边权重的相关，写一段“稳定性/复现性”讨论；再加入性别作为不受惩罚的协变量重跑，比较差异。</p></div><h3>自测问题</h3><ol><li>两个时间段的 CLPN 结构不同，可能是什么原因？</li><li>协变量在 glmnet 中应该被惩罚吗？（提示：penalty.factor）</li><li>在“局限性”部分，关于被试间/被试内你应该写什么？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>多波：分别估计 T1→T2、T2→T3，比较边权相关与共同边；课程数据 r = 0.64。</li><li>协变量：加入每个回归，penalty.factor = 0 不惩罚；课程数据中影响很小。</li><li>标准 CLPN 混合被试间与被试内；课程数据中稳定特质制造了同构念小边。</li><li>扩展：panel GVAR / psychonetrics 等（了解即可；研究问题明确是被试内过程时再深入）。</li><li>样本量、节点数、间隔、波数都会影响 CLPN 的结果与解读。</li><li>完整 CLPN（Wysocki et al., 2025）= 合并冗余题目 → LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验、拟合指标）→ in-/out-prediction；课程数据上（约束模型，p < .01），对照总体目标值，假阳性 19 → 0，找回 16 条、漏掉 20 条（R/L7-5b.R）；SEM 重估去不掉特质边，对照被试内真值时它们仍是假阳性。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li><li>Funkhouser, C. J., et al. (2021). Unique longitudinal relationships between symptoms of psychopathology in youth: A cross-lagged panel network analysis in the ABCD study. <i>Journal of Child Psychology and Psychiatry, 62</i>(2), 184–194. <a href="https://doi.org/10.1111/jcpp.13256" target="_blank" rel="noopener">doi.org/10.1111/jcpp.13256</a><div class="muted" style="font-size:.84rem">CLPN 实证应用范例（4,093 名青少年，含 T2→T3 复现），第 9.1 课精读。</div></li><li>Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a><div class="muted" style="font-size:.84rem">提出 RI-CLPM，第 5.3 课必读。</div></li><li>Mulder, J. D., & Hamaker, E. L. (2021). Three extensions of the random intercept cross-lagged panel model. <i>Structural Equation Modeling: A Multidisciplinary Journal, 28</i>(4), 638–648. <a href="https://doi.org/10.1080/10705511.2020.1784738" target="_blank" rel="noopener">doi.org/10.1080/10705511.2020.1784738</a><div class="muted" style="font-size:.84rem">配套 lavaan / Mplus 示例代码网站：jeroendmulder.github.io/RI-CLPM</div></li></ul></section><div class="box key"><b class="bt">阶段测验</b><p>本模块的核心课到这里学完了。去做 <a href="../materials/assess_m7.html">M7 阶段测验</a>，一次答对 70% 及以上再进入下一个模块。7.6、7.7 是进阶选学课，学过以后再做测验页最后的进阶题。</p></div>
+<nav class="pager"><a href="L7-4.html" class="pv"><small>上一课</small>7.4 出期望影响、入期望影响与跨构念桥接</a><a href="L7-6.html" class="nx"><small>下一课</small>7.6 测量不变性与样本量规划</a></nav>
+<p class="foot">CLPN 从零开始 · 第 7.5 课 · <a href="../index.html#L7-5">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

@@ -1,0 +1,16 @@
+           CL边数 最强边        outEI最高 inEI最高
+lambda.min "52"   "dep3 → dep4" "lone4"   "dep4"  
+lambda.1se "17"   "dep3 → dep4" "lone4"   "dep1"  
+ebic       "31"   "dep3 → dep4" "lone4"   "dep4"  
+
+换 20 个种子：始终非零的 CL 边 = 49 ；始终为 0 = 12 ；时有时无 = 11 
+→ 报告中必须写明种子；也可用 repeated CV（多次分折取平均）减小随机性。
+
+
+可能冗余的题目对（goldbricker）：
+lone2_t1 & lone1_t1   dep4_t1 & dep3_t1 lone3_t1 & lone1_t1 lone4_t1 & lone1_t1 
+          0.0000000           0.0000000           0.1428571           0.1428571 
+lone3_t1 & lone2_t1 lone4_t1 & lone2_t1   dep2_t1 & dep1_t1   dep5_t1 & dep1_t1 
+          0.1428571           0.1428571           0.1428571           0.1428571 
+  dep5_t1 & dep2_t1 
+          0.1428571 

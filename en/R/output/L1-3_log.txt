@@ -1,0 +1,25 @@
+     raw_score z_score scale_func
+[1,]         8  -0.767     -0.767
+[2,]        10   0.000      0.000
+[3,]         9  -0.383     -0.383
+[4,]        14   1.534      1.534
+[5,]         7  -1.150     -1.150
+[6,]        12   0.767      0.767
+Mean of z-scores = 0 , SD = 1 
+
+  dep3_t1 life_sat_t1 dep3_t1 life_sat_t1
+1       1          55    0.22       -0.63
+2       1          49    0.22       -1.03
+3       1          74    0.22        0.65
+4       2          27    1.29       -2.52
+5       0          63   -0.84       -0.09
+6       0          78   -0.84        0.92
+
+After standardization, both columns have mean ≈ 0 and SD = 1, allowing direct comparison of 'relative positions'.
+In CLPN, we standardize all items first so regression coefficients are comparable (standardized coefficients).
+
+Correlation (raw vs. standardized) and dep1_t1 skewness (raw vs. standardized):
+[1] -0.2024
+[1] -0.2024
+[1] 1.049
+[1] 1.049

@@ -1,0 +1,14 @@
+{
+  "name": "clpn-course",
+  "private": true,
+  "description": "Static CLPN course deployed as Cloudflare Workers assets.",
+  "scripts": {
+    "dev": "wrangler dev"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  }
+}

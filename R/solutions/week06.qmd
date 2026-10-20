@@ -1,0 +1,42 @@
+---
+title: "T1 孤独感与抑郁：描述性分析"
+author: "（填写）"
+format: html
+---
+
+```{r}
+#| include: false
+# Quarto 以 .qmd 所在文件夹为工作目录：本文件在 R/solutions/ 里，所以数据在 ../../data/
+library(tidyverse)
+f <- if (file.exists("data/clpn_sim_wide.csv")) "data/clpn_sim_wide.csv" else "../../data/clpn_sim_wide.csv"
+dat <- read_csv(f, show_col_types = FALSE) |>
+  mutate(孤独 = rowSums(across(lone1_t1:lone4_t1)),
+         抑郁 = rowSums(across(dep1_t1:dep5_t1)),
+         性别 = factor(gender, levels = c(0, 1), labels = c("男", "女")))
+```
+
+## 描述统计
+
+```{r}
+dat |> group_by(性别) |>
+  summarise(n = n(), 孤独均值 = mean(孤独), 抑郁均值 = mean(抑郁), 抑郁SD = sd(抑郁)) |>
+  knitr::kable(digits = 2, caption = "表 1 按性别分组的 T1 描述统计")
+```
+
+## 图
+
+```{r}
+#| echo: false
+#| fig-cap: "图 1 T1 抑郁总分的分布"
+ggplot(dat, aes(抑郁)) + geom_histogram(binwidth = 1)
+```
+
+```{r}
+#| echo: false
+#| fig-cap: "图 2 按性别的 T1 抑郁总分箱线图"
+ggplot(dat, aes(性别, 抑郁)) + geom_boxplot()
+```
+
+## 解释
+
+样本共 `r nrow(dat)` 人，T1 抑郁总分的均值为 `r round(mean(dat$抑郁), 2)`，呈右偏分布……（写 3–5 句，避免“导致”等因果措辞）

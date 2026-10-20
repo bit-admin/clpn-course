@@ -1,0 +1,54 @@
+========== Part 1: Unmeasured confounding ==========
+
+Model A: D2 ~ D1 + L1 (U unmeasured)
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)   0.0000     0.0258  0.0000        1
+scale(D1)     0.5948     0.0277 21.4831        0
+scale(L1)     0.1863     0.0277  6.7284        0
+
+Model B: D2 ~ D1 + L1 + U (controlling for U)
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)   0.0000     0.0239  0.0000   1.0000
+scale(D1)     0.4245     0.0297 14.2962   0.0000
+scale(L1)     0.0164     0.0297  0.5531   0.5803
+scale(U)      0.3919     0.0343 11.4229   0.0000
+
+→ Cross-lag of loneliness: without controlling for U, β = 0.186 (p < .001); controlling for U, β = 0.016 (p = 0.58)
+Extension: changing 0.4*U to 0 yields L1 coefficient β = 0.028 (p = 0.38) — U operates only through D1, which is already controlled.
+500 simulation replications (N = 800): proportion of loneliness coefficient with p < .05 = 100.0% (true effect is 0; nominal rate is 5%)
+
+========== Part 2: Measurement interval (time lag) ==========
+Monthly autoregression a = 0.80, monthly cross-effect c = 0.15:
+ Lag_months Cross_lag Formula
+          1     0.150   0.150
+          3     0.288   0.288
+          6     0.295   0.295
+         12     0.155   0.155
+         24     0.021   0.021
+  Peak occurs at approximately 4 months (theoretical value -1/ln(a) = 4.5)
+
+Monthly autoregression a = 0.90, monthly cross-effect c = 0.05:
+ Lag_months Cross_lag Formula
+          1     0.050   0.050
+          3     0.122   0.122
+          6     0.177   0.177
+         12     0.188   0.188
+         24     0.106   0.106
+  Peak occurs at approximately 9 months (theoretical value -1/ln(a) = 9.5)
+
+Plot saved: R/output/L5-4_lag.png
+
+========== Part 3: Stable traits and false positives in CLPM (Lucas, 2023) ==========
+N =  200: In CLPM-style regression, proportion of "Loneliness T1 -> Depression T2" with p < .05 =  39.0% (standardized β for single sample ≈ 0.012)
+N =  800: In CLPM-style regression, proportion of "Loneliness T1 -> Depression T2" with p < .05 =  95.0% (standardized β for single sample ≈ 0.085)
+N = 3000: In CLPM-style regression, proportion of "Loneliness T1 -> Depression T2" with p < .05 = 100.0% (standardized β for single sample ≈ 0.080)
+Control: without stable traits (trait_sd = 0), N = 800, proportion with p < .05 = 8.0% (close to nominal 5%, 200 replications have sampling fluctuation)
+→ True within-person cross-lag is 0, but with correlated stable traits, CLPM will "detect" cross-lags; larger samples become more "significant".
+   Controlling for T1 depression cannot eliminate trait influence, because T1 depression is merely a noisy measurement of the trait.
+
+========== Part 4: Checking for "risky causal words" in conclusions ==========
+Loneliness causes depression in older adults.
+   Contains: cause
+Therefore reducing loneliness will lead to reduced depression.
+   Contains: lead to
+After controlling for baseline depression, T1 loneliness positively predicted T2 depression, consistent with the hypothesis that loneliness may worsen depression.

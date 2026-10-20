@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.5 抽样、标准误与置信区间 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L1-5.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="1.5" style="--c:#0ea5e9">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L1-5">CLPN 课程大纲</a><span class="crumb">M1 统计学基础 / 1.5</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L1-5.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L1-5.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details open style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html" class="cur" aria-current="page"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 1 · Statistics Foundations · 第 1.5 课</div>
+<h1>抽样、标准误与置信区间</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L1-4.html">1.4 协方差与相关：两个变量如何一起变化</a></span><span>配套脚本：<a href="../R/L1-5.R">R/L1-5.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>区分总体与样本、参数与统计量</li><li>用模拟直觉理解抽样分布与标准误</li><li>正确解释 95% 置信区间（以及常见的错误解释）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>总体</b><span class="en">population</span></li><li><b>样本</b><span class="en">sample</span></li><li><b>参数</b><span class="en">parameter</span></li><li><b>统计量</b><span class="en">statistic</span></li><li><b>抽样分布</b><span class="en">sampling distribution</span></li><li><b>标准误</b><span class="en">standard error, SE</span></li><li><b>置信区间</b><span class="en">confidence interval, CI</span></li><li><b>样本量</b><span class="en">sample size</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>只调查了 100 个人，能说全市怎样吗？</h2>
+<div class="box story"><b class="bt">区民政局的问题</b>
+<p>区民政局想知道全区 10 万名成年居民的平均孤独感。不可能人人都问，于是社工站随机抽了 100 位居民，算出平均孤独分 9.78。局长问：“全区的真实平均就是 9.78 吗？如果换另外 100 个人，会不会得到完全不同的数字？我们对这个数字有多大把握？”这节课回答的就是“把握有多大”。</p></div>
+<h3>总体与样本、参数与统计量</h3>
+<ul><li><span class="term">总体<span class="en">（population）</span></span>：我们真正关心的全部对象（全区 10 万名成年居民）。</li>
+<li><span class="term">样本<span class="en">（sample）</span></span>：实际调查到的那一部分（100 位）。</li>
+<li><span class="term">参数<span class="en">（parameter）</span></span>：描述总体的数字，通常未知，用希腊字母表示，如总体均值 \(\mu\)、总体标准差 \(\sigma\)。</li>
+<li><span class="term">统计量<span class="en">（statistic）</span></span>：用样本算出来的数字，如样本均值 \(\bar x\)。我们用统计量去估计参数。</li></ul>
+<div class="box analogy"><b class="bt">类比：尝汤</b><p>厨师尝一勺汤判断整锅咸淡。整锅汤 = 总体；一勺 = 样本；“整锅的咸度” = 参数；“这一勺的咸度” = 统计量。只要汤搅匀了（随机抽样），一勺就能代表整锅；勺子越大（样本越大），判断越可靠。但无论勺子多大，每一勺的味道都会有一点点不同。本课讲的就是这种“勺与勺之间的差异”。</p></div>
+
+<h3>抽样分布：如果研究能重做 1000 次</h3>
+<p>想象一个思想实验：同样的研究重复做很多次，每次随机抽 \(n\) 个人，每次算一个均值。这许多个均值本身也构成一个分布，叫<span class="term">抽样分布<span class="en">（sampling distribution）</span></span>。在现实中我们只做一次研究，但这个想象中的分布告诉我们：一次研究得到的数字，大概会离真值多远。</p>
+<div class="widget" data-widget="sampling"></div>
+<p>请做三件事：(1) 选 n = 20，点“抽 1000 个样本”，观察下方蓝色直方图有多宽；(2) 换成 n = 100、n = 500 重复；(3) 注意上方的总体是右偏的，但样本均值的分布却越来越像对称的钟形，这就是<span class="term">中心极限定理<span class="en">（central limit theorem）</span></span>：只要总体的方差有限，样本量足够大时，样本均值的分布就近似正态，不管原始数据长什么样。“足够大”是多大，取决于总体有多偏：总体接近对称时 n = 20 左右已经很接近正态；像本页这样右偏的总体，n = 20 时的直方图还能看出一点右拖尾；偏态更重（例如大部分人 0 分、极少数人极高分的计数变量）时，需要的 n 还要更大。如果总体有极端的“厚尾”，方差根本不存在，定理就不适用。</p>
+<div class="box key"><b class="bt">本页出现的几个“总体”</b><p>为了演示，本页用了几个不同的假想总体，它们彼此独立，数字不能互相比较：</p>
+<ul><li>开头的故事：全区 10 万名成年居民，孤独总分是课程量表的 4–16 分。</li>
+<li>上面的“虚拟城市”组件：2 万名居民，一个虚构的 20–80 分孤独量表，故意做成右偏，用来展示中心极限定理；它的 μ 和 σ 标在图的上方。</li>
+<li>下面的置信区间组件：同样是虚构量表，真值设为 μ = 50。</li>
+<li>③ R 代码里的 <code>city</code>：10 万居民，正态分布，μ = 10、σ = 3，接近课程孤独总分的尺度。</li></ul>
+<p>它们讲的是同一个道理：总体固定不变，样本每次不同，样本统计量围绕参数波动，波动的大小由 SD 和 n 决定。</p></div>
+<p>你会发现两条规律：</p>
+<ol><li>样本均值的分布以真值 \(\mu\) 为中心：平均而言，样本均值不偏不倚。</li>
+<li>样本越大，分布越窄。但不是“样本大 5 倍，宽度缩小 5 倍”，而是缩小 \(\sqrt5 \approx 2.2\) 倍。</li></ol>
+<p>抽样分布的标准差有一个专门的名字：<span class="term">标准误<span class="en">（standard error, SE）</span></span>。它衡量的是“估计值在重复研究之间的波动”，而标准差（SD）衡量的是“个人与个人之间的差异”。</p>
+<div class="tablewrap"><table><thead><tr><th></th><th>标准差 SD</th><th>标准误 SE</th></tr></thead><tbody>
+<tr><td>描述谁的变异</td><td>个体之间的分数</td><td>估计值（如均值、回归系数）在重复抽样中的波动</td></tr>
+<tr><td>样本变大时</td><td>基本不变（人与人的差异是客观存在的）</td><td>变小（估计更精确）</td></tr>
+<tr><td>例</td><td>居民孤独分的 SD ≈ 3：居民之间差得挺多</td><td>n = 100 时均值的 SE ≈ 0.3：我们对平均数的估计相当精确</td></tr></tbody></table></div>
+
+<h3>置信区间：给估计值加上“误差范围”</h3>
+<p>与其只报告一个数 9.78，不如报告一个范围：[9.16, 10.41]。这就是 95% <span class="term">置信区间<span class="en">（confidence interval, CI）</span></span>。它是怎么来的、该怎么理解？看下面的模拟：50 位研究者各自独立做了一次调查，每人都算出一个 95% CI。</p>
+<div class="widget" data-widget="cicover"></div>
+<p>大多数区间（紫色）穿过了绿色的真值线，少数（红色）没有。长期来看，约 95% 的区间会包含真值。“95%”描述的是构造区间的<b>方法</b>有多可靠，而不是某一个具体区间。</p>
+<div class="box warnbox"><b class="bt">正确与错误的解读</b>
+<ul><li>正确：“如果用同样的方法反复抽样、反复计算，约 95% 的这类区间会包含总体均值。”简化的报告说法：“总体均值的 95% 置信区间为 [9.16, 10.41]。”</li>
+<li>错误：“总体均值有 95% 的概率落在 [9.16, 10.41] 里。”（在这种统计框架下，真值是固定的，某一个具体区间要么包含它，要么不包含。）</li>
+<li>错误：“95% 的居民孤独分在 [9.16, 10.41] 之间。”（CI 是关于均值的，不是关于个人的；个人分数的范围要看 SD。）</li></ul></div>
+
+<h3>为什么网络分析需要较大的<span class="term">样本量<span class="en">（sample size）</span></span>？</h3>
+<p>CLPN 一次要估计几十个系数（9 道题就有 81 个），每个系数都有自己的标准误。样本小时，每个系数都在真值周围大幅“跳动”，网络图会因为随机误差而出现许多“假边”、漏掉“真边”。所以模块 8 要用 bootstrap 检查边和中心性的稳定性。bootstrap 用的就是本课的“重做研究”思想实验：既然不能真的重做 1000 次研究，就从手头的样本中有放回地“重抽”1000 次，模拟抽样分布。</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>\(\sqrt{n}\) 从哪里来</h2>
+<div class="mathbox">$$SE(\bar x) = \frac{\sigma}{\sqrt n} \approx \frac{s}{\sqrt n} \qquad\qquad 95\%\ CI \approx \bar x \pm 1.96 \times SE$$</div>
+<dl class="sym"><dt>\(\sigma\)</dt><dd>总体标准差（未知时用样本标准差 \(s\) 代替）。</dd><dt>\(n\)</dt><dd>样本量。</dd><dt>\(1.96\)</dt><dd>标准正态分布中，中间 95% 面积的边界（±1.96 个标准差，上一课的“约 ±2”的精确版）。</dd></dl>
+<h3>为什么是 \(\sqrt n\)？</h3>
+<p>均值 \(\bar x = (x_1+\cdots+x_n)/n\)。如果每个人是独立抽取的，有一条规则：独立变量之和的方差等于方差之和。所以 \(x_1+\cdots+x_n\) 的方差是 \(n\sigma^2\)。再除以 \(n\)：一个数除以 \(n\)，它的方差要除以 \(n^2\)（因为方差是“平方”单位）。于是</p>
+<div class="mathbox">$$\operatorname{Var}(\bar x) = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n} \quad\Rightarrow\quad SE = \sqrt{\operatorname{Var}(\bar x)} = \frac{\sigma}{\sqrt n}$$</div>
+<p>直觉：多个人的随机误差会部分相互抵消（有人偏高、有人偏低），但抵消得不完全，所以误差只按 \(\sqrt n\) 缩小。实务含义：想把误差减半，样本要扩大 4 倍。</p>
+<h3>手算</h3>
+<p>\(\sigma = 3\)：n = 20 时 SE = 3/√20 ≈ 0.671；n = 100 时 SE = 0.3；n = 500 时 SE ≈ 0.134。一个 n = 100 的样本均值 9.78、SD 约 3.2 时，SE ≈ 0.32，95% CI ≈ 9.78 ± 1.96 × 0.32 ≈ [9.16, 10.41]。</p>
+<p class="muted">（严格地说，用样本 SD 代替 σ 时应该用 t 分布的临界值代替 1.96；n = 100 时 t 临界值约为 1.98，区间稍宽一点点。<code>t.test()</code> 用的就是 t 分布。）</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>“虚拟城市”抽样模拟</h2>
+<p>对应脚本：<a href="../R/L1-5.R">R/L1-5.R</a>。R 也可以做上面的思想实验：先生成一个 10 万人的“虚拟城市”（我们知道真值），再反复抽样。</p>
+<div class="codeblk"><div class="ctitle">R/L1-5.R（节选）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+set.seed(2026)                                    # 随机种子：让结果可复现（2.2 课）
+city &lt;- rnorm(100000, mean = 10, sd = 3)          # 总体：10 万居民的孤独分，μ = 10，σ = 3
+for (n in c(20, 100, 500)) {
+  means &lt;- replicate(2000, mean(sample(city, n))) # 抽 2000 次样本，每次算均值 → 抽样分布
+  cat(&quot;n =&quot;, n, &quot;：抽样分布的标准差 =&quot;, round(sd(means), 3),
+      &quot;；理论标准误 SE = σ/√n =&quot;, round(3 / sqrt(n), 3), &quot;\n&quot;)
+}
+s  &lt;- sample(city, 100)                           # 现实中：只有一个样本
+se &lt;- sd(s) / sqrt(100)
+cat(&quot;\n一个 n=100 样本：均值&quot;, round(mean(s), 2), &quot; 95% CI = [&quot;,
+    round(mean(s) - 1.96 * se, 2), &quot;,&quot;, round(mean(s) + 1.96 * se, 2), &quot;]\n&quot;)
+t.test(s)$conf.int                                # 用 t 分布的精确版本</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L1-5_log.txt）</div><pre class="out"><code>n = 20 ：抽样分布的标准差 = 0.668 ；理论标准误 SE = σ/√n = 0.671
+n = 100 ：抽样分布的标准差 = 0.296 ；理论标准误 SE = σ/√n = 0.3
+n = 500 ：抽样分布的标准差 = 0.133 ；理论标准误 SE = σ/√n = 0.134
+
+一个 n=100 样本：均值 9.78  95% CI = [ 9.16 , 10.41 ]
+[1]  9.148005 10.415970
+attr(,&quot;conf.level&quot;)
+[1] 0.95</code></pre></div>
+<figure style="margin:10px 0"><img src="../R/output/L1-5_sampling.png" alt="三种样本量下样本均值的抽样分布" style="max-width:100%;border:1px solid var(--line);border-radius:10px"><figcaption class="muted" style="font-size:.85rem">图：n = 20、100、500 时 2000 个样本均值的直方图（横轴范围相同）。样本越大，越集中在 μ = 10 附近。</figcaption></figure>
+<p>新函数：</p>
+<ul><li><code>rnorm(N, mean, sd)</code>：生成 N 个正态分布的随机数。</li>
+<li><code>sample(city, n)</code>：从 city 中不放回地随机抽 n 个。（8.1 课的 bootstrap 要有放回地抽：<code>sample(x, replace = TRUE)</code>。）</li>
+<li><code>replicate(2000, …)</code>：把括号里的事情重复做 2000 次，收集结果。</li>
+<li><code>set.seed(2026)</code>：随机数其实是由一个“种子”决定的伪随机序列；设定种子后，每次运行得到完全相同的结果。CLPN 的交叉验证也有随机性，所以一定要设种子（7.2 课）。</li></ul>
+<p>模拟的标准差（0.668、0.296、0.133）与公式（0.671、0.3、0.134）几乎一样。</p>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：样本量翻 4 倍，区间只窄一半</h3>
+<p>某社区随机抽取 n = 100 位居民，孤独总分均值 9.0、SD = 3.0。</p>
+<ol><li>标准误 SE = SD / √n = 3.0 / 10 = 0.30。</li>
+<li>95% 置信区间 ≈ 均值 ± 1.96 × SE = 9.0 ± 0.588 = [8.41, 9.59]。</li>
+<li>如果抽 n = 400：SE = 3.0 / 20 = 0.15，区间 = 9.0 ± 0.294 = [8.71, 9.29]，宽度正好减半。</li></ol>
+<p>结论：想把区间宽度减半，样本量要变成原来的 4 倍，因为宽度与 √n 成反比。规划调查预算时要考虑这一点。</p>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li>以为样本越大越能消除偏差。SE 只反映随机误差。如果样本是在活动中心门口方便招募的，最孤独、不出门的居民本来就抽不到，n 再大也只是“精确地估错”。</li>
+<li>用“两个区间是否重叠”来判断差异是否显著。两个 95% 区间略有重叠，差异仍可能显著。比较两组要直接检验差值（1.6 课）。</li>
+<li>用 SD 代替 SE 画误差线。两者差 √n 倍。图注里必须写明误差线是 SD、SE 还是 95% CI。</li></ul></div>
+
+<h3>这和 CLPN 有什么关系？</h3>
+<p>后面第 8 模块要给网络中的每条边算置信区间。思路和这里完全一样：一条边的估计值就像这里的样本均值，换一批人会有所不同；区间越窄，这条边越可信。区别只在于，边的标准误没有 SD/√n 这样的现成公式，所以要用 bootstrap 去“模拟重新抽样”（8.1 课）。</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">标准误（SE）和标准差（SD）有什么不同？</p><ul class="opts"><li><button type="button" data-ok="0">没有区别，只是名字不同</button><div class="ofb" hidden>它们描述的是两种不同的变异：一个是人与人之间，一个是估计值在重复抽样之间。</div></li><li><button type="button" data-ok="1">SD 描述个体之间分数的差异；SE 描述估计值（如样本均值）在重复抽样之间的波动</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">SE 总是比 SD 大</button><div class="ofb" hidden>均值的 SE = SD / √n，n &gt; 1 时 SE 更小。</div></li><li><button type="button" data-ok="0">SD 会随样本量增大而变小</button><div class="ofb" hidden>样本变大时变小的是 SE。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>一句话：SD 说“人与人差多少”，SE 说“我的估计有多不稳”。</div></div>
+<div class="quiz" data-kind="num" data-ans="2" data-tol="0.01"><p class="qtext">总体 SD = 12，样本量 n = 36。样本均值的标准误是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>SE = σ / √n。√36 = ?</div><div class="fb" role="status"></div><div class="qexp" hidden>12 / 6 = 2。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">想把均值的标准误缩小一半，样本量需要变为原来的几倍？</p><ul class="opts"><li><button type="button" data-ok="0">2 倍</button><div class="ofb" hidden>SE 与 √n 成反比，不是与 n 成反比。</div></li><li><button type="button" data-ok="1">4 倍</button><div class="ofb" hidden>正确：√4 = 2。</div></li><li><button type="button" data-ok="0">8 倍</button><div class="ofb" hidden>√8 ≈ 2.83，SE 会缩小到原来的约 1/2.83，比一半还小。</div></li><li><button type="button" data-ok="0">0.5 倍</button><div class="ofb" hidden>样本变小只会让误差更大（SE 变为原来的 √2 ≈ 1.41 倍）。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>这就是精确度“越来越贵”的原因。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">某研究报告：孤独与抑郁相关的 95% CI 为 [0.10, 0.30]。正确的解读是？</p><ul class="opts"><li><button type="button" data-ok="0">总体相关有 95% 的概率在 0.10 到 0.30 之间</button><div class="ofb" hidden>这是本课点名的误读：总体相关是固定的，这个具体区间要么包含它、要么不包含；“95%”说的是方法的长期覆盖率。</div></li><li><button type="button" data-ok="0">95% 的人的相关在 0.10 到 0.30 之间</button><div class="ofb" hidden>相关是整个样本的统计量，不是每个人一个。</div></li><li><button type="button" data-ok="1">用这种方法构造的区间，在重复研究中约有 95% 会包含总体相关；这个区间不包含 0，提示正相关</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">样本相关有 95% 的概率是 0.20</button><div class="ofb" hidden>样本相关是算出来的已知值，没有“概率”可言；区间描述的是总体相关的不确定性。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>简化报告时可以写“r 的 95% CI 为 [0.10, 0.30]”，但心里要清楚“95%”指的是方法的长期表现。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">这节课的“重复抽样”思想与模块 8 的 bootstrap 有什么联系？</p><ul class="opts"><li><button type="button" data-ok="1">bootstrap 从手头样本中有放回地重抽，模拟“重做很多次研究”，从而近似估计的抽样分布和标准误</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">bootstrap 是真的重新招募被试、重做研究</button><div class="ofb" hidden>bootstrap 不收集新数据，只从手头这一个样本中有放回地重抽。</div></li><li><button type="button" data-ok="0">bootstrap 可以纠正样本的偏差</button><div class="ofb" hidden>重抽只能模拟随机误差；样本本身有偏（如方便招募）时，bootstrap 无法纠正（8.1 课）。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>当公式很难推导（如 LASSO 系数、中心性指标）时，bootstrap 尤其有用。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">根据中心极限定理，当 n 较大时，右偏总体的样本均值的分布会是什么样？</p><ul class="opts"><li><button type="button" data-ok="0">同样右偏，因为样本来自右偏的总体</button><div class="ofb" hidden>单个样本的分数确实右偏，但这里问的是“样本均值”的分布；模拟中下方蓝色直方图随 n 增大越来越对称。</div></li><li><button type="button" data-ok="1">近似对称的正态分布</button><div class="ofb" hidden>正确：这是中心极限定理的核心结论。</div></li><li><button type="button" data-ok="0">左偏</button><div class="ofb" hidden>求均值不会翻转分布方向。</div></li><li><button type="button" data-ok="0">无论 n 多大都无法确定，因为总体不是正态的</button><div class="ofb" hidden>中心极限定理正是说：只要总体方差有限，n 足够大时样本均值就近似正态，不要求总体本身正态。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>这也是为什么即使原始数据不正态，很多基于均值的方法在大样本下仍然适用。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 1.5-A：互动模拟报告</h4>
+<p>用本页的“虚拟城市”模拟，分别在 n = 20 / 100 / 500 下各抽 1000 个样本，记录读数框中“样本均值的标准差（实测）”与“理论标准误”。写 3 句话说明：这和“网络分析需要较大样本”有什么关系？</p>
+<details class="answer"><summary>参考要点</summary>
+<p>本页总体的 σ = 10.27（图的上方标出），所以理论 SE = 10.27/√20 ≈ 2.30、10.27/√100 ≈ 1.03、10.27/√500 ≈ 0.46，与读数框一致（实测值会非常接近）。三句话示例：(1) 样本越小，同一个估计值在不同样本之间波动越大；(2) CLPN 同时估计几十个系数，每个都会这样波动，小样本下网络结构可能主要反映随机噪音；(3) 因此网络分析需要较大样本，并且要用 bootstrap（模块 8）检查结果的稳定性。</p></details></div>
+<div class="exitem"><h4>练习 1.5-B：手算置信区间</h4>
+<p>一个社区随机调查了 64 位居民，孤独总分均值 9.2，SD 3.2。先指出本题中的总体、样本、参数和统计量各是什么；再计算均值的 SE 和 95% CI（用 1.96），并写出一句规范的报告语句。</p>
+<details class="answer"><summary>参考答案</summary>
+<p>总体 = 这个社区的全体居民；样本 = 被调查的 64 位；参数 = 全社区居民的平均孤独总分 μ（未知）；统计量 = 样本均值 9.2（和样本 SD 3.2）。</p>
+<p>SE = 3.2 / √64 = 3.2 / 8 = 0.4；95% CI = 9.2 ± 1.96 × 0.4 = 9.2 ± 0.78 = [8.42, 9.98]。报告：“样本的平均孤独总分为 9.20（SD = 3.20），总体均值的 95% 置信区间为 [8.42, 9.98]。”</p></details></div>
+<div class="exitem"><h4>练习 1.5-C：R 动手</h4>
+<p>运行 <code>R/L1-5.R</code>，然后改一处：把 <code>set.seed(2026)</code> 改成 <code>set.seed(1)</code> 重跑，结果变了吗？哪些变了，哪些规律没变？再删掉 <code>set.seed()</code> 那一行运行两次，比较结果。</p>
+<details class="answer"><summary>要点</summary>
+<p>换种子后具体数字（例如那个 n = 100 样本的均值和 CI）会变，但规律不变：模拟 SD 仍然接近 σ/√n，n 越大越窄。删掉 set.seed 后每次运行结果都不同。所以做分析时要固定并报告随机种子（9.3 课的报告规范）。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>统计量（样本）用来估计参数（总体）；估计值在重复抽样中的波动叫标准误，SE = SD / √n。</li>
+<li>95% CI ≈ 估计值 ± 1.96 × SE；“95%”说的是方法的长期覆盖率，不是某个区间的概率。</li>
+<li>“重做研究”的思想实验是 bootstrap 的基础；样本越大，网络估计越稳定。下一课：<a href="L1-6.html">1.6 假设检验、p 值与效应量</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L1-4.html" class="pv"><small>上一课</small>1.4 协方差与相关：两个变量如何一起变化</a><a href="L1-6.html" class="nx"><small>下一课</small>1.6 假设检验、p 值与效应量</a></nav>
+<p class="foot">CLPN 从零开始 · 第 1.5 课 · <a href="../index.html#L1-5">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

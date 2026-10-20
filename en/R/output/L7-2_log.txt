@@ -1,0 +1,62 @@
+Estimated B (lambda.min):
+      lone1 lone2 lone3 lone4 dep1  dep2 dep3  dep4 dep5
+lone1  0.42  0.00  0.02  0.01 0.02  0.08 0.00  0.06 0.05
+lone2  0.03  0.43  0.05  0.13 0.00  0.06 0.00 -0.02 0.00
+lone3  0.00  0.00  0.34  0.02 0.07 -0.07 0.00 -0.05 0.00
+lone4  0.06  0.10  0.10  0.45 0.08  0.04 0.03  0.11 0.09
+dep1   0.00  0.04  0.00  0.00 0.31  0.09 0.08  0.05 0.09
+dep2   0.00  0.00  0.06  0.00 0.08  0.31 0.02  0.02 0.02
+dep3   0.00  0.00  0.00  0.00 0.00  0.05 0.33  0.14 0.06
+dep4   0.00 -0.09  0.02  0.04 0.03  0.02 0.04  0.28 0.00
+dep5   0.00  0.00  0.00  0.01 0.07  0.03 0.03  0.09 0.36
+
+Population target (data/true_B_population.csv, target of standard CLPN as N -> Inf):
+      lone1 lone2 lone3 lone4 dep1 dep2 dep3 dep4 dep5
+lone1  0.39  0.07  0.07  0.06 0.00 0.10 0.01 0.01 0.00
+lone2  0.07  0.39  0.07  0.14 0.01 0.01 0.02 0.02 0.01
+lone3  0.07  0.06  0.39  0.06 0.12 0.00 0.00 0.00 0.00
+lone4  0.06  0.07  0.06  0.38 0.00 0.00 0.00 0.00 0.08
+dep1   0.00  0.01  0.00  0.00 0.33 0.06 0.06 0.05 0.13
+dep2   0.01  0.01  0.08  0.00 0.06 0.33 0.06 0.05 0.06
+dep3   0.01  0.02  0.01  0.01 0.06 0.06 0.33 0.17 0.05
+dep4   0.01 -0.08  0.01  0.01 0.06 0.05 0.06 0.32 0.05
+dep5   0.00  0.01  0.01  0.01 0.06 0.05 0.06 0.05 0.32
+
+Method performance (vs. population target, cross-lagged edges only):
+           True_CL_edges Recovered Missed False_positives Total_est_CL
+lambda.min            36        33      3              19           52
+lambda.1se            36        14     22               3           17
+EBIC                  36        24     12               7           31
+           r_with_truth
+lambda.min        0.654
+lambda.1se        0.551
+EBIC              0.624
+lambda.1se and EBIC are sparser: fewer false positives, but may miss weak edges in the population target.
+Note: B["lone3", "dep1"] = 0.073 indicates T1 Feeling isolated -> T2 Depressed mood.
+
+Within-person truth (data/true_B_within.csv, data-generating within-person lagged coefficients):
+      lone1 lone2 lone3 lone4 dep1 dep2 dep3 dep4 dep5
+lone1  0.35  0.00  0.00  0.00 0.00 0.14  0.0 0.00 0.00
+lone2  0.00  0.35  0.00  0.10 0.00 0.00  0.0 0.00 0.00
+lone3  0.00  0.00  0.35  0.00 0.18 0.00  0.0 0.00 0.00
+lone4  0.00  0.00  0.00  0.35 0.00 0.00  0.0 0.00 0.12
+dep1   0.00  0.00  0.00  0.00 0.30 0.00  0.0 0.00 0.10
+dep2   0.00  0.00  0.12  0.00 0.00 0.30  0.0 0.00 0.00
+dep3   0.00  0.00  0.00  0.00 0.00 0.00  0.3 0.16 0.00
+dep4   0.00 -0.15  0.00  0.00 0.00 0.00  0.0 0.30 0.00
+dep5   0.00  0.00  0.00  0.00 0.00 0.00  0.0 0.00 0.30
+
+Among the 36 cross-lagged edges with |beta| >= 0.05 in the population target: 8 are also present in the within-person truth + 28 are zero in the within-person truth
+Of the latter 28 edges, 28 are within-construct edges; absolute value range: 0.052 – 0.072 
+Among the edges in the within-person truth, 0 have |beta| < 0.05 in the population target
+
+Edge recovery under two truths (cross-lagged edges only; population = population target |beta| >= 0.05, within = non-zero in within-person truth):
+       rule      truth n_true hit miss fp n_est     r trait_hit
+ lambda.min population     36  33    3 19    52 0.654        25
+ lambda.min     within      8   8    0 44    52 0.569        25
+ lambda.1se population     36  14   22  3    17 0.551         8
+ lambda.1se     within      8   6    2 11    17 0.454         8
+       EBIC population     36  24   12  7    31 0.624        16
+       EBIC     within      8   8    0 23    31 0.566        16
+trait_hit = number of edges estimated as non-zero that exist only in the population target (within-person truth is zero).
+When evaluated against the within-person truth, all these edges count as false positives: they truly exist in the population, but do not reflect within-person processes.

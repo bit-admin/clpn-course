@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.2 偏相关网络与高斯图模型（GGM） · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L6-2.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="6.2" style="--c:#14b8a6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L6-2">CLPN 课程大纲</a><span class="crumb">M6 网络心理测量学基础 / 6.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L6-2.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L6-2.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details open style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html" class="cur" aria-current="page"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 6 · Network Psychometrics · 第 6.2 课</div>
+<h1>偏相关网络与高斯图模型（GGM）</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L6-1.html">6.1 网络的语言：节点、边、权重与邻接矩阵</a>、<a href="L3-2.html">3.2 多元回归与“控制其他变量”</a></span><span>配套脚本：<a href="../R/L6-2.R">R/L6-2.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>理解偏相关：控制所有其他变量后两个变量的剩余关联</li><li>理解“条件独立”与 GGM 中的“没有边”</li><li>知道精度矩阵（协方差矩阵的逆）与偏相关的关系（了解即可）</li><li>比较相关网络与偏相关网络为何差别很大</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>偏相关</b><span class="en">partial correlation</span></li><li><b>条件独立</b><span class="en">conditional independence</span></li><li><b>高斯图模型</b><span class="en">Gaussian graphical model, GGM</span></li><li><b>马尔可夫随机场</b><span class="en">Markov random field</span></li><li><b>精度矩阵</b><span class="en">precision matrix</span></li><li><b>间接关联</b><span class="en">indirect association</span></li></ul>
+<p>上一课的边是“随手写的数字”。这一课回答：在真实数据中，边应该用什么统计量？答案是偏相关。CLPN 中“控制所有 T1 节点后的独特预测”也建立在同一个思想上。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>相关会“传染”</h3>
+<p>设想一条链：失眠 → 疲劳 → 注意力差。失眠只影响疲劳，疲劳只影响注意力。那么失眠和注意力差之间有没有相关？有。因为失眠的人更疲劳，疲劳的人注意力更差，所以失眠的人平均而言注意力也更差。课程脚本 R/L6-2.R 的模拟结果：失眠—注意力差的相关 r = 0.39。</p>
+<p>但这条相关是“借道”疲劳传来的。如果我们只比较疲劳程度相同的人，失眠与注意力差之间还有关系吗？没有了。这个“控制了其他变量之后剩下的关联”就是 <span class="term">偏相关<span class="en">（partial correlation）</span></span>。在同一份模拟数据中，失眠—注意力差的偏相关 ≈ 0.00。</p>
+<p>下面的演示可以改变三条“真实作用”的强度。先保持“直接作用 c = 0”，比较左右两张图；再把 c 调大，看偏相关网络中出现失眠—注意力差的边。</p>
+<div class="widget w2" data-widget="pcor"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>条件独立与 GGM</h3>
+<p>当两个变量的偏相关为 0，我们说它们在给定其他所有变量时 <span class="term">条件独立<span class="en">（conditional independence）</span></span>。<span class="term">高斯图模型<span class="en">（Gaussian graphical model, GGM）</span></span> 就是：对一组（近似）正态的变量，两节点之间画边当且仅当它们的偏相关不为 0，边权重就是偏相关。GGM 是一种 <span class="term">马尔可夫随机场<span class="en">（Markov random field）</span></span>（无向图模型）的特例：“没有边”意味着“给定其他所有节点，二者独立”。</p>
+<div class="box story"><b class="bt">GGM 中没有边意味着：</b><p>在控制网络中所有其他节点之后，这两个节点之间没有剩余的线性关联。它不是说两者“毫无关系”（它们的相关可能很大），而是说它们的关系可以被其他节点“解释掉”。</p></div>
+<h3>为什么偏相关网络比相关网络“干净”？</h3>
+<p>相关网络中，几乎每对题目都有边，因为心理变量之间的相关普遍为正（一个人状态差时，各方面往往都差）。图看起来像一团毛线，看不出结构。偏相关剔除了经由其他节点传递的 <span class="term">间接关联<span class="en">（indirect association）</span></span>，例如 A 与 C 相关只是因为 A → B → C；也剔除了共同原因造成的关联（A ← B → C）。留下的是“直接”的连接，结构更清晰。前一种关联经中介 B 传递，是真实存在的，只是不直接，所以称为间接关联；后一种来自共同原因，通常称为虚假关联（spurious association）。网络里两种情况在控制 B 之后都表现为 A—C 没有边，单看偏相关分不出是哪一种。课程脚本的输出图 L6-2_cor_vs_pcor.png 对照了两种网络（见“R 代码”部分）。</p>
+<h3>偏相关的两个“陷阱”</h3>
+<ol><li><b>控制了什么，取决于你放进了什么。</b>偏相关只控制网络中已经包含的节点。如果“慢性病”没被测量，它造成的孤独—抑郁关联仍然留在边里。</li>
+<li><b>碰撞变量（collider）。</b>如果 A 和 B 本不相关，但都影响 C，那么控制 C 后 A、B 之间反而会出现（通常为负的）偏相关。这是负边有时“莫名其妙”出现的原因之一。</li></ol>
+<div class="box analogy"><b class="bt">与 CLPN 的联系：</b><p>GGM 的边是“同一时间点、控制其他所有节点后”的无向关联；CLPN 的边是“控制所有 T1 节点后，T1 某节点对 T2 某节点的预测”，是有向的回归系数。两者都是“控制其余所有节点”的思想。</p></div><h3>常见问题与误区</h3><details class="ans faq"><summary>为什么用精度矩阵，而不是直接做很多回归？</summary><p>两者在数学上等价：精度矩阵的元素换算成偏相关，与逐个节点回归、控制其他变量的结果一致。精度矩阵的好处是一步得到所有偏相关，也便于直接加入 LASSO 惩罚（下一课的 graphical lasso）。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<h4>三变量偏相关公式</h4>
+<div class="mathbox">\[r_{XZ\cdot Y}=\frac{r_{XZ}-r_{XY}\,r_{YZ}}{\sqrt{(1-r_{XY}^2)(1-r_{YZ}^2)}}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(r_{XZ}\)</td><td>X 与 Z 的普通（零阶）相关</td></tr><tr><td>\(r_{XZ\cdot Y}\)</td><td>读作“X 与 Z 在控制 Y 后的偏相关”，点号后面是被控制的变量</td></tr><tr><td>\(r_{XY}\,r_{YZ}\)</td><td>经由 Y 传递的那部分相关；减去它就是“直接”部分</td></tr></table>
+<p>代入 R/L6-2 的输出：\(r_{XZ}=0.39,\ r_{XY}=0.62,\ r_{YZ}=0.63\)，分子 \(0.39 - 0.62\times0.63 = 0.39-0.39 \approx 0\)。所以偏相关 ≈ 0。</p>
+<h4>多变量：精度矩阵（了解即可）</h4>
+<p>变量很多时，用协方差矩阵 \(\Sigma\) 的逆矩阵，即 <span class="term">精度矩阵<span class="en">（precision matrix）</span></span> \(K=\Sigma^{-1}\)，一次性算出所有偏相关：</p>
+<div class="mathbox">\[\rho_{ij\cdot\text{其余}} = -\frac{k_{ij}}{\sqrt{k_{ii}\,k_{jj}}}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\Sigma\)</td><td>协方差（或相关）矩阵</td></tr><tr><td>\(K=\Sigma^{-1}\)</td><td>精度矩阵：Σ 的逆矩阵；R 中用 solve(Σ) 计算</td></tr><tr><td>\(k_{ij}\)</td><td>精度矩阵第 i 行第 j 列的元素</td></tr><tr><td>\(\rho_{ij\cdot\text{其余}}\)</td><td>节点 i 与 j 在控制其他所有节点后的偏相关；注意前面的负号</td></tr></table>
+<p>所以“GGM 中没有边” ⇔ \(k_{ij}=0\) ⇔ 精度矩阵中对应位置为 0。下一课的 graphical lasso 就是直接对 K 加惩罚，让许多 \(k_{ij}\) 变成 0。</p>
+<h4>偏相关与多元回归</h4>
+<p>用其余所有变量预测 \(X_i\) 时，\(X_j\) 的回归系数 \(\beta_{ij}\) 与偏相关有同样的符号，并且 \(\beta_{ij}=0 \iff \rho_{ij\cdot\text{其余}}=0\)。R/L6-2 中 <code>lm(注意力差 ~ 失眠 + 疲劳)</code> 的失眠系数为 −0.004 ≈ 0，与偏相关一致。这就是“逐节点回归（nodewise regression）”的思想：对每个节点用其余节点做回归，也能找出网络结构。CLPN 用的就是这种方式，只不过预测变量换成了上一个时间点的所有节点。</p>
+
+<h3>完整例题：亲手算出“条件独立”</h3>
+<p>三个变量：失眠（1）、疲劳（2）、注意力差（3）。假设相关为 r₁₂ = 0.6，r₁₃ = 0.6，r₂₃ = 0.36。疲劳和注意力差的相关 0.36 不算小，但它是直接关联，还是“都受失眠影响”带来的？</p>
+<p>控制失眠后，疲劳与注意力差的偏相关为：</p>
+<div class="mathbox">\[r_{23\cdot1}=\frac{r_{23}-r_{12}r_{13}}{\sqrt{(1-r_{12}^2)(1-r_{13}^2)}}=\frac{0.36-0.6\times0.6}{\sqrt{0.64\times0.64}}=\frac{0}{0.64}=0\]</div>
+<p>分子正好为 0：0.36 完全可以由“失眠 → 疲劳”和“失眠 → 注意力差”两条路径解释（0.6 × 0.6 = 0.36）。在偏相关网络里，疲劳与注意力差之间<b>没有边</b>。这就是“条件独立”的含义。</p>
+<p>再算控制注意力差后，失眠与疲劳的偏相关：分子 = 0.6 − 0.6 × 0.36 = 0.384，分母 = √(0.64 × (1 − 0.1296)) ≈ 0.746，偏相关 ≈ 0.51。它比原来的 0.6 小，但仍然明显，所以失眠—疲劳这条边保留。最终的网络是一条“疲劳—失眠—注意力差”的链，失眠位于中间。</p>
+<p>与 R 对照：<code>R &lt;- matrix(c(1, .6, .6, .6, 1, .36, .6, .36, 1), 3); P &lt;- -cov2cor(solve(R)); diag(P) &lt;- 1; round(P, 3)</code>。加负号后对角线会变成 −1，所以要用 <code>diag(P) &lt;- 1</code> 改回 1（与本课 R 代码中 <code>diag(pc) &lt;- 1</code> 相同）。非对角线上会出现 0.514 和 0。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L6-2.R 的核心部分（R 允许中文变量名，但正式项目建议用英文）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(qgraph)
+set.seed(62); n &lt;- 1000
+失眠 &lt;- rnorm(n)
+疲劳 &lt;- 0.6 * 失眠 + rnorm(n, 0, .8)
+注意力差 &lt;- 0.6 * 疲劳 + rnorm(n, 0, .8)       # 只受疲劳影响
+d &lt;- data.frame(失眠, 疲劳, 注意力差)
+round(cor(d), 2)                                # 普通相关
+P  &lt;- solve(cor(d))                             # 精度矩阵 = 相关矩阵的逆
+pc &lt;- -cov2cor(P); diag(pc) &lt;- 1                # 偏相关
+round(pc, 2)
+coef(lm(注意力差 ~ 失眠 + 疲劳))                # 回归系数与偏相关一致（失眠 ≈ 0）
+par(mfrow = c(1, 2))
+qgraph(cor(d), graph = &quot;cor&quot;,  labels = names(d), edge.labels = TRUE, theme = &quot;colorblind&quot;, title = &quot;相关网络&quot;)
+qgraph(cor(d), graph = &quot;pcor&quot;, labels = names(d), edge.labels = TRUE, theme = &quot;colorblind&quot;, title = &quot;偏相关网络&quot;)</code></pre></div>
+<p><b>关键函数：</b><code>solve(A)</code> 求矩阵的逆；<code>cov2cor()</code> 把矩阵标准化成“相关”的形式（除以对角线的平方根），再加负号就是偏相关；<code>qgraph(…, graph = "pcor")</code> 让 qgraph 自动把相关矩阵转换为偏相关网络。</p><div class="box warnbox"><b class="bt">计算偏相关时的常见错误</b><ul>
+<li><b>忘了负号。</b>由精度矩阵算偏相关的公式是 ρ = −k<sub>ij</sub>/√(k<sub>ii</sub>k<sub>jj</sub>)。<code>cov2cor(solve(R))</code> 得到的非对角元素正负号是反的，要再乘以 −1。</li>
+<li><b>变量太多而样本太少。</b>p 接近 N 时，相关矩阵接近奇异，<code>solve()</code> 会报 “system is computationally singular”，或者得到很不稳定的结果。6.3 课要用正则化，这是原因之一。</li>
+<li><b>把 T1 总分和各题一起放进网络。</b>总分是各题之和，与各题完全线性相关，矩阵无法求逆。网络里只放同一层次的变量。</li></ul></div>
+<p><b>一个小提醒：</b>偏相关网络中的边数会随着放进网络的节点而变化。往网络里加入一个新变量（例如“慢性疼痛”），原来的某些边可能会变弱甚至消失，因为它们的一部分关联可以通过新变量来解释。所以网络的结构总是“相对于这组变量”而言的。论文的方法部分应说明为什么选这些节点，讨论部分也应说明遗漏了哪些重要变量。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L6-2.R</code>（27 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L6-2.R  偏相关网络与高斯图模型（GGM）  (Partial correlations &amp; GGM)
+# 例子：失眠 → 疲劳 → 注意力差（链式结构 chain）
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(qgraph)
+log_open(&quot;L6-2_log.txt&quot;)
+set.seed(62)
+n &lt;- 1000
+失眠 &lt;- rnorm(n)
+疲劳 &lt;- 0.6 * 失眠 + rnorm(n, 0, .8)
+注意力差 &lt;- 0.6 * 疲劳 + rnorm(n, 0, .8)          # 注意力差只受疲劳影响
+d &lt;- data.frame(失眠, 疲劳, 注意力差)
+cat(&quot;相关 correlation：\n&quot;); print(round(cor(d), 2))
+P &lt;- solve(cor(d))                                 # 精度矩阵 precision matrix = 相关矩阵的逆
+pc &lt;- -cov2cor(P); diag(pc) &lt;- 1                   # 偏相关 = 标准化后取负号
+cat(&quot;\n偏相关 partial correlation：\n&quot;); print(round(pc, 2))
+cat(&quot;失眠–注意力差：相关 =&quot;, round(cor(失眠, 注意力差), 2), &quot;，偏相关 ≈&quot;, round(pc[1, 3], 2),
+    &quot;→ 控制疲劳后两者条件独立（conditional independence），GGM 中没有边。\n&quot;)
+# 偏相关 ↔ 多元回归：注意力差 ~ 失眠 + 疲劳 中失眠的系数也≈0
+print(round(coef(lm(注意力差 ~ 失眠 + 疲劳)), 3))
+png_open(&quot;L6-2_cor_vs_pcor.png&quot;, 2000, 1000)
+par(mfrow = c(1, 2))
+qgraph(cor(d), graph = &quot;cor&quot;,  labels = names(d), edge.labels = TRUE, theme = &quot;colorblind&quot;, title = &quot;相关网络&quot;, layout = &quot;circle&quot;)
+qgraph(cor(d), graph = &quot;pcor&quot;, labels = names(d), edge.labels = TRUE, theme = &quot;colorblind&quot;, title = &quot;偏相关网络&quot;, layout = &quot;circle&quot;)
+invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L6-2_cor_vs_pcor.png" alt="L6-2_cor_vs_pcor.png" loading="lazy"><figcaption>图：<code>R/output/L6-2_cor_vs_pcor.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L6-2_log.txt</code></div><pre class="out"><code>相关 correlation：
+         失眠 疲劳 注意力差
+失眠     1.00 0.62     0.39
+疲劳     0.62 1.00     0.63
+注意力差 0.39 0.63     1.00
+
+偏相关 partial correlation：
+         失眠 疲劳 注意力差
+失眠     1.00 0.53     0.00
+疲劳     0.53 1.00     0.53
+注意力差 0.00 0.53     1.00
+失眠–注意力差：相关 = 0.39 ，偏相关 ≈ 0 → 控制疲劳后两者条件独立（conditional independence），GGM 中没有边。
+(Intercept)        失眠        疲劳 
+      0.030      -0.004       0.625 </code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">偏相关 r<sub>XZ·Y</sub> 的含义是？</p><ul class="opts"><li><button type="button" data-ok="0">A. X 与 Z 的普通（零阶）相关</button><div class="ofb" hidden>零阶相关不控制任何变量；偏相关是在控制 Y 之后计算的。</div></li><li><button type="button" data-ok="1">B. 控制 Y 之后，X 与 Z 剩余的关联</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. X 对 Z 的因果效应：Y 已经被控制，所以剩下的就是因果</button><div class="ofb" hidden>控制一个已测变量排除不了未测量的混杂，偏相关仍是关联，不是因果。</div></li><li><button type="button" data-ok="0">D. X 与 Z 之间经由 Y 传递的那部分关联</button><div class="ofb" hidden>经由 Y 传递的部分（r<sub>XY</sub>r<sub>YZ</sub>）恰好是被减掉的那一块，偏相关是剩下的部分。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">GGM 中两个节点之间没有边，意味着？</p><ul class="opts"><li><button type="button" data-ok="0">A. 二者的相关为 0</button><div class="ofb" hidden>相关可以很大，只是能被其他节点解释（本课的失眠—注意力差：r = 0.39，偏相关 ≈ 0）。</div></li><li><button type="button" data-ok="1">B. 给定其他所有节点后，二者条件独立（偏相关为 0）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 一个节点对另一个节点没有任何影响，包括间接影响</button><div class="ofb" hidden>间接影响仍可能存在：A → B → C 的链条中 A 与 C 没有边，但 A 通过 B 影响 C。</div></li><li><button type="button" data-ok="0">D. 样本量不足</button><div class="ofb" hidden>正则化网络中边为 0 可能与样本量有关，但 GGM 的定义说的是条件独立，与样本量无关。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">偏相关与多元回归系数有什么联系？</p><ul class="opts"><li><button type="button" data-ok="0">A. 回归系数衡量预测，偏相关衡量关联，两者可以符号相反</button><div class="ofb" hidden>两者总是同号，并且同时为 0；这正是逐节点回归能找出网络结构的原因。</div></li><li><button type="button" data-ok="1">B. 回归系数为 0 当且仅当偏相关为 0，且两者同号</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 回归系数总是等于偏相关</button><div class="ofb" hidden>两者同号、同时为 0，但数值一般不相等：回归系数还取决于两个变量的（残差）方差。</div></li><li><button type="button" data-ok="0">D. 偏相关是回归系数的平方</button><div class="ofb" hidden>偏相关可以是负数，平方不会是负数。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">精度矩阵 K 中 k<sub>ij</sub> = 0 说明？</p><ul class="opts"><li><button type="button" data-ok="0">A. i 与 j 的相关为 0</button><div class="ofb" hidden>精度矩阵的元素对应偏相关；普通相关可以不为 0。</div></li><li><button type="button" data-ok="1">B. i 与 j 的偏相关为 0</button><div class="ofb" hidden>正确：ρ = −k<sub>ij</sub>/√(k<sub>ii</sub>k<sub>jj</sub>)。</div></li><li><button type="button" data-ok="0">C. i 的方差为 0</button><div class="ofb" hidden>方差信息在对角线上；非对角元素 k<sub>ij</sub> 为 0 与 i 的方差无关。</div></li><li><button type="button" data-ok="0">D. 矩阵不可逆</button><div class="ofb" hidden>K 本身就是 Σ 的逆；某个非对角元素为 0 不影响它是否可逆。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">A、B 都影响 C 而彼此无关。控制 C 后 A、B 的偏相关可能？</p><ul class="opts"><li><button type="button" data-ok="0">A. 仍然为 0，因为 A、B 本来就无关</button><div class="ofb" hidden>这正是碰撞变量的陷阱：A、B 本来无关，控制 C 之后反而出现关联。</div></li><li><button type="button" data-ok="1">B. 出现非零（常为负）的偏相关</button><div class="ofb" hidden>正确：控制碰撞变量会制造虚假关联。</div></li><li><button type="button" data-ok="0">C. 非零，而且说明 A、B 之间存在直接作用</button><div class="ofb" hidden>这条偏相关是控制 C 造成的，不说明 A、B 之间有直接作用。</div></li><li><button type="button" data-ok="0">D. 一定为正</button><div class="ofb" hidden>两个原因都正向影响 C 时，控制 C 后的偏相关通常为负。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：手算偏相关<span class="lvl">基础</span></h4><p>已知 r(孤独, 抑郁) = 0.50，r(孤独, 社会支持) = −0.40，r(抑郁, 社会支持) = −0.30。求控制社会支持后孤独与抑郁的偏相关。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>\(\frac{0.50-(-0.40)(-0.30)}{\sqrt{(1-0.16)(1-0.09)}}=\frac{0.50-0.12}{\sqrt{0.84\times0.91}}=\frac{0.38}{0.874}\approx0.43\)。控制社会支持后，孤独与抑郁的关联略有下降，但仍然明显。</p></details></div>
+<div class="exitem"><h4>练习 2：cor() 与 pcor 对照<span class="lvl">动手</span></h4><p>运行 R/L6-2.R，然后把 <code>注意力差 &lt;- 0.6 * 疲劳 + rnorm(n, 0, .8)</code> 改为 <code>注意力差 &lt;- 0.6 * 疲劳 + 0.3 * 失眠 + rnorm(n, 0, .8)</code>，重新计算偏相关。失眠—注意力差的偏相关变成多少？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>加入直接作用后，失眠—注意力差的偏相关会明显大于 0（参考答案 <code>R/solutions/L6-2_solution.R</code>，种子 62：0.28；疲劳—注意力差 0.53，失眠—疲劳 0.36），偏相关网络中出现这条边。这说明偏相关能区分“直接”与“间接”关联，前提是中间变量被测量到了。</p></details></div>
+<div class="exitem"><h4>练习 3：在课程数据上比较两种网络<span class="lvl">拓展</span></h4><p>读入课程数据，取 T1 的 9 道题，用 <code>qgraph(cor(x), graph = "cor")</code> 与 <code>graph = "pcor"</code> 画两张图，数一数 |权重| &gt; 0.1 的边各有多少。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考代码：<code>x &lt;- read_course_data()[, vars_t(1)]; R &lt;- cor(x); P &lt;- -cov2cor(solve(R)); diag(P) &lt;- 0; sum(abs(R[upper.tri(R)]) &gt; .1); sum(abs(P[upper.tri(P)]) &gt; .1)</code>。参考答案脚本的结果：相关网络中 36 对全部 &gt; 0.1（因为题目普遍正相关，且有稳定特质）；偏相关网络只有 16 条，而且 16 条全部在同一量表内部（孤独题之间或抑郁题之间）；跨量表的关联在控制其余题目后都降到了 0.1 以下。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>用 3 个变量的例子（失眠 → 疲劳 → 注意力差）说明：为什么失眠与注意力差有相关，但偏相关接近 0；在 R 中用 cor() 与 qgraph(…, graph = &quot;pcor&quot;) 对照验证。</p></div><h3>自测问题</h3><ol><li>偏相关与多元回归系数有什么联系？</li><li>GGM 中两个节点之间没有边，意味着什么？</li><li>为什么偏相关网络通常比相关网络“干净”？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>相关会沿链条“传染”；偏相关 = 控制其余变量后的剩余关联。</li><li>GGM：边 = 偏相关；没有边 = 条件独立。</li><li>偏相关可由精度矩阵 K = Σ⁻¹ 算出：ρ = −k<sub>ij</sub>/√(k<sub>ii</sub>k<sub>jj</sub>)。</li><li>回归系数为 0 ⇔ 偏相关为 0：这是逐节点回归和 CLPN 的基础。</li><li>陷阱：只控制已测变量；控制碰撞变量会制造虚假边。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Epskamp, S., & Fried, E. I. (2018). A tutorial on regularized partial correlation networks. <i>Psychological Methods, 23</i>(4), 617–634. <a href="https://doi.org/10.1037/met0000167" target="_blank" rel="noopener">doi.org/10.1037/met0000167</a><div class="muted" style="font-size:.84rem">正则化偏相关网络（EBICglasso）教程，第 6.3 课。</div></li><li>Borsboom, D., & Cramer, A. O. J. (2013). Network analysis: An integrative approach to the structure of psychopathology. <i>Annual Review of Clinical Psychology, 9</i>, 91–121. <a href="https://doi.org/10.1146/annurev-clinpsy-050212-185608" target="_blank" rel="noopener">doi.org/10.1146/annurev-clinpsy-050212-185608</a><div class="muted" style="font-size:.84rem">网络视角的奠基性综述，第 0.2 课阅读。</div></li></ul></section>
+<nav class="pager"><a href="L6-1.html" class="pv"><small>上一课</small>6.1 网络的语言：节点、边、权重与邻接矩阵</a><a href="L6-3.html" class="nx"><small>下一课</small>6.3 正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></nav>
+<p class="foot">CLPN 从零开始 · 第 6.2 课 · <a href="../index.html#L6-2">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

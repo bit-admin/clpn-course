@@ -1,0 +1,241 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>A Plot Is Built Up Layer by Layer</h2>
+<div class="box story"><b class="bt">A figure for the agency's annual report</b>
+<p>The agency director asks you to draw a figure of "loneliness and depression" for the annual report, with men and women in different colors. In Excel you click through it step by step: insert a chart, select the data, change the colors, add a trend line… and do it all again the next time the data are updated. With R's <code>ggplot2</code>, you write down a "recipe" for the figure: which data to use, which variable goes on the x-axis and which on the y-axis, what the colors distinguish, whether to draw points or lines. Once the recipe is written, you rerun it after the data change and the figure updates itself.</p></div>
+
+<h3>The grammar of graphics: data + mapping + geometric objects</h3>
+<p><code>ggplot2</code> is based on the {{T:grammar of graphics|}} proposed by Wilkinson (implemented in R by Hadley Wickham). Every plot is made of a few components:</p>
+<ol><li><b>Data</b>: a data frame, one row per person.</li>
+<li><b>{{T:Aesthetic mapping|}}</b>: links variables to visual properties of the plot: horizontal position x, vertical position y, color, fill, size, shape. <code>aes(x = sleep, y = depress)</code> means "put the sleep variable on the x-axis and the depression variable on the y-axis": each person's sleep value sets the point's left–right position, and their depression value its up–down position.</li>
+<li><b>{{T:Geometric object|geom}}</b>: the graphical element that shows the data, such as <code>geom_point()</code> points, <code>geom_histogram()</code> histogram bars, <code>geom_boxplot()</code> boxplots, <code>geom_smooth()</code> fitted lines.</li>
+<li>Other optional layers: <code>labs()</code> for the title and axis labels, <code>theme_*()</code> for the look, <code>facet_wrap()</code> for facets (splitting into small plots by group).</li></ol>
+<p>The components are stacked with <code>+</code> (note: ggplot uses <code>+</code>, not <code>|&gt;</code>).</p>
+<div class="widget" data-widget="ggbuild"></div>
+<div class="box analogy"><b class="bt">Analogy: stacking transparencies</b><p>Imagine stacking transparencies on an overhead projector: the first has only the axes (<code>ggplot(data, aes(...))</code>), the second adds the scatter points (<code>+ geom_point()</code>), the third the regression line (<code>+ geom_smooth()</code>), the fourth the title (<code>+ labs()</code>). Each sheet can be pulled out or replaced on its own.</p></div>
+<div class="box warnbox"><b class="bt">Inside vs. outside aes()</b><p><code>aes(colour = Gender)</code>: the color follows a variable (men and women in different colors), and a legend is created automatically. <code>geom_point(colour = "blue")</code>: every point is blue. Writing a fixed value inside <code>aes()</code> (such as <code>aes(colour = "blue")</code>) is a common mistake; you get a puzzling legend labeled "blue."</p></div>
+
+<h3>Choosing the right plot: the three most common</h3>
+<div class="tablewrap"><table><thead><tr><th>Purpose</th><th>Plot</th><th>geom</th></tr></thead><tbody>
+<tr><td>See the distribution of one continuous variable (skew, peaks, outliers)</td><td>Histogram</td><td><code>geom_histogram()</code></td></tr>
+<tr><td>See the relationship between two continuous variables</td><td>Scatterplot (+ fitted line)</td><td><code>geom_point()</code> / <code>geom_jitter()</code> + <code>geom_smooth()</code></td></tr>
+<tr><td>Compare distributions across groups</td><td>Grouped boxplot</td><td><code>geom_boxplot()</code></td></tr></tbody></table></div>
+<p>To check an item's skew, use a histogram (or a bar chart, which is especially clear for items with only a few values, such as 0–3): you see at a glance which end most people are at and which way the tail runs. A boxplot can also hint at skew (the median line sits toward one side of the box, one whisker is longer), but it hides the details of the distribution. Two cases not in the table: to see how the same people change over time, use long-format data (Lesson 4.2) and draw lines, with <code>aes(x = wave, y = score, group = id)</code> for each person's trajectory and a thick mean line on top; network plots are left to qgraph (Lesson 6.4).</p>
+<p>Scale items take only a few whole-number values, so scatter points pile up on the grid points. <code>geom_jitter()</code> nudges each point by a small random amount so the overlapping points spread out and you can see the density; just remember the points have been moved slightly.</p>
+
+<h3>Reproducible reports: code, results, and text together</h3>
+<div class="box story"><b class="bt">The cost of copy and paste</b><p>Xiao Zhou copied numbers from SPSS output one by one into his thesis in Word. When the data were later corrected, he had to find and change more than 40 numbers by hand, missed 3 of them, and was caught out by a question at his defense.</p></div>
+<p>A {{T:reproducible report|}} puts the text, the code, and the code's results in one file. When you render it (render / knit), the software runs all the code from the start and inserts the tables, figures, and numbers into the text, producing HTML, Word, or PDF. When the data change, you render again and every number updates with nothing missed and nothing mistyped. Writing that interleaves text and code like this is called {{T:literate programming|}}.</p>
+<ul><li><b>R Markdown</b> (<code>.Rmd</code>): older and the most widely used. Render it in RStudio with the Knit button.</li>
+<li><b>Quarto</b> (<code>.qmd</code>): the newer system from Posit, with almost the same syntax as R Markdown, supporting R, Python, and other languages. Recent RStudio versions include Quarto; render with the Render button.</li></ul>
+<p>A file has three parts: the YAML header at the top (enclosed in <code>---</code>, setting the title and output format); Markdown text (<code>#</code> headings, <code>**bold**</code>, lists); and code chunks (<code>{r}</code> chunks enclosed in three backticks). You can also put inline code in the text (backtick + r + code), such as r = <code>`r round(cor(x, y), 2)`</code>, which becomes r = 0.31 when rendered.</p>
+<div class="box sw"><b class="bt">Why this matters for the capstone project</b><p>The course's capstone project (Module 10) is to be written in Quarto or R Markdown. Any reader (a reviewer, a collaborator, or you a few months later) who opens the report can trace every number back to the code that produced it; to try a different setting, change one line and render again.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>The Five Numbers in a Boxplot</h2>
+<p>A boxplot shows the "five-number summary":</p>
+<dl class="sym"><dt>\(Q_1\)</dt><dd>First quartile: 25% of people are below it (bottom of the box).</dd><dt>\(Q_2\)</dt><dd>Median: 50% of people are below it (thick line in the box).</dd><dt>\(Q_3\)</dt><dd>Third quartile: 75% of people are below it (top of the box).</dd><dt>\(IQR\)</dt><dd>Interquartile range \(=Q_3-Q_1\), the range of the middle 50% of people (the height of the box).</dd></dl>
+<div class="mathbox">$$\text{end of the upper whisker} = \text{the largest observation not above } Q_3 + 1.5\times IQR$$</div>
+<p>Points beyond \(Q_1 - 1.5\,IQR\) or \(Q_3 + 1.5\,IQR\) are drawn individually as "possible outliers" (ggplot2's default rule, proposed by Tukey). Example: in the course data, women's T1 depression totals have \(Q_1=1,\ Q_2=4,\ Q_3=6\) and \(IQR=5\), so the upper whisker reaches at most 6 + 7.5 = 13.5; for men, \(Q_1=1,\ Q_2=3,\ Q_3=5\), so the upper whisker reaches at most 11.</p>
+<p>A histogram's bar width (<code>binwidth</code>) sets how wide the intervals are that values are counted in; for a total score that takes only whole numbers, <code>binwidth = 1</code> gives each score its own bar.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Three Plots + One Report</h2>
+<p>Scripts for this lesson: <a href="../R/L2-6.R">R/L2-6.R</a> (draws the plots and renders the report) and <a href="../R/L2-6_report.Rmd">R/L2-6_report.Rmd</a> (the report source).</p>
+```r R/L2-6.R (plotting part)
+source("R/_setup.R")
+library(tidyverse)
+dat <- read_course_data()
+long <- dat |>
+  mutate(Loneliness = rowSums(across(paste0(lone_items, "_t1"))),
+         Depression = rowSums(across(paste0(dep_items, "_t1"))),
+         Gender = if_else(gender == 1, "Female", "Male"))
+# ggplot syntax: data + mapping aes() + geometric objects geom_*()
+p1 <- ggplot(long, aes(x = Loneliness, y = Depression, colour = Gender)) +
+  geom_jitter(alpha = .4, width = .2, height = .2) +       # jittered, semi-transparent points
+  geom_smooth(method = "lm", formula = y ~ x) +             # one regression line per group + 95% confidence band
+  labs(title = "T1 Loneliness and Depression", x = "Loneliness Total Score", y = "Depression Total Score")
+ggsave(out("L2-6_scatter.png"), p1, width = 6, height = 4.5, dpi = 200)
+p2 <- ggplot(long, aes(x = Depression, fill = Gender)) +
+  geom_histogram(binwidth = 1, position = "dodge") +        # bars for men and women side by side
+  labs(title = "Depression Total Score Distribution", x = "Depression Total Score", y = "Count")
+ggsave(out("L2-6_hist.png"), p2, width = 6, height = 4, dpi = 200)
+```
+<figure><img src="../R/output/L2-6_scatter.png" alt="Scatterplot of loneliness and depression" style="max-width:100%"><figcaption>Scatterplot: <code>colour = Gender</code> is inside <code>aes()</code>, so the points and the regression lines are colored by gender and a legend appears automatically. The two lines are roughly parallel and the women's line is a little higher overall, suggesting that gender mainly shifts the average level of depression rather than the loneliness–depression slope (whether there really is an interaction has to be tested; Lesson 3.2). The gray band is the 95% confidence band of the regression line.</figcaption></figure>
+<figure><img src="../R/output/L2-6_hist.png" alt="Histogram of depression total" style="max-width:100%"><figcaption>Histogram: the depression total is clearly right-skewed, with most people at 0–5 (consistent with skew = 0.85 in Lesson 2.5).</figcaption></figure>
+```r Grouped boxplot
+p3 <- ggplot(long, aes(x = Gender, y = Depression, fill = Gender)) +
+  geom_boxplot(alpha = .6, outlier.shape = NA) +     # no separate outlier points (all points are drawn below)
+  geom_jitter(width = .15, height = .2, alpha = .2) +
+  labs(title = "T1 Depression Total Score: By Gender", x = NULL, y = "Depression Total Score") +
+  theme_minimal(base_family = plot_font) + theme(legend.position = "none")   # font: see the box below
+ggsave(out("L2-6_box.png"), p3, width = 5, height = 4, dpi = 150)        # included at the end of R/L2-6.R
+```
+<figure><img src="../R/output/L2-6_box.png" alt="Boxplot of depression by gender" style="max-width:420px;width:100%"><figcaption>Boxplot: the median is 4 for women and 3 for men; in both groups the upper half of the box is longer than the lower half and the upper whisker is longer, which again shows the right skew.</figcaption></figure>
+<div class="box key"><b class="bt">Plot fonts</b><p>The course's <code>_setup.R</code> defines <code>plot_font</code> and makes it the font of the default theme <code>theme_bw()</code>. When you switch to another theme, write <code>theme_minimal(base_family = plot_font)</code> as above; otherwise the theme falls back to its own default font. If labels with non-Latin characters (for example Chinese) show up as empty boxes on your computer (this happens especially on Mac and Linux), set <code>plot_font</code> in <code>_setup.R</code> to an installed font that has those characters (such as <code>"PingFang SC"</code> on macOS), or install the <code>showtext</code> package.</p></div>
+<h3>The report source file R/L2-6_report.Rmd</h3>
+<pre class="out">---
+title: "My First Reproducible Report (L2-6)"
+output:
+  html_document:
+    mathjax: null      # Do not load MathJax from network; opens offline (no math formulas in report)
+    self_contained: true
+---
+
+&#96;&#96;&#96;{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv")   # Working directory = course root when rendered via R/L2-6.R; before clicking Knit in RStudio, set Knit Directory to Project Directory
+dat <- dat |> mutate(loneliness = rowSums(across(lone1_t1:lone4_t1)),
+                     depression = rowSums(across(dep1_t1:dep5_t1)))
+&#96;&#96;&#96;
+
+## Descriptive Statistics Table
+
+&#96;&#96;&#96;{r}
+dat |> summarise(across(c(loneliness, depression), list(mean = mean, sd = sd))) |> knitr::kable(digits = 2)
+&#96;&#96;&#96;
+
+## Two Plots
+
+&#96;&#96;&#96;{r}
+ggplot(dat, aes(loneliness, depression)) + geom_jitter(alpha = .3) + geom_smooth(method = "lm")
+ggplot(dat, aes(depression)) + geom_histogram(binwidth = 1)
+&#96;&#96;&#96;
+
+## Interpretation
+
+The correlation between loneliness and depression total scores is r = &#96;r round(cor(dat$loneliness, dat$depression), 2)&#96;. Numbers come directly from code, and re-knitting after data updates refreshes them automatically—this is what "reproducible" means.</pre>
+<p>The rendered result: <a href="../R/output/L2-6_report.html">R/output/L2-6_report.html</a> (the inline code shows as r = 0.31 in the report). What the parts mean:</p>
+<ul><li><code>include=FALSE</code>: runs the chunk but shows neither its code nor its results in the report (good for loading packages and reading data).</li>
+<li><code>echo = TRUE</code>: shows the code in the report; for readers who don't know R, set it to <code>FALSE</code> to show only the results.</li>
+<li><code>knitr::kable()</code>: turns a data frame into a neat table.</li>
+<li>Note the comment in the setup chunk above: the relative path <code>data/...</code> is found only if the working directory is the course root. When rendering, R sets the working directory to the folder holding the .Rmd by default (here R/), so clicking Knit directly gives a file-not-found error. So before clicking Knit in RStudio, choose Knit Directory → <b>Project Directory</b> in the drop-down menu next to the Knit button; or, with the course root as the working directory, run <code>rmarkdown::render("R/L2-6_report.Rmd", knit_root_dir = getwd())</code> in the console, which is how R/L2-6.R renders it.</li></ul>
+<p>With Quarto, save the file as <code>.qmd</code>, write <code>format: html</code> in the YAML header (instead of <code>output: html_document</code>), and you can write chunk options inside the chunk as <code>#| echo: false</code>; click Render, or run <code>quarto render report.qmd</code> in a terminal.</p>
+
+<!-- extra:begin -->
+<h3>Worked example: from "it plots" to "it goes in the report"</h3>
+<p>Below is a boxplot comparing T1 depression totals by gender, improved step by step from a first draft into a version you can put in a report. Each step deals with a common problem:</p>
+```r
+library(ggplot2)
+dat$dep_t1 <- rowSums(dat[, paste0(dep_items, "_t1")])
+dat$Gender <- factor(dat$gender, levels = c(0, 1), labels = c("Male", "Female"))  # 0/1 → labeled factor
+p <- ggplot(dat, aes(x = Gender, y = dep_t1)) +
+  geom_boxplot(outlier.shape = NA, width = 0.5) +       # no separate outlier points, since the next layer draws every point
+  geom_jitter(width = 0.15, alpha = 0.2, size = 0.8) +   # show the raw data so the boxplot doesn't hide the sample size
+  labs(x = NULL, y = "T1 depression total (0–15)", title = "Figure 1  T1 depression total by gender") +
+  theme_minimal(base_size = 12)
+ggsave("R/output/fig_dep_gender.png", p, width = 12, height = 9, units = "cm", dpi = 300)
+```
+
+<ul><li><b>Turn gender into a labeled factor first.</b> Otherwise gender is a 0/1 number, ggplot treats it as continuous, and the x-axis shows ticks such as 0.25 and 0.5.</li>
+<li><b>Add the raw points to the boxplot.</b> A boxplot shows only five numbers: you can't see how many people are in each group, or whether the scores are piled up at 0. Overlaying semi-transparent jittered points shows the summary and the raw data together.</li>
+<li><b>Give units and ranges in the axis labels</b>, and a figure number in the title.</li>
+<li><b>Set the size and resolution with ggsave.</b> Screenshots are blurry and come in inconsistent sizes.</li></ul>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b><code>+</code> at the start of a line.</b> ggplot's <code>+</code> must go at the end of the previous line; otherwise R thinks the statement has ended, and the next line gives an error.</li>
+<li><b>"object not found" when rendering, although it runs in the Console.</b> When rendering, Quarto / R Markdown runs all the code in the document from the start in a brand-new R session. Objects that you created only in the Console, and that aren't in the document, can't be found. This is also a good test of whether the analysis is really reproducible.</li></ul></div>
+
+<p>A small tip: store the theme settings you use often (font size, font, colors) in an object, such as <code>my_theme &lt;- theme_minimal(base_size = 12)</code>, and add <code>+ my_theme</code> to every plot. All figures in the report then share one style, and to change it later you edit one place.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: What does aes(x = sleep, y = depress) do?
+- Draws the scatter points || aes only sets up the mapping; drawing points takes geom_point().
++ Maps variables to visual properties: sleep sets the horizontal position, depress the vertical position || Correct.
+- Computes the correlation between sleep and depress || aes() only sets up the mapping and computes no statistics.
+E: Mapping (aes) + geometric object (geom) make a plot.
+```
+```quiz
+Q: Why is a reproducible report better than copying and pasting results for a thesis analysis?
++ The numbers come straight from the code; when the data or analysis change, rendering again updates everything, so nothing is mistyped or missed, and others can check it || Correct.
+- Because a rendered report cannot contain errors || Reproducible does not mean correct: if the code is wrong, so is the report. The benefit is that errors can be traced, and fixing one place updates everything.
+- Because reproducible reports run faster || Rendering runs all the code from scratch and is often slower; the benefit is that the numbers always match the code.
+E: Reproducible = raw data + code → the same results.
+```
+```quiz
+Q: Which plot is best for checking an item's skew?
+- Scatterplot || A scatterplot shows the relationship between two variables, not the shape of one variable's distribution.
++ Histogram (or bar chart) || Correct: you see the shape of the distribution directly.
+- Boxplot || A boxplot can hint at skew but draws only five numbers; for a 0–3 item it doesn't show how many people chose each score.
+E: A boxplot can hint at skew, but it hides the details.
+```
+```quiz
+Q: To make every point red, what is the correct code?
+- ggplot(d, aes(x, y, colour = "red")) + geom_point() || This creates a legend called "red," and the color isn't necessarily red.
++ ggplot(d, aes(x, y)) + geom_point(colour = "red") || Correct: a fixed value goes outside aes().
+E: Variables → inside aes(); fixed values → as arguments of the geom.
+```
+```quiz
+Q: In an .Rmd, you want the chunk that reads the data to run but not appear in the report. Which chunk option do you add?
+T: include=FALSE || include = FALSE || include=F || echo=FALSE || echo = FALSE
+H: Look at the setup chunk of L2-6_report.Rmd.
+E: include=FALSE shows neither the code nor the results; echo=FALSE hides only the code and still shows the results.
+```
+```quiz
+Q: In one group's boxplot, Q1 = 2 and Q3 = 6. Above what value does ggplot draw points separately as possible outliers by default?
+N: 12 | 0
+H: Upper limit = Q3 + 1.5 × IQR.
+E: IQR = 4, and 6 + 1.5 × 4 = 12.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.6-A: My first Quarto report</h4>
+<p>Write one Quarto report with two plots + one table of descriptive statistics + one paragraph of interpretation, rendered to HTML.</p>
+<details class="answer"><summary>Reference template week06.qmd</summary>
+<p>The full file: <a href="../R/solutions/week06.qmd">R/solutions/week06.qmd</a>. Note the two lines in the setup chunk that read the data. Quarto uses <b>the folder the .qmd is in</b> as the working directory; this file is in <code>R/solutions/</code>, so the data are at <code>../../data/</code>. If you render from the course root (for example by running <code>quarto render R/solutions/week06.qmd --execute-dir .</code> in RStudio's Terminal pane while at the course root), the path is <code>data/</code>. <code>file.exists()</code> tries the latter first and falls back to the former. If you save your own .qmd elsewhere, change the number of <code>../</code> to match how many levels it is below the course root.</p>
+<pre class="out">---
+title: "T1 Loneliness and Depression: Descriptive Analysis"
+author: "(Fill in)"
+format: html
+---
+
+&#96;&#96;&#96;{r}
+#| include: false
+# Quarto sets working directory to the folder containing .qmd: this file is in R/solutions/, so data is at ../../data/
+library(tidyverse)
+f <- if (file.exists("data/clpn_sim_wide.csv")) "data/clpn_sim_wide.csv" else "../../data/clpn_sim_wide.csv"
+dat <- read_csv(f, show_col_types = FALSE) |>
+  mutate(loneliness = rowSums(across(lone1_t1:lone4_t1)),
+         depression = rowSums(across(dep1_t1:dep5_t1)),
+         sex = factor(gender, levels = c(0, 1), labels = c("Male", "Female")))
+&#96;&#96;&#96;
+
+## Descriptive Statistics
+
+&#96;&#96;&#96;{r}
+dat |> group_by(sex) |>
+  summarise(n = n(), mean_loneliness = mean(loneliness), mean_depression = mean(depression), sd_depression = sd(depression)) |>
+  knitr::kable(digits = 2, caption = "Table 1 Descriptive statistics at T1 grouped by sex")
+&#96;&#96;&#96;
+
+## Figures
+
+&#96;&#96;&#96;{r}
+#| echo: false
+#| fig-cap: "Figure 1 Distribution of T1 depression total scores"
+ggplot(dat, aes(depression)) + geom_histogram(binwidth = 1)
+&#96;&#96;&#96;
+
+&#96;&#96;&#96;{r}
+#| echo: false
+#| fig-cap: "Figure 2 Boxplot of T1 depression total scores by sex"
+ggplot(dat, aes(sex, depression)) + geom_boxplot()
+&#96;&#96;&#96;
+
+## Interpretation
+
+The sample includes &#96;r nrow(dat)&#96; participants. The mean of T1 depression total score is &#96;r round(mean(dat$depression), 2)&#96;, displaying a right-skewed distribution... (write 3–5 sentences, avoiding causal language such as "led to" or "caused")</pre>
+<p>What to look for: (1) it renders (if the data can't be found, check where the .qmd is relative to the data path, as explained above); (2) tables and figures have clear titles; (3) the numbers in the interpretation come from inline code; (4) no causal wording such as "led to" or "caused."</p></details></div>
+<div class="exitem"><h4>Exercise 2.6-B: Facets</h4>
+<p>Add <code>+ facet_wrap(~ Gender)</code> to the scatterplot <code>p1</code>. How does the plot change? When are facets better than colors?</p>
+<details class="answer"><summary>Reference answer</summary><p>The plot splits into two small plots side by side, "Female" and "Male," each with its own points and regression line, on the same axes so they are easy to compare. Facets are clearer when there are many groups (for example 4 age bands) or many points whose colors hide each other; when you want to compare the positions of two lines directly, one plot with colors is more convenient.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>ggplot = data + <code>aes()</code> mapping + <code>geom_*()</code> geometric objects, layered with <code>+</code>; variables go inside aes, fixed values outside.</li>
+<li>Histograms for distributions, scatterplots for relationships, boxplots for comparing groups.</li>
+<li>Quarto / R Markdown put text, code, and results together; the numbers come from code and the whole report reproduces with one click. Next module: {{L:3.1}}.</li></ul>
+</section>

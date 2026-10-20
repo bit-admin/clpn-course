@@ -1,0 +1,17 @@
+# A tibble: 2 × 4
+  gender_label     n dep_mean lack_support_mean
+  <fct>        <int>    <dbl>             <dbl>
+1 Male           373     3.41              2.66
+2 Female         427     4.21              2.63
+[1] -1
+
+Number of participants with loneliness >= 13 and depression >= 10:  22 
+# A tibble: 22 × 3
+  id    lone_sum_t1 dep_sum_t1
+  <chr>       <dbl>      <dbl>
+1 P154           13         14
+2 P215           13         14
+3 P110           16         13
+4 P246           14         13
+5 P248           13         12
+# ℹ 17 more rows

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.4 用 qgraph 与 bootnet 估计并可视化网络 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L6-4.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="6.4" style="--c:#14b8a6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L6-4">CLPN 课程大纲</a><span class="crumb">M6 网络心理测量学基础 / 6.4</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L6-4.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L6-4.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details open style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html" class="cur" aria-current="page"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 6 · Network Psychometrics · 第 6.4 课</div>
+<h1>用 qgraph 与 bootnet 估计并可视化网络</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L6-3.html">6.3 正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a>、<a href="L2-6.html">2.6 ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></span><span>配套脚本：<a href="../R/L6-4.R">R/L6-4.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>用 bootnet::estimateNetwork() 估计 EBICglasso 网络</li><li>掌握 qgraph 绘图参数：layout、groups、labels、legend、maximum</li><li>在多张网络图之间使用相同布局以便比较（averageLayout）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>估计网络</b><span class="en">estimateNetwork()</span></li><li><b>布局</b><span class="en">layout, e.g. spring / Fruchterman–Reingold</span></li><li><b>分组着色</b><span class="en">groups</span></li><li><b>最大边权重</b><span class="en">maximum (for comparable plots)</span></li><li><b>图例</b><span class="en">legend</span></li></ul>
+<p>本课学习用 bootnet 估计网络，并用 qgraph 画出可放进论文的网络图。后续 CLPN 会反复用到这些绘图参数。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>两个包，各司其职</h3>
+<ul><li><b>bootnet</b>：负责估计（<code>estimateNetwork()</code>）和后面 M8 的稳定性检验（<code>bootnet()</code>）。它把 EBICglasso、ggmModSelect 等方法包装成统一接口。</li>
+<li><b>qgraph</b>：负责画图和计算中心性。<code>plot(net)</code> 实际上调用的就是 qgraph。</li></ul>
+<h3>一张“好”的网络图需要什么？</h3>
+<div class="tablewrap"><table><tr><th>要素</th><th>qgraph 参数</th><th>为什么</th></tr><tr><td>节点布局</td><td><code>layout = "spring"</code></td><td>Fruchterman–Reingold 弹簧算法：连接强的节点被“拉”得更近，便于看清结构</td></tr><tr><td>分组着色</td><td><code>groups = list(抑郁 = 1:9, 焦虑 = 10:16)</code></td><td>读者一眼区分不同量表/构念</td></tr><tr><td>节点标签</td><td><code>labels = c("D1", …)</code></td><td>短标签放图上，完整题目写在图注或图例中</td></tr><tr><td>图例</td><td><code>legend = TRUE</code>，<code>nodeNames = …</code></td><td>说明分组与完整题目</td></tr><tr><td>最大边权重</td><td><code>maximum = 0.5</code></td><td>固定“多粗算最粗”，多张图才能比较</td></tr><tr><td>色盲友好</td><td><code>theme = "colorblind"</code>（边：蓝正红负，并带色盲友好的节点配色）；<code>palette = "colorblind"</code> 只改分组节点的颜色</td><td>约 8% 男性有色觉异常；两个参数作用不同，见本课“常见问题”</td></tr></table></div>
+<h3>弹簧布局能“解读”吗？</h3>
+<p>弹簧布局把整个网络想象成用弹簧连起来的小球：边越强，弹簧越紧，节点越近；然后让系统“松弛”到能量最低的位置。它的目的只是让图好读：</p>
+<ul><li>两个节点挨得近，通常说明它们之间或它们与共同邻居之间连接较强；</li>
+<li>但距离不能被精确解读：算法有随机起点，同一网络换个种子可能得到旋转或镜像的布局；位于中央的节点不一定“最重要”。</li></ul>
+<div class="box warnbox"><b class="bt">常见错误：</b><p>“A 节点位于网络中心，说明它是核心症状。”位置是绘图算法的产物，判断“核心”要看中心性指标（6.5）及其稳定性（8.3）。</p></div>
+<h3>比较多张网络：固定布局与 maximum</h3>
+<p>如果要比较男女两个网络、或 T1→T2 与 T2→T3 两个 CLPN，必须做到：</p>
+<ol><li><b>相同布局：</b>用 <code>L &lt;- averageLayout(net1, net2)</code> 计算平均布局，然后 <code>plot(net1, layout = L)</code>、<code>plot(net2, layout = L)</code>。否则同一个节点在两张图中位置不同，读者无法比较。</li>
+<li><b>相同 maximum：</b>qgraph 默认把每张图里最强的边画成最粗。如果网络 1 最强边 0.3、网络 2 最强边 0.6，不固定 maximum 时两条边看起来一样粗。设定 <code>maximum = 0.6</code>（取两者中较大值）让粗细可比。</li></ol>
+<h3>cor_auto：定序题目用什么相关？</h3>
+<p>量表题目通常是 4–5 级的 <span class="term">定序变量<span class="en">（ordinal variable）</span></span>。把它们当作连续变量计算皮尔逊相关会低估关联。<code>corMethod = "cor_auto"</code> 会检查每个变量的取值个数：取值少（默认 ≤ 7 个）的视为定序，计算 <span class="term">多分格相关<span class="en">（polychoric correlation）</span></span>（假设题目背后有一个连续的正态潜变量被“切”成了等级），其余用皮尔逊相关。课程数据的题目正是这样生成的（连续得分切成 4 级）。注意：多分格相关在等级很少、样本小或分布极度偏斜时可能不稳定。</p>
+<h3>导出投稿质量的图片</h3>
+<p>期刊通常要求矢量图（PDF/EPS）或 300 dpi 以上的位图。R 中：<code>pdf()</code> / <code>cairo_pdf()</code>（支持中文）生成矢量图；<code>png(…, res = 300)</code> 生成高分辨率位图。课程 <code>_setup.R</code> 提供的 <code>png_open()</code> 已处理中文字体问题。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary><code>theme</code> 和 <code>palette</code> 有什么不同？</summary><p>两者管的东西不一样。<code>theme</code> 是一整套外观设置，其中最重要的是<b>边</b>的颜色：<code>theme = "colorblind"</code> 把正边画成蓝色、负边画成红色，同时也换上色盲友好的节点分组配色。<code>palette</code> 只管<b>节点</b>按 <code>groups</code> 分组时填什么颜色，不改变边的颜色。直接用 <code>qgraph()</code> 画图时，只写 <code>palette = "colorblind"</code>，节点颜色换了，正边却仍是 qgraph 经典主题的绿色。bootnet 的 <code>plot()</code> 默认已经是 <code>theme = "colorblind"</code>，所以本课代码在它上面再加 <code>palette</code> 不会冲突。写图注时，按图上实际的边颜色说明“蓝 = 正”还是“绿 = 正”。</p></details><h3>交互回顾：惩罚强度如何改变估计出的网络</h3><p>estimateNetwork(default = "EBICglasso") 在后台会尝试一系列 λ，然后用 EBIC 选出一个。拖动下面的滑块，看 λ 变大时弱边如何逐条消失，这就是 EBICglasso 在“幕后”做的事。</p><div class="widget w2" data-widget="lasso" data-title="EBICglasso 幕后：调整 LASSO 惩罚 λ，观察网络变稀疏"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>本课以绘图为主，数学只有两处值得理解：</p>
+<h4>1. 边粗细的映射</h4>
+<p>qgraph 大致按以下比例画边宽（简化表述）：</p>
+<div class="mathbox">\[\text{边宽}_{ij}\ \propto\ \frac{|w_{ij}| - \text{minimum}}{\text{maximum} - \text{minimum}}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(|w_{ij}|\)</td><td>边权重的绝对值</td></tr><tr><td>\(\text{maximum}\)</td><td>被画成“最粗”的权重；默认 = 本图中最大的 |w|</td></tr><tr><td>\(\text{minimum}\)</td><td>小于它的边不画（默认 0）。注意：设 minimum 只改变显示，不改变模型</td></tr></table>
+<p>所以两张图的 maximum 不同，同一粗细代表的数值就不同，这就是要固定 maximum 的原因。</p>
+<h4>2. 弹簧布局的“能量”</h4>
+<p>Fruchterman–Reingold 算法让相连节点之间有吸引力 \(f_a(d)=d^2/k\)，所有节点之间有排斥力 \(f_r(d)=k^2/d\)（\(d\) 为距离，\(k\) 为理想距离常数），边越强吸引越强；反复移动节点直到受力平衡。你只需要知道：这是一个启发式算法，没有“唯一正确”的布局。</p>
+<h4>3. 多分格相关的直觉</h4>
+<p>设题目 X 背后有连续潜变量 \(X^*\sim N(0,1)\)，当 \(X^*\) 落在阈值 \(\tau_1,\tau_2,\tau_3\) 划分的区间里时，观测到 1、2、3、4 级。多分格相关是两个潜变量 \(X^*, Y^*\) 之间的相关，通过极大似然从两题的交叉表中估计。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L6-4.R 的核心部分（数据由脚本用 genGGM() + ggmGenerator() 模拟）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(qgraph) })
+items &lt;- read.csv(out(&quot;L6-4_dep_anx_items.csv&quot;))   # 脚本先模拟“抑郁 9 + 焦虑 7”题数据
+net &lt;- estimateNetwork(items, default = &quot;EBICglasso&quot;,
+                       tuning = 0.5, corMethod = &quot;cor_auto&quot;)
+plot(net, layout = &quot;spring&quot;,
+     groups = list(抑郁 = 1:9, 焦虑 = 10:16),
+     legend = TRUE, palette = &quot;colorblind&quot;,
+     title = &quot;抑郁–焦虑 EBICglasso 网络&quot;)
+# 投稿用矢量图（支持中文）
+cairo_pdf(out(&quot;L6-4_network.pdf&quot;), 8, 6, family = cn_font)
+plot(net, layout = &quot;spring&quot;, groups = list(抑郁 = 1:9, 焦虑 = 10:16), legend = TRUE)
+dev.off()</code></pre></div>
+<h4>比较两张网络的标准写法</h4>
+<div class="codeblk"><div class="ctitle">练习用：在课程数据上比较 T1 与 T2 的横断面网络</div><pre><code class="language-r">dat &lt;- read_course_data()
+x1 &lt;- dat[, vars_t(1)]; x2 &lt;- dat[, vars_t(2)]; names(x1) &lt;- names(x2) &lt;- items
+n1 &lt;- estimateNetwork(x1, default = &quot;EBICglasso&quot;, corMethod = &quot;cor_auto&quot;)
+n2 &lt;- estimateNetwork(x2, default = &quot;EBICglasso&quot;, corMethod = &quot;cor_auto&quot;)
+L  &lt;- averageLayout(n1, n2)                         # 共同布局
+mx &lt;- max(abs(c(n1$graph, n2$graph)))               # 共同 maximum
+par(mfrow = c(1, 2))
+plot(n1, layout = L, maximum = mx, groups = groups_list, title = &quot;T1&quot;)
+plot(n2, layout = L, maximum = mx, groups = groups_list, title = &quot;T2&quot;)</code></pre></div>
+<h3>完整例题：读一张网络图的五个步骤</h3>
+<p>拿到一张 qgraph 网络图（不管是自己画的还是论文里的），按这个顺序读，能避免大多数误读：</p>
+<ol><li><b>先读图注：</b>节点代表什么（题目还是量表），边是什么（偏相关、回归系数，还是相关），用什么方法估计（EBICglasso、γ 取值），样本量多少。</li>
+<li><b>再看颜色约定和 maximum：</b>蓝色是正、红色是负吗？最粗的边对应多大的权重？如果图注没有写 maximum，不同图之间的粗细就不能比较。</li>
+<li><b>找最强的几条边：</b>不要凭眼睛判断，回到边权表（<code>getWmat(net)</code>），按绝对值排序，列出前 5 条，再回到图上定位。</li>
+<li><b>看社群之间的连接：</b>同色节点（同一量表）内部通常连接紧密。真正有信息量的是不同颜色之间的边，比如抑郁题与焦虑题之间有哪几条“桥”。</li>
+<li><b>最后才看位置：</b>弹簧布局中节点的位置只是近似反映连接强弱，不能据此说“某节点在中心，所以最重要”。重要性要用中心性指标量化（6.5 课），并检查稳定性（8.3 课）。</li></ol>
+<p>写成文字时，每一句都应该能对应到表格里的数字。例如：“抑郁题之间的连接普遍强于抑郁与焦虑之间的连接；跨构念的最强边为 D? – A?（偏相关 = 0.??）”。问号的位置要用你自己的输出填写。</p>
+<div class="box warnbox"><b class="bt">画图代码的常见错误</b><ul>
+<li><b>groups 的顺序与列顺序不一致。</b><code>groups = list(抑郁 = 1:9, 焦虑 = 10:16)</code> 中的数字是列的位置。如果数据的列顺序改了，颜色就会标错，而且不会报错。</li>
+<li><b>直接对定序题目用 Pearson 相关。</b>4 点或 5 点量表、偏态明显的题目，bootnet 的 <code>corMethod = "cor_auto"</code> 会自动改用多分格相关（polychoric）。但多分格相关在样本小、某些等级几乎没人选时可能不稳定，需要留意警告信息。</li>
+<li><b>比较两张图时各画各的。</b>不固定 <code>layout</code> 和 <code>maximum</code>，两张图的位置和粗细都不可比。使用 <code>averageLayout()</code> 和相同的 <code>maximum</code>。</li>
+<li><b>导出的 PNG 分辨率太低，或者中文变成方框。</b>用 <code>png(..., res = 300)</code> 或 <code>pdf()</code> 导出。若中文显示异常，可改用 <code>cairo_pdf()</code>，或换一种系统里有的中文字体。</li>
+<li><b>标签太长。</b>节点上只放简短的代码（D1、A3），完整题目放在 <code>nodeNames</code> 图例或表格里。</li></ul></div><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L6-4.R</code>（32 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L6-4.R  用 qgraph 与 bootnet 估计并可视化网络  (estimateNetwork + qgraph)
+# 课件示例用“抑郁 9 题 + 焦虑 7 题”：这里先模拟这样一份横断面数据
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(qgraph) })
+log_open(&quot;L6-4_log.txt&quot;)
+set.seed(64)
+# genGGM 生成一个“真实”网络；ggmGenerator 根据网络生成 4 级定序数据（nLevels = 4）
+true_net &lt;- genGGM(16, p = 0.15, nei = 2, propPositive = 0.9, constant = 1.5)
+gen &lt;- ggmGenerator(ordinal = TRUE, nLevels = 4)
+items &lt;- as.data.frame(gen(600, true_net))
+colnames(items) &lt;- c(paste0(&quot;D&quot;, 1:9), paste0(&quot;A&quot;, 1:7))   # D = 抑郁 depression, A = 焦虑 anxiety
+write.csv(items, out(&quot;L6-4_dep_anx_items.csv&quot;), row.names = FALSE)
+
+# ---- 课件代码 ----
+net &lt;- estimateNetwork(items, default = &quot;EBICglasso&quot;,
+                       tuning = 0.5, corMethod = &quot;cor_auto&quot;, verbose = FALSE)
+png_open(&quot;L6-4_network.png&quot;, 1800, 1400)
+plot(net, layout = &quot;spring&quot;,
+     groups = list(抑郁 = 1:9, 焦虑 = 10:16),
+     legend = TRUE, palette = &quot;colorblind&quot;, title = &quot;抑郁–焦虑 EBICglasso 网络&quot;)
+invisible(dev.off())
+# 可投稿 PDF（矢量图）：cairo_pdf 支持中文
+if (capabilities(&quot;cairo&quot;)) {
+  cairo_pdf(out(&quot;L6-4_network.pdf&quot;), 8, 6, family = cn_font)
+  plot(net, layout = &quot;spring&quot;, groups = list(抑郁 = 1:9, 焦虑 = 10:16), legend = TRUE, palette = &quot;colorblind&quot;)
+  invisible(dev.off())
+}
+cat(&quot;估计网络边数 =&quot;, sum(net$graph[upper.tri(net$graph)] != 0), &quot;\n&quot;)
+saveRDS(net, out(&quot;L6-4_net.rds&quot;))
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L6-4_network.png" alt="L6-4_network.png" loading="lazy"><figcaption>图：<code>R/output/L6-4_network.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L6-4_log.txt</code></div><pre class="out"><code>估计网络边数 = 34 </code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L6-4_dep_anx_items.csv</code></div><pre class="out"><code>&quot;D1&quot;,&quot;D2&quot;,&quot;D3&quot;,&quot;D4&quot;,&quot;D5&quot;,&quot;D6&quot;,&quot;D7&quot;,&quot;D8&quot;,&quot;D9&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;A3&quot;,&quot;A4&quot;,&quot;A5&quot;,&quot;A6&quot;,&quot;A7&quot;
+4,1,4,4,1,3,4,3,3,1,4,2,4,1,2,2
+4,2,2,1,1,4,2,4,3,4,3,4,2,4,4,1
+3,3,2,4,3,2,4,3,2,2,3,4,1,3,3,3
+2,3,3,3,2,4,1,1,2,1,4,4,2,1,1,1
+4,2,1,2,2,3,4,2,1,1,1,1,4,1,4,4
+1,2,3,1,3,4,4,3,4,4,4,2,3,3,1,1
+1,1,2,2,1,3,1,2,4,4,4,1,4,3,2,3
+1,4,2,2,4,4,4,3,2,2,3,1,3,2,2,2
+2,3,4,2,4,1,2,2,2,4,4,4,2,4,1,3
+1,1,4,2,2,4,2,2,2,1,4,3,2,3,2,1
+2,1,3,1,2,3,4,4,3,1,4,2,4,3,1,3
+…（共 600 行数据，此处只显示前 11 行）</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">为什么比较两张网络图时要固定布局和 maximum？</p><ul class="opts"><li><button type="button" data-ok="0">A. 为了让图更美观、更紧凑</button><div class="ofb" hidden>美观不是目的：不固定时同一节点在两张图里位置不同，同样粗细代表的数值也不同，两张图无法对照。</div></li><li><button type="button" data-ok="1">B. 保证同一节点位置相同、同样粗细代表同样数值，图才可比</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 固定 maximum 会把两个网络的边权换算到同一尺度</button><div class="ofb" hidden>maximum 只改变边权到线宽的映射，不改变任何边权的数值。</div></li><li><button type="button" data-ok="0">D. 为了减少边数</button><div class="ofb" hidden>布局和 maximum 都不改变边数，也不改变模型。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">spring 布局中两个节点的距离能否被精确解读？</p><ul class="opts"><li><button type="button" data-ok="0">A. 能，距离 = 1 − 偏相关</button><div class="ofb" hidden>没有这样的换算：布局只让连接强的节点大致靠近，换个随机起点结果就会旋转或镜像。</div></li><li><button type="button" data-ok="1">B. 不能，布局是启发式算法的结果，只能粗略参考</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 能，中心节点就是最重要的</button><div class="ofb" hidden>位置是绘图算法的产物，判断“重要”要看中心性（6.5）及其稳定性（8.3）。</div></li><li><button type="button" data-ok="0">D. 只在 N > 1000 时能</button><div class="ofb" hidden>布局的随机性与样本量无关，大样本也不能让距离变得可精确解读。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">corMethod = "cor_auto" 根据什么选择相关类型？</p><ul class="opts"><li><button type="button" data-ok="0">A. 样本量大小</button><div class="ofb" hidden>cor_auto 不看样本量；样本小时多分格相关可能不稳定，那是另一个需要留意的问题。</div></li><li><button type="button" data-ok="1">B. 变量的取值个数（少则视为定序，用多分格相关）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 变量是否通过正态性检验</button><div class="ofb" hidden>cor_auto 不做正态性检验，它按取值个数（默认 ≤ 7 个）判断是否为定序。</div></li><li><button type="button" data-ok="0">D. 变量是否为整数</button><div class="ofb" hidden>整数不等于定序：取值很多的整数变量（如年龄）仍按连续变量计算 Pearson 相关。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">qgraph 中设置 minimum = 0.1 会？</p><ul class="opts"><li><button type="button" data-ok="0">A. 把模型中 |w| < 0.1 的边改为 0</button><div class="ofb" hidden>估计结果（net$graph）不变；minimum 只影响画图。</div></li><li><button type="button" data-ok="1">B. 只是不显示 |w| < 0.1 的边，模型本身不变</button><div class="ofb" hidden>正确；用了就必须在图注中说明。</div></li><li><button type="button" data-ok="0">C. 相当于调高 EBIC 的 γ，让估计出的网络更稀疏</button><div class="ofb" hidden>γ 在估计阶段起作用；minimum 只在画图时隐藏小边，估计结果不变。</div></li><li><button type="button" data-ok="0">D. 改变布局算法</button><div class="ofb" hidden>布局算法由 layout 参数选择；minimum 的作用是决定哪些边画出来。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">期刊投稿的网络图最好导出为？</p><ul class="opts"><li><button type="button" data-ok="0">A. RStudio 绘图窗口的截图</button><div class="ofb" hidden>截图的分辨率取决于屏幕，通常远低于 300 dpi，放大后模糊。</div></li><li><button type="button" data-ok="1">B. 矢量 PDF 或 ≥ 300 dpi 的 PNG</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. png() 默认分辨率（72 dpi）的位图</button><div class="ofb" hidden>png() 不设 res 时为 72 dpi，印刷时模糊；应加 res = 300，或导出 PDF。</div></li><li><button type="button" data-ok="0">D. 先导出小图，再在 Word 里拉大</button><div class="ofb" hidden>拉大位图不会增加细节，只会更模糊；要在导出时就选矢量格式或高分辨率。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：可投稿质量的网络图<span class="lvl">动手</span></h4><p>运行 R/L6-4.R，打开 R/output/L6-4_network.png 与 .pdf。然后修改代码：加入 <code>nodeNames</code>（完整题目名）并把图例放到右侧，重新导出。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考：<code>plot(net, layout = "spring", groups = list(抑郁 = 1:9, 焦虑 = 10:16), nodeNames = c(paste("抑郁题", 1:9), paste("焦虑题", 1:7)), legend.cex = 0.4, palette = "colorblind")</code>。有 nodeNames 时 qgraph 会自动把图例放在右侧并列出完整名称。检查：中文是否正常显示、节点是否重叠、图注是否说明了估计方法（EBICglasso, γ = 0.5）、边的颜色含义。</p></details></div>
+<div class="exitem"><h4>练习 2：T1 与 T2 网络对比<span class="lvl">动手</span></h4><p>运行上面“比较两张网络”的代码。先不加 <code>layout = L, maximum = mx</code> 画一次，再加上画一次，描述差异。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>不固定时：两张图节点位置不同，难以对应；各自最强边都画成最粗。固定后：同一题目在同一位置，粗细可直接比较。在课程数据中 T1、T2 网络结构应高度相似（因为数据由平稳过程生成）。可用 <code>cor(n1$graph[upper.tri(n1$graph)], n2$graph[upper.tri(n2$graph)])</code> 量化相似度：参考答案 <code>R/solutions/L6-4_solution.R</code> 得到 T1、T2 网络分别有 28 和 29 条非零边，边权相关 r = 0.878。</p></details></div>
+<div class="exitem"><h4>练习 3：图注写作<span class="lvl">写作</span></h4><p>为你的网络图写一段规范图注（3–4 句）。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考：“图 1. 抑郁（D1–D9）与焦虑（A1–A7）题目的正则化偏相关网络（EBICglasso，γ = 0.5，多分格相关，N = 600）。蓝色边表示正偏相关，红色边表示负偏相关；边越粗表示关联越强（最大边宽对应 |r| = 0.5）。节点布局采用 Fruchterman–Reingold 算法，节点间距离不具有精确解释意义。”</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>在“抑郁 9 题 + 焦虑 7 题”风格的模拟数据上估计网络，按“抑郁/焦虑”两组着色，导出一张可投稿质量的 PNG/PDF 图。</p></div><h3>自测问题</h3><ol><li>为什么比较两张网络图时要固定布局和最大边权重？</li><li>spring 布局中节点的距离能不能被精确“解读”？</li><li>corMethod = &quot;cor_auto&quot; 会根据什么选择相关类型？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>bootnet 估计（estimateNetwork），qgraph 画图（plot / qgraph）。</li><li>好图要素：spring 布局、groups 着色、简短 labels + 图例、colorblind 配色。</li><li>比较多图：averageLayout() 固定布局 + 固定 maximum。</li><li>布局距离不能精确解读；位置 ≠ 重要性。</li><li>cor_auto 对定序题目使用多分格相关；minimum 只影响显示。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Epskamp, S., Cramer, A. O. J., Waldorp, L. J., Schmittmann, V. D., & Borsboom, D. (2012). qgraph: Network visualizations of relationships in psychometric data. <i>Journal of Statistical Software, 48</i>(4), 1–18. <a href="https://doi.org/10.18637/jss.v048.i04" target="_blank" rel="noopener">doi.org/10.18637/jss.v048.i04</a><div class="muted" style="font-size:.84rem">qgraph 包的说明论文。</div></li><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">bootnet 与稳定性检验（CS 系数）的标准教程，模块 6、8。</div></li><li>Isvoranu, A.-M., Epskamp, S., Waldorp, L. J., & Borsboom, D. (Eds.). (2022). <i>Network psychometrics with R: A guide for behavioral and social scientists</i>. Routledge. <a href="https://doi.org/10.4324/9781003111238" target="_blank" rel="noopener">doi.org/10.4324/9781003111238</a><div class="muted" style="font-size:.84rem">系统教材，模块 6–8 的参考书（配套网站含练习与答案）。</div></li></ul></section>
+<nav class="pager"><a href="L6-3.html" class="pv"><small>上一课</small>6.3 正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a><a href="L6-5.html" class="nx"><small>下一课</small>6.5 中心性指标：强度、期望影响与桥接中心性</a></nav>
+<p class="foot">CLPN 从零开始 · 第 6.4 课 · <a href="../index.html#L6-4">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

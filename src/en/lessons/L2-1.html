@@ -1,0 +1,207 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>What Is R, and Why Write Code?</h2>
+<div class="box story"><b class="bt">An analysis that "redoes itself"</b>
+<p>Xiao Zhou ran the analysis for his graduation thesis by clicking through SPSS menus. A week before his defense, he found that 12 questionnaires had been entered incorrectly, so after fixing them he had to run everything again. He could not remember which menus he had clicked or which boxes he had ticked three months earlier, so he had to work it all out again from scratch and stayed up two nights. Xiao Lin, in the same research group, had written an R script: after correcting the data, she pressed "Run", and a minute later every table and figure was updated. Code is a complete, exact record of an analysis that can be run again.</p></div>
+<p>{{T:R|R language}} is a free, open-source programming language built for statistical analysis. The tools CLPN needs (<code>glmnet</code>, <code>qgraph</code>, <code>bootnet</code>, and others) are all R add-on packages with no matching menus in SPSS. That is the direct reason this course uses R.</p>
+<p>{{T:RStudio / Posit|IDE}} is the "workbench" for writing R code (an integrated development environment, IDE). RStudio is now developed by Posit (the company renamed itself from RStudio to Posit in 2022); the software is still called RStudio Desktop, and there is a free version. Think of it this way: R is the engine, RStudio is the car's dashboard and steering wheel. You must install R first, or RStudio cannot work.</p>
+
+<h3>Installation steps</h3>
+<ol><li><b>Install R</b>: go to CRAN (R's official distribution site, <code>https://cran.r-project.org</code>), choose your system (Windows / macOS), download the latest version, and install it with the default options. If the download is slow, pick a mirror near you from the CRAN mirror list (in mainland China, for example, a university mirror such as Tsinghua University's TUNA).</li>
+<li><b>Install RStudio Desktop</b>: go to the Posit website (<code>https://posit.co/download/rstudio-desktop/</code>), download the free version, and install it.</li>
+<li><b>Open RStudio</b> (not R). In the lower-left pane, type <code>1 + 1</code> and press Enter. If you see <code>[1] 2</code>, it worked.</li></ol>
+<div class="box warnbox"><b class="bt">The most common installation pitfalls</b><ul><li><b>Non-English user names / paths</b>: if your Windows user name contains non-ASCII characters (for example Chinese characters, as in <code>C:\Users\张三</code>), some packages may fail to install. Keep the course folder on a plain-English path (such as <code>D:\clpn-course</code>).</li>
+<li>Install R before RStudio. If RStudio says it cannot find R, reinstall R and restart the computer.</li>
+<li>On a Mac, pick the R build that matches your chip (arm64 for Apple Silicon, x86_64 for Intel).</li></ul>
+<p>The course scripts were tested on R 4.5 and R 4.6; a newer version is fine.</p></div>
+
+<h3>The four panes of RStudio</h3>
+<div class="widget" data-widget="panes"></div>
+<ul><li><b>Script editor</b> (top left): where you write and save code, like a Word document.</li>
+<li><b>{{T:Console|}}</b> (bottom left): where code actually runs and results appear. <code>&gt;</code> is the prompt, meaning "R is waiting for your input."</li>
+<li><b>Environment</b> (top right): lists every object you have created, such as <code>age</code> and <code>scores</code>.</li>
+<li><b>Files / Plots / Packages / Help</b> (bottom right): browse files, see the plots you draw, and read help pages.</li></ul>
+
+<h3>Console vs. script: scratch paper vs. notebook</h3>
+<p>Code typed into the console runs when you press Enter, but it is gone once you close RStudio, like working a problem on scratch paper. A {{T:script|}} is a <code>.R</code> text file: the code can be saved, edited, commented, rerun, and sent to collaborators, like a notebook that keeps a full record. <b>Rule: apart from quick tries, write all analysis code in a script.</b></p>
+<p>To run code from a script, put the cursor on a line (or select several lines) and press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> (Mac: <kbd>Cmd</kbd> + <kbd>Enter</kbd>); the line is sent to the console and run. New script: menu File → New File → R Script (shortcut <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd>). Save: <kbd>Ctrl</kbd>+<kbd>S</kbd>. Use only English letters, digits, and underscores in file names, for example <code>week02.R</code>.</p>
+
+<h3>Objects and assignment: labeling a box</h3>
+<p>All data in R live in {{T:objects|}}. <code>age &lt;- 21</code> means "create a box named <code>age</code> and put 21 in it." The arrow <code>&lt;-</code> is called {{T:assignment|}} (RStudio shortcut <kbd>Alt</kbd> + <kbd>-</kbd>). From then on, when you write <code>age</code>, R takes the 21 out of the box.</p>
+<div class="box analogy"><b class="bt">Analogy: labeled storage boxes</b><p>Assignment is like putting something in a storage box and sticking a label on it. <code>age &lt;- 22</code> replaces the 21 in the box with 22 (the old value is overwritten, and R does not warn you). The Environment pane at the top right is your storage shelf: it lists every box and what is in it.</p></div>
+<p><b>Naming rules</b>: a name may contain letters, digits, periods, and underscores, and must start with a letter or a period; if it starts with a period, the period cannot be followed directly by a digit (<code>.2x</code> is invalid, because R reads <code>.2</code> as the number 0.2). No spaces. You cannot use reserved words such as <code>if</code>, <code>TRUE</code>, or <code>NA</code>. Names are <b>case-sensitive</b> (<code>Age</code> and <code>age</code> are two different objects; logical values must be written <code>TRUE</code>/<code>FALSE</code>, and <code>true</code> gives "object not found"). Lowercase letters with underscores are recommended, for example <code>dep_sum_t1</code>. Avoid names that match common functions, such as <code>mean</code>, <code>c</code>, or <code>data</code>.</p>
+<p><code>=</code> also assigns in most cases (<code>age = 21</code>), but the R convention is to assign with <code>&lt;-</code> and keep <code>=</code> for function arguments (as in <code>mean(x, na.rm = TRUE)</code>). <code>==</code> is different: it asks "are these equal?" and returns <code>TRUE</code> or <code>FALSE</code>. <code>x &lt;- 5</code> means "put 5 into x"; <code>x == 5</code> means "question: does x equal 5?"</p>
+
+<h3>Functions: machines that do things</h3>
+<p>A {{T:function|}} is an "input → processing → output" machine. You write the function name followed by parentheses, with the inputs (arguments) inside. For example, <code>mean(scores)</code> computes a mean, <code>sqrt(16)</code> takes a square root, and <code>round(3.14159, 2)</code> rounds to two decimal places. <code>c()</code> is one of the most used functions: it combines several values into one vector.</p>
+
+<h3>Three ways to get help</h3>
+<ol><li><b>Help pages</b>: type <code>?mean</code> in the console and the bottom-right pane opens the manual for <code>mean</code>. Focus on Usage (how to write it), Arguments (what each argument is), and Examples (which you can copy and run). If you don't know the function name, search with <code>??"standard deviation"</code>.</li>
+<li><b>Read the {{T:error message|}}</b>: a red <code>Error</code> does not mean "the computer is broken"; it is R telling you what is wrong. When you get an error, first read the whole message and find the function or object name it mentions. Common errors and how to read them are in the R code section.</li>
+<li><b>Ask someone</b> (a classmate, a colleague, or an online forum): give a {{T:minimal reproducible example|}}, the shortest code that another person can copy, paste, and see your problem with. "My code doesn't run" is almost impossible to answer; prepare your question with the template below.</li></ol>
+<div class="box key"><b class="bt">Template for asking</b><ol><li>What I want to do (the goal).</li><li>The code I ran: the few shortest lines that reproduce the problem, including <code>library()</code> calls and the data. Don't write "my data"; make it runnable for others. You can make up a few rows (for example <code>dat &lt;- data.frame(x = c(1, 2, NA))</code>), or use <code>dput(head(d))</code> to turn the first rows of your own data into code that can be copied.</li><li>The complete error message (copy the text; don't send only a screenshot).</li><li>What I have already tried.</li><li>The output of <code>sessionInfo()</code> (the R and package versions).</li></ol><p>Often you find the problem yourself while preparing the minimal example.</p></div>
+<div class="box sw"><b class="bt">Social workers learning to code</b><p>You don't need to become a programmer. You need to be able to read, modify, and run analysis scripts that others have written, and to know where to look when something goes wrong. It is a lot like a social worker reading policy documents: you don't have to write laws, but you need to understand the clauses and find the parts that apply.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>R as a Calculator</h2>
+<p>This lesson has almost no new math. You only need the operators R uses:</p>
+<div class="tablewrap"><table><thead><tr><th>Math</th><th>In R</th><th>Example → result</th></tr></thead><tbody>
+<tr><td>\(a+b,\ a-b\)</td><td><code>+ -</code></td><td><code>1 + 1</code> → 2</td></tr>
+<tr><td>\(a\times b\)</td><td><code>*</code></td><td><code>21 * 365</code> → 7665</td></tr>
+<tr><td>\(a\div b\)</td><td><code>/</code></td><td><code>10 / 3</code> → 3.333333</td></tr>
+<tr><td>\(a^b\)</td><td><code>^</code></td><td><code>2^10</code> → 1024</td></tr>
+<tr><td>\(\sqrt{a}\)</td><td><code>sqrt()</code></td><td><code>sqrt(16)</code> → 4</td></tr>
+<tr><td>\(e^{a},\ \ln a\)</td><td><code>exp()</code>, <code>log()</code></td><td><code>exp(0.134)</code> → 1.143 (the OR in Lesson 3.4)</td></tr>
+<tr><td>\(\bar x=\frac{1}{n}\sum x_i\)</td><td><code>mean()</code></td><td><code>mean(c(3, 5, 2, 4))</code> → 3.5</td></tr></tbody></table></div>
+<dl class="sym"><dt>\(a, b\)</dt><dd>Any numbers, or objects that hold numbers.</dd><dt>\(e\)</dt><dd>The natural constant, about 2.718.</dd><dt>\(\ln\)</dt><dd>Natural logarithm; R's <code>log()</code> is \(\ln\) by default. For base 10, use <code>log10()</code>.</dd><dt>\(\bar x\)</dt><dd>The mean (Lesson 1.2).</dd></dl>
+<p>The order of operations is the same as in math: powers first, then multiplication and division, then addition and subtraction; use parentheses to change the order. The <code>[1]</code> in front of the output is not part of the result. It means "this line starts at element 1," because R treats every result as a vector (Lesson 2.2).</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Your First Script</h2>
+<p>Script for this lesson: <a href="../R/L2-1.R">R/L2-1.R</a>. Open it in RStudio, put the cursor on each line, and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to run it line by line.</p>
+```r R/L2-1.R (core part)
+# This is a comment: R ignores everything after #
+1 + 1
+age <- 21                    # <- is "assignment": store 21 in an object named age
+age * 365                    # Age converted to days (roughly)
+scores <- c(3, 5, 2, 4)      # c() combines numbers into a vector
+mean(scores)                 # A function: name + parentheses
+# ?mean                      # Opens the help page (remove the # in RStudio, then run)
+sessionInfo()$R.version$version.string
+```
+```out Output (R/output/L2-1_log.txt)
+[1] 2
+[1] 7665
+[1] 3.5
+[1] "R version 4.6.1 (2026-06-24)"
+```
+<p>Note: the assignment <code>age &lt;- 21</code> prints nothing by itself; to see the value, write <code>age</code> on its own line. The last line shows the R version (yours may differ).</p>
+```r Assignment vs. comparison
+x <- 5        # Assignment: store 5 in x
+x == 5        # Comparison: does x equal 5?
+x == 3
+my_age <- 21; friend_age <- 23; teacher_age <- 45   # A semicolon puts several statements on one line
+my_age + friend_age + teacher_age
+```
+```out Output (R/output/L2-1_log.txt)
+[1] TRUE
+[1] FALSE
+[1] 89
+```
+<h3>The most common errors, and how to fix them</h3>
+<p>When you start with R, most of your time goes into errors. Below are the most common kinds together; each line contains one deliberate mistake. These are the messages as they appear in an English-language R (in R set to another language, such as Chinese, the messages are translated).</p>
+```r Deliberate mistakes (run one line at a time)
+Mean(scores)             # Wrong case
+mena(scores)             # Misspelled function name
+mean(score)              # Misspelled object name (missing s)
+"a" + 1                  # Text cannot be added
+mean(scores) sd(scores)  # Two commands on one line
+mean(scores              # Missing closing parenthesis
+```
+```out Error messages and interpretations (Illustrative output: original error messages with explanation below each →)
+Error in Mean(scores) : could not find function "Mean"
+  → Could not find function Mean: R is case-sensitive; the function name must be lowercase mean.
+Error in mena(scores) : could not find function "mena"
+  → Same category of error: misspelled function name; or the function belongs to a package that has not yet been loaded with library() (Lesson 2.4).
+Error: object 'score' not found
+  → Object score not found: typo, or you forgot to run the line that created it first.
+Error in "a" + 1 : non-numeric argument to binary operator
+  → Attempted arithmetic on a non-numeric value: check whether your variable was read as character (Lesson 2.2).
+Error: unexpected symbol in "mean(scores) sd"
+  → R encountered a symbol where it was not expected: missing a newline or semicolon between commands. Full-width or non-ASCII punctuation will also trigger unexpected input.
++
+  → The console displays + instead of >: R expects further input to complete the expression (missing parenthesis or quote). Add ) and hit Enter, or press Esc to cancel.
+```
+<p>The usual fix for "object not found" is to go back, run the line that creates the object, and then rerun the code that failed:</p>
+```r Fixing "object not found"
+scores <- c(3, 5, 2, 4)  # First run the line that creates it (mind the spelling: Scores and scores are two names)
+mean(scores)
+```
+<div class="box key"><b class="bt">Reading an error in three steps</b><ol><li>Look at the <b>last line</b> of the error and find the key phrase: <code>could not find function</code>, <code>object ... not found</code>, <code>unexpected</code>, …</li><li>Find the object or function it names, go back to the line that failed, and check spelling, case, whether parentheses and quotes come in pairs, and whether you have run the code that creates the object.</li><li>If it is still unclear, paste the original (English) error message into a search engine; almost every beginner's error has been asked about before. If your R shows messages in another language, <code>Sys.setenv(LANGUAGE = "en")</code> switches them to English, which makes them easier to search. If you still can't solve it, ask someone using the template above.</li></ol></div>
+
+<!-- extra:begin -->
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b>Typing with a Chinese (or other full-width) input method switched on.</b> Full-width commas "，", parentheses "（）", and curly quotes "“”" all cause unexpected input. Switch your keyboard to English when writing code, and type other languages only inside quotes.</li>
+<li><b>Saving files on the desktop or in the Downloads folder.</b> Once paths get messy, <code>read.csv()</code> cannot find the file. Use this course's folder structure from day one (Lesson 2.4 covers RStudio projects).</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: What is the difference between a script and the console? Why write code in a script?
+- Console code is saved to a .R file automatically, so both are equally reproducible || The console keeps only a scattered History, not an ordered, commented analysis file you can rerun directly.
++ The console does not save what it runs; a script can be saved, edited, commented, rerun, and shared, which makes the analysis reproducible || Correct.
+- Scripts run faster || The speed is the same: code in a script is also sent to the console to run.
+E: The script is the complete record of your analysis; if the data change, you just run it again.
+```
+```quiz
+Q: What is the difference between x <- 5 and x == 5?
++ The first assigns 5 to x; the second checks whether x equals 5 and returns TRUE/FALSE || Correct.
+- Both assign; == is just a stricter way of writing it || == does not change x; it only returns TRUE or FALSE. Assignment uses <- (or =).
+- The first compares, the second assigns || It is the other way round: <- is the assignment arrow, == is comparison.
+E: = can assign; == compares.
+```
+```quiz
+Q: Running Mean(c(1, 2, 3)) gives could not find function "Mean". What is the most likely cause?
+- You must first run install.packages("Mean") to install the function || mean() comes with R and needs no installation; the problem is the capital M in Mean.
++ R is case-sensitive; the function name is mean || Correct.
+- Something inside c(1, 2, 3) has not been created yet || That would give object ... not found; here R says it cannot find a function.
+E: Another common cause is that the function comes from a package you forgot to load with library().
+```
+```quiz
+Q: When you get an error, what should you do first?
+- Take a screenshot and send it to someone right away || Read the error yourself first; even when you ask for help, copy the error text rather than sending only a screenshot.
+- Switch to English with Sys.setenv(LANGUAGE = "en") and run again || Switching the language only makes searching easier; what the error says does not change. The first step is still to understand it.
++ Read the whole error message, find the function or object it names, and go back to check the code || Correct.
+E: If you can't understand it, search the English text, and as a last step ask someone, bringing a minimal reproducible example.
+```
+```quiz
+Q: What does R return for 2^3 + 4 / 2?
+N: 10 | 0
+H: Powers first, then division, then addition.
+E: 2^3 = 8, 4/2 = 2, 8 + 2 = 10.
+```
+```quiz
+Q: Which object name is valid and recommended?
+- 2nd_score || A name cannot start with a digit.
+- dep sum || A name cannot contain a space.
++ dep_sum_t1 || Correct: lowercase with underscores, clear and readable.
+- mean || Valid but not recommended: easy to confuse with the mean() function.
+E: Start with a letter, no spaces, mind the case; lowercase with underscores is recommended.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.1-A: Installation and your first script</h4>
+<p>Finish the installation and take a screenshot (all four RStudio panes visible, the console showing the result of <code>1 + 1</code>). Create a script <code>week02.R</code> that converts your age to days, assigns values to 3 objects and adds them up. Write one line wrong on purpose, record the error message, and try to explain it yourself.</p>
+<details class="answer"><summary>Reference script</summary>
+```r
+# week02.R  -- my first R script
+# Author: (fill in)   Date: (fill in)
+my_age <- 21                 # Replace with your real age
+my_age * 365                 # Roughly the number of days (ignoring leap years)
+my_age * 365.25              # A bit more precise
+
+a <- 3
+b <- 4.5
+c_val <- 10                  # Don't name it c, to avoid confusion with c()
+a + b + c_val
+
+# Deliberate mistake:
+# sum(a, b, c_vall)
+# Error message: Error: object 'c_vall' not found
+# My explanation: I typed an extra l in the object name, so R cannot find the object.
+```
+<p>What to look for: the script has comments; object names follow the conventions; the error is explained in your own words.</p></details></div>
+<div class="exitem"><h4>Exercise 2.1-B: Reading a help page</h4>
+<p>Run <code>?round</code>. (1) What are the two arguments of <code>round()</code>? (2) What are <code>round(2.5)</code> and <code>round(3.5)</code>? Find the reason on the help page.</p>
+<details class="answer"><summary>Reference answer</summary><p>(1) <code>x</code> (the number to round) and <code>digits</code> (how many decimal places to keep, default 0). (2) <code>round(2.5)</code> returns 2 and <code>round(3.5)</code> returns 4. The help page explains that R follows the IEC 60559 standard: a number exactly halfway goes to the nearest even number ("round half to even"), which is not the "round half up" rule taught in school.</p></details></div>
+<div class="exitem"><h4>Exercise 2.1-C: Write a minimal reproducible example</h4>
+<p>Suppose you run <code>mean(c(1, 2, NA))</code>, get <code>NA</code>, and don't know why. Use the template above to write a request for help (to a classmate, or for a forum).</p>
+<details class="answer"><summary>Sample message</summary><p>"Hi, I want to compute the mean of a sleep-duration column, but the result is NA. Minimal example: <code>x &lt;- c(1, 2, NA); mean(x)</code> prints <code>[1] NA</code>, with no error. I looked at <code>?mean</code> and saw an <code>na.rm</code> argument, but I'm not sure whether I should use it. R version 4.6.1." (Answer: <code>mean(x, na.rm = TRUE)</code> returns 1.5; the next lesson covers this.)</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>R is the language (the engine), RStudio is the workbench; analysis code goes in a script, and Ctrl+Enter runs it.</li>
+<li><code>&lt;-</code> assigns, <code>==</code> compares; object names are case-sensitive; a function is a name + parentheses.</li>
+<li>With an error: read it first, then search, then ask with a minimal reproducible example. Next lesson: {{L:2.2}}.</li></ul>
+</section>

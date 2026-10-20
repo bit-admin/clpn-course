@@ -1,0 +1,5 @@
+(Intercept)       lone1        dep1 
+      0.000       0.607       0.016 
+(Intercept)        dep1       lone1 
+      0.000       0.539       0.128 
+lone1->lone2 and dep1->dep2 are autoregressive (AR); dep1->lone2 and lone1->dep2 are cross-lagged (CL).

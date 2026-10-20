@@ -1,0 +1,6 @@
+ key   value                                                    task
+  C1   2.191                                          mean(lone1_t1)
+  C2   0.225                                  cor(lone3_t1, dep1_t2)
+  C3 427.000                                        sum(gender == 1)
+  C4   0.922                                             sd(dep1_t1)
+  C5  31.000 sum(cl_only(clpn_estimate(T1, T2, rule = "ebic")) != 0)

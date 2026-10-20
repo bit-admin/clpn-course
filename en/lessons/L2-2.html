@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.2 R Basic Syntax: Vectors, Data Types, and Functions · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-2.md" title="Plain text">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "Course Overview: Why Study CLPN", "short": "Course Overview", "intro": "A map of the whole course: what questions CLPN tries to answer, which problems in social work and psychology research it addresses, and how, over the next 16 weeks, you will work step by step toward completing an analysis on your own.", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "Motivation and big-picture roadmap: know where you are going and why it matters."}, {"id": "M1", "title": "Statistics Foundations", "short": "Statistics Foundations", "intro": "Build statistical intuition from scratch. The math uses only basic calculus ideas you already know (sums, functions, an intuition for derivatives); the focus is on 'what is this number telling us?'", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "Statistical language: mean, variance, correlation, standard error, p-value—the prerequisites for reading every number in CLPN output."}, {"id": "M2", "title": "R and RStudio: From Scratch", "short": "R and RStudio", "intro": "An introduction to programming for complete beginners. You study it side by side with Module 1 (Statistics), alternating in Weeks 2–5 (see 'Recommended Pacing'): as soon as you learn a statistical idea, you do it in R. Module 3 (Regression) comes after.", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R skills: from zero to writing CLPN estimation code independently."}, {"id": "M3", "title": "Regression Analysis", "short": "Regression Analysis", "intro": "Regression is the 'engine' of CLPN: at heart, a CLPN runs one (regularized) regression for each variable at time point 2. This module goes from a single straight line to LASSO. Study it after Module 1 (Statistics) and Module 2 (R).", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "Regression & LASSO: the engine of CLPN—each T2 node is a regularized regression."}, {"id": "M4", "title": "Longitudinal and Panel Data", "short": "Longitudinal and Panel Data", "intro": "A CLPN needs 'the same people, measured at several time points, with the same items.' This module explains how such data are structured and prepared, and the biggest headache: missing data and dropout.", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "Longitudinal data: how T1/T2 panel data are collected, reshaped, and checked for missingness."}, {"id": "M5", "title": "Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM", "short": "Traditional Cross-Lagged Panel Models", "intro": "A CLPN can be seen as an 'item-level network version' of the CLPM. First understand autoregressive and cross-lagged paths at the construct (total-score) level, then Hamaker et al.'s key criticism of the CLPM; only then can you read a CLPN correctly and write its limitations honestly.", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM & RI-CLPM: what cross-lagged paths mean and the between-person vs. within-person pitfall."}, {"id": "M6", "title": "Foundations of Network Psychometrics", "short": "Foundations of Network Psychometrics", "intro": "Learn all the basics of psychological networks on cross-sectional data first: partial correlations, GGMs, regularization, visualization, centrality. CLPN estimation, plotting and centrality indices build directly on these ideas.", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "Network psychometrics: nodes, edges, partial correlations, regularization, centrality."}, {"id": "M7", "title": "Cross-Lagged Panel Networks (CLPN)", "short": "Cross-Lagged Panel Networks", "intro": "The core module. CLPN was proposed by Wysocki, van Bork, Cramer and Rhemtulla (2022 preprint; published in 2025 as 'Cross-lagged panel networks'). The main line of this module teaches the simplified 'LASSO-only' version most common in applied research (e.g. Funkhouser et al., 2021): for each T2 item, run a LASSO-regularized regression on all T1 items and put the coefficients together into a directed network. Lesson 7.5 then introduces the full procedure recommended by Wysocki et al. (2025): LASSO edge selection → unpenalized re-estimation in lavaan (same-wave residual correlations, FIML, tests of equality across time) → in-/out-prediction, with runnable examples.", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN itself: estimation, visualization, out- and in-expected influence."}, {"id": "M8", "title": "Stability and Accuracy Assessment", "short": "Stability and Accuracy Assessment", "intro": "A network can easily 'look meaningful' and yet be unstable. Following the framework of Epskamp, Borsboom & Fried (2018), this module shows you how to use the bootstrap to check whether edges and centrality can be trusted.", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "Stability checks: bootstrap intervals and CS-coefficients to judge whether results are trustworthy."}, {"id": "M9", "title": "Reading, Critique, and Reporting Standards", "short": "Reading, Critique, and Reporting Standards", "intro": "Getting the analysis to run is only half the job; the other half is reading other people's CLPN papers, spotting the problems, and reporting your own analysis to the standards.", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "Reading papers, methodological critique, and reporting standards."}, {"id": "M10", "title": "Capstone Project: A Complete CLPN Analysis", "short": "Capstone Project", "intro": "Carry out a complete CLPN on your own, from the data to the written results. The default is the three-wave simulated data with a known true structure (4 loneliness items + 5 depression items, N = 800); if you can, you may use a public longitudinal dataset instead, after reading its license and citation requirements.", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "Capstone project: execute and write up a complete CLPN analysis end to end."}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.2" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L2-2">CLPN Syllabus</a><span class="crumb">M2 R and RStudio: From Scratch / 2.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L2-2.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L2-2.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html" class="cur" aria-current="page"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 2 · R &amp; RStudio from Zero · Lesson 2.2</div>
+<h1>R Basic Syntax: Vectors, Data Types, and Functions</h1>
+<div class="facts"><span>Study time 1 hr 30 min</span><span>Prerequisites: <a href="L2-1.html">2.1 Installing R and RStudio and Running Your First Line of Code</a></span><span>R script: <a href="../R/L2-2.R">R/L2-2.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Create and index vectors, and understand R&#x27;s &#x27;vectorized&#x27; operations</li><li>Recognize data types: numeric, character, logical, factor</li><li>Understand NA (missing values) and na.rm = TRUE</li><li>Write a very simple function of your own</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>vector</b></li><li><b>indexing, [ ]</b></li><li><b>data type</b></li><li><b>factor</b></li><li><b>logical, TRUE/FALSE</b></li><li><b>NA</b></li><li><b>user-defined function</b></li></ul>
+
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>A Row of Storage Slots: Vectors</h2>
+<div class="box story"><b class="bt">Sleep records for ten clients</b>
+<p>The 10 members of a community sleep-health group reported how long they slept last night (in hours): 7, 5.5, 8, (member 4 left it blank), 6, 4.5, 7.5, (member 8 left it blank), 9, 5. You want to know: how long did they sleep on average? Who slept less than 6 hours and needs closer follow-up? In Excel you would type these into one column; in R you store them in a <span class="term">vector</span>.</p></div>
+<p>A vector is a row of values of the <b>same type</b>, in order, with each position numbered (starting at 1). You create one with <code>c()</code>:</p>
+<p><code>sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)</code></p>
+<p>The <code>NA</code> here (Not Available) is R's special symbol for a <span class="term">missing value<span class="en"> (NA)</span></span>. It means "there should be a value here, but we don't know what it is." It is not 0, and it is not an empty string.</p>
+<div class="box analogy"><b class="bt">Analogy: a numbered row of storage slots</b><p>A vector is like a row of numbered storage slots. <code>sleep[3]</code> means "open slot 3," which gives 8. A data frame (next lesson) is many such rows placed side by side: each row of slots is one variable (one column), and the same position in every row belongs to the same person.</p></div>
+
+<h3>Indexing: taking out the slots you want</h3>
+<p>Square brackets <code>[ ]</code> do <span class="term">indexing</span>. There are three ways to use them:</p>
+<ul><li><b>By position</b>: <code>sleep[3]</code> takes the 3rd value; <code>sleep[c(1, 3)]</code> takes the 1st and 3rd; <code>sleep[-1]</code> takes everything except the 1st (minus = drop). R counts from 1: <code>sleep[0]</code> does not give an error but returns an empty vector, so this kind of mistake is hard to spot.</li>
+<li><b>By condition (logical indexing)</b>: <code>sleep[sleep &lt; 6]</code>. R first computes <code>sleep &lt; 6</code>, which gives a run of TRUE/FALSE values, and then takes the values at the TRUE positions. So <code>x[x &gt; 5]</code> means "take every value of x that is greater than 5."</li>
+<li><b>By name</b>: if the elements of a vector have names, you can write <code>v["lone1"]</code> (in a data frame you usually write <code>df$var</code>; next lesson).</li></ul>
+<div class="widget" data-widget="vecidx"></div>
+
+<h3>Vectorization: doing the same thing to every slot at once</h3>
+<p>R's operations are <span class="term">vectorized</span>: <code>sleep * 60</code> multiplies every value by 60 (converting to minutes), with no loop needed. <code>sleep &lt; 6</code> also compares each value separately. Adding two vectors of the same length adds them position by position. This keeps R code short: <code>(x - mean(x)) / sd(x)</code> turns a whole column into z-scores in one line (Lesson 1.3).</p>
+
+<h3>Data types: what is in the slots</h3>
+<p>Every vector has a <span class="term">data type</span>, which you check with <code>class()</code>:</p>
+<div class="tablewrap"><table><thead><tr><th>Type</th><th>Example</th><th>Used for</th></tr></thead><tbody>
+<tr><td>numeric (including integer)</td><td><code>7</code>, <code>5.5</code>, <code>3L</code></td><td>Scale scores, age, sleep duration</td></tr>
+<tr><td>character</td><td><code>"Xiao Li"</code>, <code>"P001"</code></td><td>Names, IDs, open-ended answers; must be in quotes</td></tr>
+<tr><td><span class="term">logical</span></td><td><code>TRUE</code>, <code>FALSE</code></td><td>Results of comparisons, filter conditions</td></tr>
+<tr><td><span class="term">factor</span></td><td><code>factor(c(1, 0), levels = c(0, 1), labels = c("Male", "Female"))</code></td><td>Categorical variables: gender, education level, service type</td></tr></tbody></table></div>
+<p>Two key rules:</p>
+<ol><li><b>A vector can have only one type.</b> If you mix numbers and text, R turns every value into text: <code>c(1, "two", 3)</code> gives three strings. In questionnaire data, a single cell where someone typed "five" makes the whole column read as character, and <code>mean()</code> then fails. So after importing data, first check each column's type with <code>class()</code> or <code>str()</code>. Forcing a conversion, <code>as.numeric(c("3", "4", "five"))</code>, gives <code>3 4 NA</code> and the warning <code>NAs introduced by coercion</code>.</li>
+<li><b>Logical values can be used as numbers</b>: TRUE = 1, FALSE = 0. So <code>sum(sleep &lt; 6, na.rm = TRUE)</code> is "the number of people who slept less than 6 hours" (3), and <code>mean(condition)</code> is "the proportion who meet the condition."</li></ol>
+
+<h3>Why is gender better stored as a factor?</h3>
+<p>In the course data, <code>gender</code> is stored as 0/1. If you treat it as a number, R assumes "female (1) is one unit more than male (0)" and will compute a mean (0.534). For a 0/1 variable the mean equals the proportion in the category coded 1 (here, 53.4% women), so it still means something. But for a variable with three or more categories (such as "service type: 1 casework, 2 group work, 3 community work"), treating the category codes as numbers is wrong: "community = 3 times casework" makes no sense. Once stored as a factor:</p>
+<ul><li>R knows it is a category: <code>table()</code> and <code>summary()</code> give the count in each category (male 373, female 427).</li>
+<li>In a regression, R turns the factor into dummy variables automatically, with the first level as the reference group.</li>
+<li>Plots color by category automatically and label the groups "Male / Female" instead of 0 / 1.</li>
+<li><code>mean()</code> on a factor returns NA with a warning, which blocks a meaningless calculation.</li></ul>
+
+<h3>The missing value NA: an unknown that spreads</h3>
+<p><code>mean(c(1, NA, 3))</code> returns <code>NA</code>. The logic is simple: if one value is unknown, the mean is unknown too. To compute from the known values, add the argument <code>na.rm = TRUE</code> (NA remove): <code>mean(c(1, NA, 3), na.rm = TRUE)</code> returns 2. <code>sum()</code>, <code>sd()</code>, <code>min()</code>, and <code>max()</code> all have this argument.</p>
+<div class="box warnbox"><b class="bt">NA and comparisons</b><p><code>NA &lt; 6</code> is still <code>NA</code> (unknown). So <code>sleep[sleep &lt; 6]</code> returns <code>5.5 NA 4.5 NA 5.0</code>, with two NAs mixed in. The correct version adds "and not missing": <code>sleep[sleep &lt; 6 &amp; !is.na(sleep)]</code>. <code>is.na()</code> checks each value for missingness, <code>!</code> means "not," <code>&amp;</code> means "and," and <code>|</code> means "or." <code>which(sleep &lt; 6)</code> ignores NA automatically and returns positions 2, 6, 10. You also cannot find missing values with <code>x == NA</code> (the result is all NA); you must use <code>is.na(x)</code>.</p></div>
+
+
+<h3>Matrices and lists: two relatives of the vector</h3>
+<p>Later lessons use two more structures, so meet them now:</p>
+<ul><li><b>Matrix</b>: a two-dimensional table with rows and columns in which every element has the same type. <code>glmnet</code> requires the predictors as a numeric matrix (<code>as.matrix()</code> in Lesson 3.5); the CLPN result B is also a 9 × 9 matrix, and the entry in row <i>i</i>, column <i>j</i> is <code>B[i, j]</code>: before the comma is the row, after it the column. A data frame (Lesson 2.3) is also a two-dimensional table, but each column can have a different type; to hand a data frame to a function such as <code>glmnet</code> that accepts only matrices, first make sure all columns are numeric, then convert with <code>as.matrix()</code>.</li>
+<li><b>List</b>: a "big bag" that can hold things of different types and lengths. Many functions return lists; for example, the result of <code>lm()</code> holds the coefficients, residuals, fitted values, and more, and you take out one part with <code>$</code>, as in <code>fit$coefficients</code>. The <code>sessionInfo()$R.version$version.string</code> in Lesson 2.1 was digging down through a list one level at a time.</li></ul>
+<div class="box key"><b class="bt">Quick reference: functions in this lesson</b>
+<div class="tablewrap"><table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>c()</code></td><td>Combine into a vector</td></tr><tr><td><code>length()</code></td><td>Number of elements</td></tr>
+<tr><td><code>class()</code> / <code>str()</code></td><td>Show the type / structure</td></tr>
+<tr><td><code>is.na()</code></td><td>Check each value for missingness</td></tr>
+<tr><td><code>which()</code></td><td>Positions that are TRUE</td></tr>
+<tr><td><code>table()</code></td><td>Counts (frequency table)</td></tr>
+<tr><td><code>factor()</code></td><td>Create a factor; <code>levels</code> sets the order of the levels, <code>labels</code> the labels</td></tr>
+<tr><td><code>as.numeric()</code> / <code>as.character()</code></td><td>Type conversion</td></tr>
+<tr><td><code>function(x) …</code></td><td>Define a function</td></tr></tbody></table></div></div>
+<div class="box sw"><b class="bt">Social work context: missingness is information</b><p><code>na.rm = TRUE</code> just skips missing values, which means using only the people who have data. In needs-assessment questionnaires, many people leave "household income" blank. Computing mean income with <code>na.rm = TRUE</code> may overstate how well off the community is, because the poorest households are often the least willing to answer. So before using <code>na.rm</code>, check how much is missing with <code>sum(is.na(x))</code>, and think about who did not answer and why (Lesson 4.3 is about missing-data mechanisms).</p></div>
+<h3>Writing your own functions</h3>
+<p>When you need to do the same operation many times, you can wrap it in a <span class="term">user-defined function</span>:</p>
+<p><code>zscore &lt;- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)</code></p>
+<p>Read it as: create a function named <code>zscore</code> that takes one input <code>x</code> and returns "x minus the mean of x, divided by the standard deviation of x." If the body is longer, wrap it in curly braces <code>{ }</code>; the value of the last line is what the function returns. After that, <code>zscore(sleep)</code> is as easy as <code>mean()</code>.</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Vector Notation</h2>
+<div class="mathbox">$$\mathbf{x} = (x_1, x_2, \dots, x_n)$$</div>
+<dl class="sym"><dt>\(\mathbf{x}\)</dt><dd>Bold means a vector (a whole column of numbers).</dd><dt>\(x_i\)</dt><dd>The \(i\)-th element, R's <code>x[i]</code>.</dd><dt>\(n\)</dt><dd>The number of elements, <code>length(x)</code>.</dd></dl>
+<p>Vectorized operations work element by element: \(60\mathbf{x} = (60x_1, \dots, 60x_n)\), \(\mathbf{x}+\mathbf{y} = (x_1+y_1,\dots,x_n+y_n)\). The z-score function:</p>
+<div class="mathbox">$$z_i = \frac{x_i-\bar x}{s_x},\quad i = 1,\dots,n$$</div>
+<p>\(\bar x\) and \(s_x\) are computed from the non-missing values only (that is what <code>na.rm = TRUE</code> does); for a missing \(x_i\), \(z_i\) is still NA. Summing logical values: \(\sum_i \mathbb{1}(x_i&lt;6)\), where \(\mathbb{1}(\cdot)\) is 1 when the condition holds and 0 otherwise, which is <code>sum(x &lt; 6)</code>.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Vectors, Types, NA, and Functions</h2>
+<p>Script for this lesson: <a href="../R/L2-2.R">R/L2-2.R</a>.</p>
+<div class="codeblk"><div class="ctitle">R/L2-2.R (core part)</div><pre><code class="language-r">sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)   # NA = missing value
+class(sleep)                                       # &quot;numeric&quot;
+mean(sleep)                                        # With an NA, the result is NA!
+mean(sleep, na.rm = TRUE)                          # na.rm = TRUE: drop the NAs first
+which(sleep &lt; 6)                                   # Which people slept less than 6 hours
+sleep[sleep &lt; 6 &amp; !is.na(sleep)]                   # Logical indexing
+gender &lt;- factor(c(1, 0), levels = c(0, 1), labels = c(&quot;Male&quot;, &quot;Female&quot;))
+gender
+zscore &lt;- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+round(cbind(my_zscore = zscore(sleep), scale_func = as.numeric(scale(sleep))), 3)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-2_log.txt)</div><pre class="out"><code>[1] &quot;numeric&quot;
+[1] NA
+[1] 6.5625
+[1]  2  6 10
+[1] 5.5 4.5 5.0
+[1] Female Male  
+Levels: Male Female
+      my_zscore scale_func
+ [1,]     0.279      0.279
+ [2,]    -0.677     -0.677
+ [3,]     0.917      0.917
+ [4,]        NA         NA
+ [5,]    -0.359     -0.359
+ [6,]    -1.315     -1.315
+ [7,]     0.598      0.598
+ [8,]        NA         NA
+ [9,]     1.554      1.554
+[10,]    -0.996     -0.996</code></pre></div>
+<p>Reading the output: the 8 valid values average 6.56 hours of sleep; members 2, 6, and 10 slept less than 6 hours (5.5, 4.5, 5.0). The factor <code>gender</code> prints its labels, and <code>Levels: Male Female</code> gives the order of the levels (male is the reference group). The hand-written <code>zscore()</code> gives exactly the same result as the built-in <code>scale()</code>; <code>scale()</code> returns a matrix, so <code>as.numeric()</code> turns it back into a vector, and <code>cbind()</code> puts the two columns side by side for comparison.</p>
+<div class="codeblk"><div class="ctitle">More indexing and vectorization</div><pre><code class="language-r">length(sleep)          # Number of elements
+sum(is.na(sleep))      # Number missing
+sleep * 60             # Vectorized: every value converted to minutes
+sleep[c(1, 3)]         # The 1st and 3rd
+sleep &lt; 6              # Compares each value; comparing NA still gives NA
+sum(sleep &lt; 6, na.rm = TRUE)   # TRUE counts as 1: number who slept under 6 hours</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-2_log.txt, continued)</div><pre class="out"><code>[1] 10
+[1] 2
+ [1] 420 330 480  NA 360 270 450  NA 540 300
+[1] 7 8
+ [1] FALSE  TRUE FALSE    NA FALSE  TRUE FALSE    NA FALSE  TRUE
+[1] 3</code></pre></div>
+<div class="codeblk"><div class="ctitle">Type pitfalls</div><pre><code class="language-r">as.numeric(c(&quot;3&quot;, &quot;4&quot;, &quot;five&quot;))     # Text to numbers: anything that can&#x27;t convert becomes NA
+dat &lt;- read.csv(&quot;data/clpn_sim_wide.csv&quot;)
+g &lt;- factor(dat$gender, levels = c(0, 1), labels = c(&quot;Male&quot;, &quot;Female&quot;))
+table(g)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-2_log.txt, continued)</div><pre class="out"><code>[1]  3  4 NA
+Warning message:
+NAs introduced by coercion
+g
+  Male Female 
+   373    427 </code></pre></div>
+
+<!-- extra:begin -->
+<h3>Worked example: missing values, type conversion, and recycling</h3>
+<p>For each line below, predict the result first, then run it in R to check. All of these come up for real when you write CLPN scripts.</p>
+<div class="codeblk"><pre><code class="language-r">x &lt;- c(3, NA, 5, 2)
+mean(x)                    # NA: one missing value makes the result NA
+mean(x, na.rm = TRUE)      # 3.333...: (3 + 5 + 2) / 3; the denominator is 3, not 4
+sum(is.na(x))              # 1: TRUE is added as 1; the usual way to count missing values
+
+c(1, &quot;2&quot;, 3)               # &quot;1&quot; &quot;2&quot; &quot;3&quot;: one character value turns the whole vector into character
+as.numeric(c(&quot;4&quot;, &quot;five&quot;)) # 4 NA, with the warning NAs introduced by coercion
+
+f &lt;- factor(c(&quot;10&quot;, &quot;20&quot;, &quot;10&quot;))
+as.numeric(f)              # 1 2 1 ! You get the level codes, not the original numbers
+as.numeric(as.character(f))  # 10 20 10: convert to character first, then to numeric
+
+c(1, 2, 3, 4) + c(10, 20)  # 11 22 13 24: the shorter vector is reused (recycling)
+y &lt;- c(8, 6, 9)
+y[-1]                      # 6 9: minus means &quot;drop the 1st&quot;
+y[y &gt; 7]                   # 8 9: a logical vector as the index</code></pre></div>
+
+<p>Line by line:</p>
+<ul><li><b>NA spreads.</b> R does this on purpose: it never quietly ignores missing values. When you compute total scores for a CLPN, <code>rowSums()</code> returns NA by default if any item is missing, and you have to decide explicitly how to handle it (Lesson 4.3).</li>
+<li><b>A vector has only one type.</b> When importing from Excel, text such as "missing" or "not applicable" also turns the whole column into character.</li>
+<li><b>The factor trap.</b> Inside, a factor stores codes 1, 2, 3, … with labels attached on the outside. Calling <code>as.numeric()</code> directly gives you the codes. Data imported from SPSS often carry such labels, so be careful.</li>
+<li><b>Recycling.</b> When two vectors have different lengths, R repeats the shorter one. If the longer length is an exact multiple of the shorter one, R gives no warning, so a wrong length can silently give a wrong result.</li></ul>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b>Forgetting to save the result with assignment.</b> <code>sort(x)</code> only shows the sorted values; <code>x</code> itself is unchanged. You need <code>x &lt;- sort(x)</code>.</li></ul></div>
+
+<h3>Function arguments: by position or by name?</h3>
+<p>In the call <code>round(3.14159, 2)</code>, 3.14159 and 2 are two <b>arguments</b>. R lets you pass arguments by position (the 1st is the number to round, the 2nd how many decimals to keep) or by name: <code>round(x = 3.14159, digits = 2)</code>. Naming them is clearer, and then the order doesn't matter. A good habit: give the 1st argument (usually the data) by position and name all the others, as in <code>mean(x, na.rm = TRUE)</code> or <code>cor(x, y, use = "pairwise.complete.obs")</code>. When you come back to the script six months later, you will still see at a glance what each setting means.</p>
+<h3>How to read a help page</h3>
+<p>Lesson 2.1 introduced the Usage, Arguments, and Examples sections of a help page. Two more points. First, in Usage, what follows an equals sign is the default; when the default is a vector, the first element is used, so <code>method = c("pearson", "kendall", "spearman")</code> in <code>?cor</code> means Pearson by default. Second, the <b>Value</b> section says what the function returns (a vector, a matrix, or a list), which decides whether you then use <code>[ ]</code> or <code>$</code> to get at the result.</p>
+
+<h3>Mini exercise: predict these four lines</h3>
+<p>Without running the code, write down your answers: ① <code>length(c(1, NA, 3))</code>; ② <code>sum(c(2, 4) &gt; 3)</code>; ③ <code>class(c(TRUE, 2))</code>; ④ <code>rev(1:4)[2]</code>. Answers: ① 3, because NA also takes up a position; ② 1, the sum of the logical values FALSE and TRUE; ③ "numeric", because TRUE is converted to 1; ④ 3: reversed, the vector is 4 3 2 1, and the 2nd element is 3.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">What does mean(c(1, NA, 3)) return?</p><ul class="opts"><li><button type="button" data-ok="0">2</button><div class="ofb" hidden>You get 2 only with na.rm = TRUE.</div></li><li><button type="button" data-ok="1">NA</button><div class="ofb" hidden>Correct: one value is unknown, so the mean is unknown.</div></li><li><button type="button" data-ok="0">1.33</button><div class="ofb" hidden>That is what you'd get by treating NA as 0 and dividing by 3; R does not treat NA as 0.</div></li><li><button type="button" data-ok="0">An error</button><div class="ofb" hidden>There is no error; it just returns NA, R's way of saying "the result is unknown."</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>The fix: mean(c(1, NA, 3), na.rm = TRUE) returns 2.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">x <- c(2, 8, 5, 9, 1). What does x[x > 5] return?</p><ul class="opts"><li><button type="button" data-ok="0">2 4</button><div class="ofb" hidden>Those are the positions that which(x > 5) returns.</div></li><li><button type="button" data-ok="1">8 9</button><div class="ofb" hidden>Correct: it takes all values greater than 5.</div></li><li><button type="button" data-ok="0">TRUE TRUE</button><div class="ofb" hidden>x > 5 gives 5 logical values; the brackets then take the values at the TRUE positions, so the result is numbers.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>x > 5 first gives FALSE TRUE FALSE TRUE FALSE; then the values at the TRUE positions are taken.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Why is gender better stored as a factor?</p><ul class="opts"><li><button type="button" data-ok="1">It is a category, not a quantity; a factor lets R count, plot, and create dummy variables in regression correctly</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">Because stored as 0/1, mean(gender) cannot give any meaningful number</button><div class="ofb" hidden>For a 0/1 variable, the mean is exactly the proportion in the category coded 1 (here, the proportion of women); the real problem is with variables of three or more categories.</div></li><li><button type="button" data-ok="0">Because a numeric variable cannot take only two values</button><div class="ofb" hidden>A numeric variable can perfectly well take only 0 and 1; the problem is that R treats it as a quantity.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>This matters most for variables with 3 or more categories.</div></div>
+<div class="quiz" data-kind="txt" data-ans="character || &quot;character&quot; || chr"><p class="qtext">What is the type of c(1, "two", 3)?</p><div class="numrow"><input type="text" aria-label="Your answer" placeholder="Enter answer"><button type="button" class="qbtn">Check</button></div><div class="qhint" hidden>A vector can have only one type, and R picks the "most accommodating" one.</div><div class="fb" role="status"></div><div class="qexp" hidden>Every element becomes a string: "1" "two" "3".</div></div>
+<div class="quiz" data-kind="num" data-ans="0.3" data-tol="0.001"><p class="qtext">A vector has 10 values: 3 TRUE and 7 FALSE. What does mean() return?</p><div class="numrow"><input type="text" aria-label="Your answer" placeholder="Enter answer"><button type="button" class="qbtn">Check</button></div><div class="qhint" hidden>TRUE = 1, FALSE = 0.</div><div class="fb" role="status"></div><div class="qexp" hidden>3/10 = 0.3, the proportion of TRUE.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Why do NAs get mixed into sleep[sleep < 6]?</p><ul class="opts"><li><button type="button" data-ok="0">Because sleep is character</button><div class="ofb" hidden>class(sleep) returns "numeric"; the NAs that appear are exactly the two positions that were missing.</div></li><li><button type="button" data-ok="1">Because NA < 6 is NA, and indexing with NA returns NA</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">Because R treats NA as 0, and 0 < 6</button><div class="ofb" hidden>R does not treat NA as 0; if it did, the result would contain 0, not NA.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>Add & !is.na(sleep), or use which().</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.2-A: A sleep vector</h4>
+<p>Store the sleep durations of 10 people in a vector (with 2 NAs), compute the mean, and find the people who slept less than 6 hours. Write a function <code>zscore(x)</code> that returns the standardized vector and compare it with <code>scale()</code>.</p>
+<details class="answer"><summary>Reference code</summary>
+<div class="codeblk"><pre><code class="language-r">sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)
+mean(sleep, na.rm = TRUE)                    # 6.5625
+which(sleep &lt; 6)                             # 2 6 10 (which people)
+sleep[sleep &lt; 6 &amp; !is.na(sleep)]             # 5.5 4.5 5.0 (their hours)
+zscore &lt;- function(x) {
+  m &lt;- mean(x, na.rm = TRUE)
+  s &lt;- sd(x, na.rm = TRUE)
+  (x - m) / s                                # The last line is the return value
+}
+all.equal(zscore(sleep), as.numeric(scale(sleep)))   # TRUE</code></pre></div>
+<p>Points to cover: say how NA is handled; explain why <code>which()</code> gives positions while brackets give values; <code>all.equal()</code> checks whether two results are equal (within floating-point error).</p></details></div>
+<div class="exitem"><h4>Exercise 2.2-B: On the course data</h4>
+<p>Read <code>data/clpn_sim_wide.csv</code> and store the column <code>dep1_t1</code> (Depressed mood, scored 0–3) as a vector <code>d1</code>. (1) How many people scored 3? (2) What proportion scored 2 or higher? (3) Standardize <code>d1</code> with your <code>zscore()</code> and check that the result has mean 0 and standard deviation 1.</p>
+<details class="answer"><summary>Reference code</summary>
+<div class="codeblk"><pre><code class="language-r">dat &lt;- read.csv(&quot;data/clpn_sim_wide.csv&quot;)
+d1 &lt;- dat$dep1_t1
+sum(d1 == 3)                 # (1) 54 people
+mean(d1 &gt;= 2)                # (2) 0.194, i.e., 19.4%
+z &lt;- zscore(d1)
+round(c(mean(z), sd(z)), 10) # (3) 0 and 1</code></pre></div>
+<p>Tip: the course data have no missing values, so <code>na.rm</code> is not needed here; but the habit of writing <code>na.rm = TRUE</code> into your own functions is useful.</p></details></div>
+<div class="exitem"><h4>Exercise 2.2-C: A factor with several categories</h4>
+<p>Create the vector <code>service &lt;- c(1, 3, 2, 2, 1, 3, 3)</code> (1 casework, 2 group work, 3 community work). Turn it into a factor with English labels, count with <code>table()</code>, and explain why <code>mean(service)</code> (on the numeric version) is meaningless.</p>
+<details class="answer"><summary>Reference answer</summary>
+<div class="codeblk"><pre><code class="language-r">service &lt;- c(1, 3, 2, 2, 1, 3, 3)
+service_f &lt;- factor(service, levels = 1:3, labels = c(&quot;Casework&quot;, &quot;Group&quot;, &quot;Community&quot;))
+table(service_f)             # Casework 2, Group 2, Community 3</code></pre></div>
+<p><code>mean(service)</code> = 2.14, and "the average service type is 2.14" means nothing: 1, 2, 3 are only labels, and 10, 20, 30 would do just as well.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>A vector is a row of values of one type; <code>[ ]</code> takes values by position, condition, or name; operations are vectorized automatically.</li>
+<li>Four basic types: numeric, character, logical (TRUE = 1), and factor (categorical variables). If a type is wrong, everything downstream goes wrong.</li>
+<li>NA spreads: use <code>na.rm = TRUE</code> and <code>is.na()</code>, and think about why values are missing. Next lesson: <a href="L2-3.html">2.3 Data Frames and Introduction to the Tidyverse</a>.</li></ul>
+</section>
+
+<nav class="pager"><a href="L2-1.html" class="pv"><small>Previous</small>2.1 Installing R and RStudio and Running Your First Line of Code</a><a href="L2-3.html" class="nx"><small>Next</small>2.3 Data Frames and Introduction to the Tidyverse</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 2.2 · <a href="../index.html#L2-2">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

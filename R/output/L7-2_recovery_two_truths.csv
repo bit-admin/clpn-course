@@ -1,0 +1,7 @@
+"rule","truth","n_true","hit","miss","fp","n_est","r","trait_hit"
+"lambda.min","population",36,33,3,19,52,0.654,25
+"lambda.min","within",8,8,0,44,52,0.569,25
+"lambda.1se","population",36,14,22,3,17,0.551,8
+"lambda.1se","within",8,6,2,11,17,0.454,8
+"EBIC","population",36,24,12,7,31,0.624,16
+"EBIC","within",8,8,0,23,31,0.566,16

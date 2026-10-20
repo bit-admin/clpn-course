@@ -1,0 +1,31 @@
+孤独系数：单独 0.324 → 控制支持与睡眠后 0.282 
+
+共线性演示：r(孤独, 副本) = 0.995 
+  Estimate Std. Error 
+     0.324      0.037 
+            Estimate Std. Error
+(Intercept)    0.979      0.344
+lone_sum_t1    1.275      0.368
+lone_copy     -0.957      0.369
+
+3.2-A：m4（孤独 + 支持 + 睡眠 + T1 抑郁）的系数
+      (Intercept)       lone_sum_t1 social_support_t1    sleep_hours_t1 
+            0.332             0.128            -0.127             0.100 
+       dep_sum_t1 
+            0.541 
+
+3.2-B：dep1_t2 ~ 9 道 T1 题（标准化系数）
+(Intercept)    lone1_t1    lone2_t1    lone3_t1    lone4_t1     dep1_t1 
+      0.000       0.029      -0.014       0.081       0.090       0.319 
+    dep2_t1     dep3_t1     dep4_t1     dep5_t1 
+      0.079      -0.002       0.038       0.069 
+总体目标值（data/true_B_population.csv 的 dep1 列）
+ lone1  lone2  lone3  lone4   dep1   dep2   dep3   dep4   dep5 
+ 0.005  0.012  0.118 -0.003  0.327  0.061  0.060  0.055  0.055 
+孤独题中系数最大： lone4_t1 0.09 
+VIF：
+lone1_t1 lone2_t1 lone3_t1 lone4_t1  dep1_t1  dep2_t1  dep3_t1  dep4_t1 
+    1.53     1.53     1.49     1.65     1.46     1.49     1.47     1.45 
+ dep5_t1 
+    1.49 
+lone4_t1 的 VIF = 1.65 ；全部在 1.45 – 1.65 之间，远低于 5 的警戒线

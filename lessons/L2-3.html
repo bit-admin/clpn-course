@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3 数据框与 tidyverse 入门 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-3.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.3" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L2-3">CLPN 课程大纲</a><span class="crumb">M2 R 与 RStudio：从零开始 / 2.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L2-3.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L2-3.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html" class="cur" aria-current="page"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 2 · R &amp; RStudio from Zero · 第 2.3 课</div>
+<h1>数据框与 tidyverse 入门</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L2-2.html">2.2 R 基本语法：向量、数据类型与函数</a></span><span>配套脚本：<a href="../R/L2-3.R">R/L2-3.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>理解数据框（data frame）的“行 = 个案、列 = 变量”结构</li><li>使用 dplyr 的核心动词：select、filter、mutate、summarise、group_by</li><li>使用管道 |&gt; 把步骤串起来</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>数据框</b><span class="en">data frame</span></li><li><b>tibble</b><span class="en">tibble</span></li><li><b>tidyverse</b><span class="en">tidyverse</span></li><li><b>管道</b><span class="en">pipe, |&gt;</span></li><li><b>变量重编码</b><span class="en">recoding</span></li><li><b>反向计分</b><span class="en">reverse scoring</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>数据框：一张“一人一行”的登记表</h2>
+<div class="box story"><b class="bt">从个案登记表到数据框</b>
+<p>社区中心的个案登记表：每一行是一位服务对象，每一列是一项信息（编号、性别、年龄、各题得分……）。R 里的<span class="term">数据框<span class="en">（data frame）</span></span>就是这种结构：<b>行 = 个案（case），列 = 变量（variable），格子 = 某人在某变量上的值</b>。课程数据 <code>clpn_sim_wide.csv</code> 就是一个 800 行 × 34 列的数据框：800 个人，34 个变量（编号、9 道题 × 3 个时间点、性别、年龄等）。</p></div>
+<p>数据框的每一列都是一个向量（2.2 课），同一列内类型相同，不同列可以类型不同（<code>id</code> 是字符，<code>dep1_t1</code> 是数值）。所有列长度相同，第 37 行在每一列里都代表同一个人。</p>
+<p>取出一列有两种常见写法：</p>
+<ul><li><code>dat$dep1_t1</code>：用 <code>$</code> 按名字取出一列，得到一个向量。</li>
+<li><code>dat[, "dep1_t1"]</code>：方括号的二维版本 <code>[行, 列]</code>，逗号前空着表示“所有行”。对普通 <code>data.frame</code>，它也返回向量；但对 tibble（见下），它返回只有一列的 tibble。如果要确保得到向量，用 <code>dat[["dep1_t1"]]</code>。</li></ul>
+<p>同理 <code>dat[1:5, ]</code> 取前 5 行的所有列，<code>dat[dat$gender == 1, ]</code> 取所有女性的行。</p>
+
+<h3>tidyverse：给数据整理配一套“动词”</h3>
+<p><span class="term">tidyverse<span class="en">（tidyverse）</span></span> 是一组设计风格统一的 R 包（dplyr、ggplot2、readr、tidyr 等），由 Hadley Wickham 等人开发。其中 dplyr 提供了数据整理的核心“动词”，每个动词做一件事，名字就是英文动词：</p>
+<div class="tablewrap"><table><thead><tr><th>动词</th><th>作用于</th><th>做什么</th><th>社会工作类比</th></tr></thead><tbody>
+<tr><td><code>select()</code></td><td><b>列</b></td><td>挑选变量</td><td>从登记表里只复印“抑郁量表”那几栏</td></tr>
+<tr><td><code>filter()</code></td><td><b>行</b></td><td>按条件挑选个案</td><td>只看抑郁总分 ≥ 10 的服务对象</td></tr>
+<tr><td><code>mutate()</code></td><td>列</td><td>新建或修改变量</td><td>在表格最右边加一栏“总分”</td></tr>
+<tr><td><code>summarise()</code></td><td>整表 → 一行</td><td>汇总（均值、人数……）</td><td>写一句“平均分是多少”</td></tr>
+<tr><td><code>group_by()</code></td><td>行</td><td>分组，之后的操作在每组内进行</td><td>男女分开统计</td></tr>
+<tr><td><code>arrange()</code></td><td>行</td><td>排序</td><td>按风险高低排列个案</td></tr></tbody></table></div>
+<p>用 <code>read_csv()</code>（readr 包）读入的数据，以及 dplyr 处理后的结果，常常是<span class="term">tibble<span class="en">（tibble）</span></span>，即一种“加强版”数据框：打印时只显示前 10 行和放得下的列，并标出每列类型（<code>&lt;chr&gt;</code> 字符、<code>&lt;dbl&gt;</code> 数值），不会刷屏；不会自动把字符串变成因子。除了上面提到的方括号区别，用法与数据框基本相同。一些旧函数要求输入向量，用 tibble 遇到奇怪的报错时，试试改用 <code>dat$列名</code> 或 <code>dat[["列名"]]</code>。</p>
+
+<h3>管道 |>：读作“然后”</h3>
+<p><span class="term">管道<span class="en">（pipe, |&gt;）</span></span> <code>|&gt;</code>（R 4.1 起内置）把左边的结果作为右边函数的第一个参数。<code>dat |&gt; filter(gender == 1)</code> 等价于 <code>filter(dat, gender == 1)</code>。好处是可以把多个步骤从上到下串起来，像一份操作说明：</p>
+<p><code>dat |&gt; filter(...) |&gt; group_by(...) |&gt; summarise(...)</code> 读作：“拿数据，然后筛选，然后分组，然后汇总。”你也会在网上看到 <code>%&gt;%</code>，那是 magrittr 包的旧式管道，在常见用法下两者效果相同。RStudio 插入管道的快捷键是 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>（Mac：<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>），但它默认插入的是 <code>%&gt;%</code>。要让它插入 <code>|&gt;</code>，在 Tools → Global Options → Code → Editing 中勾选 “Use native pipe operator, |&gt;”。本课程的代码一律用 <code>|&gt;</code>。</p>
+<div class="widget" data-widget="dplyr"></div>
+
+<h3>变量重编码与反向计分</h3>
+<p><span class="term">变量重编码<span class="en">（recoding）</span></span>是把原始值转换成分析需要的形式，例如把 0/1 转成“男 / 女”（<code>if_else()</code>），把年龄分组（<code>case_when()</code>），或者<span class="term">反向计分<span class="en">（reverse scoring）</span></span>。</p>
+<p>很多量表包含反向题：例如孤独量表中“我觉得有人可以倾诉”，同意程度越高反而越不孤独。如果不先反向计分就直接求和，这道题会抵消其他题的分数；在相关或网络分析中，它与其他题会呈现负相关，画出来的网络会出现令人困惑的负边，而这些负边仅仅来自题目的措辞方向，不反映任何心理机制。</p>
+<div class="mathbox">$$\text{反向分} = (\text{最小值} + \text{最大值}) - \text{原始分}$$</div>
+<p>例如 1–4 分的题：反向分 = 5 − 原始分（1↔4，2↔3）；0–3 分的题：3 − 原始分；1–5 分：6 − 原始分。</p>
+<div class="box warnbox"><b class="bt">课程数据里没有反向题</b><p>模拟数据中的 9 道题都已是同一方向（分数越高越孤独 / 越抑郁）。为了演示，脚本把 <code>social_support_t1</code>（1–5，越高支持越多）反向为 <code>support_rev = 6 − social_support_t1</code>（越高支持越少），让它与孤独、抑郁同方向。实际研究中，务必对照量表手册确认哪些题需要反向，并在反向后检查：同一量表的题目之间应基本为正相关。反向前后相关系数只是变号：例如把 <code>lone2_t1</code> 假装反向（5 − 原分），它与 <code>lone1_t1</code> 的相关从 0.456 变成 −0.456。</p></div>
+<div class="box sw"><b class="bt">为什么社工尤其要注意</b><p>社会工作常用的量表（如社会支持、自我效能、家庭功能量表）经常混合正向和反向题。录入数据的志愿者往往按原始勾选录入，反向计分是分析者的责任。漏掉这一步，最常见的后果是：信度（α）异常低、总分与其他变量的相关被削弱。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>总分、分组均值</h2>
+<div class="mathbox">$$\text{抑郁总分}_i = \sum_{k=1}^{5} \text{dep}_{k,i}$$</div>
+<dl class="sym"><dt>\(i\)</dt><dd>第 \(i\) 个人（数据框的第 \(i\) 行）。</dd><dt>\(k\)</dt><dd>第 \(k\) 道题（列）。</dd><dt>\(\text{dep}_{k,i}\)</dt><dd>第 \(i\) 个人在第 \(k\) 道抑郁题上的得分（0–3），所以总分范围 0–15。</dd></dl>
+<p>这是“按行求和”，对应 <code>rowSums()</code>。分组均值：</p>
+<div class="mathbox">$$\bar y_g = \frac{1}{n_g}\sum_{i\in g} y_i$$</div>
+<p>\(g\) 表示一组（如女性），\(n_g\) 是组内人数，\(\sum_{i\in g}\) 表示只对属于该组的人求和，对应 <code>group_by() |&gt; summarise(mean())</code>。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>五个动词串起来</h2>
+<p>对应脚本：<a href="../R/L2-3.R">R/L2-3.R</a>。</p>
+<div class="codeblk"><div class="ctitle">R/L2-3.R（核心部分）</div><pre><code class="language-r">library(tidyverse)
+dat &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)  # tibble（加强版数据框）
+
+phq &lt;- dat |&gt; select(id, gender, starts_with(&quot;dep&quot;) &amp; ends_with(&quot;_t1&quot;))  # 选列 select
+print(phq, n = 5)
+
+# 反向计分（reverse scoring）示例：假设社会支持需要反向（1–5 → 5–1）：新值 = 6 - 原值
+dat &lt;- dat |&gt;
+  mutate(support_rev = 6 - social_support_t1,                         # 反向计分示例
+         dep_sum_t1  = rowSums(across(c(dep1_t1:dep5_t1))))           # 生成总分
+dat |&gt;
+  mutate(性别 = if_else(gender == 1, &quot;女&quot;, &quot;男&quot;)) |&gt;
+  group_by(性别) |&gt;                                                    # 分组
+  summarise(人数 = n(), 抑郁均值 = mean(dep_sum_t1), 标准差 = sd(dep_sum_t1)) |&gt;  # 汇总
+  print()
+n_high &lt;- dat |&gt; filter(dep_sum_t1 &gt;= 10) |&gt; nrow()   # 筛选行 filter
+cat(&quot;抑郁总分 ≥ 10 的人数：&quot;, n_high, &quot;\n&quot;)</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-3_log.txt）</div><pre class="out"><code># A tibble: 800 × 7
+  id    gender dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1
+  &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 P001       0       0       0       1       0       0
+2 P002       0       0       0       1       0       1
+3 P003       1       1       2       1       2       0
+4 P004       0       1       0       2       1       0
+5 P005       1       1       2       0       3       1
+# ℹ 795 more rows
+# A tibble: 2 × 4
+  性别   人数 抑郁均值 标准差
+  &lt;chr&gt; &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+1 女      427     4.21   3.52
+2 男      373     3.41   3.21
+抑郁总分 ≥ 10 的人数： 65</code></pre></div>
+<div class="box key"><b class="bt">逐句解释</b><ul>
+<li><code>starts_with("dep") &amp; ends_with("_t1")</code>：选择“以 dep 开头并且以 _t1 结尾”的列，即 T1 的 5 道抑郁题。还有 <code>contains()</code>、<code>matches()</code> 等选择助手。</li>
+<li><code>dep1_t1:dep5_t1</code>：冒号表示“从这一列到那一列之间的所有列”（依赖列的顺序）。<code>across()</code> 把这些列打包交给 <code>rowSums()</code>。</li>
+<li><code>if_else(条件, 是, 否)</code>：条件为 TRUE 时取“女”，否则取“男”。</li>
+<li><code>n()</code>：组内人数。<code>summarise()</code> 把每组压缩成一行。课程数据没有缺失值；真实数据有缺失时，<code>mean()</code> 会返回 NA，要写 <code>mean(x, na.rm = TRUE)</code>，并用 <code>sum(!is.na(x))</code> 报告每组实际用了多少人。</li>
+<li><code>dat &lt;- dat |&gt; mutate(...)</code>：注意要把结果赋值回 <code>dat</code>，否则新变量只会打印出来而不会被保存。这是初学者最常见的错误之一。</li></ul></div>
+<div class="codeblk"><div class="ctitle">$ 与 [ ] 的区别</div><pre><code class="language-r">dat$dep1_t1 |&gt; head()            # 向量
+dat[, &quot;dep1_t1&quot;] |&gt; head(3)      # tibble 返回的是一列的 tibble
+dat[[&quot;dep1_t1&quot;]] |&gt; head()       # 向量（对 tibble 和 data.frame 都一样）</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-3_log.txt，续）</div><pre class="out"><code>[1] 0 0 1 1 1 1
+# A tibble: 3 × 1
+  dep1_t1
+    &lt;dbl&gt;
+1       0
+2       0
+3       1
+[1] 0 0 1 1 1 1</code></pre></div>
+<div class="codeblk"><div class="ctitle">更多例子：多条件筛选、计数、排序</div><pre><code class="language-r">dat |&gt; filter(gender == 1, age &lt; 30) |&gt; nrow()      # 逗号 = “并且”：30 岁以下女性
+dat |&gt; count(gender)                                # 计数
+dat |&gt; arrange(desc(dep_sum_t1)) |&gt; select(id, dep_sum_t1) |&gt; head(3)   # 抑郁总分最高的 3 人</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-3_log.txt，续）</div><pre class="out"><code>[1] 68
+# A tibble: 2 × 2
+  gender     n
+   &lt;dbl&gt; &lt;int&gt;
+1      0   373
+2      1   427
+# A tibble: 3 × 2
+  id    dep_sum_t1
+  &lt;chr&gt;      &lt;dbl&gt;
+1 P734          15
+2 P154          14
+3 P215          14</code></pre></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：一条管道算出“按性别分组的孤独总分”</h3>
+<p>任务：用 T1 数据计算每人的孤独总分，只保留 60 岁及以上的人，再按性别比较均值和人数。先写出思路（这一步最重要），再翻译成代码：</p>
+<ol><li><b>mutate</b>：新建一列 <code>lone_t1</code> = 4 道孤独题之和（按行相加）。</li>
+<li><b>filter</b>：保留 <code>age &gt;= 60</code> 的行。</li>
+<li><b>group_by</b>：按 <code>gender</code> 分组。</li>
+<li><b>summarise</b>：每组算出人数、均值和标准差。</li></ol>
+<div class="codeblk"><pre><code class="language-r">source(&quot;R/_setup.R&quot;)      # 找到课程根目录，并定义 read_course_data() 等小函数（2.4 课）
+library(dplyr)
+dat &lt;- read_course_data()  # 等于 read.csv(&quot;data/clpn_sim_wide.csv&quot;)
+res &lt;- dat |&gt;
+  mutate(lone_t1 = lone1_t1 + lone2_t1 + lone3_t1 + lone4_t1) |&gt;   # 按行相加
+  filter(age &gt;= 60) |&gt;
+  group_by(gender) |&gt;
+  summarise(n = n(), M = mean(lone_t1), SD = sd(lone_t1)) |&gt;
+  ungroup()
+res</code></pre></div>
+
+<p>如果不先运行 <code>source("R/_setup.R")</code>，R 会报 <code>could not find function "read_course_data"</code>：这个函数不是 R 自带的，而是课程在 <code>R/_setup.R</code> 里定义的。不想依赖它时，第二行换成 <code>dat &lt;- read.csv("data/clpn_sim_wide.csv")</code>，前提是工作目录是课程根目录（2.4 课）。</p>
+<p>读结果时先看 <code>n</code>：两组人数加起来，应该等于 60 岁以上的总人数，可以用 <code>sum(dat$age &gt;= 60)</code> 核对。这种“对一下人数”的检查几乎不花时间，却能发现不少整理错误，例如筛选条件写反、比较符号写错（<code>&gt;</code> 与 <code>&gt;=</code>），或者有缺失值的行被悄悄丢掉。</p>
+<h3>一个经典陷阱：mutate 里用 sum()</h3>
+<p>很多初学者会写 <code>mutate(lone_t1 = sum(lone1_t1, lone2_t1, lone3_t1, lone4_t1))</code>。结果每个人的“总分”都是同一个很大的数，因为 <code>sum()</code> 把<b>所有人</b>的所有题都加在了一起。按行相加有两种正确写法：直接用 <code>+</code> 连接，或者用 <code>rowSums(across(lone1_t1:lone4_t1))</code>。写完后用 <code>head()</code> 看一眼：总分是否在 4–16 之间，每个人是否不同。</p>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b>在 filter 里写单个等号。</b><code>filter(gender = 1)</code> 会报错，必须写 <code>filter(gender == 1)</code>。</li>
+<li><b>group_by 之后忘了 ungroup。</b>分组状态会“粘”在数据上，后面的 mutate 会按组计算（例如组内均值），结果悄悄出错。</li>
+</ul></div>
+
+<h3>一次处理很多列：across() 与选择助手</h3>
+<p>CLPN 数据有 27 道题目列（9 题 × 3 波），一列一列手写既慢又容易漏。dplyr 提供了按名字规律选列的“助手”：<code>starts_with("lone")</code> 选所有孤独题，<code>ends_with("_t1")</code> 选第 1 波的所有列，<code>lone1_t1:lone4_t1</code> 选相邻的一段列。配合 <code>across()</code>，可以把同一个操作作用到多列上。例如，<code>summarise(across(ends_with("_t1"), mean))</code> 一次算出 T1 所有题的均值；<code>mutate(across(starts_with("dep"), ~ .x / 3))</code> 把所有抑郁题除以 3。<code>~ .x / 3</code> 是一个简写的小函数，<code>.x</code> 代表“当前这一列”。</p>
+<p>要特别注意：<code>ends_with("_t1")</code> 会同时选中 social_support_t1、sleep_hours_t1 等协变量。选完之后，最好用 <code>names(select(dat, ends_with("_t1")))</code> 打印出来确认一下。</p>
+<h3>长管道怎样调试？</h3>
+<p>一条五六步的管道出错时，不要盯着整段看。从第一行开始，每次多选中一行运行，看每一步的输出是否符合预期：行数对不对，新列有没有出现，数值范围是否合理。哪一步之后结果开始不对，问题就出在哪一步。</p>
+
+<h3>arrange 与 count 的检查用途</h3>
+<p><code>arrange(dat, desc(age))</code> 按年龄从大到小排序，可以用来检查极端值：排在最前和最后的几行，年龄是否合理？<code>count(dat, gender)</code> 是 <code>group_by(gender) |&gt; summarise(n = n())</code> 的简写。拿到新数据后，对每个分类变量都 count 一次，能很快发现编码问题，例如性别出现了 0、1 之外的值。</p>
+
+<h3>rename：给列换个好记的名字</h3>
+<p><code>rename(dat, 孤独总分 = lone_t1)</code> 的写法是“新名字 = 旧名字”，容易写反，要特别留意。改名不会改变数据本身，只是让后面的代码和输出更易读。</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">df$var 与 df[, "var"] 有什么异同？</p><ul class="opts"><li><button type="button" data-ok="0">完全相同，任何时候都返回向量</button><div class="ofb" hidden>对普通 data.frame 是这样，但 tibble 的 [, "var"] 返回只有一列的 tibble。</div></li><li><button type="button" data-ok="1">都按名字取出一列；$ 总是返回向量，而 [, "var"] 对 tibble 返回一列的 tibble（对普通 data.frame 返回向量）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">$ 取行，[ ] 取列</button><div class="ofb" hidden>两者都取列；取行要在 [ ] 的逗号前写条件，如 dat[1:5, ]。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>想确保得到向量，用 df[["var"]] 或 df$var。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">filter() 和 select() 分别作用在行还是列？</p><ul class="opts"><li><button type="button" data-ok="1">filter() 选行（个案），select() 选列（变量）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">filter() 选列，select() 选行</button><div class="ofb" hidden>反了：select 挑变量（列），filter 按条件挑个案（行）。</div></li><li><button type="button" data-ok="0">两者都选列，filter 只是多了按条件挑选的功能</button><div class="ofb" hidden>filter 的条件对每一行求值，留下的是满足条件的行，列不变。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>记忆法：filter 过滤“人”，select 挑选“题”。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么反向计分题在做相关 / 网络之前必须先处理？</p><ul class="opts"><li><button type="button" data-ok="0">因为反向题测的是另一个构念，应在网络中作为单独的节点处理</button><div class="ofb" hidden>反向题测的仍是同一构念，只是措辞方向相反；不反向时出现的负边只反映措辞。</div></li><li><button type="button" data-ok="1">不反向的话，它与同一构念的其他题呈负相关，总分被抵消，网络中出现只由措辞方向造成的负边</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为反向题必须删除</button><div class="ofb" hidden>反向题不必删除；按公式反向计分后照常使用。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>反向后检查同一量表的题目是否基本为正相关。</div></div>
+<div class="quiz" data-kind="num" data-ans="2" data-tol="0"><p class="qtext">一道 0–3 分的题，原始分为 1，反向计分后是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>反向分 = (最小值 + 最大值) − 原始分。</div><div class="fb" role="status"></div><div class="qexp" hidden>(0 + 3) − 1 = 2。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">运行 dat |> mutate(total = rowSums(across(dep1_t1:dep5_t1))) 后，再运行 mean(dat$total) 得到 NA，并出现警告 Unknown or uninitialised column: `total`。原因？</p><ul class="opts"><li><button type="button" data-ok="0">rowSums 写错了</button><div class="ofb" hidden>rowSums(across(...)) 的写法是对的；警告说的是 total 这一列不存在。</div></li><li><button type="button" data-ok="1">没有把结果赋值回 dat（dat <- dat |> mutate(...)），新列没有被保存</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">管道符不能和 mutate 一起用</button><div class="ofb" hidden>|> 与 mutate() 可以正常配合，本课的核心代码就是这样写的。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>这是初学者最常见的错误：管道只打印结果，不改变原对象。</div></div>
+<div class="quiz" data-kind="num" data-ans="2" data-tol="0"><p class="qtext">dat |> group_by(gender) |> summarise(m = mean(dep_sum_t1)) 返回几行？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>summarise 把每组压缩为一行。</div><div class="fb" role="status"></div><div class="qexp" hidden>gender 有两个取值，所以 2 行。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.3-A：选题、反向、总分、分组</h4>
+<p>在课程的模拟问卷数据上：选出 T1 的抑郁题目（PHQ 风格）、把一道题“假装”为反向题重新计分（例如社会支持，或把 <code>lone2_t1</code> 当作反向题练习）、生成总分、按性别分组求均值。</p>
+<details class="answer"><summary>参考代码与要点</summary>
+<div class="codeblk"><pre><code class="language-r">library(tidyverse)
+dat &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)
+res &lt;- dat |&gt;
+  select(id, gender, starts_with(&quot;dep&quot;) &amp; ends_with(&quot;_t1&quot;), social_support_t1) |&gt;
+  mutate(support_rev = 6 - social_support_t1,                 # 1–5 → 5–1
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1)),
+         性别        = factor(gender, levels = c(0, 1), labels = c(&quot;男&quot;, &quot;女&quot;)))
+res |&gt;
+  group_by(性别) |&gt;
+  summarise(人数 = n(), 抑郁均值 = mean(dep_sum_t1), 支持缺乏均值 = mean(support_rev))
+cor(res$social_support_t1, res$support_rev)    # -1：反向只是翻转方向</code></pre></div>
+<p>要点：(1) 反向计分公式写对；(2) 用 <code>cor()</code> 验证反向前后相关为 −1；(3) 女性抑郁均值 4.21，男性 3.41（与脚本输出一致）；(4) 写一句话解释为什么反向题要在分析前处理。</p></details></div>
+<div class="exitem"><h4>练习 2.3-B：孤独总分与高风险名单</h4>
+<p>为 T1 生成孤独总分 <code>lone_sum_t1</code>（4 道题，范围 4–16），筛选出孤独总分 ≥ 13 且抑郁总分 ≥ 10 的人，按抑郁总分从高到低排序，只保留 <code>id</code>、两个总分。共有多少人？</p>
+<details class="answer"><summary>参考代码</summary>
+<div class="codeblk"><pre><code class="language-r">high &lt;- dat |&gt;
+  mutate(lone_sum_t1 = rowSums(across(lone1_t1:lone4_t1)),
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1))) |&gt;
+  filter(lone_sum_t1 &gt;= 13, dep_sum_t1 &gt;= 10) |&gt;
+  arrange(desc(dep_sum_t1)) |&gt;
+  select(id, lone_sum_t1, dep_sum_t1)
+nrow(high)</code></pre></div>
+<p>结果：22 人。思考：这种“双高”名单在服务中可以用于什么？（优先外展、转介评估）使用时要注意什么？（筛查分界值不等于诊断；保护隐私。）</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>数据框：行 = 个案，列 = 变量；<code>$</code> 取列得向量，<code>[行, 列]</code> 二维索引。</li>
+<li>dplyr 动词：select 选列、filter 选行、mutate 建变量、group_by + summarise 分组汇总；用 <code>|&gt;</code> 串起来，记得赋值保存。</li>
+<li>反向题先反向再分析：反向分 = 最小 + 最大 − 原分。下一课：<a href="L2-4.html">2.4 安装包、导入数据与项目管理</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L2-2.html" class="pv"><small>上一课</small>2.2 R 基本语法：向量、数据类型与函数</a><a href="L2-4.html" class="nx"><small>下一课</small>2.4 安装包、导入数据与项目管理</a></nav>
+<p class="foot">CLPN 从零开始 · 第 2.3 课 · <a href="../index.html#L2-3">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

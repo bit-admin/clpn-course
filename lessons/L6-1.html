@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.1 网络的语言：节点、边、权重与邻接矩阵 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L6-1.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="6.1" style="--c:#14b8a6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L6-1">CLPN 课程大纲</a><span class="crumb">M6 网络心理测量学基础 / 6.1</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L6-1.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L6-1.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details open style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html" class="cur" aria-current="page"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 6 · Network Psychometrics · 第 6.1 课</div>
+<h1>网络的语言：节点、边、权重与邻接矩阵</h1>
+<div class="facts"><span>课文学习 1 小时 30 分钟</span><span>先修：<a href="L1-4.html">1.4 协方差与相关：两个变量如何一起变化</a></span><span>配套脚本：<a href="../R/L6-1.R">R/L6-1.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>说出节点、边、权重、有向/无向的含义</li><li>把一个网络图与它的权重矩阵互相转换</li><li>理解心理网络中“节点 = 题目/症状，边 = 统计关联”</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>节点</b><span class="en">node</span></li><li><b>边</b><span class="en">edge</span></li><li><b>边权重</b><span class="en">edge weight</span></li><li><b>有向/无向</b><span class="en">directed / undirected</span></li><li><b>邻接矩阵</b><span class="en">adjacency matrix</span></li><li><b>权重矩阵</b><span class="en">weights matrix</span></li><li><b>密度</b><span class="en">density</span></li><li><b>社群/簇</b><span class="en">community / cluster</span></li></ul>
+<p>从这一课开始，我们换一种眼光看量表：不再把 9 道题加成两个总分，而是把每道题当作一个会与其他题“互相牵动”的节点。本课介绍网络的基本术语和矩阵表示。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>为什么要用网络看心理问题？</h3>
+<p>传统观点（共同因素模型，common cause model）认为：“情绪低落、兴趣丧失、睡眠问题……都是同一个潜在的‘抑郁’造成的表现”，就像发烧、咳嗽都是流感的表现。<b>网络视角</b>（network perspective）则认为：症状之间可能直接相互作用：睡不好让人疲乏，疲乏让人兴趣减退，兴趣减退又让人觉得自己没价值……“抑郁”就是这样一个相互强化的系统（参见 Borsboom & Cramer, 2013）。网络分析给了我们一套描述这种系统的语言。</p>
+<h3>五个基本词汇</h3>
+<div class="tablewrap"><table><tr><th>术语</th><th>在心理网络中的含义</th><th>画图时</th></tr><tr><td><span class="term">节点<span class="en">（node）</span></span></td><td>一个变量：一道题、一个症状，或一个构念</td><td>圆圈</td></tr><tr><td><span class="term">边<span class="en">（edge）</span></span></td><td>两个节点之间的统计关联（不一定是因果）</td><td>连线</td></tr><tr><td><span class="term">边权重<span class="en">（edge weight）</span></span></td><td>关联的大小和方向（正 / 负）</td><td>线的粗细与颜色</td></tr><tr><td><span class="term">有向 / 无向<span class="en">（directed / undirected）</span></span></td><td>无向：只说“有关”；有向：说“从谁指向谁”（如时间上的预测）</td><td>有无箭头</td></tr><tr><td><span class="term">密度<span class="en">（density）</span></span></td><td>实际存在的边 ÷ 可能存在的边</td><td>图看起来“满不满”</td></tr></table></div>
+<h3>网络 = 一张矩阵</h3>
+<p>计算机不认识图，它只认识表格。一个有 \(p\) 个节点的网络，可以完整地写成一个 \(p\times p\) 的 <span class="term">权重矩阵<span class="en">（weights matrix）</span></span>：第 i 行第 j 列的数字就是节点 i 与节点 j 之间边的权重，0 表示没有边。如果只记录“有没有边”（1/0），就叫 <span class="term">邻接矩阵<span class="en">（adjacency matrix）</span></span>。</p>
+<ul><li>无向网络的矩阵是对称的：[i, j] = [j, i]，因为 A—B 与 B—A 是同一条边。</li>
+<li>有向网络的矩阵一般不对称：qgraph 的约定是 [i, j] 表示<b>从 i（行）指向 j（列）</b>。CLPN 的系数矩阵 B 就沿用这个约定：B["lone3", "dep1"] = 与人隔绝(T1) → 情绪低落(T2)。</li>
+<li>对角线 [i, i] 在横断面网络中通常为 0（自己和自己的关联没有意义）；在 CLPN 中对角线是自回归（T1 的自己 → T2 的自己），是模型的重要部分。</li></ul>
+<p>动手试试：改下面矩阵中的数字，观察右边的图如何变化；勾选“有向网络”后，[A, B] 和 [B, A] 就可以不同了。</p>
+<div class="widget w2" data-widget="adj"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>正边与负边：颜色约定</h3>
+<p>正边表示“一个高，另一个也倾向高”，负边表示“一个高，另一个倾向低”（例如社会支持与孤独）。qgraph 的经典（默认）主题用绿色表示正边、红色表示负边；本课程的网络图全部使用 <code>theme = "colorblind"</code>（色盲友好主题；bootnet 的 <code>plot()</code> 默认也是它）：<b style="color:var(--pos)">蓝色 = 正</b>，<b style="color:var(--neg)">红色 = 负</b>。线越粗、颜色越深，|权重| 越大。读别人的图时，先看图注说明了哪种配色。</p>
+<h3>社群</h3>
+<p><span class="term">社群 / 簇<span class="en">（community / cluster）</span></span> 是网络中彼此连接特别紧密的一组节点，例如“孤独 4 题”和“抑郁 5 题”可能各自形成一个社群。本课程中社群事先按量表指定（孤独 vs 抑郁），用于着色和计算 6.5 课的桥接中心性；也有算法可以从数据中自动发现社群（如 EGA 方法、walktrap 算法），这超出了本课程范围。</p>
+<div class="box story"><b class="bt">核对原则：</b><p>图只是矩阵的一种画法。任何结论都应该能回到矩阵里的具体数字上去核对。</p></div>
+<p><b>给社工的一个类比：</b>画个案的生态图（eco-map）时，你会把服务对象放在中间，周围画出家人、邻居、工作单位、社区机构，再用不同的线表示关系的强弱和好坏。心理网络用的是同一种语言：圆圈是“谁”（这里是症状或感受），线是“关系”，线的粗细和颜色表示关系的强弱与正负。区别只在于，生态图的线来自访谈判断，网络图的线则从数据中估计出来。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>网络里的“节点”必须是题目吗？</summary><p>不一定。节点可以是单个题目、分量表或总分，也可以是行为或环境变量。心理网络研究通常用单个症状题目作节点，因为“症状之间相互作用”是网络理论的核心观点（Borsboom & Cramer, 2013）。代价是单个题目的信度较低，这一点需要在局限中讨论。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>设网络有 \(p\) 个节点，权重矩阵为 \(W\)：</p>
+<div class="mathbox">\[W = \begin{pmatrix} 0 & w_{12} & \cdots & w_{1p}\\ w_{21} & 0 & \cdots & w_{2p}\\ \vdots & & \ddots & \vdots\\ w_{p1} & w_{p2} & \cdots & 0 \end{pmatrix},\qquad \text{无向时 } w_{ij}=w_{ji}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(p\)</td><td>节点个数。课程数据中 p = 9（孤独 4 题 + 抑郁 5 题）</td></tr><tr><td>\(w_{ij}\)</td><td>第 i 行第 j 列：节点 i 与 j 之间（有向时：从 i 到 j）的边权重</td></tr><tr><td>\(w_{ij}=w_{ji}\)</td><td>对称性：无向网络的特征，矩阵沿对角线“镜像”</td></tr></table>
+<h4>最多有多少条边？</h4>
+<p>无向网络：每对节点最多一条边，共 \(\binom{p}{2} = \frac{p(p-1)}{2}\) 条。p = 9 时为 36 条。<br>有向网络：每对节点有两个方向，共 \(p(p-1)\) 条（不含自环）。p = 9 时为 72 条，也就是 CLPN 中“交叉滞后边”的最大数量；再加上 9 条自回归，共 81 个系数。</p>
+<h4>密度</h4>
+<div class="mathbox">\[\text{密度} = \frac{\text{非零边数}}{\text{可能的边数}}\]</div>
+<p>R/L6-1.R 中的 5 节点例子：6 条非零边 ÷ \(\binom{5}{2}=10\) = 0.6。</p>
+<div class="box key"><b class="bt">小技巧：</b><p>在 R 中，<code>W[upper.tri(W)]</code> 取出矩阵上三角（不含对角线）的所有元素，正好是无向网络的每一条边各一次。<code>sum(W[upper.tri(W)] != 0)</code> 就是边数。</p></div>
+<h3>完整例题：从一张矩阵读出整张网络</h3>
+<p>4 个节点 A、B、C、D 的加权邻接矩阵如下（对称，对角线为 0）：</p>
+<div class="tablewrap"><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>A</td><td>0</td><td>0.3</td><td>0.2</td><td>0</td></tr><tr><td>B</td><td>0.3</td><td>0</td><td>−0.1</td><td>0</td></tr><tr><td>C</td><td>0.2</td><td>−0.1</td><td>0</td><td>0.4</td></tr><tr><td>D</td><td>0</td><td>0</td><td>0.4</td><td>0</td></tr></table></div>
+<ol><li><b>有几条边？</b>只数上三角的非零格：A–B、A–C、B–C、C–D，共 4 条。4 个节点最多有 4 × 3 / 2 = 6 条边，所以<b>密度</b>（density）= 4/6 ≈ 0.67。</li>
+<li><b>哪条边最强？</b>C–D（0.4）。哪条是负边？B–C（−0.1），画图时用红色或虚线表示。</li>
+<li><b>每个节点连了几条边（度，degree）？</b>A 2、B 2、C 3、D 1。</li>
+<li><b>强度（strength，绝对值之和）</b>：A = 0.3 + 0.2 = 0.5；B = 0.3 + 0.1 = 0.4；C = 0.2 + 0.1 + 0.4 = 0.7；D = 0.4。C 的强度最高，这个概念在 6.5 课还会展开。</li>
+<li><b>A 与 D 有关吗？</b>它们之间没有直接的边，但可以经过 C 间接相连（A–C–D）。在偏相关网络中，“没有边”的意思是：控制了其他节点之后，两者没有直接关联（6.2 课）。</li></ol>
+<p>规模感：9 个节点的无向网络最多有 9 × 8 / 2 = 36 条边。CLPN 是有向网络，T1 的 9 个节点各自指向 T2 的 9 个节点，共 81 个系数，其中 9 个是自回归（自己 → 自己），72 个是交叉滞后。你在 7.x 课看到的就是这张 9 × 9 的矩阵。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L6-1.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+library(qgraph)
+labs5 &lt;- c(&quot;孤独&quot;, &quot;失眠&quot;, &quot;疲劳&quot;, &quot;低落&quot;, &quot;支持&quot;)
+W &lt;- matrix(c( 0, .3,  0, .4, -.3,
+              .3,  0, .5,  0,   0,
+               0, .5,  0, .2,   0,
+              .4,  0, .2,  0, -.2,
+             -.3,  0,  0, -.2,  0), 5, 5, byrow = TRUE,
+            dimnames = list(labs5, labs5))   # 行名、列名
+isSymmetric(W)                                # TRUE → 无向
+sum(W[upper.tri(W)] != 0) / choose(5, 2)      # 密度 = 0.6
+qgraph(W, labels = labs5, edge.labels = TRUE, theme = &quot;colorblind&quot;)
+
+# 有向网络：D[i, j] = 从 i 指向 j
+D &lt;- matrix(0, 3, 3, dimnames = list(labs5[1:3], labs5[1:3]))
+D[&quot;孤独&quot;, &quot;失眠&quot;] &lt;- .4;  D[&quot;失眠&quot;, &quot;疲劳&quot;] &lt;- .5
+qgraph(D, directed = TRUE, edge.labels = TRUE, asize = 6, theme = &quot;colorblind&quot;)</code></pre></div>
+<p><b>逐行理解：</b><code>matrix(…, 5, 5, byrow = TRUE)</code> 按行填入 25 个数字；<code>dimnames</code> 给行列起名，之后就可以用 <code>W["孤独", "失眠"]</code> 按名字取值；<code>qgraph()</code> 的第一个参数就是权重矩阵，<code>edge.labels = TRUE</code> 在边上标出数值；<code>directed = TRUE</code> 画箭头，<code>asize</code> 控制箭头大小。</p><div class="box warnbox"><b class="bt">读矩阵时的常见错误</b><ul>
+<li><b>把对称矩阵的边数数了两遍。</b>无向网络的每条边在矩阵中出现两次（[A, B] 和 [B, A]），数边时只看上三角：<code>sum(W[upper.tri(W)] != 0)</code>。</li>
+<li><b>把有向矩阵的行和列读反。</b>本课程约定 <code>B[k, j]</code> 表示“行 k → 列 j”，即 T1 的 k 预测 T2 的 j。不同的软件和论文约定可能相反，读别人的结果前，先看清楚说明。</li>
+<li><b>忘了处理对角线。</b>相关矩阵的对角线是 1。qgraph 默认不画对角线（不设 <code>diag = TRUE</code> 就没有“自己连自己”的环），但别的函数未必如此：例如手算强度时用 <code>colSums(abs(W))</code>，对角线的 1 会被算进去。养成先写 <code>diag(W) &lt;- 0</code> 的习惯更稳妥。</li>
+<li><b>以为没有边就是“完全无关”。</b>没有直接边的两个节点，仍可能通过其他节点高度相关（例如上例中的 A 与 D）。</li>
+<li><b>只看颜色不看图例。</b>qgraph 的默认（classic）主题是绿色为正、红色为负；本课程的网络图全部用 colorblind 主题，是蓝色为正、红色为负。别人的图可能用任何一种，读图前先看图注。</li></ul></div>
+<h3>小练习：从文字描述写出矩阵</h3>
+<p>某研究报告：“孤独与抑郁两个节点之间有一条 0.25 的正边；抑郁与社会支持之间有一条 −0.30 的负边；孤独与社会支持之间没有边。”请写出 3 × 3 的邻接矩阵（顺序：孤独、抑郁、社会支持）。参考答案：第一行 0、0.25、0；第二行 0.25、0、−0.30；第三行 0、−0.30、0。再想一想：孤独与社会支持没有边，是否说明两者的相关为 0？（不是。它们可以通过抑郁间接相关，相关系数大约是 0.25 × (−0.30) 的方向，即负相关。）能在“文字—矩阵—图”三种表示之间来回转换，后面读论文时就不会被网络图吓住。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L6-1.R</code>（25 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L6-1.R  网络的语言：节点、边、权重与邻接矩阵  (Nodes, edges, weights matrix)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(qgraph)
+log_open(&quot;L6-1_log.txt&quot;)
+labs5 &lt;- c(&quot;孤独&quot;, &quot;失眠&quot;, &quot;疲劳&quot;, &quot;低落&quot;, &quot;支持&quot;)
+# 无向网络（undirected）：权重矩阵对称（symmetric），W[i,j] = W[j,i]
+W &lt;- matrix(c( 0, .3,  0, .4, -.3,
+              .3,  0, .5,  0,   0,
+               0, .5,  0, .2,   0,
+              .4,  0, .2,  0, -.2,
+             -.3,  0,  0, -.2,  0), 5, 5, byrow = TRUE, dimnames = list(labs5, labs5))
+print(W); cat(&quot;对称吗？&quot;, isSymmetric(W), &quot;\n&quot;)
+cat(&quot;密度 density = 非零边数 / 可能边数 =&quot;, sum(W[upper.tri(W)] != 0), &quot;/&quot;, choose(5, 2), &quot;\n&quot;)
+png_open(&quot;L6-1_undirected.png&quot;, 1400, 1300)
+qgraph(W, labels = labs5, edge.labels = TRUE, theme = &quot;colorblind&quot;, label.font = 1,
+       title = &quot;无向网络：蓝/实线=正边，红/虚线=负边（colorblind 主题）&quot;)
+invisible(dev.off())
+# 有向网络（directed）：W[i, j] 表示从 i（行）指向 j（列）
+D &lt;- matrix(0, 3, 3, dimnames = list(labs5[1:3], labs5[1:3])); D[&quot;孤独&quot;, &quot;失眠&quot;] &lt;- .4; D[&quot;失眠&quot;, &quot;疲劳&quot;] &lt;- .5
+png_open(&quot;L6-1_directed.png&quot;, 1200, 1100)
+qgraph(D, directed = TRUE, edge.labels = TRUE, asize = 6, theme = &quot;colorblind&quot;, title = &quot;有向网络：D[\&quot;孤独\&quot;,\&quot;失眠\&quot;] = 孤独 → 失眠&quot;)
+invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L6-1_directed.png" alt="L6-1_directed.png" loading="lazy"><figcaption>图：<code>R/output/L6-1_directed.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<figure><img src="../R/output/L6-1_undirected.png" alt="L6-1_undirected.png" loading="lazy"><figcaption>图：<code>R/output/L6-1_undirected.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L6-1_log.txt</code></div><pre class="out"><code>     孤独 失眠 疲劳 低落 支持
+孤独  0.0  0.3  0.0  0.4 -0.3
+失眠  0.3  0.0  0.5  0.0  0.0
+疲劳  0.0  0.5  0.0  0.2  0.0
+低落  0.4  0.0  0.2  0.0 -0.2
+支持 -0.3  0.0  0.0 -0.2  0.0
+对称吗？ TRUE 
+密度 density = 非零边数 / 可能边数 = 6 / 10 </code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">无向网络的权重矩阵有什么特点？</p><ul class="opts"><li><button type="button" data-ok="0">A. 对角线全为 1</button><div class="ofb" hidden>对角线为 1 的是相关矩阵；网络的权重矩阵对角线通常设为 0，因为自己与自己的边没有意义。</div></li><li><button type="button" data-ok="1">B. 关于对角线对称</button><div class="ofb" hidden>正确：[i, j] = [j, i]，A—B 与 B—A 是同一条边。</div></li><li><button type="button" data-ok="0">C. 所有元素为正</button><div class="ofb" hidden>负边（如社会支持—孤独）同样存在，元素可以为负。</div></li><li><button type="button" data-ok="0">D. 行和为 0</button><div class="ofb" hidden>行和是该节点的期望影响（6.5），没有必须为 0 的要求。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在 qgraph 的有向权重矩阵中，[i, j] 表示？</p><ul class="opts"><li><button type="button" data-ok="0">A. 从 j 指向 i</button><div class="ofb" hidden>反了：qgraph 约定行是出发点、列是终点。</div></li><li><button type="button" data-ok="1">B. 从 i 指向 j</button><div class="ofb" hidden>正确：行 = 出发点，列 = 终点。</div></li><li><button type="button" data-ok="0">C. i 与 j 的相关</button><div class="ofb" hidden>相关是对称的，表示不了方向；有向矩阵的 [i, j] 与 [j, i] 可以不同。</div></li><li><button type="button" data-ok="0">D. i 的自回归</button><div class="ofb" hidden>自回归在对角线 [i, i]，不在 [i, j]。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">9 个节点的有向网络（不含自环）最多有多少条边？</p><ul class="opts"><li><button type="button" data-ok="0">A. 36</button><div class="ofb" hidden>36 = 9 × 8 / 2，是无向网络的最大边数；有向网络每对节点有两个方向。</div></li><li><button type="button" data-ok="1">B. 72</button><div class="ofb" hidden>正确：9 × 8 = 72。</div></li><li><button type="button" data-ok="0">C. 81</button><div class="ofb" hidden>81 = 9 × 9，把 9 个对角线元素（自环）也算进去了。</div></li><li><button type="button" data-ok="0">D. 45</button><div class="ofb" hidden>45 = 9 × 10 / 2，是把自环算进去的无向边数，方向和自环两处都不对。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在 colorblind 主题的 qgraph 图中，红色粗线表示？</p><ul class="opts"><li><button type="button" data-ok="0">A. 强的正边</button><div class="ofb" hidden>colorblind 主题中正边是蓝色（经典主题中是绿色）；红色在两种主题中都表示负边。</div></li><li><button type="button" data-ok="1">B. 强的负边</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 弱的正边</button><div class="ofb" hidden>线越粗表示 |权重| 越大，粗线是强边。</div></li><li><button type="button" data-ok="0">D. 自回归</button><div class="ofb" hidden>颜色只表示正负；自回归在横断面网络图中通常不画。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">一个 5 节点无向网络有 4 条非零边，它的密度是？</p><ul class="opts"><li><button type="button" data-ok="1">A. 0.4</button><div class="ofb" hidden>正确：4 / C(5,2) = 4 / 10 = 0.4。</div></li><li><button type="button" data-ok="0">B. 0.8</button><div class="ofb" hidden>0.8 = 4 / 5，分母误用了节点数；应除以可能的边数 C(5,2) = 10。</div></li><li><button type="button" data-ok="0">C. 0.2</button><div class="ofb" hidden>0.2 = 4 / 20，分母误用了有向网络的边数 5 × 4；无向网络应除以 10。</div></li><li><button type="button" data-ok="0">D. 0.5</button><div class="ofb" hidden>0.5 = 4 / 8，分母不对：5 个节点的无向网络最多 10 条边。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：手绘与写矩阵<span class="lvl">基础</span></h4><p>画一个 5 节点网络：孤独—低落（+0.4）、孤独—支持（−0.3）、失眠—疲劳（+0.5）、疲劳—低落（+0.2）。写出 5×5 权重矩阵，并计算密度。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>以“孤独、失眠、疲劳、低落、支持”为顺序：第 1 行 = (0, 0, 0, .4, −.3)；第 2 行 = (0, 0, .5, 0, 0)；第 3 行 = (0, .5, 0, .2, 0)；第 4 行 = (.4, 0, .2, 0, 0)；第 5 行 = (−.3, 0, 0, 0, 0)。矩阵对称。密度 = 4/10 = 0.4。</p></details></div>
+<div class="exitem"><h4>练习 2：用 qgraph 画自己的矩阵<span class="lvl">动手</span></h4><p>把练习 1 的矩阵输入 R 并用 <code>qgraph(W, theme = "colorblind", edge.labels = TRUE)</code> 画出来。然后把 <code>theme</code> 去掉，观察默认配色。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考代码：<code>W &lt;- matrix(0, 5, 5, dimnames = list(labs5, labs5)); W["孤独","低落"] &lt;- W["低落","孤独"] &lt;- .4</code> ……（每条边要赋值两次以保持对称）。默认（classic）主题中正边为绿色、负边为红色。用 <code>isSymmetric(W)</code> 检查是否漏写了对称位置。</p></details></div>
+<div class="exitem"><h4>练习 3：读有向矩阵<span class="lvl">理解</span></h4><p>课程数据的“总体 CLPN 目标矩阵”中，<code>B["dep4", "lone2"] = -0.083</code>，<code>B["lone2", "dep4"] = 0.017</code>。请分别用中文说出这两条边的方向和含义。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p><code>B["dep4","lone2"]</code>：从 T1 疲乏 → T2 被冷落，负边：T1 更疲乏的人，在控制其他 T1 题目后，T2 的“被冷落感”略低。<code>B["lone2","dep4"]</code>：从 T1 被冷落 → T2 疲乏，几乎为 0。有向矩阵不对称，两个方向的信息完全不同。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>手绘一个 5 节点的小网络并写出它的权重矩阵；再用 qgraph() 把你自己写的 5×5 矩阵画出来，观察正负边的颜色。</p></div><h3>自测问题</h3><ol><li>无向网络的权重矩阵有什么特点（对称性）？</li><li>有向网络中，qgraph 权重矩阵的 [i, j] 元素表示从谁指向谁？</li><li>边的粗细和颜色通常分别表示什么？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>节点 = 题目/症状；边 = 统计关联；权重 = 大小与方向。</li><li>网络 = p × p 权重矩阵；无向对称，有向 [i, j] = 从 i 到 j。</li><li>无向最多 p(p−1)/2 条边，有向最多 p(p−1) 条；密度 = 非零边 / 可能边。</li><li>课程网络图统一用 colorblind 主题：蓝正红负（默认经典主题是绿正红负）。</li><li>CLPN 的对角线是自回归，不是 0。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Borsboom, D., & Cramer, A. O. J. (2013). Network analysis: An integrative approach to the structure of psychopathology. <i>Annual Review of Clinical Psychology, 9</i>, 91–121. <a href="https://doi.org/10.1146/annurev-clinpsy-050212-185608" target="_blank" rel="noopener">doi.org/10.1146/annurev-clinpsy-050212-185608</a><div class="muted" style="font-size:.84rem">网络视角的奠基性综述，第 0.2 课阅读。</div></li><li>Epskamp, S., Cramer, A. O. J., Waldorp, L. J., Schmittmann, V. D., & Borsboom, D. (2012). qgraph: Network visualizations of relationships in psychometric data. <i>Journal of Statistical Software, 48</i>(4), 1–18. <a href="https://doi.org/10.18637/jss.v048.i04" target="_blank" rel="noopener">doi.org/10.18637/jss.v048.i04</a><div class="muted" style="font-size:.84rem">qgraph 包的说明论文。</div></li></ul></section>
+<nav class="pager"><a href="L5-4.html" class="pv"><small>上一课</small>5.4 从预测到因果：纵向模型能说什么、不能说什么</a><a href="L6-2.html" class="nx"><small>下一课</small>6.2 偏相关网络与高斯图模型（GGM）</a></nav>
+<p class="foot">CLPN 从零开始 · 第 6.1 课 · <a href="../index.html#L6-1">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

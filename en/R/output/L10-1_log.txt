@@ -1,0 +1,42 @@
+Score ranges for all items:
+     lone1_t1 lone2_t1 lone3_t1 lone4_t1 dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1 lone1_t2 lone2_t2 lone3_t2
+[1,]        1        1        1        1       0       0       0       0       0        1        1        1
+[2,]        4        4        4        4       3       3       3       3       3        4        4        4
+     lone4_t2 dep1_t2 dep2_t2 dep3_t2 dep4_t2 dep5_t2 lone1_t3 lone2_t3 lone3_t3 lone4_t3 dep1_t3 dep2_t3
+[1,]        1       0       0       0       0       0        1        1        1        1       0       0
+[2,]        4       3       3       3       3       3        4        4        4        4       3       3
+     dep3_t3 dep4_t3 dep5_t3
+[1,]       0       0       0
+[2,]       3       3       3
+Count of values outside permitted sets (out-of-bounds, non-integers): total = 0 
+Duplicate IDs = 0 ; total missing values = 0 
+
+(Attrition data example) Retention rate = 0.8 
+# A tibble: 2 × 4
+  stay  T1_depression T1_loneliness     n
+  <lgl>         <dbl>         <dbl> <int>
+1 FALSE          8.78         10.4    160
+2 TRUE           2.6           8.42   640
+
+
+# Analysis Plan (Preregistration Template)
+Research Question: To what extent do T1 loneliness items uniquely predict T2 depression items, and vice versa? (Avoid causal phrasing such as 'causes' or 'leads to')
+Nodes: lone1–lone4, dep1–dep5 (9 items); Time Intervals: T1→T2 (primary analysis), T2→T3 (replication)
+Estimation: Nodewise LASSO regression (glmnet), 10-fold CV, lambda.min; set.seed(2026); items z-standardized
+Centrality: out-EI, in-EI, bridge out/in-EI (communities = Loneliness/Depression), excluding autoregressive edges
+Stability: Nonparametric bootstrap (1,000 replications); case-dropping bootstrap (1,000 replications), interpreting rank order only if CS >= 0.25
+Sensitivity: lambda.1se; including gender and age as unpenalized covariates; T2→T3 replication
+Sensitivity (Required): Full procedure of Wysocki et al. (2025) (R/L10-2b.R): LASSO edge selection (T1→T2 and T2→T3, fixed to 0 only if 0 in both lags) -> unpenalized SEM re-estimation in lavaan (cross-sectional residual covariances within wave, FIML) -> cross-time invariance testing (nested chi-square + AIC/BIC) to select final model -> pruning at p < .01 -> in-/out-prediction; report edge-by-edge concordance with primary analysis, interpreting discordant edges exploratorily only
+Missing Data: No missing data in this dataset; if present, report attrition analysis and apply multiple imputation (or FIML)
+
+Codebook (R/output/L10-1_codebook.csv, 27 rows; displaying T1 items only):
+ variable                               label mean   sd
+ lone1_t1 Loneliness 1: Lack of companionship 2.19 0.99
+ lone2_t1      Loneliness 2: Feeling left out 2.19 1.00
+ lone3_t1      Loneliness 3: Feeling isolated 2.24 0.99
+ lone4_t1 Loneliness 4: No one understands me 2.18 0.98
+  dep1_t1        Depression 1: Depressed mood 0.74 0.92
+  dep2_t1      Depression 2: Loss of interest 0.77 0.92
+  dep3_t1        Depression 3: Sleep problems 0.79 0.94
+  dep4_t1               Depression 4: Fatigue 0.77 0.95
+  dep5_t1         Depression 5: Worthlessness 0.76 0.93

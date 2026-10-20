@@ -1,0 +1,272 @@
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>一排储物格：向量</h2>
+<div class="box story"><b class="bt">十位服务对象的睡眠记录</b>
+<p>社区睡眠健康小组的 10 位成员报告了昨晚的睡眠时长（小时）：7、5.5、8、（第 4 位没填）、6、4.5、7.5、（第 8 位没填）、9、5。你想知道：平均睡了多久？哪几位不到 6 小时，需要重点跟进？在 Excel 里你会把它们写成一列；在 R 里，你会把它们存进一个{{T:向量|vector}}。</p></div>
+<p>向量是一排<b>同类型</b>的值，按顺序排列，每个位置有编号（从 1 开始）。用 <code>c()</code> 创建：</p>
+<p><code>sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)</code></p>
+<p>这里的 <code>NA</code>（Not Available）是 R 表示{{T:缺失值|NA}}的特殊符号，意思是“这里本该有一个值，但我们不知道它是多少”。它不是 0，也不是空字符串。</p>
+<div class="box analogy"><b class="bt">类比：带编号的一排储物格</b><p>向量就像一排编了号的储物格。<code>sleep[3]</code> 是“打开第 3 格”，得到 8。数据框（下一课）则是很多排储物格并列在一起：每一排是一个变量（一列），同一位置是同一个人。</p></div>
+
+<h3>索引：取出你要的格子</h3>
+<p>方括号 <code>[ ]</code> 叫{{T:索引|indexing, [ ]}}，有三种用法：</p>
+<ul><li><b>按位置</b>：<code>sleep[3]</code> 取第 3 个；<code>sleep[c(1, 3)]</code> 取第 1 和第 3 个；<code>sleep[-1]</code> 取除第 1 个以外的所有值（负号 = 去掉）。R 的编号从 1 开始：<code>sleep[0]</code> 不会报错，而是返回一个空向量，所以这类错误很难发现。</li>
+<li><b>按条件（逻辑索引）</b>：<code>sleep[sleep &lt; 6]</code>。先算 <code>sleep &lt; 6</code>，得到一串 TRUE/FALSE；再把 TRUE 位置上的值取出来。所以 <code>x[x &gt; 5]</code> 的意思是“取出 x 中所有大于 5 的值”。</li>
+<li><b>按名字</b>：如果向量的元素有名字，可以 <code>v["lone1"]</code>（数据框里常用 <code>df$var</code>，下一课）。</li></ul>
+<div class="widget" data-widget="vecidx"></div>
+
+<h3>向量化：一次对所有格子做同样的事</h3>
+<p>R 的运算是{{T:向量化|vectorized}}的：<code>sleep * 60</code> 会把每一个值都乘以 60（换算成分钟），不需要写循环。<code>sleep &lt; 6</code> 也是对每个值分别比较。两个等长向量相加，是对应位置相加。这让 R 代码写起来很短：<code>(x - mean(x)) / sd(x)</code> 一行就把整列变成 z 分数（1.3 课）。</p>
+
+<h3>数据类型：格子里装的是什么</h3>
+<p>每个向量都有一种{{T:数据类型|data type}}，用 <code>class()</code> 查看：</p>
+<div class="tablewrap"><table><thead><tr><th>类型</th><th>例子</th><th>用途</th></tr></thead><tbody>
+<tr><td>数值 numeric（含整数 integer）</td><td><code>7</code>, <code>5.5</code>, <code>3L</code></td><td>量表分、年龄、睡眠时长</td></tr>
+<tr><td>字符 character</td><td><code>"小李"</code>, <code>"P001"</code></td><td>姓名、编号、开放题回答；必须加引号</td></tr>
+<tr><td>{{T:逻辑值|logical, TRUE/FALSE}}</td><td><code>TRUE</code>, <code>FALSE</code></td><td>比较的结果、筛选条件</td></tr>
+<tr><td>{{T:因子|factor}}</td><td><code>factor(c(1, 0), levels = c(0, 1), labels = c("男", "女"))</code></td><td>类别变量：性别、教育程度、服务类型</td></tr></tbody></table></div>
+<p>两个关键规则：</p>
+<ol><li><b>一个向量只能有一种类型。</b>如果混合了数字和字符，R 会把所有值都变成字符：<code>c(1, "二", 3)</code> 得到三个字符串。问卷数据里只要有一个格子误填了“五”，整列就会被读成字符，<code>mean()</code> 就会出错。所以导入数据后要先用 <code>class()</code> 或 <code>str()</code> 检查每列的类型。强行转换 <code>as.numeric(c("3", "4", "五"))</code> 得到 <code>3 4 NA</code>，并警告 <code>NAs introduced by coercion</code>（强制转换产生了 NA）。</li>
+<li><b>逻辑值可以当数字用</b>：TRUE = 1，FALSE = 0。所以 <code>sum(sleep &lt; 6, na.rm = TRUE)</code> 就是“少于 6 小时的人数”（3 人），<code>mean(条件)</code> 就是“满足条件的比例”。</li></ol>
+
+<h3>为什么“性别”最好存成因子？</h3>
+<p>课程数据中 <code>gender</code> 存为 0/1。如果把它当数值，R 会认为“女（1）比男（0）多 1 个单位”，可以算平均数（0.534）。对 0/1 变量，平均数恰好等于编码为 1 的那一类所占的比例（这里是女性比例 53.4%），还有意义；但对于有三个及以上类别的变量（如“服务类型：1 个案、2 小组、3 社区”），把类别编码当数字就错了：“社区 = 3 倍的个案”没有意义。存成因子后：</p>
+<ul><li>R 知道这是类别，<code>table()</code>、<code>summary()</code> 会给出各类人数（男 373、女 427）。</li>
+<li>回归中 R 会自动把因子转为虚拟变量，并以第一个水平（level）为参照组。</li>
+<li>画图时自动按类别分组上色，标签显示“男 / 女”而不是 0 / 1。</li>
+<li>对因子求 <code>mean()</code> 会返回 NA 并给出警告，避免了无意义的计算。</li></ul>
+
+<h3>缺失值 NA：会“传染”的未知</h3>
+<p><code>mean(c(1, NA, 3))</code> 返回 <code>NA</code>。逻辑很朴素：有一个值不知道，平均数当然也不知道。要在已知值中计算，加参数 <code>na.rm = TRUE</code>（NA remove，移除 NA）：<code>mean(c(1, NA, 3), na.rm = TRUE)</code> 返回 2。<code>sum()</code>、<code>sd()</code>、<code>min()</code>、<code>max()</code> 都有这个参数。</p>
+<div class="box warnbox"><b class="bt">NA 与比较</b><p><code>NA &lt; 6</code> 的结果仍是 <code>NA</code>（不知道）。所以 <code>sleep[sleep &lt; 6]</code> 会返回 <code>5.5 NA 4.5 NA 5.0</code>，两个 NA 混了进来。正确写法是加上“并且不是缺失”：<code>sleep[sleep &lt; 6 &amp; !is.na(sleep)]</code>。<code>is.na()</code> 判断每个值是否缺失，<code>!</code> 表示“非”，<code>&amp;</code> 表示“并且”，<code>|</code> 表示“或者”。<code>which(sleep &lt; 6)</code> 会自动忽略 NA，返回位置 2、6、10。找缺失值也不能写 <code>x == NA</code>（结果全是 NA），必须用 <code>is.na(x)</code>。</p></div>
+
+
+<h3>矩阵与列表：向量的两个“亲戚”</h3>
+<p>后面的课程还会遇到两种结构，这里先认识一下：</p>
+<ul><li><b>矩阵</b>（matrix）：二维的、所有元素类型相同的表格，有行和列。<code>glmnet</code> 要求预测变量是数值矩阵（3.5 课的 <code>as.matrix()</code>）；CLPN 的结果 B 也是一个 9 × 9 矩阵，第 <i>i</i> 行第 <i>j</i> 列用 <code>B[i, j]</code> 取出，逗号前是行、逗号后是列。数据框（2.3 课）也是二维表，但每列可以是不同类型；要把数据框交给 <code>glmnet</code> 等只接受矩阵的函数，先确认所有列都是数值，再用 <code>as.matrix()</code> 转换。</li>
+<li><b>列表</b>（list）：可以装不同类型、不同长度东西的“大口袋”。很多函数的结果都是列表，例如 <code>lm()</code> 的结果里装着系数、残差、拟合值等，用 <code>$</code> 取出其中一项，如 <code>fit$coefficients</code>。2.1 课的 <code>sessionInfo()$R.version$version.string</code> 就是在列表里一层层往下取。</li></ul>
+<div class="box key"><b class="bt">本课常用函数速查</b>
+<div class="tablewrap"><table><thead><tr><th>函数</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>c()</code></td><td>组合成向量</td></tr><tr><td><code>length()</code></td><td>元素个数</td></tr>
+<tr><td><code>class()</code> / <code>str()</code></td><td>查看类型 / 结构</td></tr>
+<tr><td><code>is.na()</code></td><td>逐个判断是否缺失</td></tr>
+<tr><td><code>which()</code></td><td>返回 TRUE 的位置</td></tr>
+<tr><td><code>table()</code></td><td>计数（频数表）</td></tr>
+<tr><td><code>factor()</code></td><td>创建因子，<code>levels</code> 指定水平顺序，<code>labels</code> 指定标签</td></tr>
+<tr><td><code>as.numeric()</code> / <code>as.character()</code></td><td>类型转换</td></tr>
+<tr><td><code>function(x) …</code></td><td>定义函数</td></tr></tbody></table></div></div>
+<div class="box sw"><b class="bt">社会工作情境：缺失值本身是信息</b><p><code>na.rm = TRUE</code> 只是跳过缺失值，相当于只用有数据的人。在需求评估问卷中，“家庭收入”一题常有很多人不填。直接 <code>na.rm = TRUE</code> 计算平均收入，可能高估社区的经济水平，因为收入最低的家庭往往最不愿意回答。所以在用 <code>na.rm</code> 之前，先用 <code>sum(is.na(x))</code> 看看缺了多少，再想一想是谁没填、为什么没填（4.3 课专门讨论缺失机制）。</p></div>
+<h3>自己写函数</h3>
+<p>当同一个操作要做很多次时，可以把它包装成{{T:自定义函数|user-defined function}}：</p>
+<p><code>zscore &lt;- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)</code></p>
+<p>读法：创建一个名叫 <code>zscore</code> 的函数，它接收一个输入 <code>x</code>，返回“x 减去 x 的均值，再除以 x 的标准差”。函数体较长时用花括号 <code>{ }</code> 包起来，最后一行的值就是返回值。之后 <code>zscore(sleep)</code> 就像用 <code>mean()</code> 一样简单。</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>向量的记号</h2>
+<div class="mathbox">$$\mathbf{x} = (x_1, x_2, \dots, x_n)$$</div>
+<dl class="sym"><dt>\(\mathbf{x}\)</dt><dd>粗体表示一个向量（一整列数）。</dd><dt>\(x_i\)</dt><dd>第 \(i\) 个元素，对应 R 的 <code>x[i]</code>。</dd><dt>\(n\)</dt><dd>元素个数，对应 <code>length(x)</code>。</dd></dl>
+<p>向量化运算就是“逐元素”运算：\(60\mathbf{x} = (60x_1, \dots, 60x_n)\)，\(\mathbf{x}+\mathbf{y} = (x_1+y_1,\dots,x_n+y_n)\)。z 分数函数：</p>
+<div class="mathbox">$$z_i = \frac{x_i-\bar x}{s_x},\quad i = 1,\dots,n$$</div>
+<p>\(\bar x\) 和 \(s_x\) 只用非缺失值计算（这就是 <code>na.rm = TRUE</code>）；缺失的 \(x_i\) 对应的 \(z_i\) 仍是 NA。逻辑值求和：\(\sum_i \mathbb{1}(x_i&lt;6)\)，其中 \(\mathbb{1}(\cdot)\) 在条件成立时为 1、否则为 0，对应 <code>sum(x &lt; 6)</code>。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>向量、类型、NA 与函数</h2>
+<p>对应脚本：<a href="../R/L2-2.R">R/L2-2.R</a>。</p>
+```r R/L2-2.R（核心部分）
+sleep <- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)   # NA = 缺失值（missing value）
+class(sleep)                                       # "numeric" 数值型
+mean(sleep)                                        # 有 NA 时结果是 NA！
+mean(sleep, na.rm = TRUE)                          # na.rm = TRUE：先去掉 NA
+which(sleep < 6)                                   # 第几个人睡眠少于 6 小时
+sleep[sleep < 6 & !is.na(sleep)]                   # 逻辑索引（logical indexing）
+gender <- factor(c(1, 0), levels = c(0, 1), labels = c("男", "女"))
+gender
+zscore <- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+round(cbind(我的zscore = zscore(sleep), scale函数 = as.numeric(scale(sleep))), 3)
+```
+```out 输出（R/output/L2-2_log.txt）
+[1] "numeric"
+[1] NA
+[1] 6.5625
+[1]  2  6 10
+[1] 5.5 4.5 5.0
+[1] 女 男
+Levels: 男 女
+      我的zscore scale函数
+ [1,]      0.279     0.279
+ [2,]     -0.677    -0.677
+ [3,]      0.917     0.917
+ [4,]         NA        NA
+ [5,]     -0.359    -0.359
+ [6,]     -1.315    -1.315
+ [7,]      0.598     0.598
+ [8,]         NA        NA
+ [9,]      1.554     1.554
+[10,]     -0.996    -0.996
+```
+<p>读输出：8 个有效值的平均睡眠 6.56 小时；第 2、6、10 位不到 6 小时（5.5、4.5、5.0）。因子 <code>gender</code> 显示的是标签，<code>Levels: 男 女</code> 说明水平顺序（男为参照组）。自写的 <code>zscore()</code> 与内置的 <code>scale()</code> 结果完全相同；<code>scale()</code> 返回矩阵，所以用 <code>as.numeric()</code> 转回向量；<code>cbind()</code> 把两列并排放在一起比较。</p>
+```r 更多索引与向量化
+length(sleep)          # 元素个数
+sum(is.na(sleep))      # 缺失个数
+sleep * 60             # 向量化：每个值都换成分钟
+sleep[c(1, 3)]         # 第 1、3 个
+sleep < 6              # 逐个比较，NA 的比较结果仍是 NA
+sum(sleep < 6, na.rm = TRUE)   # TRUE 当作 1：少于 6 小时的人数
+```
+```out 输出（R/output/L2-2_log.txt，续）
+[1] 10
+[1] 2
+ [1] 420 330 480  NA 360 270 450  NA 540 300
+[1] 7 8
+ [1] FALSE  TRUE FALSE    NA FALSE  TRUE FALSE    NA FALSE  TRUE
+[1] 3
+```
+```r 类型陷阱
+as.numeric(c("3", "4", "五"))       # 字符转数字：转不了的变成 NA
+dat <- read.csv("data/clpn_sim_wide.csv")
+g <- factor(dat$gender, levels = c(0, 1), labels = c("男", "女"))
+table(g)
+```
+```out 输出（R/output/L2-2_log.txt，续）
+[1]  3  4 NA
+Warning message:
+NAs introduced by coercion
+g
+ 男  女
+373 427
+```
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：缺失值、类型转换与“循环补齐”</h3>
+<p>下面每一行先自己预测结果，再到 R 里运行核对。这些都是写 CLPN 脚本时会真实遇到的情况。</p>
+```r
+x <- c(3, NA, 5, 2)
+mean(x)                    # NA：只要有一个缺失，结果就是 NA
+mean(x, na.rm = TRUE)      # 3.333…：(3 + 5 + 2) / 3，分母是 3 不是 4
+sum(is.na(x))              # 1：TRUE 被当作 1 相加，常用来数缺失个数
+
+c(1, "2", 3)               # "1" "2" "3"：混入一个字符，整个向量都变成字符
+as.numeric(c("4", "五"))    # 4 NA，并给出警告 NAs introduced by coercion
+
+f <- factor(c("10", "20", "10"))
+as.numeric(f)              # 1 2 1 ！得到的是水平编号，不是原来的数
+as.numeric(as.character(f))  # 10 20 10：先转成字符，再转数值
+
+c(1, 2, 3, 4) + c(10, 20)  # 11 22 13 24：短向量被重复使用（循环补齐）
+y <- c(8, 6, 9)
+y[-1]                      # 6 9：负号表示“去掉第 1 个”
+y[y > 7]                   # 8 9：逻辑向量做索引
+
+```
+
+<p>逐条解释：</p>
+<ul><li><b>NA 会“传染”。</b>这是 R 有意的设计：它不会悄悄忽略缺失。CLPN 中计算总分时，如果某题缺失，<code>rowSums()</code> 默认会返回 NA，你需要明确决定怎么处理（4.3 课）。</li>
+<li><b>向量只能有一种类型。</b>从 Excel 导入时，“缺失”“不适用”这样的文字也会把整列变成字符。</li>
+<li><b>因子（factor）的陷阱。</b>因子内部存的是 1、2、3 这样的编号，外面贴着标签。直接 <code>as.numeric()</code> 会拿到编号。SPSS 数据导入后常常带有这样的标签，务必小心。</li>
+<li><b>循环补齐。</b>两个向量长度不同时，R 会重复短的那个。长度刚好是倍数时 R 不会警告，所以长度写错了可能悄无声息地得到错误结果。</li></ul>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b>忘记把结果赋值保存。</b><code>sort(x)</code> 只是显示排序结果，<code>x</code> 本身不变；需要写 <code>x &lt;- sort(x)</code>。</li></ul></div>
+
+<h3>函数的参数：按位置，还是按名字？</h3>
+<p>函数调用 <code>round(3.14159, 2)</code> 中，3.14159 和 2 是两个<b>参数</b>。R 允许按位置传参（第 1 个是要舍入的数，第 2 个是保留几位小数），也允许按名字传参：<code>round(x = 3.14159, digits = 2)</code>。按名字写更清楚，顺序也可以任意调换。建议的习惯是：第 1 个参数（通常是数据）按位置写，其余参数一律写名字。例如 <code>mean(x, na.rm = TRUE)</code>、<code>cor(x, y, use = "pairwise.complete.obs")</code>。这样半年后回头看脚本，仍然一眼就知道每个设置是什么意思。</p>
+<h3>读帮助文档的顺序</h3>
+<p>2.1 课介绍了帮助页的 Usage、Arguments 和 Examples。这里补两点。第一，Usage 中等号后面是默认值；默认值是一个向量时，表示默认用第一个，例如 <code>?cor</code> 中的 <code>method = c("pearson", "kendall", "spearman")</code> 表示默认 pearson。第二，<b>Value</b> 一节说明函数返回什么（向量、矩阵还是列表），决定了后面该用 <code>[ ]</code> 还是 <code>$</code> 取结果。</p>
+
+<h3>小练习：预测这四行的结果</h3>
+<p>不运行代码，先写下你的答案：①<code>length(c(1, NA, 3))</code>；②<code>sum(c(2, 4) &gt; 3)</code>；③<code>class(c(TRUE, 2))</code>；④<code>rev(1:4)[2]</code>。答案：①3，NA 也占一个位置；②1，逻辑值 FALSE、TRUE 相加；③"numeric"，TRUE 被转成 1；④3，倒序后为 4 3 2 1，第 2 个是 3。</p>
+
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+```quiz
+Q: mean(c(1, NA, 3)) 会返回什么？
+- 2 || 需要 na.rm = TRUE 才是 2。
++ NA || 正确：有一个值未知，均值也未知。
+- 1.33 || 那是把 NA 当成 0、再除以 3 的结果；R 不会把 NA 当 0。
+- 报错 || 不报错，只是返回 NA；R 用 NA 表示“结果未知”。
+E: 修正：mean(c(1, NA, 3), na.rm = TRUE) 返回 2。
+```
+```quiz
+Q: x <- c(2, 8, 5, 9, 1)。x[x > 5] 返回什么？
+- 2 4 || 那是 which(x > 5) 返回的位置。
++ 8 9 || 正确：取出所有大于 5 的值。
+- TRUE TRUE || x > 5 返回的是 5 个逻辑值，方括号再把 TRUE 位置上的值取出来，所以结果是数值。
+E: x > 5 先得到 FALSE TRUE FALSE TRUE FALSE，再取出 TRUE 位置的值。
+```
+```quiz
+Q: 为什么“性别”最好存成因子？
++ 它是类别而不是数量；因子让 R 正确地计数、作图并在回归中生成虚拟变量 || 正确。
+- 因为存成 0/1 时，mean(gender) 算不出任何有意义的数 || 对 0/1 变量，均值恰好是编码为 1 的一类所占的比例（这里是女性比例）；真正出问题的是三个及以上类别的变量。
+- 因为数值型变量不能只有两个取值 || 数值型完全可以只有 0 和 1；问题是 R 会把它当成数量。
+E: 对 3 个及以上类别的变量尤其重要。
+```
+```quiz
+Q: c(1, "二", 3) 的类型是什么？
+T: character || 字符 || 字符型 || chr
+H: 一个向量只能有一种类型，R 会选“最宽容”的那种。
+E: 所有元素都会变成字符串 "1" "二" "3"。
+```
+```quiz
+Q: 某向量有 10 个值，其中 3 个为 TRUE、7 个为 FALSE。mean() 返回？
+N: 0.3 | 0.001
+H: TRUE = 1，FALSE = 0。
+E: 3/10 = 0.3，即 TRUE 的比例。
+```
+```quiz
+Q: sleep[sleep < 6] 为什么会混进 NA？
+- 因为 sleep 是字符型 || class(sleep) 返回 "numeric"；混进来的 NA 正是原来缺失的两个位置。
++ 因为 NA < 6 的结果是 NA，用 NA 索引会返回 NA || 正确。
+- 因为 R 把 NA 当作 0，而 0 < 6 || R 不会把 NA 当 0；如果当作 0，结果里出现的应是 0 而不是 NA。
+E: 加上 & !is.na(sleep)，或者用 which()。
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.2-A：睡眠向量</h4>
+<p>用向量存 10 个人的睡眠时长（含 2 个 NA），计算均值、找出少于 6 小时的人；写一个函数 <code>zscore(x)</code> 返回标准化后的向量，与 <code>scale()</code> 结果对比。</p>
+<details class="answer"><summary>参考代码</summary>
+```r
+sleep <- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)
+mean(sleep, na.rm = TRUE)                    # 6.5625
+which(sleep < 6)                             # 2 6 10（第几位）
+sleep[sleep < 6 & !is.na(sleep)]             # 5.5 4.5 5.0（具体时长）
+zscore <- function(x) {
+  m <- mean(x, na.rm = TRUE)
+  s <- sd(x, na.rm = TRUE)
+  (x - m) / s                                # 最后一行就是返回值
+}
+all.equal(zscore(sleep), as.numeric(scale(sleep)))   # TRUE
+```
+<p>要点：说明 NA 的处理方式；解释为什么 <code>which()</code> 给位置、方括号给值；<code>all.equal()</code> 比较两个结果是否（在浮点误差内）相等。</p></details></div>
+<div class="exitem"><h4>练习 2.2-B：在课程数据上</h4>
+<p>读入 <code>data/clpn_sim_wide.csv</code>，取出 <code>dep1_t1</code>（情绪低落，0–3 分）这一列存为向量 <code>d1</code>。(1) 有多少人得 3 分？(2) 得 2 分及以上的比例是多少？(3) 用你的 <code>zscore()</code> 标准化 <code>d1</code>，检查结果均值是否为 0、标准差是否为 1。</p>
+<details class="answer"><summary>参考代码</summary>
+```r
+dat <- read.csv("data/clpn_sim_wide.csv")
+d1 <- dat$dep1_t1
+sum(d1 == 3)                 # (1) 54 人
+mean(d1 >= 2)                # (2) 0.194，即 19.4%
+z <- zscore(d1)
+round(c(mean(z), sd(z)), 10) # (3) 0 和 1
+```
+<p>提示：课程数据没有缺失值，所以这里不需要 <code>na.rm</code>；但养成在自己的函数里写 <code>na.rm = TRUE</code> 的习惯很有用。</p></details></div>
+<div class="exitem"><h4>练习 2.2-C：多类别因子</h4>
+<p>创建向量 <code>service &lt;- c(1, 3, 2, 2, 1, 3, 3)</code>（1 个案、2 小组、3 社区）。把它转成带中文标签的因子，用 <code>table()</code> 计数，并解释为什么 <code>mean(service)</code>（数值版本）没有意义。</p>
+<details class="answer"><summary>参考答案</summary>
+```r
+service <- c(1, 3, 2, 2, 1, 3, 3)
+service_f <- factor(service, levels = 1:3, labels = c("个案", "小组", "社区"))
+table(service_f)             # 个案 2，小组 2，社区 3
+```
+<p><code>mean(service)</code> = 2.14，“平均服务类型是 2.14”毫无意义：1、2、3 只是标签，换成 10、20、30 也一样。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>向量是一排同类型的值；<code>[ ]</code> 按位置、条件或名字取值；运算自动向量化。</li>
+<li>四种基本类型：数值、字符、逻辑（TRUE = 1）、因子（类别变量）；类型错了，后续分析都会出错。</li>
+<li>NA 会传染：用 <code>na.rm = TRUE</code> 和 <code>is.na()</code>，并想一想缺失的原因。下一课：{{L:2.3}}。</li></ul>
+</section>

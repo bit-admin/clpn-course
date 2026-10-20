@@ -1,0 +1,73 @@
+
+Call:
+glm(formula = help_seek_t2 ~ dep_sum_t2 + gender, family = binomial, 
+    data = dat)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -2.15441    0.17601 -12.241  < 2e-16 ***
+dep_sum_t2   0.13379    0.02462   5.434  5.5e-08 ***
+gender       0.63509    0.18091   3.510 0.000447 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 857.98  on 799  degrees of freedom
+Residual deviance: 810.16  on 797  degrees of freedom
+AIC: 816.16
+
+Number of Fisher Scoring iterations: 4
+
+               OR 2.5 % 97.5 %
+(Intercept) 0.116 0.082  0.164
+dep_sum_t2  1.143 1.089  1.200
+gender      1.887 1.324  2.690
+Interpretation: For each 1-point increase in depression sum score, the odds of seeking help are multiplied by 1.14 .
+OR = 1.5 indicates a 50% increase in odds; OR = 0.67 (= 1/1.5) indicates an approximately 33% decrease in odds.
+
+95% Wald intervals for coefficients (log-odds):
+             2.5 % 97.5 %
+(Intercept) -2.499 -1.809
+dep_sum_t2   0.086  0.182
+gender       0.281  0.990
+
+Predicted probabilities (type = "response"):
+  dep_sum_t2 gender     p
+1          0      0 0.104
+2          5      0 0.185
+3         10      0 0.306
+4         15      0 0.463
+5          0      1 0.180
+6          5      1 0.299
+7         10      1 0.455
+8         15      1 0.620
+
+Range of fitted values from linear probability model lm():
+[1] 0.08 0.55
+
+glmnet logistic regression LASSO, coefficients at lambda.min:
+            lambda.min
+(Intercept)     -1.225
+lone1_t1         0.000
+lone2_t1         0.000
+lone3_t1         0.000
+lone4_t1         0.000
+dep1_t1          0.027
+dep2_t1          0.000
+dep3_t1          0.012
+dep4_t1          0.000
+dep5_t1          0.082
+Coefficients at lambda.1se:
+            lambda.1se
+(Intercept)     -1.222
+lone1_t1         0.000
+lone2_t1         0.000
+lone3_t1         0.000
+lone4_t1         0.000
+dep1_t1          0.000
+dep2_t1          0.000
+dep3_t1          0.000
+dep4_t1          0.000
+dep5_t1          0.000
+Number of non-zero coefficients (excluding intercept): lambda.min = 3 ; lambda.1se = 0 

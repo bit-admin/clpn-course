@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLPN From Scratch: Cross-Lagged Panel Network Analysis · Syllabus</title>
+<link rel="stylesheet" href="lessons/assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="lessons/assets/course.css">
+<style>
+/* Syllabus layout only. Color and type come from lessons/assets/course.css. */
+:root{--side:240px;--bar:52px}
+.sitebar{position:sticky;top:0;z-index:40;background:var(--paper);border-bottom:1px solid var(--line)}
+.sitebar-in{display:flex;align-items:center;gap:16px 22px;width:min(68rem,100%);margin-inline:auto;min-height:var(--bar);padding:8px 16px}
+.qwrap{flex:1 1 16rem;max-width:26rem;display:flex;align-items:center;gap:8px;margin:0;padding:0 10px;border:1px solid var(--line);border-radius:2px;background:var(--bg);color:var(--muted)}
+.qwrap:focus-within{outline:2px solid var(--accent);outline-offset:1px;color:var(--ink)}
+.qwrap svg{flex:none}
+.sitebar-in #q{flex:1;width:100%;min-width:0;margin:0;padding:6px 0;border:none;border-radius:0;background:transparent;color:var(--ink);font:inherit;font-size:.88rem;appearance:none;-webkit-appearance:none}
+.sitebar-in #q:focus{outline:none}
+.sitebar .tools{margin:0 0 0 auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 18px}
+.sitebar .tools button,.sitebar .tools a{flex:none;font:inherit;font-size:.9rem;padding:0;border:none;border-radius:0;background:transparent;color:var(--accent);cursor:pointer;text-decoration:none}
+.sitebar .tools button:hover,.sitebar .tools a:hover{text-decoration:underline;text-underline-offset:3px}
+.layout{display:flex;width:min(68rem,100%);margin-inline:auto;min-height:calc(100vh - var(--bar));background:var(--paper)}
+aside{position:sticky;top:var(--bar);align-self:flex-start;height:calc(100vh - var(--bar));width:var(--side);flex:none;overflow-y:auto;background:var(--paper);border-right:1px solid var(--line);padding:22px 16px 48px}
+aside .brand{font-weight:600;font-size:1rem;line-height:1.4;margin-bottom:8px}
+aside .brand small{display:block;color:var(--muted);font-weight:400;font-size:.78rem;margin-top:2px}
+.overall{margin:14px 0;font-size:.82rem;color:var(--muted)}
+.overall .bar{height:3px;margin-top:6px}
+aside ul{list-style:none;margin:0;padding:0}
+.navtop{margin:14px 0}
+.navtop a{display:block;padding:3px 0;font-size:.86rem;color:var(--muted);text-decoration:none}
+.navtop a:hover,.navtop a.active{color:var(--accent)}
+.navm{display:block;padding:8px 0 2px;border-left:none;font-weight:600;font-size:.84rem;color:var(--ink);margin-top:8px;text-decoration:none}
+.navmod ul a{display:flex;gap:8px;padding:2px 0 2px 0;font-size:.78rem;color:var(--muted);border-radius:0;line-height:1.45;text-decoration:none}
+.navmod ul a span{flex:none;min-width:2.2em;font-family:var(--mono)}
+.navmod ul a:hover,.navmod ul a.active{color:var(--accent)}
+.navmod ul a.done{color:var(--accent)}
+aside a.active{background:transparent;font-weight:600}
+main{flex:1;min-width:0;padding:36px clamp(20px,4vw,56px) 88px;max-width:52rem}
+.hero{background:transparent;color:inherit;border-radius:0;padding:0 0 18px;margin:0 0 12px;border-bottom:1px solid var(--line)}
+.hero h1{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.25;font-weight:600}
+.hero p{margin:6px 0;color:var(--muted)}
+.hero .facts{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px}
+.hero .facts span{background:none;border:none;border-radius:0;padding:0;font-size:.84rem;color:var(--muted)}
+h2{font-size:1.45rem}
+main>.card{padding:32px 0 8px;margin:0}
+.grid{display:grid;grid-template-columns:1fr;gap:0}
+.step{border:none;border-top:1px solid var(--line);border-radius:0;padding:12px 0;background:transparent}
+.step b{display:block;margin-bottom:2px}
+.step p{margin:0;font-size:.95rem}
+.flow{display:flex;flex-wrap:wrap;gap:6px 0;align-items:baseline;font-size:.9rem}
+.flow a{border:none;border-radius:0;padding:0;margin-right:4px;color:var(--accent);background:transparent;text-decoration:underline;text-underline-offset:2px}
+.flow em{color:var(--muted);font-style:normal;margin:0 6px}
+.module{margin:48px 0}
+.mhead{border:none;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:0 0 12px;margin-bottom:0}
+.mnum{font-size:.78rem;color:var(--accent);font-weight:600;letter-spacing:.04em}
+.mhead h2{margin:2px 0 6px}
+.mhead h2 small{color:var(--muted);font-weight:400;font-size:.85rem}
+.mhead p{margin:0 0 8px}
+.mstats{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:.82rem;color:var(--muted)}
+.mstats>span{background:none;padding:0;border:none;border-radius:0}
+.mprog{display:inline-flex!important;align-items:center;gap:8px}
+.mprog i{display:inline-block;width:72px;height:3px;background:var(--line);border-radius:0;position:relative;overflow:hidden}
+.mprog i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--p,0%);background:var(--accent)}
+.lesson{background:transparent;border:none;border-bottom:1px solid var(--line);border-radius:0;margin:0}
+.lesson[open]{box-shadow:none}
+.lesson.isdone>summary .ltitle{color:var(--muted)}
+.lesson>summary{list-style:none;display:flex;align-items:baseline;gap:12px;padding:11px 0;cursor:pointer}
+.lesson>summary::-webkit-details-marker{display:none}
+.lesson>summary::after{content:"";margin-left:auto;flex:none;border:4px solid transparent;border-top-color:var(--muted);border-bottom:0;transform:translateY(2px)}
+.lesson[open]>summary::after{transform:rotate(180deg) translateY(2px)}
+.lid{flex:none;font-family:var(--mono);font-weight:600;font-size:.8rem;color:var(--accent);background:transparent;border-radius:0;padding:0}
+.ltitle{font-weight:500}
+.meta{flex:none;font-size:.78rem;color:var(--muted);white-space:nowrap}
+label.done{position:relative;flex:none;width:15px;height:15px;align-self:center}
+label.done input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;z-index:1}
+label.done span{display:block;width:15px;height:15px;border:1px solid var(--muted);border-radius:2px}
+label.done input:checked+span{background:var(--accent);border-color:var(--accent)}
+label.done input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.lbody{padding:0 0 16px 27px;border-top:none}
+.lbody h4{margin:18px 0 6px;font-size:1.05rem}
+.lbody ol,.lbody ul{margin:0}
+.lmeta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;margin:2px 0 12px}
+.row{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0;font-size:.86rem}
+.kv span.k{color:var(--muted);margin-right:6px}
+a.enter{flex:none;display:inline-block;padding:3px 10px;border:1px solid var(--accent);border-radius:2px;color:var(--accent);text-decoration:none;font-size:.86rem;line-height:1.5}
+a.enter:hover{background:var(--accent);color:var(--on-accent)}
+.llm{margin:16px 0 4px}
+.llm h3{margin:0 0 .4em}
+.llmrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:8px}
+.llmrow code{flex:1 1 18rem;font-size:.84rem;padding:6px 8px;border:1px solid var(--line);border-radius:2px;background:var(--bg);color:var(--ink)}
+.llmrow button{flex:none;font:inherit;font-size:.9rem;padding:3px 10px;border:1px solid var(--accent);border-radius:2px;background:transparent;color:var(--accent);cursor:pointer}
+.llmrow button:hover{background:var(--accent);color:var(--on-accent)}
+.math{margin:12px 0 4px;background:transparent;border-radius:0;border-left:2px solid var(--line);padding:4px 0 4px 12px;font-size:.95rem}
+.tag{font-size:.75rem;background:transparent;color:var(--accent);border-radius:0;padding:0;margin-right:8px;font-weight:600}
+.ex{margin:0;background:transparent;border-radius:0;padding:0;font-size:.95rem}
+details.code{margin-top:8px}
+details.code summary{cursor:pointer;font-size:.86rem;color:var(--accent)}
+.refs{list-style:none;padding:0}
+.refs li{padding:10px 0;border-bottom:1px solid var(--line)}
+.cite{text-indent:-1.4em;padding-left:1.4em}
+.cite a{font-size:.8rem;word-break:break-all}
+.rnote{font-size:.84rem;color:var(--muted);margin-top:4px}
+.badge{font-size:.75rem;border-radius:0;padding:0;margin-right:8px;white-space:nowrap;color:var(--muted);background:none}
+.badge.ok,.badge.no{background:none;color:var(--muted)}
+.note{border-left:2px solid var(--line);background:transparent;padding:2px 0 2px 12px;border-radius:0;font-size:.92rem}
+#pacing table{table-layout:fixed}
+#pacing th:nth-child(1),#pacing td:nth-child(1){width:6em;white-space:nowrap}
+#pacing th:nth-child(2),#pacing td:nth-child(2){width:13.5em}
+.hidden{display:none!important}
+#menuBtn{display:none;flex:none;border:1px solid var(--line);border-radius:2px;background:var(--paper);color:var(--ink);padding:4px 10px;font:inherit;font-size:.86rem;cursor:pointer}
+.matgrid{display:block;margin-top:8px}
+.mat{display:block;border:none;border-bottom:1px solid var(--line);border-radius:0;padding:10px 0;background:transparent;color:var(--ink);text-decoration:none}
+.mat:hover{color:var(--accent)}
+.mat b{font-weight:600}
+.mat span{display:block;font-size:.88rem;color:var(--muted);line-height:1.5}
+@media (max-width:900px){
+ .sitebar-in{flex-wrap:wrap;row-gap:4px}
+ .qwrap{order:2;max-width:none}
+ .sitebar .tools{order:3;flex-basis:100%;margin-left:0;justify-content:flex-start}
+ aside{position:fixed;z-index:25;top:0;left:0;height:100vh;padding-top:96px;transform:translateX(-105%);transition:transform .2s;box-shadow:none}
+ aside.open{transform:none}
+ #menuBtn{display:inline-block}
+ .meta{display:none}
+}
+@media print{
+ .sitebar,aside,#menuBtn{display:none}
+ .lesson{break-inside:avoid}
+ main{max-width:none}
+ .hero{background:none}
+}
+
+</style>
+</head>
+<body>
+<header class="sitebar">
+ <div class="sitebar-in">
+  <button id="menuBtn" type="button" aria-label="Open contents">Contents</button>
+  <label class="qwrap"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 10.2L13.2 13.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="Search lessons or terms, e.g. LASSO, partial correlation…" aria-label="Search lessons"></label>
+  <div class="tools"><button id="expand" type="button">Expand all</button><button id="collapse" type="button">Collapse all</button><a class="act langSwitch" href="../index.html">中文</a><button id="theme" type="button">Dark</button><button id="reset" type="button">Reset progress</button></div>
+ </div>
+</header>
+<div class="layout">
+<aside id="side">
+ <div class="brand">CLPN From Scratch<small>Cross-Lagged Panel Network Analysis · Syllabus</small></div>
+ <div class="overall">Progress: <b id="pText">0 / 47</b> lessons<div class="bar"><i id="pBar"></i></div></div>
+ <nav>
+  <ul class="navtop"><li><a href="#materials">Materials</a></li><li><a href="#overview">Overview</a></li><li><a href="#method">Teaching Approach</a></li><li><a href="#pacing">Pacing</a></li><li><a href="#assessment">Assessment</a></li><li><a href="downloads/index.html">Download</a></li></ul>
+  <ul><li class="navmod" style="--c:#6366f1"><a href="#M0" class="navm">0&nbsp; Course Overview: Why Study CLPN</a><ul><li><a href="#L0-1" data-nav="0.1"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="#L0-2" data-nav="0.2"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></li><li class="navmod" style="--c:#0ea5e9"><a href="#M1" class="navm">1&nbsp; Statistics Foundations</a><ul><li><a href="#L1-1" data-nav="1.1"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="#L1-2" data-nav="1.2"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="#L1-3" data-nav="1.3"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="#L1-4" data-nav="1.4"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="#L1-5" data-nav="1.5"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="#L1-6" data-nav="1.6"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></li><li class="navmod" style="--c:#f59e0b"><a href="#M2" class="navm">2&nbsp; R and RStudio: From Scratch</a><ul><li><a href="#L2-1" data-nav="2.1"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="#L2-2" data-nav="2.2"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="#L2-3" data-nav="2.3"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="#L2-4" data-nav="2.4"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="#L2-5" data-nav="2.5"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="#L2-6" data-nav="2.6"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></li><li class="navmod" style="--c:#10b981"><a href="#M3" class="navm">3&nbsp; Regression Analysis</a><ul><li><a href="#L3-1" data-nav="3.1"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="#L3-2" data-nav="3.2"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="#L3-3" data-nav="3.3"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="#L3-4" data-nav="3.4"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="#L3-5" data-nav="3.5"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></li><li class="navmod" style="--c:#ec4899"><a href="#M4" class="navm">4&nbsp; Longitudinal and Panel Data</a><ul><li><a href="#L4-1" data-nav="4.1"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="#L4-2" data-nav="4.2"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="#L4-3" data-nav="4.3"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></li><li class="navmod" style="--c:#8b5cf6"><a href="#M5" class="navm">5&nbsp; Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM</a><ul><li><a href="#L5-1" data-nav="5.1"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="#L5-2" data-nav="5.2"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="#L5-3" data-nav="5.3"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="#L5-4" data-nav="5.4"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></li><li class="navmod" style="--c:#14b8a6"><a href="#M6" class="navm">6&nbsp; Foundations of Network Psychometrics</a><ul><li><a href="#L6-1" data-nav="6.1"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="#L6-2" data-nav="6.2"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="#L6-3" data-nav="6.3"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="#L6-4" data-nav="6.4"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="#L6-5" data-nav="6.5"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></li><li class="navmod" style="--c:#ef4444"><a href="#M7" class="navm">7&nbsp; Cross-Lagged Panel Networks (CLPN)</a><ul><li><a href="#L7-1" data-nav="7.1"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="#L7-2" data-nav="7.2"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="#L7-3" data-nav="7.3"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="#L7-4" data-nav="7.4"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="#L7-5" data-nav="7.5"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="#L7-6" data-nav="7.6"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="#L7-7" data-nav="7.7"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></li><li class="navmod" style="--c:#64748b"><a href="#M8" class="navm">8&nbsp; Stability and Accuracy Assessment</a><ul><li><a href="#L8-1" data-nav="8.1"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="#L8-2" data-nav="8.2"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="#L8-3" data-nav="8.3"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></li><li class="navmod" style="--c:#a855f7"><a href="#M9" class="navm">9&nbsp; Reading, Critique, and Reporting Standards</a><ul><li><a href="#L9-1" data-nav="9.1"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="#L9-2" data-nav="9.2"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="#L9-3" data-nav="9.3"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></li><li class="navmod" style="--c:#0f766e"><a href="#M10" class="navm">10&nbsp; Capstone Project: A Complete CLPN Analysis</a><ul><li><a href="#L10-1" data-nav="10.1"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="#L10-2" data-nav="10.2"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="#L10-3" data-nav="10.3"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></li></ul>
+  <ul class="navtop" style="margin-top:10px"><li><a href="#readings">Readings</a></li><li><a href="#glossary">Glossary</a></li><li><a href="#setup">Software &amp; R Packages</a></li></ul>
+ </nav>
+</aside>
+<main>
+<div class="hero">
+ <h1>CLPN From Scratch</h1>
+ <p>Cross-Lagged Panel Network Analysis: From Zero to Your First Analysis</p>
+ <p>A self-paced course. Assumed starting point: you have taken introductory calculus and have not used R before. The course data are simulated and contain no real personal information.</p>
+ <div class="facts"><span>11 modules</span><span>45 core lessons + 2 optional lessons</span><span>48 sessions · 16 weeks</span><span>about 85 hours of lessons + exercises</span></div>
+</div>
+
+<section class="card" id="materials">
+ <h2>Study Materials</h2>
+ <p>Start with the <a href="START_HERE.html">Study Guide</a>: how to use this site, in what order to study, and what to study each week. Then go to the <a href="downloads/index.html">Download page</a> for the course archive <code>clpn-course-en.zip</code>: extract it (you get a folder <code>clpn-course-en/</code>), double-click <code>index.html</code> to study offline, and double-click <code>clpn-course.Rproj</code> to run R.</p>
+ <div class="llm">
+  <h3>Study with an LLM</h3>
+  <div class="llmrow"><code id="llmPrompt">Read llm.md</code><button type="button" id="llmCopy">Copy prompt</button></div>
+ </div>
+ <div class="matgrid">
+  <a class="mat" href="START_HERE.html"><b>Study Guide</b><span>What is on the site, the order to study in, the 16-week plan, how to study each lesson</span></a>
+  <a class="mat" href="materials/glossary.html"><b>Glossary</b><span>All core concepts by module, each with its Chinese term and the lesson that introduces it</span></a>
+  <a class="mat" href="materials/cheatsheets.html#r"><b>Cheat Sheet 1: R Basics</b><span>Objects, data frames, reading data, common errors</span></a>
+  <a class="mat" href="materials/cheatsheets.html#reg"><b>Cheat Sheet 2: Reading Regression Results</b><span>Coefficients, SE, p-values, R², standardization, LASSO</span></a>
+  <a class="mat" href="materials/cheatsheets.html#pipe"><b>Cheat Sheet 3: CLPN Workflow</b><span>10 steps from raw data to the network plot, centrality and stability</span></a>
+  <a class="mat" href="materials/cheatsheets.html#report"><b>Cheat Sheet 4: Reporting Checklist</b><span>What the Methods and Results sections must state</span></a>
+  <a class="mat" href="materials/formulas.html"><b>Formula Reference</b><span>Every formula in the course, explained symbol by symbol</span></a>
+  <a class="mat" href="materials/faq.html"><b>FAQ</b><span>Common questions about installing, running code, statistical concepts, interpretation and writing</span></a>
+  <a class="mat" href="materials/study_log.html"><b>Study Log</b><span>Fill in a record of each session and each week on the page; download as Markdown or print</span></a>
+  <a class="mat" href="materials/writing.html"><b>Writing Workshop</b><span>How to write Methods, Results and Limitations: four before/after examples, with rewriting tasks and rubrics</span></a>
+  <a class="mat" href="materials/reading.html"><b>Paper Reading Pack</b><span>Selected papers (DOI links only), each with reading questions and the matching lessons</span></a>
+  <a class="mat" href="materials/case_elsoc.html"><b>Real-Data Case</b><span>A CLPN of depressive symptoms in ELSOC. The analysis file comes with the course; run case_elsoc.R to reproduce it</span></a>
+  <a class="mat" href="materials/assessment.html"><b>Assessments</b><span>Pre-test, a quiz for each module, final exam, with rubrics</span></a>
+  <a class="mat" href="downloads/index.html"><b>Download</b><span>The whole course in one zip file: offline site, data, R scripts, exercise solutions</span></a>
+  <a class="mat" href="R/README.html"><b>Using the R Code</b><span>Installing R/RStudio, opening the project, running scripts, the order they depend on</span></a>
+  <a class="mat" href="data/data_dictionary.html"><b>Data Dictionary</b><span>What each variable in the simulated course data (N = 800, three waves) means</span></a>
+ </div>
+</section>
+
+<section class="card" id="overview">
+ <h2>Course Overview</h2>
+ <p><b>Course objectives.</b> When you finish this course, you will be able to:</p>
+ <ol>
+  <li>Explain in plain language what a cross-lagged panel network (CLPN) is, which questions it can answer and which it cannot;</li>
+  <li>Carry out a complete CLPN analysis in R on your own: data cleaning, regularized estimation, visualization, centrality analysis and stability checks;</li>
+  <li>Read published CLPN papers critically and spot common over-interpretations;</li>
+  <li>Write Methods and Results sections to academic standards.</li>
+ </ol>
+ <p><b>Why does social work need it?</b> Social work and psychology research often describes a person with a scale's "total score" (a total depression score, a total loneliness score). But in practice we deal with specific problems: not sleeping well, having no energy, feeling there is no one to talk to... A CLPN lets us look at the <b>item/symptom level</b> and across <b>time</b>: which early problem best predicts later change in the other problems? This gives clues for designing more targeted interventions, but what it gives is <b>predictive relationships</b>; testing causation still takes intervention or experimental studies.</p>
+ <h3>Learning Path</h3>
+ <div class="flow"><a href="#M0" style="--c:#6366f1">M0 Course Overview</a> <em>→</em> <a href="#M1" style="--c:#0ea5e9">M1 Statistics Foundations</a> <em>→</em> <a href="#M2" style="--c:#f59e0b">M2 R and RStudio</a> <em>→</em> <a href="#M3" style="--c:#10b981">M3 Regression Analysis</a> <em>→</em> <a href="#M4" style="--c:#ec4899">M4 Longitudinal and Panel Data</a> <em>→</em> <a href="#M5" style="--c:#8b5cf6">M5 Traditional Cross-Lagged Panel Models</a> <em>→</em> <a href="#M6" style="--c:#14b8a6">M6 Foundations of Network Psychometrics</a> <em>→</em> <a href="#M7" style="--c:#ef4444">M7 Cross-Lagged Panel Networks</a> <em>→</em> <a href="#M8" style="--c:#64748b">M8 Stability and Accuracy Assessment</a> <em>→</em> <a href="#M9" style="--c:#a855f7">M9 Reading, Critique, and Reporting Standards</a> <em>→</em> <a href="#M10" style="--c:#0f766e">M10 Capstone Project</a></div>
+ <p class="muted" style="font-size:.88rem;margin-top:8px">The module numbers give the order of study: M1 Statistics and M2 R are studied side by side (alternating in Weeks 2–5), and M3 Regression comes after them; see "Recommended Pacing." Each lesson lists its prerequisite lessons as links.</p>
+ <h3>Modules at a Glance</h3>
+ <div class="tablewrap"><table><thead><tr><th>Module</th><th>Topic</th><th>Lessons</th><th>Study Hours</th></tr></thead><tbody><tr><td><a href="#M0">M0</a></td><td>Course Overview: Why Study CLPN</td><td>2</td><td>2.5</td></tr><tr><td><a href="#M1">M1</a></td><td>Statistics Foundations</td><td>6</td><td>10.5</td></tr><tr><td><a href="#M2">M2</a></td><td>R and RStudio: From Scratch</td><td>6</td><td>10.5</td></tr><tr><td><a href="#M3">M3</a></td><td>Regression Analysis</td><td>5</td><td>8.5</td></tr><tr><td><a href="#M4">M4</a></td><td>Longitudinal and Panel Data</td><td>3</td><td>5.0</td></tr><tr><td><a href="#M5">M5</a></td><td>Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM</td><td>4</td><td>7.5</td></tr><tr><td><a href="#M6">M6</a></td><td>Foundations of Network Psychometrics</td><td>5</td><td>9.5</td></tr><tr><td><a href="#M7">M7</a></td><td>Cross-Lagged Panel Networks (CLPN)</td><td>5 + 2 optional</td><td>10.5</td></tr><tr><td><a href="#M8">M8</a></td><td>Stability and Accuracy Assessment</td><td>3</td><td>6.0</td></tr><tr><td><a href="#M9">M9</a></td><td>Reading, Critique, and Reporting Standards</td><td>3</td><td>5.5</td></tr><tr><td><a href="#M10">M10</a></td><td>Capstone Project: A Complete CLPN Analysis</td><td>3</td><td>9.0</td></tr></tbody></table></div>
+</section>
+
+<section class="card" id="method">
+ <h2>Teaching Approach</h2>
+ <p>Every lesson is an <b>interactive HTML page</b> (in the <code>lessons/</code> folder; click a lesson's "Open" button below to go in). All 47 lessons share the same layout and navigation and the same five-part structure:</p>
+ <div class="grid">
+  <div class="step"><b>① Intuition</b><p>First, social work scenarios, diagrams and small simulations you can drag give you a feel for "what this is doing"; no formulas yet.</p></div>
+  <div class="step"><b>② Essential Math</b><p>Only the 1–2 formulas you need to understand the idea, each symbol explained; any use of calculus is pointed out.</p></div>
+  <div class="step"><b>③ R Code</b><p>Copyable code with a comment on every line: run it on small data first, then on the course data; common errors are explained.</p></div>
+  <div class="step"><b>④ Concept Check</b><p>Multiple-choice, true/false and "predict the output" questions throughout the lesson, with instant feedback; a wrong answer gets a hint first rather than the answer.</p></div>
+  <div class="step"><b>⑤ Exercises &amp; Self-Assessment</b><p>Do each lesson's exercises as an R script, a Quarto report or a short piece of writing, then check yourself against the reference answers (code solutions in <code>R/solutions/</code>) and the scoring points; you can revise and redo them. Before starting the next lesson, answer the previous lesson's self-test questions without looking at the answers.</p></div>
+ </div>
+ <h3>Principles</h3>
+ <ul>
+  <li><b>Spiral:</b> the same idea (such as "controlling for other variables") comes back in multiple regression, partial correlation and the CLPN, one level deeper each time.</li>
+  <li><b>One running case:</b> the whole course uses simulated "loneliness ↔ depression" data whose true structure is known, and ends with your own analysis in the capstone project.</li>
+  <li><b>Say it before you compute it:</b> explain every result in one sentence you could say to a social work colleague, and avoid over-causal wording.</li>
+  <li><b>Getting stuck is allowed:</b> when you ask for help, include your code, the error message and your own guess (a minimal reproducible example); doing this is itself a skill to practice.</li>
+ </ul>
+ <p class="note">The checkbox to the left of each lesson on this page records your progress. It is saved in this browser's localStorage (this computer and this browser only; clearing browser data erases it).</p>
+</section>
+
+<section class="card" id="pacing">
+ <h2>Recommended Pacing</h2>
+ <p><b>Standard pace: 16 weeks, 3 sessions a week (4 in Weeks 14 and 15), 60–150 minutes per session</b>; plus about 2–3 hours of exercises a week, about 5–7 hours a week in total.</p>
+ <div class="tablewrap"><table><thead><tr><th>Week</th><th>Lessons</th><th>Focus</th></tr></thead><tbody><tr><td>Week 1</td><td>0.1 · 0.2 · 1.1</td><td>Getting started: course map, why learn CLPN, variables and measurement</td></tr><tr><td>Week 2</td><td>1.2 · 1.3 · 2.1 · 0.2 Quick Run</td><td>Descriptive statistics, z-scores; install R (in Weeks 2–5, M1 Statistics and M2 R are studied side by side); once R is installed, do the &#x27;Quick Run&#x27; in Lesson 0.2 (about 30 min): copy the ready-made code and produce your first CLPN plot</td></tr><tr><td>Week 3</td><td>2.2 · 1.4 · 2.3</td><td>R syntax; covariance and correlation; data frames</td></tr><tr><td>Week 4</td><td>1.5 · 1.6 · 2.4</td><td>Standard errors, confidence intervals, p-values; packages and importing data</td></tr><tr><td>Week 5</td><td>2.5 · 2.6 · Module Quizzes</td><td>Redoing the statistics basics in R; plots and reports; M1 and M2 module quizzes</td></tr><tr><td>Week 6</td><td>3.1 · 3.2 · 3.3</td><td>After M1 and M2, on to M3 Regression: simple regression, multiple regression, standardized coefficients</td></tr><tr><td>Week 7</td><td>3.4 · 3.5 · 4.1</td><td>Logistic regression, regularization and LASSO; longitudinal designs</td></tr><tr><td>Week 8</td><td>4.2 · 4.3 · Module Quizzes</td><td>Reshaping data, missing data and attrition; M3 and M4 module quizzes (midterm)</td></tr><tr><td>Week 9</td><td>5.1 · 5.2 · 5.3</td><td>CLPM intuition, lavaan in practice, RI-CLPM</td></tr><tr><td>Week 10</td><td>5.4 · 6.1 · 6.2</td><td>The limits of causal inference; the language of networks; partial correlation and GGMs</td></tr><tr><td>Week 11</td><td>6.3 · 6.4 · 6.5</td><td>Regularized networks, qgraph / bootnet, centrality</td></tr><tr><td>Week 12</td><td>7.1 · 7.2 (2 sessions)</td><td>CLPN model logic; nodewise estimation with glmnet</td></tr><tr><td>Week 13</td><td>7.3 · 7.4 · 7.5</td><td>CLPN visualization, out/in-EI, multi-wave data and design choices; the optional advanced lessons 7.6, 7.7 are not part of the standard hours and can be studied after this week</td></tr><tr><td>Week 14</td><td>8.1 · 8.2 (2 sessions) · 8.3</td><td>Bootstrap, edge accuracy, CS-coefficient (4 sessions this week)</td></tr><tr><td>Week 15</td><td>9.1 · 9.2 · 9.3 · 10.1</td><td>Reading papers, critique, reporting standards; project design (4 sessions this week)</td></tr><tr><td>Week 16</td><td>10.2 (2 sessions) · 10.3</td><td>Capstone project: analysis, write-up and presentation</td></tr></tbody></table></div>
+ <h3>Other Paces</h3>
+ <ul>
+  <li><b>Compressed (about 12 weeks):</b> 4 sessions a week, suited to concentrated study during a vacation; the module reviews are folded into the exercises; the optional advanced lessons are left out.</li>
+  <li><b>Relaxed (about 19 weeks):</b> 2–3 sessions a week, with a 1-week buffer/review week added after Weeks 5, 8 and 13; suited to studying alongside a semester of other courses. The buffer week after Week 13 can go to the optional advanced lessons 7.6, 7.7.</li>
+ </ul>
+ <p><b>Optional advanced lessons</b> (7.6, 7.7, at the end of Module 7, marked "optional" in the syllabus and navigation) are not part of the standard pace above and do not count toward the sessions or hours: study them after Week 13 if you have time.</p>
+</section>
+
+<section class="card" id="assessment">
+ <h2>Assessment and Feedback</h2>
+ <div class="tablewrap"><table><thead><tr><th>Component</th><th>Weight</th><th>Description</th></tr></thead><tbody>
+  <tr><td>Lesson Exercises</td><td>30%</td><td>R scripts / Quarto reports / short writing, checked yourself against reference answers and scoring points; can be revised and redone</td></tr>
+  <tr><td>Concept Checks &amp; Self-Tests</td><td>10%</td><td>Quizzes in the lessons + reviewing the previous lesson's self-test questions before starting the next</td></tr>
+  <tr><td><a href="materials/assessment.html">Module Quizzes</a></td><td>10%</td><td>One after each module; scored as the average proportion correct on the first try; M1 + M2 in Week 5, M3 + M4 in Week 8</td></tr>
+  <tr><td>Peer Review of a Paper (9.2)</td><td>10%</td><td>A critical evaluation of a published CLPN paper</td></tr>
+  <tr><td><a href="materials/assessment.html">Final Exam</a></td><td>10%</td><td>After Lesson 10.3: auto-graded questions, short interpretation questions, small R tasks</td></tr>
+  <tr><td>Capstone Project (M10)</td><td>30%</td><td>Reproducibility 25% · Correct analysis 30% · Writing up the results 25% · Limitations and honest interpretation 10% · Presentation 10%</td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.88rem">These weights are only for tracking your own progress and feedback, not formal credit. The <a href="materials/assess_pre.html">pre-test</a> is ungraded; taking it once before you start is recommended but optional.</p>
+ <!-- Maintenance note: Assessment weights are defined exclusively in this table; to adjust weights, modify only this section (#assessment in src/en/template.html). -->
+</section>
+
+<section class="module" id="M0" style="--c:#6366f1">
+ <header class="mhead"><div class="mnum">Module 0</div>
+  <h2>Course Overview: Why Study CLPN</h2><p>A map of the whole course: what questions CLPN tries to answer, which problems in social work and psychology research it addresses, and how, over the next 16 weeks, you will work step by step toward completing an analysis on your own.</p>
+  <div class="mstats"><span>2 lessons</span><span>~2.5 hrs</span><span class="mprog" data-mod="M0"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L0-1">
+ <summary><label class="done"><input type="checkbox" data-lid="0.1" aria-label="Mark Lesson 0.1 complete"><span></span></label>
+  <span class="lid">0.1</span><span class="ltitle">Course Map, Learning Methods, and Tool Preparation</span>
+  <span class="meta">1 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr + exercises ~1 hr</div>
+   <div class="kv"><span class="k">Prerequisites</span><span class="muted">None (entry lesson)</span></div></div>
+   <a class="enter" href="lessons/L0-1.html">Open 0.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Explain the order of the course&#x27;s 11 modules and what each contributes to the final CLPN analysis</li><li>Know the structure every lesson follows: &#x27;Intuition → Essential Math → R Code → Concept Check → Exercises&#x27;</li><li>Set up your own study folder: a study log, a list of questions, and a code folder</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>longitudinal study</b></li><li><b>network analysis</b></li><li><b>reproducibility</b></li><li><b>study log</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Write a one-page &#x27;starting-point self-assessment&#x27;: what you know, and what worries you, about statistics, programming and research methods; list 3 &#x27;does A lead to B?&#x27; questions you are curious about from social work practice (e.g. does loneliness make sleep worse?). Keep this page, and read it again after M10 to see how you have changed.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What does the final module of this course require you to produce?</li><li>Why do statistics basics and R come before network analysis?</li><li>Which of the questions you listed can only be answered by measuring the same people several times?</li></ol>
+ </div></details><details class="lesson" id="L0-2">
+ <summary><label class="done"><input type="checkbox" data-lid="0.2" aria-label="Mark Lesson 0.2 complete"><span></span></label>
+  <span class="lid">0.2</span><span class="ltitle">From Total Scores to Symptom Interactions: Why CLPN Matters</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L0-1">0.1</a></div></div>
+   <a class="enter" href="lessons/L0-2.html">Open 0.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Tell apart how the &#x27;common cause&#x27; (latent variable) view and the &#x27;network&#x27; view explain psychological problems</li><li>Use a social work example to explain why looking only at total scores loses information</li><li>Get a first idea of what &#x27;cross-lagged&#x27; means: earlier A predicting later B</li><li>Know which questions CLPN can and cannot answer (a predictive relationship ≠ proven causation)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>latent variable model</b></li><li><b>common cause</b></li><li><b>network perspective</b></li><li><b>symptom</b></li><li><b>cross-lagged</b></li><li><b>autoregressive</b></li><li><b>prediction</b></li><li><b>causal inference</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Read the abstract and introduction of Borsboom &amp; Cramer (2013) (DOI in the references at the end of the page); look up unfamiliar terms in the glossary first. Draw a sketch, in your own way, of how several depression symptoms (such as insomnia, fatigue, poor concentration and depressed mood) might affect one another; then mark which arrow you think &#x27;happens first in time.&#x27; After you install R in Week 2 (Lesson 2.1), come back to this lesson for the &#x27;Quick Run&#x27; (about 30 minutes): copy the ready-made code, estimate a CLPN on the course data and plot the network; the theory comes in later lessons.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>How does the &#x27;network view&#x27; see the relationships among symptoms? How is that different from &#x27;the symptoms are all expressions of the same underlying disorder&#x27;?</li><li>If loneliness at T1 predicts depression at T2, can you directly conclude that loneliness &#x27;causes&#x27; depression? Why or why not?</li><li>Give an example from social work intervention: if you knew which symptom has the most &#x27;influence&#x27; in the network, how might you use that in practice?</li></ol>
+ </div></details>
+</section><section class="module" id="M1" style="--c:#0ea5e9">
+ <header class="mhead"><div class="mnum">Module 1</div>
+  <h2>Statistics Foundations</h2><p>Build statistical intuition from scratch. The math uses only basic calculus ideas you already know (sums, functions, an intuition for derivatives); the focus is on &#x27;what is this number telling us?&#x27;</p>
+  <div class="mstats"><span>6 lessons</span><span>~10.5 hrs</span><span class="mprog" data-mod="M1"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L1-1">
+ <summary><label class="done"><input type="checkbox" data-lid="1.1" aria-label="Mark Lesson 1.1 complete"><span></span></label>
+  <span class="lid">1.1</span><span class="ltitle">Variables and Measurement: Where Data Come From</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L0-2">0.2</a></div></div>
+   <a class="enter" href="lessons/L1-1.html">Open 1.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish among levels of measurement: nominal, ordinal, interval, and ratio</li><li>Understand how Likert items are usually treated in analysis, and the debate around it</li><li>Distinguish items, scale scores and constructs</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>variable</b></li><li><b>level of measurement</b></li><li><b>nominal / ordinal</b></li><li><b>interval / ratio</b></li><li><b>Likert scale</b></li><li><b>construct</b></li><li><b>item</b></li><li><b>reliability</b></li><li><b>validity</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Take a commonly used scale (such as the PHQ-9 depression screener or the UCLA Loneliness Scale) and mark for each item its level of measurement, range of values and the construct dimension it belongs to; then write down which items you expect to be most closely related &#x27;if each item were a node in a network.&#x27;</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What level of measurement are &#x27;gender&#x27;, &#x27;satisfaction (1–5)&#x27; and &#x27;monthly income&#x27;?</li><li>Why is a CLPN usually analyzed at the item level rather than the total-score level?</li><li>What is the difference between reliability and validity? Give a one-sentence example for each.</li></ol>
+ </div></details><details class="lesson" id="L1-2">
+ <summary><label class="done"><input type="checkbox" data-lid="1.2" aria-label="Mark Lesson 1.2 complete"><span></span></label>
+  <span class="lid">1.2</span><span class="ltitle">Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-1">1.1</a></div></div>
+   <a class="enter" href="lessons/L1-2.html">Open 1.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Calculate and interpret the mean, median, variance, and standard deviation</li><li>Read a histogram and describe the shape of a distribution (skewness, kurtosis, ceiling/floor effects)</li><li>Understand the normal distribution and its 68–95–99.7 rule</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>distribution</b></li><li><b>mean</b></li><li><b>median</b></li><li><b>variance</b></li><li><b>standard deviation, SD</b></li><li><b>normal distribution</b></li><li><b>skewness</b></li><li><b>ceiling / floor effect</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>Variance = Σ(xᵢ − x̄)² / (n − 1); Standard deviation = √variance. Intuition: how far each person is from the mean, averaged over everyone.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">By hand, calculate the mean, variance and standard deviation of 6 people&#x27;s loneliness total scores (8, 10, 9, 14, 7, 12, the vector x in this lesson&#x27;s R code); then draw a simple histogram. Discuss: in community depression screening, why are many items strongly right-skewed? What does this mean for later analyses?</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why does the variance formula square the deviations?</li><li>Two classes have the same mean, but one has a standard deviation of 2 and the other of 10. What does that tell you?</li><li>What problems might strongly skewed items cause in a network analysis?</li></ol>
+ </div></details><details class="lesson" id="L1-3">
+ <summary><label class="done"><input type="checkbox" data-lid="1.3" aria-label="Mark Lesson 1.3 complete"><span></span></label>
+  <span class="lid">1.3</span><span class="ltitle">Standardization and z-Scores</span>
+  <span class="meta">1 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr + exercises ~1 hr</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-2">1.2</a></div></div>
+   <a class="enter" href="lessons/L1-3.html">Open 1.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Convert raw scores to z-scores and interpret them</li><li>Understand why variables on different scales need standardizing before you compare them (groundwork for LASSO and standardized coefficients)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>standardization</b></li><li><b>z-score</b></li><li><b>scale / metric</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>z = (x − x̄) / SD. z = 1.5 means 1.5 standard deviations above the mean.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Convert the data from Lesson 1.2 to z-scores; then find two variables on different scales (e.g. a 1–4 sleep item and a 0–100 life satisfaction score) and explain what standardizing them lets you compare.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What does a z-score of 0 mean?</li><li>Does standardization change the correlation between two variables?</li><li>Why are variables usually standardized before regularized regression (LASSO)? (Guess now; Module 3 gives the answer)</li></ol>
+ </div></details><details class="lesson" id="L1-4">
+ <summary><label class="done"><input type="checkbox" data-lid="1.4" aria-label="Mark Lesson 1.4 complete"><span></span></label>
+  <span class="lid">1.4</span><span class="ltitle">Covariance and Correlation: How Two Variables Co-Vary</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-3">1.3</a></div></div>
+   <a class="enter" href="lessons/L1-4.html">Open 1.4</a></div>
+  <h4>Learning Objectives</h4><ol><li>Get an intuitive feel for covariance and correlation from scatter plots</li><li>Calculate Pearson&#x27;s correlation coefficient r and interpret its direction and size</li><li>Know when Spearman&#x27;s correlation and the polychoric correlation are appropriate</li><li>Keep in mind that correlation is not causation, and be able to give an example of a confounder</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>scatter plot</b></li><li><b>covariance</b></li><li><b>correlation coefficient</b></li><li><b>Pearson&#x27;s r</b></li><li><b>Spearman&#x27;s ρ</b></li><li><b>polychoric correlation</b></li><li><b>correlation matrix</b></li><li><b>confounder</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>cov(X, Y) = Σ(xᵢ − x̄)(yᵢ − ȳ) / (n − 1); r = cov(X, Y) / (SDₓ · SDᵧ), ranging from −1 to 1. r is (approximately) the average product of the two z-scores.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Write down the correlation matrix you expect (+ / − / 0) for 5 variables (e.g. loneliness, sleep, depressed mood, social support, exercise), and compare it with real data later in the R lessons. Also write a social work example of confounding in the style of &#x27;ice cream sales and drownings.&#x27;</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Between r = −0.6 and r = 0.3, which indicates a stronger relationship?</li><li>Why is the correlation matrix called the &#x27;raw material&#x27; of network analysis?</li><li>What could explain a negative correlation between social support and depression? (Give at least 3 explanations)</li></ol>
+ </div></details><details class="lesson" id="L1-5">
+ <summary><label class="done"><input type="checkbox" data-lid="1.5" aria-label="Mark Lesson 1.5 complete"><span></span></label>
+  <span class="lid">1.5</span><span class="ltitle">Sampling, Standard Errors, and Confidence Intervals</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-4">1.4</a></div></div>
+   <a class="enter" href="lessons/L1-5.html">Open 1.5</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish population from sample and parameter from statistic</li><li>Use simulation to build an intuition for sampling distributions and standard errors</li><li>Interpret a 95% confidence interval correctly (and know the common misreadings)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>population</b></li><li><b>sample</b></li><li><b>parameter</b></li><li><b>statistic</b></li><li><b>sampling distribution</b></li><li><b>standard error, SE</b></li><li><b>confidence interval, CI</b></li><li><b>sample size</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>Standard error of the mean SE = SD / √n: the larger the sample, the more stable the estimate. 95% CI ≈ estimate ± 1.96 × SE.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">(Interactive simulation in the lesson) Draw samples of n = 20 / 100 / 500 again and again from a &#x27;virtual city&#x27; and watch the distribution of the means narrow. Write 3 sentences on how this relates to &#x27;network analysis needs fairly large samples.&#x27;</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What is the difference between standard error and standard deviation?</li><li>How do you correctly read &#x27;95% CI = [0.10, 0.30]&#x27;?</li><li>How does this idea connect to the bootstrap in Module 8?</li></ol>
+ </div></details><details class="lesson" id="L1-6">
+ <summary><label class="done"><input type="checkbox" data-lid="1.6" aria-label="Mark Lesson 1.6 complete"><span></span></label>
+  <span class="lid">1.6</span><span class="ltitle">Hypothesis Testing, p-Values, and Effect Sizes</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-5">1.5</a></div></div>
+   <a class="enter" href="lessons/L1-6.html">Open 1.6</a></div>
+  <h4>Learning Objectives</h4><ol><li>Describe the logical steps of a null hypothesis test</li><li>Interpret p-values correctly and spot common misreadings</li><li>Distinguish statistical significance from practical importance (effect size)</li><li>Understand Type I / Type II errors, statistical power, and the multiple comparisons problem</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>null hypothesis, H₀</b></li><li><b>alternative hypothesis</b></li><li><b>p-value</b></li><li><b>significance level, α</b></li><li><b>Type I / Type II error</b></li><li><b>statistical power</b></li><li><b>effect size</b></li><li><b>multiple comparisons</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Decide which of 6 statements about p-values from papers are wrong, and rewrite them. Think about it: a network with 20 nodes has 190 possible edges; what goes wrong if you test each edge for significance one by one? (This sets up regularization in Module 6.)</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Does p = 0.03 mean &#x27;the probability that the null hypothesis is true is 3%&#x27;?</li><li>With a very large sample, why do even tiny effects become &#x27;significant&#x27;?</li><li>Why is multiple comparisons a big problem when a network has many edges?</li></ol>
+ </div></details>
+</section><section class="module" id="M2" style="--c:#f59e0b">
+ <header class="mhead"><div class="mnum">Module 2</div>
+  <h2>R and RStudio: From Scratch</h2><p>An introduction to programming for complete beginners. You study it side by side with Module 1 (Statistics), alternating in Weeks 2–5 (see &#x27;Recommended Pacing&#x27;): as soon as you learn a statistical idea, you do it in R. Module 3 (Regression) comes after.</p>
+  <div class="mstats"><span>6 lessons</span><span>~10.5 hrs</span><span class="mprog" data-mod="M2"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L2-1">
+ <summary><label class="done"><input type="checkbox" data-lid="2.1" aria-label="Mark Lesson 2.1 complete"><span></span></label>
+  <span class="lid">2.1</span><span class="ltitle">Installing R and RStudio and Running Your First Line of Code</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L0-1">0.1</a></div></div>
+   <a class="enter" href="lessons/L2-1.html">Open 2.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Install R and RStudio (Posit) on your computer and get to know its four panes</li><li>Tell the console from a script, and save .R files</li><li>Use R as a calculator, assign values with &lt;-, and name objects</li><li>Use the help (?function_name), read error messages, and put together a question when asking others for help (a minimal reproducible example)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>R</b><span class="en">R language</span></li><li><b>RStudio / Posit</b><span class="en">IDE</span></li><li><b>console</b></li><li><b>script</b></li><li><b>object</b></li><li><b>assignment, &lt;-</b></li><li><b>function</b></li><li><b>error message</b></li><li><b>minimal reproducible example</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Finish the installation and take a screenshot; create a script week02.R: convert your age to days, assign values to 3 objects and add them up; deliberately write one line wrong, write down the error message, and try to explain it yourself.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code># This is a comment: R ignores everything after #
+1 + 1
+age &lt;- 21
+age * 365
+scores &lt;- c(3, 5, 2, 4)   # c() combines numbers into a vector
+mean(scores)
+?mean                      # Open the help page</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>How is a script different from the console? Why write your code in a script?</li><li>What is the difference between x &lt;- 5 and x == 5?</li><li>When you get an error, what should you do first?</li></ol>
+ </div></details><details class="lesson" id="L2-2">
+ <summary><label class="done"><input type="checkbox" data-lid="2.2" aria-label="Mark Lesson 2.2 complete"><span></span></label>
+  <span class="lid">2.2</span><span class="ltitle">R Basic Syntax: Vectors, Data Types, and Functions</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L2-1">2.1</a></div></div>
+   <a class="enter" href="lessons/L2-2.html">Open 2.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Create and index vectors, and understand R&#x27;s &#x27;vectorized&#x27; operations</li><li>Recognize data types: numeric, character, logical, factor</li><li>Understand NA (missing values) and na.rm = TRUE</li><li>Write a very simple function of your own</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>vector</b></li><li><b>indexing, [ ]</b></li><li><b>data type</b></li><li><b>factor</b></li><li><b>logical, TRUE/FALSE</b></li><li><b>NA</b></li><li><b>user-defined function</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Store 10 people&#x27;s hours of sleep in a vector (including 2 NAs), compute the mean, and find the people who sleep less than 6 hours; write a function zscore(x) that returns the standardized vector, and compare its output with scale().</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What does mean(c(1, NA, 3)) return? How do you fix it?</li><li>What does x[x &gt; 5] do?</li><li>Why is &#x27;gender&#x27; best stored as a factor?</li></ol>
+ </div></details><details class="lesson" id="L2-3">
+ <summary><label class="done"><input type="checkbox" data-lid="2.3" aria-label="Mark Lesson 2.3 complete"><span></span></label>
+  <span class="lid">2.3</span><span class="ltitle">Data Frames and Introduction to the Tidyverse</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L2-2">2.2</a></div></div>
+   <a class="enter" href="lessons/L2-3.html">Open 2.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand the structure of a data frame: rows = cases, columns = variables</li><li>Use the core dplyr verbs: select, filter, mutate, summarise, group_by</li><li>Chain steps together with the pipe |&gt;</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>data frame</b></li><li><b>tibble</b></li><li><b>tidyverse</b></li><li><b>pipe, |&gt;</b></li><li><b>recoding</b></li><li><b>reverse scoring</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">On the simulated course data (data/clpn_sim_wide.csv): select the 5 depression items at T1; the course data have no reverse-scored items, so for practice assume lone2_t1 is one and reverse-score it (5 − raw score); compute the depression total score; compute the means by gender.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What are the similarities and differences between df$var and df[, &quot;var&quot;]?</li><li>Do filter() and select() work on rows or on columns?</li><li>Why must reverse-scored items be dealt with before computing correlations or estimating a network?</li></ol>
+ </div></details><details class="lesson" id="L2-4">
+ <summary><label class="done"><input type="checkbox" data-lid="2.4" aria-label="Mark Lesson 2.4 complete"><span></span></label>
+  <span class="lid">2.4</span><span class="ltitle">Installing Packages, Importing Data, and Project Management</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L2-3">2.3</a></div></div>
+   <a class="enter" href="lessons/L2-4.html">Open 2.4</a></div>
+  <h4>Learning Objectives</h4><ol><li>Tell install.packages() (install once) from library() (load every session)</li><li>Import CSV, Excel and SPSS (.sav) data (readr, readxl, haven)</li><li>Use an RStudio Project and relative paths, and get into the habit of a reproducible folder structure</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>package</b></li><li><b>CRAN</b><span class="en">Comprehensive R Archive Network</span></li><li><b>working directory</b></li><li><b>RStudio Project</b></li><li><b>relative path</b></li><li><b>encoding, UTF-8</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Create a clpn-course project folder (data/, scripts/, output/), install all the packages the course needs, import one CSV and one .sav file, and check the variables.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>install.packages(c(&quot;tidyverse&quot;, &quot;psych&quot;, &quot;lavaan&quot;, &quot;qgraph&quot;,
+                   &quot;bootnet&quot;, &quot;glmnet&quot;, &quot;networktools&quot;, &quot;mice&quot;))
+library(tidyverse)
+dat &lt;- read_csv(&quot;data/survey.csv&quot;)
+library(haven)
+spss &lt;- read_sav(&quot;data/survey.sav&quot;)
+glimpse(dat)</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why is it a bad idea to write setwd(&quot;C:/Users/...&quot;) in a script?</li><li>Once a package is installed, why do you still need library() the next time you open R?</li><li>When Chinese (or other non-English) text in imported data shows up garbled, what is the likely cause?</li></ol>
+ </div></details><details class="lesson" id="L2-5">
+ <summary><label class="done"><input type="checkbox" data-lid="2.5" aria-label="Mark Lesson 2.5 complete"><span></span></label>
+  <span class="lid">2.5</span><span class="ltitle">Descriptive Statistics, Correlation, and Regression in R</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L2-4">2.4</a> <a class="chip" href="#L1-6">1.6</a></div></div>
+   <a class="enter" href="lessons/L2-5.html">Open 2.5</a></div>
+  <h4>Learning Objectives</h4><ol><li>Get descriptive statistics with psych::describe()</li><li>Compute a correlation matrix with cor() and handle missing values</li><li>Fit regressions with lm() and glm() and read the summary() output</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>descriptive statistics</b></li><li><b>model summary</b></li><li><b>pairwise deletion</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Redo Module 1&#x27;s hand calculations in R: descriptive statistics, a correlation matrix, a simple regression; compare the correlation matrix you &#x27;expected&#x27; in Lesson 1.4 with the real results, and write down the differences and possible reasons.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What does use = &quot;pairwise.complete.obs&quot; mean in cor()?</li><li>In summary(lm()) output, which concepts from Module 1 do Estimate, Std. Error, and Pr(&gt;|t|) correspond to?</li><li>What does the skew value in psych::describe() tell you?</li></ol>
+ </div></details><details class="lesson" id="L2-6">
+ <summary><label class="done"><input type="checkbox" data-lid="2.6" aria-label="Mark Lesson 2.6 complete"><span></span></label>
+  <span class="lid">2.6</span><span class="ltitle">Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L2-5">2.5</a></div></div>
+   <a class="enter" href="lessons/L2-6.html">Open 2.6</a></div>
+  <h4>Learning Objectives</h4><ol><li>Draw histograms, scatter plots and grouped box plots with ggplot2</li><li>Understand the layered grammar: data + mappings + geometric objects</li><li>Use Quarto or R Markdown to produce a report that combines code, results and text (you will hand in the capstone project this way)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>grammar of graphics</b></li><li><b>aesthetic mapping, aes()</b></li><li><b>geom</b></li><li><b>reproducible report</b></li><li><b>Quarto / R Markdown</b><span class="en">literate programming</span></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Make a Quarto report with two plots, a table of descriptive statistics and a paragraph of explanation; render it to HTML, and check that it re-renders in one click on another computer or after clearing the environment.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What does aes(x = sleep, y = depress) do?</li><li>Why is a reproducible report better than copying and pasting results for the analysis of a paper?</li><li>Which kind of plot is best for checking an item&#x27;s skew?</li></ol>
+ </div></details>
+</section><section class="module" id="M3" style="--c:#10b981">
+ <header class="mhead"><div class="mnum">Module 3</div>
+  <h2>Regression Analysis</h2><p>Regression is the &#x27;engine&#x27; of CLPN: at heart, a CLPN runs one (regularized) regression for each variable at time point 2. This module goes from a single straight line to LASSO. Study it after Module 1 (Statistics) and Module 2 (R).</p>
+  <div class="mstats"><span>5 lessons</span><span>~8.5 hrs</span><span class="mprog" data-mod="M3"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L3-1">
+ <summary><label class="done"><input type="checkbox" data-lid="3.1" aria-label="Mark Lesson 3.1 complete"><span></span></label>
+  <span class="lid">3.1</span><span class="ltitle">Simple Linear Regression: Making Predictions with a Straight Line</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-4">1.4</a> <a class="chip" href="#L2-1">2.1</a></div></div>
+   <a class="enter" href="lessons/L3-1.html">Open 3.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Explain the intercept, slope, residuals and R²</li><li>Understand that least squares means making the sum of squared residuals as small as possible (using your intuition for derivatives)</li><li>Fit a model with lm() in R and read the output</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>regression</b></li><li><b>predictor</b></li><li><b>outcome</b></li><li><b>intercept</b></li><li><b>slope / coefficient</b></li><li><b>residual</b></li><li><b>ordinary least squares, OLS</b></li><li><b>R²</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>ŷ = b₀ + b₁x; OLS chooses b₀ and b₁ to make Σ(yᵢ − ŷᵢ)² as small as possible; setting the derivatives with respect to b₀ and b₁ to 0 gives the solution.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">With the course data (data/clpn_sim_wide.csv), predict the T1 depression total score from T1 social support (social_support_t1): first draw by hand the line you think fits best on a scatter plot, then get the best line with lm(), and compare the two lines&#x27; residual sums of squares.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What does a slope of b₁ = −0.4 mean?</li><li>Does R² = 0.09 mean the model is &#x27;useless&#x27;?</li><li>What are residuals? Why should you inspect residual plots?</li></ol>
+ </div></details><details class="lesson" id="L3-2">
+ <summary><label class="done"><input type="checkbox" data-lid="3.2" aria-label="Mark Lesson 3.2 complete"><span></span></label>
+  <span class="lid">3.2</span><span class="ltitle">Multiple Regression and &#x27;Controlling for Other Variables&#x27;</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L3-1">3.1</a></div></div>
+   <a class="enter" href="lessons/L3-2.html">Open 3.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Explain what a partial regression coefficient means: &#x27;with the other variables held constant&#x27;</li><li>Understand why coefficients change when you control for other variables (confounding, overlapping information)</li><li>Recognize multicollinearity and its effects</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>multiple regression</b></li><li><b>partial regression coefficient</b></li><li><b>covariate / control variable</b></li><li><b>multicollinearity</b></li><li><b>interaction</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Predict T2 depression from loneliness alone, and then from loneliness + social support + sleep; compare how the loneliness coefficient changes and write a short explanation. Think about it: a cross-lagged edge in a CLPN is exactly this kind of coefficient, one that &#x27;controls for all other T1 variables.&#x27;</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why might the loneliness coefficient get smaller once control variables are added?</li><li>What about the coefficients does multicollinearity make unstable?</li><li>Why does it matter that a CLPN &#x27;controls for all other T1 variables&#x27;?</li></ol>
+ </div></details><details class="lesson" id="L3-3">
+ <summary><label class="done"><input type="checkbox" data-lid="3.3" aria-label="Mark Lesson 3.3 complete"><span></span></label>
+  <span class="lid">3.3</span><span class="ltitle">Standardized Coefficients and Results Interpretation</span>
+  <span class="meta">1 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr + exercises ~1 hr</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L3-2">3.2</a> <a class="chip" href="#L1-3">1.3</a></div></div>
+   <a class="enter" href="lessons/L3-3.html">Open 3.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish the unstandardized coefficient b from the standardized coefficient β</li><li>Compare the relative size of predictors measured on different scales</li><li>Write a properly formatted sentence reporting a regression result</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>standardized coefficient, β</b></li><li><b>unstandardized coefficient, b</b></li><li><b>APA style</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Rerun the model from Lesson 3.2 after standardizing, and write a 2–3 sentence results report in APA style (with β, 95% CI and p).</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>How do you read β = 0.25?</li><li>When is it better to report b rather than β?</li><li>CLPN edge weights are usually based on standardized variables. Why?</li></ol>
+ </div></details><details class="lesson" id="L3-4">
+ <summary><label class="done"><input type="checkbox" data-lid="3.4" aria-label="Mark Lesson 3.4 complete"><span></span></label>
+  <span class="lid">3.4</span><span class="ltitle">Introduction to Logistic Regression: Binary Outcomes</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L3-2">3.2</a></div></div>
+   <a class="enter" href="lessons/L3-4.html">Open 3.4</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand why ordinary linear regression is not used when the outcome is binary (e.g. &#x27;dropped out of school or not&#x27;)</li><li>Read odds and odds ratios (OR)</li><li>Know that glmnet can also fit logistic regression (family = &quot;binomial&quot;), in preparation for binary nodes</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>logistic regression</b></li><li><b>probability</b></li><li><b>odds</b></li><li><b>log-odds / logit</b></li><li><b>odds ratio, OR</b></li><li><b>generalized linear model, GLM</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Use glm(family = binomial) to predict &#x27;sought professional help or not&#x27; (0/1) and interpret one OR; also explain what OR = 1.5 and OR = 0.67 mean.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why can&#x27;t a probability be modeled directly with a straight line?</li><li>Does OR = 2 mean &#x27;the probability doubles&#x27;?</li><li>If your network has yes/no items, what kind of regression might you need?</li></ol>
+ </div></details><details class="lesson" id="L3-5">
+ <summary><label class="done"><input type="checkbox" data-lid="3.5" aria-label="Mark Lesson 3.5 complete"><span></span></label>
+  <span class="lid">3.5</span><span class="ltitle">Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L3-3">3.3</a> <a class="chip" href="#L2-5">2.5</a></div></div>
+   <a class="enter" href="lessons/L3-5.html">Open 3.5</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand overfitting: with many variables and a small sample, a model &#x27;memorizes noise&#x27;</li><li>Understand how LASSO, by penalizing the absolute values of the coefficients, pushes small coefficients to 0 (automatic variable selection)</li><li>Understand the tuning parameter λ and k-fold cross-validation, and tell lambda.min from lambda.1se</li><li>Run glmnet / cv.glmnet in R for the first time</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>overfitting</b></li><li><b>bias–variance trade-off</b></li><li><b>regularization</b></li><li><b>ridge regression</b></li><li><b>LASSO</b><span class="en">least absolute shrinkage and selection operator</span></li><li><b>elastic net</b></li><li><b>tuning parameter, lambda</b></li><li><b>cross-validation, CV</b></li><li><b>sparsity</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>LASSO: minimize Σ(yᵢ − ŷᵢ)² + λ · Σ|βⱼ|. The larger λ, the heavier the penalty and the more coefficients become 0.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">With simulated data (15 predictors, n = 150), compare the coefficients from lm() and cv.glmnet(); plot the LASSO coefficient paths and describe what happens as λ grows.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>library(glmnet)
+X &lt;- scale(as.matrix(dat[, predictors]))
+y &lt;- scale(dat$depress_t2)[, 1]
+set.seed(2026)
+cvfit &lt;- cv.glmnet(X, y, alpha = 1, nfolds = 10)   # alpha = 1 means LASSO
+plot(cvfit)                                        # cross-validation error against lambda
+coef(cvfit, s = &quot;lambda.min&quot;)                      # many coefficients are exactly 0</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why standardize the variables before LASSO?</li><li>Which of lambda.min and lambda.1se is more &#x27;conservative&#x27; (keeps fewer coefficients)?</li><li>If LASSO pushes a coefficient to 0, does that mean the two variables are &#x27;really unrelated&#x27;?</li></ol>
+ </div></details>
+</section><section class="module" id="M4" style="--c:#ec4899">
+ <header class="mhead"><div class="mnum">Module 4</div>
+  <h2>Longitudinal and Panel Data</h2><p>A CLPN needs &#x27;the same people, measured at several time points, with the same items.&#x27; This module explains how such data are structured and prepared, and the biggest headache: missing data and dropout.</p>
+  <div class="mstats"><span>3 lessons</span><span>~5.0 hrs</span><span class="mprog" data-mod="M4"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L4-1">
+ <summary><label class="done"><input type="checkbox" data-lid="4.1" aria-label="Mark Lesson 4.1 complete"><span></span></label>
+  <span class="lid">4.1</span><span class="ltitle">The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-6">1.6</a></div></div>
+   <a class="enter" href="lessons/L4-1.html">Open 4.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish cross-sectional, repeated cross-sectional and panel (longitudinal) designs</li><li>Understand how the choice of waves and of the time lag affects which effects you can see</li><li>Make a first distinction between between-person differences and within-person change</li><li>Understand what measurement invariance basically means</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>cross-sectional data</b></li><li><b>panel data</b></li><li><b>longitudinal / follow-up study</b></li><li><b>wave</b></li><li><b>time lag</b></li><li><b>between-person</b></li><li><b>within-person</b></li><li><b>measurement invariance</b></li><li><b>intensive longitudinal data, ESM/EMA</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Pick two abstracts of longitudinal studies in social work or psychology and fill in a table: sample size, number of waves, lag, instruments; discuss how the questions suited to &#x27;measuring every 6 months&#x27; differ from those suited to &#x27;measuring every day.&#x27;</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>How do panel data differ from &#x27;two different groups of people at two time points&#x27;?</li><li>&#x27;Lonely people are more depressed&#x27; and &#x27;when a person is lonelier than usual, they are also more depressed&#x27;: which level is each statement about?</li><li>Why does the choice of lag affect the size of cross-lagged effects?</li></ol>
+ </div></details><details class="lesson" id="L4-2">
+ <summary><label class="done"><input type="checkbox" data-lid="4.2" aria-label="Mark Lesson 4.2 complete"><span></span></label>
+  <span class="lid">4.2</span><span class="ltitle">Wide vs. Long Formats: Data Reshaping</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L4-1">4.1</a> <a class="chip" href="#L2-3">2.3</a></div></div>
+   <a class="enter" href="lessons/L4-2.html">Open 4.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish wide format (one row per person) from long format (one row per person per wave)</li><li>Convert between them with tidyr::pivot_longer() / pivot_wider()</li><li>Prepare a &#x27;T1 item matrix + T2 item matrix&#x27; for a CLPN, with the cases matched one to one</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>wide format</b></li><li><b>long format</b></li><li><b>reshaping</b></li><li><b>participant ID</b></li><li><b>naming convention, e.g. sleep_t1</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Convert a 3-wave × 6-item wide dataset to long format and back; finally split out d1 (the 6 items at T1) and d2 (the 6 items at T2), and check that the row counts and IDs match exactly.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>long &lt;- wide |&gt;
+  pivot_longer(-id, names_to = c(&quot;.value&quot;, &quot;wave&quot;),
+               names_sep = &quot;_t&quot;)
+d1 &lt;- wide |&gt; select(ends_with(&quot;_t1&quot;))
+d2 &lt;- wide |&gt; select(ends_with(&quot;_t2&quot;))</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Which format does lavaan usually need to fit a CLPM?</li><li>Why must you align by ID when splitting into T1 and T2?</li><li>What is good about names like sleep_t1 and sleep_t2?</li></ol>
+ </div></details><details class="lesson" id="L4-3">
+ <summary><label class="done"><input type="checkbox" data-lid="4.3" aria-label="Mark Lesson 4.3 complete"><span></span></label>
+  <span class="lid">4.3</span><span class="ltitle">Missing Data and Participant Attrition</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L4-2">4.2</a></div></div>
+   <a class="enter" href="lessons/L4-3.html">Open 4.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish the three missingness mechanisms MCAR, MAR and MNAR, and what they mean</li><li>Understand how attrition threatens longitudinal conclusions, and be able to do an attrition analysis</li><li>Compare the pros and cons of listwise deletion, pairwise deletion, FIML and multiple imputation</li><li>Run a simple multiple imputation with mice, and know the usual approaches in network analysis</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>missing data</b></li><li><b>missing completely at random, MCAR</b></li><li><b>missing at random, MAR</b></li><li><b>missing not at random, MNAR</b></li><li><b>attrition</b></li><li><b>listwise deletion</b></li><li><b>full information maximum likelihood, FIML</b></li><li><b>multiple imputation</b></li><li><b>attrition analysis</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Create 20% dropout in the simulated data (making people with higher depression more likely to drop out), and compare the means and correlations before and after listwise deletion; then compare the T1 characteristics of dropouts and stayers (t-test / chi-square), and write a short attrition analysis.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>If people with more severe depression are more likely to leave the study, what kind of missingness is it? What bias does it cause?</li><li>Why is &#x27;analyzing complete cases only&#x27; common but risky?</li><li>When a paper reports how missing data were handled, what must it state at a minimum?</li></ol>
+ </div></details>
+</section><section class="module" id="M5" style="--c:#8b5cf6">
+ <header class="mhead"><div class="mnum">Module 5</div>
+  <h2>Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM</h2><p>A CLPN can be seen as an &#x27;item-level network version&#x27; of the CLPM. First understand autoregressive and cross-lagged paths at the construct (total-score) level, then Hamaker et al.&#x27;s key criticism of the CLPM; only then can you read a CLPN correctly and write its limitations honestly.</p>
+  <div class="mstats"><span>4 lessons</span><span>~7.5 hrs</span><span class="mprog" data-mod="M5"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L5-1">
+ <summary><label class="done"><input type="checkbox" data-lid="5.1" aria-label="Mark Lesson 5.1 complete"><span></span></label>
+  <span class="lid">5.1</span><span class="ltitle">Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L3-2">3.2</a> <a class="chip" href="#L4-1">4.1</a></div></div>
+   <a class="enter" href="lessons/L5-1.html">Open 5.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Draw the path diagram of a two-variable, multi-wave CLPM</li><li>Distinguish autoregressive paths (stability) from cross-lagged paths (predicting another variable)</li><li>Understand what same-time-point (residual) correlations mean</li><li>Understand structural equation modeling (SEM) and the basic symbols of path diagrams</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>cross-lagged panel model, CLPM</b></li><li><b>autoregressive path</b></li><li><b>cross-lagged path</b></li><li><b>path diagram</b></li><li><b>structural equation modeling, SEM</b></li><li><b>contemporaneous / within-wave correlation</b></li><li><b>residual covariance</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>lone_t2 = a · lone_t1 + c · dep_t1 + e; dep_t2 = b · dep_t1 + d · lone_t1 + e. a and b are autoregressive; c and d are cross-lagged.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Draw the full CLPM path diagram for three waves of &#x27;loneliness ↔ depression&#x27; data, label every path, and explain each path in one sentence of plain social work language.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why must a cross-lagged path &#x27;control for&#x27; the autoregressive path?</li><li>If c is significant and d is not, what (cautious) conclusion can you draw?</li><li>Are the variables of a CLPM total scores or items? How is that different from a CLPN?</li></ol>
+ </div></details><details class="lesson" id="L5-2">
+ <summary><label class="done"><input type="checkbox" data-lid="5.2" aria-label="Mark Lesson 5.2 complete"><span></span></label>
+  <span class="lid">5.2</span><span class="ltitle">Fitting CLPM with lavaan and Evaluating Model Fit</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L5-1">5.1</a> <a class="chip" href="#L2-5">2.5</a></div></div>
+   <a class="enter" href="lessons/L5-2.html">Open 5.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Write and fit a two-variable, three-wave CLPM in lavaan syntax</li><li>Read parameter estimates and fit indices (χ², CFI, TLI, RMSEA, SRMR)</li><li>Understand what equality constraints (equal paths across waves) are for</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>lavaan</b><span class="en">latent variable analysis (R package)</span></li><li><b>model fit</b></li><li><b>CFI / TLI</b><span class="en">comparative / Tucker–Lewis fit index</span></li><li><b>RMSEA</b><span class="en">root mean square error of approximation</span></li><li><b>SRMR</b><span class="en">standardized root mean square residual</span></li><li><b>equality constraint</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Fit a CLPM to the simulated data with lavaan, and report the cross-lagged paths (standardized estimates, 95% CIs) and the fit indices in APA style.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>library(lavaan)
+clpm &lt;- &#x27;
+  lone2 ~ lone1 + dep1
+  dep2  ~ dep1  + lone1
+  lone3 ~ lone2 + dep2
+  dep3  ~ dep2  + lone2
+  lone1 ~~ dep1
+  lone2 ~~ dep2
+  lone3 ~~ dep3
+&#x27;
+fit &lt;- sem(clpm, data = wide, missing = &quot;fiml&quot;)
+summary(fit, standardized = TRUE, fit.measures = TRUE)</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>What do ~ and ~~ represent in lavaan syntax?</li><li>What does RMSEA = 0.12 tell you?</li><li>Why consider constraining paths to be equal across waves?</li></ol>
+ </div></details><details class="lesson" id="L5-3">
+ <summary><label class="done"><input type="checkbox" data-lid="5.3" aria-label="Mark Lesson 5.3 complete"><span></span></label>
+  <span class="lid">5.3</span><span class="ltitle">RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L5-2">5.2</a></div></div>
+   <a class="enter" href="lessons/L5-3.html">Open 5.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand the core criticism by Hamaker, Kuiper &amp; Grasman (2015): the CLPM mixes up between-person and within-person effects</li><li>Understand that the random intercept represents stable, trait-like differences between individuals</li><li>Compare CLPM and RI-CLPM results and explain the differences</li><li>Know that an RI-CLPM needs at least 3 waves</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>random-intercept CLPM, RI-CLPM</b></li><li><b>random intercept</b></li><li><b>trait-like stability</b></li><li><b>within-person effect</b></li><li><b>between-person effect</b></li><li><b>centering</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Following the structure of the lavaan example code from Mulder &amp; Hamaker, fit an RI-CLPM to the same simulated data (simulated with fairly strong stable traits); compare the two models&#x27; cross-lagged estimates and write a 200-word explanation.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why might the cross-lagged effects of a CLPM be &#x27;fake&#x27;?</li><li>Does an RI-CLPM cross-lagged path answer &#x27;who is higher than others...&#x27; or &#x27;when a person is higher than their own usual level...&#x27;?</li><li>Does a standard CLPN already separate between-person and within-person effects? What does that mean for interpretation?</li></ol>
+ </div></details><details class="lesson" id="L5-4">
+ <summary><label class="done"><input type="checkbox" data-lid="5.4" aria-label="Mark Lesson 5.4 complete"><span></span></label>
+  <span class="lid">5.4</span><span class="ltitle">From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L5-3">5.3</a></div></div>
+   <a class="enter" href="lessons/L5-4.html">Open 5.4</a></div>
+  <h4>Learning Objectives</h4><ol><li>Distinguish &#x27;prediction over time&#x27; (Granger-style) from causal effects</li><li>Recognize threats such as unmeasured confounding, the time lag, and measurement error</li><li>Practice writing longitudinal results in cautious, accurate language</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>temporal precedence</b></li><li><b>Granger causality</b></li><li><b>unmeasured confounding</b></li><li><b>measurement error</b></li><li><b>reverse causation</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Rewrite 5 overly causal conclusions from papers (e.g. &#x27;loneliness leads to depression&#x27;) as accurate statements, and give one possible alternative explanation for each.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Which condition for causal inference does &#x27;A at T1 predicts B at T2&#x27; meet, at most?</li><li>Give an example of an unmeasured variable that could affect both loneliness and depression.</li><li>Why does Lucas (2023) argue that the traditional CLPM is &#x27;almost never the right choice&#x27;?</li></ol>
+ </div></details>
+</section><section class="module" id="M6" style="--c:#14b8a6">
+ <header class="mhead"><div class="mnum">Module 6</div>
+  <h2>Foundations of Network Psychometrics</h2><p>Learn all the basics of psychological networks on cross-sectional data first: partial correlations, GGMs, regularization, visualization, centrality. CLPN estimation, plotting and centrality indices build directly on these ideas.</p>
+  <div class="mstats"><span>5 lessons</span><span>~9.5 hrs</span><span class="mprog" data-mod="M6"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L6-1">
+ <summary><label class="done"><input type="checkbox" data-lid="6.1" aria-label="Mark Lesson 6.1 complete"><span></span></label>
+  <span class="lid">6.1</span><span class="ltitle">The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-4">1.4</a></div></div>
+   <a class="enter" href="lessons/L6-1.html">Open 6.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Say what nodes, edges, weights, and directed / undirected mean</li><li>Convert between a network plot and its weights matrix</li><li>Understand that in a psychological network, node = item/symptom and edge = statistical association</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>node</b></li><li><b>edge</b></li><li><b>edge weight</b></li><li><b>directed / undirected</b></li><li><b>adjacency matrix</b></li><li><b>weights matrix</b></li><li><b>density</b></li><li><b>community / cluster</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Draw a small 5-node network by hand and write out its weights matrix; then plot your own 5×5 matrix with qgraph() and look at the colors of the positive and negative edges.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>What is special about the weights matrix of an undirected network (symmetry)?</li><li>In a directed network, element [i, j] of a qgraph weights matrix points from which node to which?</li><li>What do the width and the color of an edge usually show?</li></ol>
+ </div></details><details class="lesson" id="L6-2">
+ <summary><label class="done"><input type="checkbox" data-lid="6.2" aria-label="Mark Lesson 6.2 complete"><span></span></label>
+  <span class="lid">6.2</span><span class="ltitle">Partial Correlation Networks and Gaussian Graphical Models (GGMs)</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L6-1">6.1</a> <a class="chip" href="#L3-2">3.2</a></div></div>
+   <a class="enter" href="lessons/L6-2.html">Open 6.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand partial correlation: the association left between two variables after controlling for all the others</li><li>Understand conditional independence and &#x27;no edge&#x27; in a GGM</li><li>Know how the precision matrix (the inverse of the covariance matrix) relates to partial correlations (background only)</li><li>Compare correlation and partial correlation networks and see why they differ so much</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>partial correlation</b></li><li><b>conditional independence</b></li><li><b>Gaussian graphical model (GGM)</b></li><li><b>Markov random field</b></li><li><b>precision matrix</b></li><li><b>indirect association</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Use a 3-variable example (insomnia → fatigue → poor concentration) to explain why insomnia and poor concentration are correlated but their partial correlation is close to 0; check it in R by comparing cor() with qgraph(..., graph = &quot;pcor&quot;).</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>How are partial correlations related to multiple regression coefficients?</li><li>In a GGM, what does it mean when two nodes have no edge?</li><li>Why is a partial correlation network usually &#x27;cleaner&#x27; than a correlation network?</li></ol>
+ </div></details><details class="lesson" id="L6-3">
+ <summary><label class="done"><input type="checkbox" data-lid="6.3" aria-label="Mark Lesson 6.3 complete"><span></span></label>
+  <span class="lid">6.3</span><span class="ltitle">Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L6-2">6.2</a> <a class="chip" href="#L3-5">3.5</a></div></div>
+   <a class="enter" href="lessons/L6-3.html">Open 6.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand why, with limited samples, regularization is needed to avoid &#x27;a screen full of tiny edges&#x27;</li><li>Understand the graphical lasso, EBIC model selection, and the role of the hyperparameter γ</li><li>Know when EBICglasso is appropriate and its limits</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>graphical lasso (glasso)</b></li><li><b>extended Bayesian information criterion (EBIC)</b></li><li><b>hyperparameter gamma (γ)</b></li><li><b>sparse network</b></li><li><b>false positive edge</b></li><li><b>unregularized estimation (e.g., ggmModSelect)</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Read the first half of Epskamp &amp; Fried (2018) (Lesson 6.3 explains its key ideas, so you can read the two side by side); use bootnet on the same data with γ = 0, 0.25 and 0.5, compare the number of edges and write down what you see.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>As γ increases, does the network get sparser or denser?</li><li>When regularization sets an edge to 0, does that prove the two are unrelated?</li><li>How do EBICglasso and the cv.glmnet used in CLPN differ in how they choose λ?</li></ol>
+ </div></details><details class="lesson" id="L6-4">
+ <summary><label class="done"><input type="checkbox" data-lid="6.4" aria-label="Mark Lesson 6.4 complete"><span></span></label>
+  <span class="lid">6.4</span><span class="ltitle">Estimating and Visualizing Networks with qgraph and bootnet</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L6-3">6.3</a> <a class="chip" href="#L2-6">2.6</a></div></div>
+   <a class="enter" href="lessons/L6-4.html">Open 6.4</a></div>
+  <h4>Learning Objectives</h4><ol><li>Estimate an EBICglasso network with bootnet::estimateNetwork()</li><li>Use the qgraph plotting arguments: layout, groups, labels, legend, maximum</li><li>Use the same layout across several network plots so they can be compared (averageLayout)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>estimateNetwork()</b></li><li><b>layout (e.g., spring / Fruchterman–Reingold)</b></li><li><b>grouping / node coloring (groups)</b></li><li><b>maximum edge weight (maximum)</b></li><li><b>legend</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Estimate a network on simulated data in the style of &#x27;9 depression items + 7 anxiety items&#x27;, color the nodes by the two groups (depression / anxiety), and export a publication-quality PNG/PDF figure.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>library(bootnet); library(qgraph)
+net &lt;- estimateNetwork(items, default = &quot;EBICglasso&quot;,
+                       tuning = 0.5, corMethod = &quot;cor_auto&quot;)
+plot(net, layout = &quot;spring&quot;,
+     groups = list(Depression = 1:9, Anxiety = 10:16),
+     legend = TRUE)</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why fix the layout and the maximum edge weight when comparing two network plots?</li><li>Can the distances between nodes in a spring layout be &#x27;read&#x27; precisely?</li><li>How does corMethod = &quot;cor_auto&quot; decide which type of correlation to use?</li></ol>
+ </div></details><details class="lesson" id="L6-5">
+ <summary><label class="done"><input type="checkbox" data-lid="6.5" aria-label="Mark Lesson 6.5 complete"><span></span></label>
+  <span class="lid">6.5</span><span class="ltitle">Centrality Indices: Strength, Expected Influence, and Bridge Centrality</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L6-4">6.4</a></div></div>
+   <a class="enter" href="lessons/L6-5.html">Open 6.5</a></div>
+  <h4>Learning Objectives</h4><ol><li>Calculate and interpret strength and expected influence (EI)</li><li>Understand why EI is more suitable than strength when there are negative edges (Robinaugh et al., 2016)</li><li>Understand bridge centrality (Jones, Ma &amp; McNally, 2021) and how it relates to comorbidity research</li><li>Know that betweenness and closeness are often unstable in psychological networks and should be used with care</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>centrality</b></li><li><b>strength</b></li><li><b>expected influence (EI)</b></li><li><b>betweenness centrality</b></li><li><b>closeness centrality</b></li><li><b>bridge centrality</b></li><li><b>bridge expected influence</b></li><li><b>comorbidity</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>Strengthᵢ = Σⱼ |wᵢⱼ|; Expected Influenceᵢ = Σⱼ wᵢⱼ (retaining signs). Bridge EI adds up only the edges to nodes in &#x27;other communities.&#x27;</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Plot strength and EI with qgraph::centralityPlot(), compute the depression–anxiety bridge EI with networktools::bridge(), name the top 2 bridge nodes, and write a cautious interpretation.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>A node has only two edges, +0.3 and −0.3. What are its strength and EI?</li><li>What is wrong with saying &#x27;the symptom with the highest centrality is the best intervention target&#x27;?</li><li>Why does bridge centrality need the communities to be specified in advance?</li></ol>
+ </div></details>
+</section><section class="module" id="M7" style="--c:#ef4444">
+ <header class="mhead"><div class="mnum">Module 7</div>
+  <h2>Cross-Lagged Panel Networks (CLPN)</h2><p>The core module. CLPN was proposed by Wysocki, van Bork, Cramer and Rhemtulla (2022 preprint; published in 2025 as &#x27;Cross-lagged panel networks&#x27;). The main line of this module teaches the simplified &#x27;LASSO-only&#x27; version most common in applied research (e.g. Funkhouser et al., 2021): for each T2 item, run a LASSO-regularized regression on all T1 items and put the coefficients together into a directed network. Lesson 7.5 then introduces the full procedure recommended by Wysocki et al. (2025): LASSO edge selection → unpenalized re-estimation in lavaan (same-wave residual correlations, FIML, tests of equality across time) → in-/out-prediction, with runnable examples.</p>
+  <div class="mstats"><span>7 lessons (incl. 2 optional)</span><span>~10.5 hrs (+ ~4.0 hrs optional)</span><span class="mprog" data-mod="M7"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L7-1">
+ <summary><label class="done"><input type="checkbox" data-lid="7.1" aria-label="Mark Lesson 7.1 complete"><span></span></label>
+  <span class="lid">7.1</span><span class="ltitle">Model Logic of CLPN: Unpacking CLPM to the Item Level</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L5-3">5.3</a> <a class="chip" href="#L6-5">6.5</a> <a class="chip" href="#L3-5">3.5</a></div></div>
+   <a class="enter" href="lessons/L7-1.html">Open 7.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Explain how CLPN differs from, and relates to, the CLPM (construct level) and cross-sectional networks (no time direction)</li><li>Understand that each T2 node = one regression equation, and all the coefficients together form a p × p directed weights matrix</li><li>Distinguish autoregressive edges (diagonal) from cross-lagged edges (off-diagonal) in a CLPN</li><li>Understand what a CLPN edge means: the unique prediction of B at T2 from A at T1, controlling for all T1 nodes</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>cross-lagged panel network (CLPN)</b></li><li><b>directed edge</b></li><li><b>autoregressive edge</b></li><li><b>cross-lagged edge</b></li><li><b>nodewise regression</b></li><li><b>time point t → t+1</b></li><li><b>cross-construct edge</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>For each T2 node j: Xⱼ,ₜ₊₁ = Σₖ βₖⱼ · Xₖ,ₜ + εⱼ. Putting βₖⱼ in row k, column j of the matrix gives the edge &#x27;from k to j&#x27;.</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Read the model section of Wysocki et al. closely (Lesson 7.1 walks through its model specification paragraph by paragraph, so you can read them side by side). For 4 nodes, write out the 4 regression equations by hand, mark which coefficients are autoregressive and which cross-lagged, and draw the matching directed network.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>How many regressions does an 8-node CLPN need? How many cross-lagged edges can it have at most?</li><li>Why are CLPN edges directed, while the edges of a cross-sectional GGM are undirected?</li><li>Can a CLPN edge tell between-person from within-person effects? (Think back to Lesson 5.3)</li></ol>
+ </div></details><details class="lesson" id="L7-2">
+ <summary><label class="done"><input type="checkbox" data-lid="7.2" aria-label="Mark Lesson 7.2 complete"><span></span></label>
+  <span class="lid">7.2</span><span class="ltitle">Nodewise CLPN Estimation with glmnet</span>
+  <span class="meta">2 hr 30 min · 2 sessions</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr 30 min (2 sessions) + exercises ~1 hr 45 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L7-1">7.1</a> <a class="chip" href="#L4-2">4.2</a></div></div>
+   <a class="enter" href="lessons/L7-2.html">Open 7.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Prepare and standardize matched T1 / T2 item matrices</li><li>Fit a LASSO regression for each T2 node with a loop + cv.glmnet()</li><li>Understand and record the key decisions: lambda.min or lambda.1se, number of folds, random seed, whether to add covariates</li><li>Arrange the coefficients into a directed weights matrix with row and column names, and check it is correct</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>for loop</b></li><li><b>random seed</b></li><li><b>coefficient matrix</b></li><li><b>lambda.min / lambda.1se</b><span class="en">CV-selected penalty (lambda.min / lambda.1se)</span></li><li><b>covariate</b></li><li><b>analysis decision log</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Run the full estimation code on the simulated data (true network known) and compare the estimated matrix with the true one side by side: which true edges were recovered? Which false positives appeared? Then rerun with lambda.1se instead of lambda.min and compare.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>library(glmnet)
+X &lt;- scale(as.matrix(d1))   # T1 items (rows = cases)
+Y &lt;- scale(as.matrix(d2))   # T2 items (same item order, same cases)
+p &lt;- ncol(X); labs &lt;- sub(&quot;_t1&quot;, &quot;&quot;, colnames(X))
+B &lt;- matrix(0, p, p, dimnames = list(labs, labs))  # Rows = T1 predictors, columns = T2 outcomes
+set.seed(2026)
+for (j in seq_len(p)) {
+  cvfit &lt;- cv.glmnet(X, Y[, j], alpha = 1, nfolds = 10)
+  B[, j] &lt;- as.numeric(coef(cvfit, s = &quot;lambda.min&quot;))[-1]  # Drop intercept
+}
+AR &lt;- diag(B)                 # Autoregressive edges
+CL &lt;- B; diag(CL) &lt;- 0        # Cross-lagged edges</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why call set.seed() before every run?</li><li>Which direction is the edge B[&quot;sleep&quot;, &quot;fatigue&quot;]?</li><li>Does switching to lambda.1se usually make the network sparser or denser? Why?</li></ol>
+ </div></details><details class="lesson" id="L7-3">
+ <summary><label class="done"><input type="checkbox" data-lid="7.3" aria-label="Mark Lesson 7.3 complete"><span></span></label>
+  <span class="lid">7.3</span><span class="ltitle">CLPN Visualization and Interpretation</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L7-2">7.2</a></div></div>
+   <a class="enter" href="lessons/L7-3.html">Open 7.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Plot a directed CLPN with qgraph (usually without the autoregressive loops, which are reported in a separate table)</li><li>Color the nodes by construct and label them; if you show only the stronger edges for readability, say so in the figure note</li><li>Report the autoregressive edges and the strongest cross-lagged edges in tables</li><li>Write cautious, non-causal interpretations of the edges</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>directed network plot</b></li><li><b>self-loop</b></li><li><b>display threshold</b></li><li><b>figure caption</b></li><li><b>edge list</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Plot your CLPN and write a 150-word interpretation: a description of the figure + the 3 strongest cross-lagged edges; then check each sentence for overly causal words (such as &#x27;leads to&#x27;, &#x27;causes&#x27;, &#x27;drives&#x27;) and change them to predictive wording.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>library(qgraph)
+qgraph(CL, directed = TRUE, layout = &quot;spring&quot;,
+       labels = labs, groups = list(Loneliness = 1:4, Depression = 5:9),
+       theme = &quot;colorblind&quot;, asize = 4, legend = TRUE)</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why do many CLPN papers leave the autoregressive edges out of the figure?</li><li>Does showing only the edges above a threshold change the model itself? Where do you need to say so?</li><li>How should you write &#x27;the edge T1 insomnia → T2 fatigue is the strongest&#x27; so that it is accurate?</li></ol>
+ </div></details><details class="lesson" id="L7-4">
+ <summary><label class="done"><input type="checkbox" data-lid="7.4" aria-label="Mark Lesson 7.4 complete"><span></span></label>
+  <span class="lid">7.4</span><span class="ltitle">Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L7-3">7.3</a></div></div>
+   <a class="enter" href="lessons/L7-4.html">Open 7.4</a></div>
+  <h4>Learning Objectives</h4><ol><li>Calculate and interpret out-expected influence (out-EI: how much a node predicts the other nodes in total) and in-expected influence (in-EI: how much a node is predicted by the other nodes in total)</li><li>Tell &#x27;predictive&#x27; nodes from &#x27;predictable&#x27; nodes, and know the limits of these labels</li><li>Calculate bridge out-/in-EI using only the edges between constructs</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>out-expected influence (out-EI)</b></li><li><b>in-expected influence (in-EI)</b></li><li><b>out-strength / in-strength</b></li><li><b>bridge out-EI</b></li><li><b>driver node (caution advised)</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>out-EIₖ = Σⱼ≠ₖ βₖⱼ (sum of row k, without the diagonal); in-EIⱼ = Σₖ≠ⱼ βₖⱼ (sum of column j).</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Calculate out-EI and in-EI for all nodes and plot them as side-by-side bar charts; then keep only the edges in the &#x27;loneliness → depression&#x27; and &#x27;depression → loneliness&#x27; directions to compute bridge EI, and answer: which construct &#x27;predicts&#x27; the other more?</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>outEI &lt;- rowSums(CL)   # Outgoing edges from node (predicting others)
+inEI  &lt;- colSums(CL)   # Incoming edges to node (predicted by others)
+comm  &lt;- c(rep(&quot;Loneliness&quot;, 4), rep(&quot;Depression&quot;, 5))
+bridgeOut &lt;- sapply(seq_len(p), function(k) sum(CL[k, comm != comm[k]]))</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why are autoregressive edges usually left out when computing EI?</li><li>Is the node with the highest out-EI necessarily the best intervention target? What other evidence would you need?</li><li>Which index do rowSums(CL) and colSums(CL) each give?</li></ol>
+ </div></details><details class="lesson" id="L7-5">
+ <summary><label class="done"><input type="checkbox" data-lid="7.5" aria-label="Mark Lesson 7.5 complete"><span></span></label>
+  <span class="lid">7.5</span><span class="ltitle">Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L7-4">7.4</a></div></div>
+   <a class="enter" href="lessons/L7-5.html">Open 7.5</a></div>
+  <h4>Learning Objectives</h4><ol><li>With 3 or more waves, estimate the T1→T2 and T2→T3 networks separately and discuss how well the structure replicates</li><li>Understand how and why to add covariates (such as age and gender)</li><li>Understand how the standard CLPN mixes between-person and within-person effects, know the extensions in the literature (such as panel GVAR, psychonetrics), and know when a standard CLPN is not enough and you need to switch to these methods</li><li>Know how sample size, number of items and the interval between measurements affect a CLPN</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>multi-wave CLPN</b></li><li><b>network replication</b></li><li><b>panel graphical VAR (panel GVAR)</b></li><li><b>psychonetrics</b><span class="en">psychonetrics (R package)</span></li><li><b>penalty.factor</b></li><li><b>sample size planning</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Estimate two CLPNs (T1→T2, T2→T3) on the three-wave simulated data, compute the correlation between the two sets of edge weights, and write a short discussion of stability/replicability; then rerun with gender as an unpenalized covariate and compare.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>If the CLPNs of the two intervals differ in structure, what could be the reasons?</li><li>Should covariates be penalized in glmnet? (Hint: penalty.factor)</li><li>What should you write in the Limitations section about between-person vs within-person effects?</li></ol>
+ </div></details><details class="lesson" id="L7-6">
+ <summary><label class="done"><input type="checkbox" data-lid="7.6" aria-label="Mark Lesson 7.6 complete"><span></span></label>
+  <span class="lid">7.6</span><span class="ltitle">Measurement Invariance and Sample Size Planning</span>
+  <span class="meta">Optional · 2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L5-2">5.2</a> <a class="chip" href="#L7-2">7.2</a></div></div>
+   <a class="enter" href="lessons/L7-6.html">Open 7.6</a></div>
+  <h4>Learning Objectives</h4><ol><li>Explain measurement invariance with social work examples: does the same item measure the same thing at different waves or in different groups?</li><li>Fit models in lavaan in the order configural → metric → scalar, judging each level with Δχ², ΔCFI and ΔRMSEA; if a level fails, use score tests to find the problem items and consider partial invariance</li><li>Explain, given that a CLPN uses observed items directly as nodes, why equal loadings are the prerequisite for comparing relationships (edges) across waves, and equal intercepts the prerequisite for comparing means</li><li>Use simulation to estimate the sample size needed to recover target edges, and name the assumptions that estimate depends on (true network, λ rule, number of nodes)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>configural invariance</b></li><li><b>metric / weak invariance</b></li><li><b>scalar / strong invariance</b></li><li><b>partial invariance</b></li><li><b>factor loading</b></li><li><b>item intercept</b></li><li><b>multi-group CFA</b></li><li><b>score test / Lagrange multiplier test</b></li><li><b>ΔCFI</b><span class="en">change in CFI (ΔCFI)</span></li><li><b>Monte Carlo simulation</b></li><li><b>false positive rate</b></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>Item score = intercept τ + loading λ × factor η + residual ε; metric invariance: λ equal across waves; scalar invariance: both λ and τ equal. Criteria: ΔCFI ≥ −0.01 and ΔRMSEA ≤ 0.015 (Cheung &amp; Rensvold, 2002; Chen, 2007).</div>
+  <h4>Hands-On Exercise</h4><p class="ex">Test 3-wave longitudinal invariance of the 5 depression items in the course data, reporting χ², df, CFI, RMSEA and ΔCFI for the three levels; then run the same test on the 5 social well-being items of a real dataset (a panel study of sports coaches&#x27; mental health, data/coaches_mhc_raw.csv), and write a 150-word report saying which level holds, what can be compared and what cannot.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>fit_conf &lt;- cfa(model_conf, data = dat, estimator = &quot;MLR&quot;)
+fit_metr &lt;- cfa(model_metr, data = dat, estimator = &quot;MLR&quot;)   # Constrain factor loadings to equality
+fit_scal &lt;- cfa(model_scal, data = dat, estimator = &quot;MLR&quot;)   # Constrain item intercepts to equality
+lavTestLRT(fit_conf, fit_metr, fit_scal)
+fitMeasures(fit_scal, c(&quot;cfi.robust&quot;, &quot;rmsea.robust&quot;))</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>What does metric invariance let you compare, and what does scalar invariance let you compare?</li><li>With a large sample the χ² difference test is almost always significant; what else should you look at?</li><li>What must you assume before a sample size simulation? Why do the conclusions only hold under those assumptions?</li></ol>
+ </div></details><details class="lesson" id="L7-7">
+ <summary><label class="done"><input type="checkbox" data-lid="7.7" aria-label="Mark Lesson 7.7 complete"><span></span></label>
+  <span class="lid">7.7</span><span class="ltitle">Between-Group Comparisons: Are Two Group CLPNs Identical?</span>
+  <span class="meta">Optional · 2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L7-2">7.2</a> <a class="chip" href="#L6-4">6.4</a></div></div>
+   <a class="enter" href="lessons/L7-7.html">Open 7.7</a></div>
+  <h4>Learning Objectives</h4><ol><li>Turn a question like &#x27;are men&#x27;s and women&#x27;s loneliness–depression networks the same?&#x27; into a statistical question: what is compared, and what is the null hypothesis?</li><li>Understand the logic of a permutation test: shuffle the group labels and re-estimate to get the null distribution &#x27;if the groups did not differ,&#x27; then see where the observed value falls</li><li>Calculate and interpret M (the edge with the largest difference), S (the difference in global strength) and differences in single edges, and know the multiple comparisons problem</li><li>Know that &#x27;not significant ≠ the same,&#x27; and that group comparisons need very large samples</li><li>Know that NCT (NetworkComparisonTest) is used for cross-sectional networks, and the limits of applying it directly to a CLPN</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>permutation test</b></li><li><b>null distribution</b></li><li><b>group label</b></li><li><b>network structure invariance test (M)</b></li><li><b>global strength invariance test (S)</b></li><li><b>edge invariance test</b></li><li><b>Holm correction</b></li><li><b>pre-specified hypothesis</b></li><li><b>NetworkComparisonTest</b><span class="en">NetworkComparisonTest (NCT)</span></li></ul>
+  <div class="math"><span class="tag">Essential Math</span>M = max |B⁽¹⁾ − B⁽²⁾| (the cross-lagged edge with the largest difference); S = | Σ|B⁽¹⁾| − Σ|B⁽²⁾| |; permutation p = (number of null values ≥ the observed value + 1) / (number of permutations + 1).</div>
+  <h4>Hands-On Exercise</h4><p class="ex">With the course data, compare men&#x27;s and women&#x27;s T2 → T3 networks (200 permutations are enough), report M, S and their permutation p-values, and write a 100-word interpretation explaining why &#x27;not significant&#x27; cannot be written as &#x27;the two networks are the same&#x27;; then explain how, if you cared only about the single edge lone3 → dep1, the test should be written into the analysis plan in advance.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>est &lt;- function(d) clpn_estimate(d[, vars_t(1)], d[, vars_t(2)], rule = &quot;ebic&quot;)
+obs &lt;- stats(est(d[g == 0, ]), est(d[g == 1, ]))      # Observed M and S
+for (b in 1:1000) {
+  gb &lt;- sample(g)                                       # Reshuffle: permute group labels
+  nullM[b] &lt;- stats(est(d[gb == 0, ]), est(d[gb == 1, ]))$M
+}
+(sum(nullM &gt;= obs$M) + 1) / (1000 + 1)                 # Permutation p-value</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why does a permutation test shuffle the group labels? What &#x27;should&#x27; you see after shuffling?</li><li>What goes wrong if you test 72 edges one by one, each at p &lt; .05?</li><li>If the comparison of two networks is not significant, can you say the two networks are the same?</li></ol>
+ </div></details>
+</section><section class="module" id="M8" style="--c:#64748b">
+ <header class="mhead"><div class="mnum">Module 8</div>
+  <h2>Stability and Accuracy Assessment</h2><p>A network can easily &#x27;look meaningful&#x27; and yet be unstable. Following the framework of Epskamp, Borsboom &amp; Fried (2018), this module shows you how to use the bootstrap to check whether edges and centrality can be trusted.</p>
+  <div class="mstats"><span>3 lessons</span><span>~6.0 hrs</span><span class="mprog" data-mod="M8"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L8-1">
+ <summary><label class="done"><input type="checkbox" data-lid="8.1" aria-label="Mark Lesson 8.1 complete"><span></span></label>
+  <span class="lid">8.1</span><span class="ltitle">The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L1-5">1.5</a> <a class="chip" href="#L2-5">2.5</a></div></div>
+   <a class="enter" href="lessons/L8-1.html">Open 8.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand the nonparametric bootstrap: resampling cases with replacement</li><li>Use the bootstrap to build an interval for a mean or a correlation</li><li>Understand why network analysis particularly needs accuracy checks</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>bootstrap</b></li><li><b>resampling with replacement</b></li><li><b>nonparametric bootstrap</b></li><li><b>percentile interval</b></li><li><b>sampling variability</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Without any packages, write about 15 lines of R code that bootstrap a correlation coefficient 1000 times; plot the distribution, compute the 95% interval, and compare it with the result of cor.test().</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why resample &#x27;with replacement&#x27;?</li><li>What does a wide bootstrap interval tell you?</li><li>Can the bootstrap fix a sample that is itself biased?</li></ol>
+ </div></details><details class="lesson" id="L8-2">
+ <summary><label class="done"><input type="checkbox" data-lid="8.2" aria-label="Mark Lesson 8.2 complete"><span></span></label>
+  <span class="lid">8.2</span><span class="ltitle">Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</span>
+  <span class="meta">2 hr 30 min · 2 sessions</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr 30 min (2 sessions) + exercises ~1 hr 45 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L8-1">8.1</a> <a class="chip" href="#L7-4">7.4</a></div></div>
+   <a class="enter" href="lessons/L8-2.html">Open 8.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Wrap the estimation code from Lesson 7.2 in a function that bootnet&#x27;s estimateNetwork(default = &quot;none&quot;, fun = ..., directed = TRUE) can call</li><li>Run a nonparametric bootstrap and plot the bootstrap intervals of the edge weights</li><li>Use the edge-weight difference test and interpret it cautiously</li><li>Know what to keep in mind when reading bootstrap intervals under regularized estimation (they cannot be treated as strict confidence intervals)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>edge-weight accuracy</b></li><li><b>bootstrap interval</b></li><li><b>edge-weight difference test</b></li><li><b>custom estimation function</b></li><li><b>parallel computing (nCores)</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Run a nonparametric bootstrap with 1000 samples on your CLPN (200 for a first try), report the intervals of the 5 strongest cross-lagged edges, and judge which edges are &#x27;clearly different&#x27; from the others.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>clpn_fun &lt;- function(data) {
+  p &lt;- ncol(data) / 2
+  X &lt;- scale(as.matrix(data[, 1:p])); Y &lt;- scale(as.matrix(data[, (p + 1):(2 * p)]))
+  B &lt;- matrix(0, p, p)
+  for (j in seq_len(p)) {
+    cvfit &lt;- glmnet::cv.glmnet(X, Y[, j], alpha = 1, nfolds = 10)
+    B[, j] &lt;- as.numeric(coef(cvfit, s = &quot;lambda.min&quot;))[-1]
+  }
+  B
+}
+net  &lt;- estimateNetwork(wide_items, default = &quot;none&quot;, fun = clpn_fun,
+                        directed = TRUE, labels = items)
+boot &lt;- bootnet(net, nBoots = 1000, type = &quot;nonparametric&quot;, nCores = 1,
+                statistics = c(&quot;edge&quot;, &quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;))
+plot(boot, statistics = &quot;edge&quot;, order = &quot;sample&quot;, CIstyle = &quot;quantiles&quot;)</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>Why write the estimation as a function?</li><li>How should you read an edge whose bootstrap interval contains 0?</li><li>Why can&#x27;t the bootstrap intervals of regularized estimates be treated as ordinary 95% CIs?</li></ol>
+ </div></details><details class="lesson" id="L8-3">
+ <summary><label class="done"><input type="checkbox" data-lid="8.3" aria-label="Mark Lesson 8.3 complete"><span></span></label>
+  <span class="lid">8.3</span><span class="ltitle">Case-Dropping Bootstrap and the CS-Coefficient</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L8-2">8.2</a></div></div>
+   <a class="enter" href="lessons/L8-3.html">Open 8.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Understand the case-dropping bootstrap: drop more and more of the sample and see whether the centrality ranking holds</li><li>Calculate and interpret the correlation stability coefficient (CS-coefficient), with the usual reference values (not below 0.25, preferably above 0.5)</li><li>Report and judge the stability of out-EI / in-EI</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>case-dropping bootstrap</b></li><li><b>correlation stability coefficient (CS-coefficient)</b></li><li><b>centrality stability</b></li><li><b>rank-order consistency</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Run a case-dropping bootstrap on your CLPN and compute the CS-coefficients of out-EI and in-EI; if CS &lt; 0.25, write a paragraph on how the conclusion should be toned down.</p>
+  <details class="code"><summary>R Code Preview (illustrative)</summary><pre><code>cd &lt;- bootnet(net, nBoots = 1000, type = &quot;case&quot;, nCores = 1,  # Single core = exact reproducibility
+              statistics = c(&quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;))
+corStability(cd)
+plot(cd, statistics = c(&quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;))</code></pre></details>
+  <h4>Self-Check Questions</h4><ol><li>What does CS = 0.6 mean?</li><li>If the CS of out-EI is only 0.13, can a paper still say one node is &#x27;the most influential&#x27;?</li><li>How does the question the case-dropping bootstrap answers differ from the one the ordinary bootstrap answers?</li></ol>
+ </div></details>
+</section><section class="module" id="M9" style="--c:#a855f7">
+ <header class="mhead"><div class="mnum">Module 9</div>
+  <h2>Reading, Critique, and Reporting Standards</h2><p>Getting the analysis to run is only half the job; the other half is reading other people&#x27;s CLPN papers, spotting the problems, and reporting your own analysis to the standards.</p>
+  <div class="mstats"><span>3 lessons</span><span>~5.5 hrs</span><span class="mprog" data-mod="M9"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L9-1">
+ <summary><label class="done"><input type="checkbox" data-lid="9.1" aria-label="Mark Lesson 9.1 complete"><span></span></label>
+  <span class="lid">9.1</span><span class="ltitle">How to Read an Empirical CLPN Paper</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L8-3">8.3</a></div></div>
+   <a class="enter" href="lessons/L9-1.html">Open 9.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Use a structured checklist to pull out quickly: sample, waves, interval, nodes, estimation method, λ selection, stability results</li><li>Match the paper&#x27;s tables and figures to each concept you have learned</li><li>Distinguish the authors&#x27; findings, their interpretations, and over-reaching inferences</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>structured reading</b></li><li><b>method section</b></li><li><b>supplementary materials</b></li><li><b>open data and code</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Read closely the ABCD study by Funkhouser et al. (2021) (an example of an empirical CLPN), fill in the course&#x27;s &#x27;CLPN paper reading checklist&#x27;, and record a 10-minute talk (or give it to classmates or colleagues) explaining the research question, methods, main findings and what you see as the biggest limitation.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>How many time points does the paper use? How does it check that the results replicate?</li><li>Which centrality indices does the paper report? How stable are they?</li><li>What do you think is the paper&#x27;s biggest limitation?</li></ol>
+ </div></details><details class="lesson" id="L9-2">
+ <summary><label class="done"><input type="checkbox" data-lid="9.2" aria-label="Mark Lesson 9.2 complete"><span></span></label>
+  <span class="lid">9.2</span><span class="ltitle">Critical Appraisal: A Checklist of Common CLPN Problems</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L9-1">9.1</a> <a class="chip" href="#L5-4">5.4</a></div></div>
+   <a class="enter" href="lessons/L9-2.html">Open 9.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>Spot common problems such as over-reading centrality, causal wording, and mixing up between- and within-person effects</li><li>Evaluate the choice of nodes (overlapping item content, reliability of single items)</li><li>Judge whether the sample size, missing data handling and interval are reasonable</li><li>Know the overall challenges of network methodology (Fried &amp; Cramer, 2017)</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>topological overlap / item redundancy</b></li><li><b>node selection</b></li><li><b>replicability</b></li><li><b>overinterpretation</b></li><li><b>researcher degrees of freedom</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Choose a published CLPN paper (social work or psychology; you can pick one from the Paper Reading Pack) and write a 600–800-word &#x27;peer review&#x27;: 2 strengths, 3 main problems, 2 concrete suggestions for revision.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>When two items have almost the same content, what does a strong edge between them mean?</li><li>Why is centrality &#x27;not the same as&#x27; an intervention target?</li><li>How would you check whether a CLPN conclusion is sensitive to the choice of λ?</li></ol>
+ </div></details><details class="lesson" id="L9-3">
+ <summary><label class="done"><input type="checkbox" data-lid="9.3" aria-label="Mark Lesson 9.3 complete"><span></span></label>
+  <span class="lid">9.3</span><span class="ltitle">Reporting Standards: Writing Methods and Results Others Can Check</span>
+  <span class="meta">1 hr 30 min</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 1 hr 30 min + exercises ~1 hr 15 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L9-2">9.2</a></div></div>
+   <a class="enter" href="lessons/L9-3.html">Open 9.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Learn the Burger et al. (2023) reporting standards for cross-sectional networks and carry them over to CLPN</li><li>List what a CLPN Methods section must report (data, missing data handling, standardization, estimation function and λ choice, seed, software versions, stability checks)</li><li>Know the basics of sharing code and data (OSF) and of preregistration</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>reporting standards</b></li><li><b>preregistration</b></li><li><b>open science</b></li><li><b>software versions (sessionInfo())</b></li><li><b>sensitivity analysis</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Using the reporting standards, write a &#x27;Methods outline&#x27; and a tick-box &#x27;reporting checklist&#x27; for your capstone project; check each item and save them, then go through the checklist again when you write the Results.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Why report R package versions and the random seed?</li><li>If a CLPN Methods section only says &#x27;estimated with LASSO&#x27;, what key information is missing?</li><li>What could a sensitivity analysis include (name at least 2)?</li></ol>
+ </div></details>
+</section><section class="module" id="M10" style="--c:#0f766e">
+ <header class="mhead"><div class="mnum">Module 10</div>
+  <h2>Capstone Project: A Complete CLPN Analysis</h2><p>Carry out a complete CLPN on your own, from the data to the written results. The default is the three-wave simulated data with a known true structure (4 loneliness items + 5 depression items, N = 800); if you can, you may use a public longitudinal dataset instead, after reading its license and citation requirements.</p>
+  <div class="mstats"><span>3 lessons</span><span>~9.0 hrs</span><span class="mprog" data-mod="M10"><i></i><b>0%</b></span></div>
+ </header>
+ <details class="lesson" id="L10-1">
+ <summary><label class="done"><input type="checkbox" data-lid="10.1" aria-label="Mark Lesson 10.1 complete"><span></span></label>
+  <span class="lid">10.1</span><span class="ltitle">Project Design, Data Preparation, and Analysis Plan</span>
+  <span class="meta">2 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 2 hr + exercises ~1 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L9-3">9.3</a></div></div>
+   <a class="enter" href="lessons/L10-1.html">Open 10.1</a></div>
+  <h4>Learning Objectives</h4><ol><li>Pose a clear, non-causally worded research question</li><li>Do the data cleaning, reverse scoring, and missing data and attrition analysis</li><li>Write a one-page analysis plan (a simple preregistration): nodes, λ rule, seed, stability checks, sensitivity analyses, including the required Wysocki et al. (2025) full procedure, and state in advance how you will interpret disagreement between the two analyses</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>research question</b></li><li><b>analysis plan</b></li><li><b>data cleaning</b></li><li><b>codebook</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Complete: research question + codebook + data cleaning script + one-page analysis plan. Only after the plan is final and dated do you start the main analysis.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Does your research question avoid the word &#x27;causes&#x27;?</li><li>Do any of your nodes have heavily overlapping content?</li><li>Did your analysis plan fix the λ rule before you saw the results?</li><li>Does your plan state the settings of the full procedure (conservative rule, equality tests, p &lt; .01) and how you will handle disagreement between the two analyses?</li></ol>
+ </div></details><details class="lesson" id="L10-2">
+ <summary><label class="done"><input type="checkbox" data-lid="10.2" aria-label="Mark Lesson 10.2 complete"><span></span></label>
+  <span class="lid">10.2</span><span class="ltitle">Complete Analysis: Estimation, Visualization, Centrality, and Stability</span>
+  <span class="meta">4 hr · 2 sessions</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 4 hr (2 sessions) + exercises ~2 hr 30 min</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L10-1">10.1</a></div></div>
+   <a class="enter" href="lessons/L10-2.html">Open 10.2</a></div>
+  <h4>Learning Objectives</h4><ol><li>In one Quarto project: descriptive statistics → CLPN estimation → plot → out/in-EI and bridge EI → bootstrap edge accuracy → CS-coefficients → at least one sensitivity analysis</li><li>With simulated data: compare the results with the true structure to judge how well the method works</li><li>Produce figures and tables ready for submission</li><li>Do the required sensitivity analysis: the Wysocki et al. (2025) full procedure (LASSO edge selection → unpenalized SEM re-estimation → tests of equality across time → pruning at p &lt; .01 → in/out-prediction), and compare it edge by edge with the main analysis</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>analysis pipeline</b></li><li><b>sensitivity analysis</b></li><li><b>figure &amp; table formatting conventions</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Hand in a Quarto project (code + output + figures and tables) that renders in one click. Minimum: 1 CLPN plot, 1 table of autoregressive and cross-lagged edges, 1 centrality plot, 1 bootstrap plot, 1 table of CS-coefficients, and 1 table comparing the main analysis with the full procedure edge by edge (R/L10-2b.R).</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Could someone given your folder reproduce all the results in one click?</li><li>Do your conclusions depend on unstable indices?</li><li>Did the sensitivity analyses change your main conclusions?</li><li>Are the strongest edges of the main analysis still kept in the full procedure? How will you write about the edges that are not?</li></ol>
+ </div></details><details class="lesson" id="L10-3">
+ <summary><label class="done"><input type="checkbox" data-lid="10.3" aria-label="Mark Lesson 10.3 complete"><span></span></label>
+  <span class="lid">10.3</span><span class="ltitle">Writing the Results and Presenting Them</span>
+  <span class="meta">3 hr</span></summary>
+ <div class="lbody">
+  <div class="lmeta"><div class="row"><div class="kv"><span class="k">Estimated Time</span>Reading 3 hr + exercises ~2 hr</div>
+   <div class="kv"><span class="k">Prerequisites</span><a class="chip" href="#L10-2">10.2</a></div></div>
+   <a class="enter" href="lessons/L10-3.html">Open 10.3</a></div>
+  <h4>Learning Objectives</h4><ol><li>Write an 800–1200-word &#x27;Methods (analysis) + Results&#x27; in APA style, reporting the main analysis and the full-procedure sensitivity analysis side by side</li><li>Write an honest discussion of limitations (within- vs between-person, causation, sample, measurement)</li><li>Explain your analysis clearly in 10 minutes and answer the questions readers or reviewers might raise</li></ol>
+  <h4>Core Concepts</h4><ul class="concepts"><li><b>results section</b></li><li><b>limitations</b></li><li><b>academic presentation</b></li><li><b>practice / clinical implications</b></li></ul>
+  
+  <h4>Hands-On Exercise</h4><p class="ex">Complete the final report + presentation slides; score yourself against the rubric dimensions, record a 10-minute talk (or give it to classmates or colleagues), and do one round of revision based on the problems you find.</p>
+  
+  <h4>Self-Check Questions</h4><ol><li>Can every number in your Results be found in the code output?</li><li>How would you explain your main findings to a social work colleague with no statistics background?</li><li>If you did the study again, what about the design would you change?</li></ol>
+ </div></details>
+</section>
+
+<section class="card" id="readings">
+ <h2>Readings</h2>
+ <p class="note"><b>About the Wysocki et al. CLPN papers:</b> the 2022 version is a PsyArXiv preprint titled <i>Cross-Lagged Network Models</i>, by Wysocki, van Bork, Cramer and Rhemtulla; the published version is the 2025 paper <i>Cross-lagged panel networks</i> (<i>advances.in/psychology</i>, with McCarthy added as a co-author). Cite the published version where you can. Note that the full procedure the published paper recommends is "merge redundant items → select edges with LASSO → re-estimate without a penalty in lavaan → in-/out-prediction"; the main line of this course (Lessons 7.1–7.4, M8, M10) is the simplified "LASSO-only" version common in applied papers. The full procedure is in Lesson 7.5 (<code>R/L7-5b.R</code>). In your own paper, state honestly which one you used.</p>
+ <h3>Core: CLPN Methodology and Applications</h3><ul class="refs"><li><div class="cite">Wysocki, A., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2022). <i>Cross-lagged network models</i> [Preprint]. PsyArXiv. <a href="https://osf.io/preprints/psyarxiv/vjr8z_v1" target="_blank" rel="noopener">osf.io/preprints/psyarxiv/vjr8z_v1</a></div><div class="rnote">The original preprint of the CLPN method (October 1, 2022); this is the paper usually cited as &#x27;Wysocki et al. (2022)&#x27;.</div></li><li><div class="cite">Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a></div><div class="rnote">The published version of the CLPN method paper (June 2025), revised from the 2022 PsyArXiv preprint &#x27;Cross-lagged network models&#x27;, with McCarthy added as a co-author. The main reference for Module 7; cite this version where you can.</div></li><li><div class="cite">Funkhouser, C. J., et al. (2021). Unique longitudinal relationships between symptoms of psychopathology in youth: A cross-lagged panel network analysis in the ABCD study. <i>Journal of Child Psychology and Psychiatry, 62</i>(2), 184–194. <a href="https://doi.org/10.1111/jcpp.13256" target="_blank" rel="noopener">doi.org/10.1111/jcpp.13256</a></div><div class="rnote">An example empirical application of CLPN (4,093 adolescents, including a T2→T3 replication); read closely in Lesson 9.1.</div></li></ul><h3>Network Psychometrics</h3><ul class="refs"><li><div class="cite">Borsboom, D., & Cramer, A. O. J. (2013). Network analysis: An integrative approach to the structure of psychopathology. <i>Annual Review of Clinical Psychology, 9</i>, 91–121. <a href="https://doi.org/10.1146/annurev-clinpsy-050212-185608" target="_blank" rel="noopener">doi.org/10.1146/annurev-clinpsy-050212-185608</a></div><div class="rnote">The founding review of the network view; reading for Lesson 0.2.</div></li><li><div class="cite">Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a></div><div class="rnote">The standard tutorial on bootnet and stability checks (CS-coefficient); Modules 6 and 8.</div></li><li><div class="cite">Epskamp, S., & Fried, E. I. (2018). A tutorial on regularized partial correlation networks. <i>Psychological Methods, 23</i>(4), 617–634. <a href="https://doi.org/10.1037/met0000167" target="_blank" rel="noopener">doi.org/10.1037/met0000167</a></div><div class="rnote">Tutorial on regularized partial correlation networks (EBICglasso); Lesson 6.3.</div></li><li><div class="cite">Foygel, R., & Drton, M. (2010). Extended Bayesian information criteria for Gaussian graphical models. <i>Advances in Neural Information Processing Systems, 23</i>, 604–612. <a href="https://proceedings.neurips.cc/paper/2010/hash/072b030ba126b2f4b2374f342be9ed44-Abstract.html" target="_blank" rel="noopener">proceedings.neurips.cc/paper/2010/hash/072b030ba126b2f4b2374f342be9ed44-Abstract.html</a></div><div class="rnote">The original paper on EBIC for Gaussian graphical models, where the 4γ|E| log p penalty comes from; Lesson 6.3.</div></li><li><div class="cite">Epskamp, S., Cramer, A. O. J., Waldorp, L. J., Schmittmann, V. D., & Borsboom, D. (2012). qgraph: Network visualizations of relationships in psychometric data. <i>Journal of Statistical Software, 48</i>(4), 1–18. <a href="https://doi.org/10.18637/jss.v048.i04" target="_blank" rel="noopener">doi.org/10.18637/jss.v048.i04</a></div><div class="rnote">Paper introducing the qgraph package.</div></li><li><div class="cite">Robinaugh, D. J., Millner, A. J., & McNally, R. J. (2016). Identifying highly influential nodes in the complicated grief network. <i>Journal of Abnormal Psychology, 125</i>(6), 747–757. <a href="https://doi.org/10.1037/abn0000181" target="_blank" rel="noopener">doi.org/10.1037/abn0000181</a></div><div class="rnote">Introduced the expected influence (EI) index; Lesson 6.5.</div></li><li><div class="cite">Jones, P. J., Ma, R., & McNally, R. J. (2021). Bridge centrality: A network approach to understanding comorbidity. <i>Multivariate Behavioral Research, 56</i>(2), 353–367. <a href="https://doi.org/10.1080/00273171.2019.1614898" target="_blank" rel="noopener">doi.org/10.1080/00273171.2019.1614898</a></div><div class="rnote">Bridge centrality and the networktools package; Lessons 6.5 and 7.4.</div></li><li><div class="cite">Fried, E. I., & Cramer, A. O. J. (2017). Moving forward: Challenges and directions for psychopathological network theory and methodology. <i>Perspectives on Psychological Science, 12</i>(6), 999–1020. <a href="https://doi.org/10.1177/1745691617705892" target="_blank" rel="noopener">doi.org/10.1177/1745691617705892</a></div><div class="rnote">Challenges to and criticisms of network methodology; Lesson 9.2.</div></li><li><div class="cite">Robinaugh, D. J., Hoekstra, R. H. A., Toner, E. R., & Borsboom, D. (2020). The network approach to psychopathology: A review of the literature 2008–2018 and an agenda for future research. <i>Psychological Medicine, 50</i>(3), 353–366. <a href="https://doi.org/10.1017/S0033291719003404" target="_blank" rel="noopener">doi.org/10.1017/S0033291719003404</a></div><div class="rnote">A review of ten years of literature; further reading.</div></li><li><div class="cite">Grygiel, P., Opozda-Suder, S., & Dolata, R. (2026). The longitudinal interplay between loneliness and depressive symptoms during late childhood: Cross-lagged panel network analyses. <i>European Journal of Investigation in Health, Psychology and Education, 16</i>(6), 78. <a href="https://doi.org/10.3390/ejihpe16060078" target="_blank" rel="noopener">doi.org/10.3390/ejihpe16060078</a></div><div class="rnote">An empirical CLPN study of loneliness and depressive symptoms (open access): the NLSY79 Child and Young Adult sample (NLSY79-CY), N = 4,333 children aged 10–12, two time points. In the Paper Reading Pack.</div></li><li><div class="cite">Fried, E. I., Papanikolaou, F., & Epskamp, S. (2022). Mental health and social contact during the COVID-19 pandemic: An ecological momentary assessment study. <i>Clinical Psychological Science, 10</i>(2), 340–354. <a href="https://doi.org/10.1177/21677026211017839" target="_blank" rel="noopener">doi.org/10.1177/21677026211017839</a></div><div class="rnote">Social contact and mental health in intensive longitudinal data (open access); in the Paper Reading Pack.</div></li><li><div class="cite">Burger, J., Isvoranu, A.-M., Lunansky, G., Haslbeck, J. M. B., Epskamp, S., Hoekstra, R. H. A., Fried, E. I., Borsboom, D., & Blanken, T. F. (2023). Reporting standards for psychological network analyses in cross-sectional data. <i>Psychological Methods, 28</i>(4), 806–824. <a href="https://doi.org/10.1037/met0000471" target="_blank" rel="noopener">doi.org/10.1037/met0000471</a></div><div class="rnote">Reporting standards for network analysis; Lesson 9.3.</div></li><li><div class="cite">Isvoranu, A.-M., Epskamp, S., Waldorp, L. J., & Borsboom, D. (Eds.). (2022). <i>Network psychometrics with R: A guide for behavioral and social scientists</i>. Routledge. <a href="https://doi.org/10.4324/9781003111238" target="_blank" rel="noopener">doi.org/10.4324/9781003111238</a></div><div class="rnote">A full textbook; reference for Modules 6–8 (its companion website has exercises and answers).</div></li></ul><h3>Cross-Lagged Panel Models (CLPM / RI-CLPM)</h3><ul class="refs"><li><div class="cite">Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a></div><div class="rnote">Introduced the RI-CLPM; required reading for Lesson 5.3.</div></li><li><div class="cite">Mulder, J. D., & Hamaker, E. L. (2021). Three extensions of the random intercept cross-lagged panel model. <i>Structural Equation Modeling: A Multidisciplinary Journal, 28</i>(4), 638–648. <a href="https://doi.org/10.1080/10705511.2020.1784738" target="_blank" rel="noopener">doi.org/10.1080/10705511.2020.1784738</a></div><div class="rnote">Website with lavaan / Mplus example code: jeroendmulder.github.io/RI-CLPM</div></li><li><div class="cite">Lucas, R. E. (2023). Why the cross-lagged panel model is almost never the right choice. <i>Advances in Methods and Practices in Psychological Science</i>. <a href="https://doi.org/10.1177/25152459231158378" target="_blank" rel="noopener">doi.org/10.1177/25152459231158378</a></div><div class="rnote">Further critique of the CLPM; Lesson 5.4.</div></li><li><div class="cite">Rosseel, Y. (2012). lavaan: An R package for structural equation modeling. <i>Journal of Statistical Software, 48</i>(2), 1–36. <a href="https://doi.org/10.18637/jss.v048.i02" target="_blank" rel="noopener">doi.org/10.18637/jss.v048.i02</a></div><div class="rnote">Paper introducing the lavaan package; Lesson 5.2.</div></li></ul><h3>Regularization and R</h3><ul class="refs"><li><div class="cite">Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. <i>Journal of the Royal Statistical Society: Series B (Methodological), 58</i>(1), 267–288. <a href="https://doi.org/10.1111/j.2517-6161.1996.tb02080.x" target="_blank" rel="noopener">doi.org/10.1111/j.2517-6161.1996.tb02080.x</a></div><div class="rnote">The original LASSO paper (background only; the math is demanding).</div></li><li><div class="cite">Friedman, J., Hastie, T., & Tibshirani, R. (2010). Regularization paths for generalized linear models via coordinate descent. <i>Journal of Statistical Software, 33</i>(1), 1–22. <a href="https://doi.org/10.18637/jss.v033.i01" target="_blank" rel="noopener">doi.org/10.18637/jss.v033.i01</a></div><div class="rnote">Paper introducing the glmnet package; Lessons 3.5 and 7.2.</div></li><li><div class="cite">Wickham, H., Çetinkaya-Rundel, M., & Grolemund, G. (2023). <i>R for data science</i> (2nd ed.). O'Reilly. (Free online edition) <a href="https://r4ds.hadley.nz/" target="_blank" rel="noopener">r4ds.hadley.nz/</a></div><div class="rnote">The main self-study textbook for Module 2.</div></li></ul><h3>Foundational Statistics and Missing Data</h3><ul class="refs"><li><div class="cite">Field, A., Miles, J., & Field, Z. (2012). <i>Discovering statistics using R</i>. SAGE. <a href="https://www.sagepub.com/en-us/nam/discovering-statistics-using-r/book236067" target="_blank" rel="noopener">www.sagepub.com/en-us/nam/discovering-statistics-using-r/book236067</a></div><div class="rnote">An introductory textbook on statistics and R, to go with Modules 1–3. Published by SAGE in 2012; authors Andy Field, Jeremy Miles and Zoë Field. The book has no DOI; the publisher&#x27;s catalog page is the reference.</div></li><li><div class="cite">Enders, C. K. (2022). <i>Applied missing data analysis</i> (2nd ed.). The Guilford Press. <a href="https://www.guilford.com/books/Applied-Missing-Data-Analysis/Craig-Enders/9781462549863" target="_blank" rel="noopener">www.guilford.com/books/Applied-Missing-Data-Analysis/Craig-Enders/9781462549863</a></div><div class="rnote">A missing data textbook; further reading for Lesson 4.3. The current edition is the 2nd (2022, hardcover ISBN 978-1-4625-4986-3, 546 pp.); the 1st edition appeared in 2010.</div></li></ul><h3>Measurement Invariance, Sample Size Planning, and Group Comparisons (Optional Advanced)</h3><ul class="refs"><li><div class="cite">Putnick, D. L., & Bornstein, M. H. (2016). Measurement invariance conventions and reporting: The state of the art and future directions for psychological research. <i>Developmental Review, 41</i>, 71–90. <a href="https://doi.org/10.1016/j.dr.2016.06.004" target="_blank" rel="noopener">doi.org/10.1016/j.dr.2016.06.004</a></div><div class="rnote">A review of measurement invariance: what the configural, metric and scalar levels mean, and which numbers to report. Lesson 7.6.</div></li><li><div class="cite">Cheung, G. W., & Rensvold, R. B. (2002). Evaluating goodness-of-fit indexes for testing measurement invariance. <i>Structural Equation Modeling, 9</i>(2), 233–255. <a href="https://doi.org/10.1207/S15328007SEM0902_5" target="_blank" rel="noopener">doi.org/10.1207/S15328007SEM0902_5</a></div><div class="rnote">The source of the rule of thumb ΔCFI ≥ −0.01. Lesson 7.6.</div></li><li><div class="cite">Chen, F. F. (2007). Sensitivity of goodness of fit indexes to lack of measurement invariance. <i>Structural Equation Modeling, 14</i>(3), 464–504. <a href="https://doi.org/10.1080/10705510701301834" target="_blank" rel="noopener">doi.org/10.1080/10705510701301834</a></div><div class="rnote">A simulation study comparing fit indices, which proposes looking at ΔCFI together with ΔRMSEA ≤ 0.015. Lesson 7.6.</div></li><li><div class="cite">Constantin, M. A., Schuurman, N. K., & Vermunt, J. K. (2026). A general Monte Carlo method for sample size analysis in the context of network models. <i>Psychological Methods, 31</i>(3), 385–405. <a href="https://doi.org/10.1037/met0000555" target="_blank" rel="noopener">doi.org/10.1037/met0000555</a></div><div class="rnote">A general method for sample size planning in network models: assume a true network, then simulate to find the N needed. The simulation in Lesson 7.6 is a simplified version.</div></li><li><div class="cite">van Borkulo, C. D., van Bork, R., Boschloo, L., Kossakowski, J. J., Tio, P., Schoevers, R. A., Borsboom, D., & Waldorp, L. J. (2023). Comparing network structures on three aspects: A permutation test. <i>Psychological Methods, 28</i>(6), 1273–1285. <a href="https://doi.org/10.1037/met0000476" target="_blank" rel="noopener">doi.org/10.1037/met0000476</a></div><div class="rnote">The Network Comparison Test (NCT): three tests, M (network structure), S (global strength) and single edges. The hand-written permutation test in Lesson 7.7 follows its approach.</div></li><li><div class="cite">Ackeret, N., Röthlin, P., Horvath, S., & Allemand, M. (2023). <i>Positive mental health among sports coaches: A six-month longitudinal study</i> [Data set, version 3]. Dryad. <a href="https://doi.org/10.5061/dryad.8931zcrws" target="_blank" rel="noopener">doi.org/10.5061/dryad.8931zcrws</a></div><div class="rnote">The real data (CC0) used in the Lesson 7.6 exercises, included as data/coaches_mhc_raw.csv; known issues are listed in the data dictionary.</div></li></ul>
+</section>
+
+<section class="card" id="glossary">
+ <h2>Glossary</h2>
+ <p class="muted">Collected automatically from the "Core Concepts" of every lesson, each linked to the lesson that teaches it (it may have appeared earlier as a preview). You can also use the search box at the top of the page.</p>
+ <div class="tablewrap"><table><thead><tr><th>Term</th><th>Taught in</th></tr></thead><tbody><tr><td>longitudinal study</td><td><a href="#L0-1">0.1</a></td></tr><tr><td>network analysis</td><td><a href="#L0-1">0.1</a></td></tr><tr><td>reproducibility</td><td><a href="#L0-1">0.1</a></td></tr><tr><td>study log</td><td><a href="#L0-1">0.1</a></td></tr><tr><td>latent variable model</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>common cause</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>network perspective</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>symptom</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>cross-lagged</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>autoregressive</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>prediction</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>causal inference</td><td><a href="#L0-2">0.2</a></td></tr><tr><td>variable</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>level of measurement</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>nominal / ordinal</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>interval / ratio</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>Likert scale</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>construct</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>item</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>reliability</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>validity</td><td><a href="#L1-1">1.1</a></td></tr><tr><td>distribution</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>mean</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>median</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>variance</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>standard deviation, SD</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>normal distribution</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>skewness</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>ceiling / floor effect</td><td><a href="#L1-2">1.2</a></td></tr><tr><td>standardization</td><td><a href="#L1-3">1.3</a></td></tr><tr><td>z-score</td><td><a href="#L1-3">1.3</a></td></tr><tr><td>scale / metric</td><td><a href="#L1-3">1.3</a></td></tr><tr><td>scatter plot</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>covariance</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>correlation coefficient</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>Pearson&#x27;s r</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>Spearman&#x27;s ρ</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>polychoric correlation</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>correlation matrix</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>confounder</td><td><a href="#L1-4">1.4</a></td></tr><tr><td>population</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>sample</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>parameter</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>statistic</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>sampling distribution</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>standard error, SE</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>confidence interval, CI</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>sample size</td><td><a href="#L1-5">1.5</a></td></tr><tr><td>null hypothesis, H₀</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>alternative hypothesis</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>p-value</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>significance level, α</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>Type I / Type II error</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>statistical power</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>effect size</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>multiple comparisons</td><td><a href="#L1-6">1.6</a></td></tr><tr><td>R</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>RStudio / Posit</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>console</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>script</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>object</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>assignment, &lt;-</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>function</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>error message</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>minimal reproducible example</td><td><a href="#L2-1">2.1</a></td></tr><tr><td>vector</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>indexing, [ ]</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>data type</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>factor</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>logical, TRUE/FALSE</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>NA</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>user-defined function</td><td><a href="#L2-2">2.2</a></td></tr><tr><td>data frame</td><td><a href="#L2-3">2.3</a></td></tr><tr><td>tibble</td><td><a href="#L2-3">2.3</a></td></tr><tr><td>tidyverse</td><td><a href="#L2-3">2.3</a></td></tr><tr><td>pipe, |&gt;</td><td><a href="#L2-3">2.3</a></td></tr><tr><td>recoding</td><td><a href="#L2-3">2.3</a></td></tr><tr><td>reverse scoring</td><td><a href="#L2-3">2.3</a></td></tr><tr><td>package</td><td><a href="#L2-4">2.4</a></td></tr><tr><td>CRAN</td><td><a href="#L2-4">2.4</a></td></tr><tr><td>working directory</td><td><a href="#L2-4">2.4</a></td></tr><tr><td>RStudio Project</td><td><a href="#L2-4">2.4</a></td></tr><tr><td>relative path</td><td><a href="#L2-4">2.4</a></td></tr><tr><td>encoding, UTF-8</td><td><a href="#L2-4">2.4</a></td></tr><tr><td>descriptive statistics</td><td><a href="#L2-5">2.5</a></td></tr><tr><td>model summary</td><td><a href="#L2-5">2.5</a></td></tr><tr><td>pairwise deletion</td><td><a href="#L2-5">2.5</a></td></tr><tr><td>grammar of graphics</td><td><a href="#L2-6">2.6</a></td></tr><tr><td>aesthetic mapping, aes()</td><td><a href="#L2-6">2.6</a></td></tr><tr><td>geom</td><td><a href="#L2-6">2.6</a></td></tr><tr><td>reproducible report</td><td><a href="#L2-6">2.6</a></td></tr><tr><td>Quarto / R Markdown</td><td><a href="#L2-6">2.6</a></td></tr><tr><td>regression</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>predictor</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>outcome</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>intercept</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>slope / coefficient</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>residual</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>ordinary least squares, OLS</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>R²</td><td><a href="#L3-1">3.1</a></td></tr><tr><td>multiple regression</td><td><a href="#L3-2">3.2</a></td></tr><tr><td>partial regression coefficient</td><td><a href="#L3-2">3.2</a></td></tr><tr><td>covariate / control variable</td><td><a href="#L3-2">3.2</a></td></tr><tr><td>multicollinearity</td><td><a href="#L3-2">3.2</a></td></tr><tr><td>interaction</td><td><a href="#L3-2">3.2</a></td></tr><tr><td>standardized coefficient, β</td><td><a href="#L3-3">3.3</a></td></tr><tr><td>unstandardized coefficient, b</td><td><a href="#L3-3">3.3</a></td></tr><tr><td>APA style</td><td><a href="#L3-3">3.3</a></td></tr><tr><td>logistic regression</td><td><a href="#L3-4">3.4</a></td></tr><tr><td>probability</td><td><a href="#L3-4">3.4</a></td></tr><tr><td>odds</td><td><a href="#L3-4">3.4</a></td></tr><tr><td>log-odds / logit</td><td><a href="#L3-4">3.4</a></td></tr><tr><td>odds ratio, OR</td><td><a href="#L3-4">3.4</a></td></tr><tr><td>generalized linear model, GLM</td><td><a href="#L3-4">3.4</a></td></tr><tr><td>overfitting</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>bias–variance trade-off</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>regularization</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>ridge regression</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>LASSO</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>elastic net</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>tuning parameter, lambda</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>cross-validation, CV</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>sparsity</td><td><a href="#L3-5">3.5</a></td></tr><tr><td>cross-sectional data</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>panel data</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>longitudinal / follow-up study</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>wave</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>time lag</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>between-person</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>within-person</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>measurement invariance</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>intensive longitudinal data, ESM/EMA</td><td><a href="#L4-1">4.1</a></td></tr><tr><td>wide format</td><td><a href="#L4-2">4.2</a></td></tr><tr><td>long format</td><td><a href="#L4-2">4.2</a></td></tr><tr><td>reshaping</td><td><a href="#L4-2">4.2</a></td></tr><tr><td>participant ID</td><td><a href="#L4-2">4.2</a></td></tr><tr><td>naming convention, e.g. sleep_t1</td><td><a href="#L4-2">4.2</a></td></tr><tr><td>missing data</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>missing completely at random, MCAR</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>missing at random, MAR</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>missing not at random, MNAR</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>attrition</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>listwise deletion</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>full information maximum likelihood, FIML</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>multiple imputation</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>attrition analysis</td><td><a href="#L4-3">4.3</a></td></tr><tr><td>cross-lagged panel model, CLPM</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>autoregressive path</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>cross-lagged path</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>path diagram</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>structural equation modeling, SEM</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>contemporaneous / within-wave correlation</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>residual covariance</td><td><a href="#L5-1">5.1</a></td></tr><tr><td>lavaan</td><td><a href="#L5-2">5.2</a></td></tr><tr><td>model fit</td><td><a href="#L5-2">5.2</a></td></tr><tr><td>CFI / TLI</td><td><a href="#L5-2">5.2</a></td></tr><tr><td>RMSEA</td><td><a href="#L5-2">5.2</a></td></tr><tr><td>SRMR</td><td><a href="#L5-2">5.2</a></td></tr><tr><td>equality constraint</td><td><a href="#L5-2">5.2</a></td></tr><tr><td>random-intercept CLPM, RI-CLPM</td><td><a href="#L5-3">5.3</a></td></tr><tr><td>random intercept</td><td><a href="#L5-3">5.3</a></td></tr><tr><td>trait-like stability</td><td><a href="#L5-3">5.3</a></td></tr><tr><td>within-person effect</td><td><a href="#L5-3">5.3</a></td></tr><tr><td>between-person effect</td><td><a href="#L5-3">5.3</a></td></tr><tr><td>centering</td><td><a href="#L5-3">5.3</a></td></tr><tr><td>temporal precedence</td><td><a href="#L5-4">5.4</a></td></tr><tr><td>Granger causality</td><td><a href="#L5-4">5.4</a></td></tr><tr><td>unmeasured confounding</td><td><a href="#L5-4">5.4</a></td></tr><tr><td>measurement error</td><td><a href="#L5-4">5.4</a></td></tr><tr><td>reverse causation</td><td><a href="#L5-4">5.4</a></td></tr><tr><td>node</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>edge</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>edge weight</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>directed / undirected</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>adjacency matrix</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>weights matrix</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>density</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>community / cluster</td><td><a href="#L6-1">6.1</a></td></tr><tr><td>partial correlation</td><td><a href="#L6-2">6.2</a></td></tr><tr><td>conditional independence</td><td><a href="#L6-2">6.2</a></td></tr><tr><td>Gaussian graphical model (GGM)</td><td><a href="#L6-2">6.2</a></td></tr><tr><td>Markov random field</td><td><a href="#L6-2">6.2</a></td></tr><tr><td>precision matrix</td><td><a href="#L6-2">6.2</a></td></tr><tr><td>indirect association</td><td><a href="#L6-2">6.2</a></td></tr><tr><td>graphical lasso (glasso)</td><td><a href="#L6-3">6.3</a></td></tr><tr><td>extended Bayesian information criterion (EBIC)</td><td><a href="#L6-3">6.3</a></td></tr><tr><td>hyperparameter gamma (γ)</td><td><a href="#L6-3">6.3</a></td></tr><tr><td>sparse network</td><td><a href="#L6-3">6.3</a></td></tr><tr><td>false positive edge</td><td><a href="#L6-3">6.3</a></td></tr><tr><td>unregularized estimation (e.g., ggmModSelect)</td><td><a href="#L6-3">6.3</a></td></tr><tr><td>estimateNetwork()</td><td><a href="#L6-4">6.4</a></td></tr><tr><td>layout (e.g., spring / Fruchterman–Reingold)</td><td><a href="#L6-4">6.4</a></td></tr><tr><td>grouping / node coloring (groups)</td><td><a href="#L6-4">6.4</a></td></tr><tr><td>maximum edge weight (maximum)</td><td><a href="#L6-4">6.4</a></td></tr><tr><td>legend</td><td><a href="#L6-4">6.4</a></td></tr><tr><td>centrality</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>strength</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>expected influence (EI)</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>betweenness centrality</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>closeness centrality</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>bridge centrality</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>bridge expected influence</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>comorbidity</td><td><a href="#L6-5">6.5</a></td></tr><tr><td>cross-lagged panel network (CLPN)</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>directed edge</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>autoregressive edge</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>cross-lagged edge</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>nodewise regression</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>time point t → t+1</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>cross-construct edge</td><td><a href="#L7-1">7.1</a></td></tr><tr><td>for loop</td><td><a href="#L7-2">7.2</a></td></tr><tr><td>random seed</td><td><a href="#L7-2">7.2</a></td></tr><tr><td>coefficient matrix</td><td><a href="#L7-2">7.2</a></td></tr><tr><td>lambda.min / lambda.1se</td><td><a href="#L7-2">7.2</a></td></tr><tr><td>covariate</td><td><a href="#L7-2">7.2</a></td></tr><tr><td>analysis decision log</td><td><a href="#L7-2">7.2</a></td></tr><tr><td>directed network plot</td><td><a href="#L7-3">7.3</a></td></tr><tr><td>self-loop</td><td><a href="#L7-3">7.3</a></td></tr><tr><td>display threshold</td><td><a href="#L7-3">7.3</a></td></tr><tr><td>figure caption</td><td><a href="#L7-3">7.3</a></td></tr><tr><td>edge list</td><td><a href="#L7-3">7.3</a></td></tr><tr><td>out-expected influence (out-EI)</td><td><a href="#L7-4">7.4</a></td></tr><tr><td>in-expected influence (in-EI)</td><td><a href="#L7-4">7.4</a></td></tr><tr><td>out-strength / in-strength</td><td><a href="#L7-4">7.4</a></td></tr><tr><td>bridge out-EI</td><td><a href="#L7-4">7.4</a></td></tr><tr><td>driver node (caution advised)</td><td><a href="#L7-4">7.4</a></td></tr><tr><td>multi-wave CLPN</td><td><a href="#L7-5">7.5</a></td></tr><tr><td>network replication</td><td><a href="#L7-5">7.5</a></td></tr><tr><td>panel graphical VAR (panel GVAR)</td><td><a href="#L7-5">7.5</a></td></tr><tr><td>psychonetrics</td><td><a href="#L7-5">7.5</a></td></tr><tr><td>penalty.factor</td><td><a href="#L7-5">7.5</a></td></tr><tr><td>sample size planning</td><td><a href="#L7-5">7.5</a></td></tr><tr><td>configural invariance</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>metric / weak invariance</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>scalar / strong invariance</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>partial invariance</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>factor loading</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>item intercept</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>multi-group CFA</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>score test / Lagrange multiplier test</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>ΔCFI</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>Monte Carlo simulation</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>false positive rate</td><td><a href="#L7-6">7.6</a></td></tr><tr><td>permutation test</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>null distribution</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>group label</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>network structure invariance test (M)</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>global strength invariance test (S)</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>edge invariance test</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>Holm correction</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>pre-specified hypothesis</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>NetworkComparisonTest</td><td><a href="#L7-7">7.7</a></td></tr><tr><td>bootstrap</td><td><a href="#L8-1">8.1</a></td></tr><tr><td>resampling with replacement</td><td><a href="#L8-1">8.1</a></td></tr><tr><td>nonparametric bootstrap</td><td><a href="#L8-1">8.1</a></td></tr><tr><td>percentile interval</td><td><a href="#L8-1">8.1</a></td></tr><tr><td>sampling variability</td><td><a href="#L8-1">8.1</a></td></tr><tr><td>edge-weight accuracy</td><td><a href="#L8-2">8.2</a></td></tr><tr><td>bootstrap interval</td><td><a href="#L8-2">8.2</a></td></tr><tr><td>edge-weight difference test</td><td><a href="#L8-2">8.2</a></td></tr><tr><td>custom estimation function</td><td><a href="#L8-2">8.2</a></td></tr><tr><td>parallel computing (nCores)</td><td><a href="#L8-2">8.2</a></td></tr><tr><td>case-dropping bootstrap</td><td><a href="#L8-3">8.3</a></td></tr><tr><td>correlation stability coefficient (CS-coefficient)</td><td><a href="#L8-3">8.3</a></td></tr><tr><td>centrality stability</td><td><a href="#L8-3">8.3</a></td></tr><tr><td>rank-order consistency</td><td><a href="#L8-3">8.3</a></td></tr><tr><td>structured reading</td><td><a href="#L9-1">9.1</a></td></tr><tr><td>method section</td><td><a href="#L9-1">9.1</a></td></tr><tr><td>supplementary materials</td><td><a href="#L9-1">9.1</a></td></tr><tr><td>open data and code</td><td><a href="#L9-1">9.1</a></td></tr><tr><td>topological overlap / item redundancy</td><td><a href="#L9-2">9.2</a></td></tr><tr><td>node selection</td><td><a href="#L9-2">9.2</a></td></tr><tr><td>replicability</td><td><a href="#L9-2">9.2</a></td></tr><tr><td>overinterpretation</td><td><a href="#L9-2">9.2</a></td></tr><tr><td>researcher degrees of freedom</td><td><a href="#L9-2">9.2</a></td></tr><tr><td>reporting standards</td><td><a href="#L9-3">9.3</a></td></tr><tr><td>preregistration</td><td><a href="#L9-3">9.3</a></td></tr><tr><td>open science</td><td><a href="#L9-3">9.3</a></td></tr><tr><td>software versions (sessionInfo())</td><td><a href="#L9-3">9.3</a></td></tr><tr><td>sensitivity analysis</td><td><a href="#L9-3">9.3</a></td></tr><tr><td>research question</td><td><a href="#L10-1">10.1</a></td></tr><tr><td>analysis plan</td><td><a href="#L10-1">10.1</a></td></tr><tr><td>data cleaning</td><td><a href="#L10-1">10.1</a></td></tr><tr><td>codebook</td><td><a href="#L10-1">10.1</a></td></tr><tr><td>analysis pipeline</td><td><a href="#L10-2">10.2</a></td></tr><tr><td>figure &amp; table formatting conventions</td><td><a href="#L10-2">10.2</a></td></tr><tr><td>results section</td><td><a href="#L10-3">10.3</a></td></tr><tr><td>limitations</td><td><a href="#L10-3">10.3</a></td></tr><tr><td>academic presentation</td><td><a href="#L10-3">10.3</a></td></tr><tr><td>practice / clinical implications</td><td><a href="#L10-3">10.3</a></td></tr></tbody></table></div>
+</section>
+
+<section class="card" id="setup">
+ <h2>Software and R Packages</h2>
+ <div class="tablewrap"><table><thead><tr><th>Tool / package</th><th>Used for</th><th>First used</th></tr></thead><tbody>
+  <tr><td>R + RStudio (Posit)</td><td>Statistical computing environment and editor (both free)</td><td>2.1</td></tr>
+  <tr><td>tidyverse (dplyr, tidyr, ggplot2, readr)</td><td>Data manipulation, reshaping, plotting</td><td>2.3</td></tr>
+  <tr><td>readxl, haven</td><td>Reading Excel and SPSS files</td><td>2.4</td></tr>
+  <tr><td>psych</td><td>Descriptive statistics, correlations</td><td>2.5</td></tr>
+  <tr><td>Quarto / rmarkdown</td><td>Reproducible reports</td><td>2.6</td></tr>
+  <tr><td>mice</td><td>Multiple imputation</td><td>4.3</td></tr>
+  <tr><td>lavaan</td><td>CLPM / RI-CLPM (structural equation modeling)</td><td>5.2</td></tr>
+  <tr><td>glmnet</td><td>LASSO regression (the core of CLPN estimation)</td><td>3.5 / 7.2</td></tr>
+  <tr><td>qgraph</td><td>Network visualization and centrality</td><td>6.1</td></tr>
+  <tr><td>bootnet</td><td>Network estimation and bootstrap stability checks</td><td>6.4 / 8.2</td></tr>
+  <tr><td>networktools</td><td>Bridge centrality, expected influence</td><td>6.5</td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.88rem">The "R Code Preview" for each lesson is only a few lines for illustration; the complete, runnable code is in the <code>R/</code> folder (one script per lesson, all actually run on R 4.5, with output in <code>R/output/</code>).</p>
+</section>
+<p class="copy" style="text-align:center;margin-top:28px">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main>
+</div>
+<script>
+(function(){
+ const KEY="clpn-syllabus-progress-v1", TKEY="clpn-syllabus-theme";
+ const MODS={"M0": ["0.1", "0.2"], "M1": ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6"], "M2": ["2.1", "2.2", "2.3", "2.4", "2.5", "2.6"], "M3": ["3.1", "3.2", "3.3", "3.4", "3.5"], "M4": ["4.1", "4.2", "4.3"], "M5": ["5.1", "5.2", "5.3", "5.4"], "M6": ["6.1", "6.2", "6.3", "6.4", "6.5"], "M7": ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7"], "M8": ["8.1", "8.2", "8.3"], "M9": ["9.1", "9.2", "9.3"], "M10": ["10.1", "10.2", "10.3"]}, TOTAL=47;
+ let st={}; try{st=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){st={}}
+ const boxes=[...document.querySelectorAll('input[type=checkbox][data-lid]')];
+ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+ const aid=id=>'L'+id.replace('.','-');
+ function render(){
+  let n=0;
+  boxes.forEach(b=>{const id=b.dataset.lid,on=!!st[id];b.checked=on;if(on)n++;
+   document.getElementById(aid(id)).classList.toggle('isdone',on);
+   const a=document.querySelector('a[data-nav="'+id+'"]'); if(a)a.classList.toggle('done',on);
+   b.parentElement.title=on?('Completed on '+st[id]):'Mark complete';});
+  document.getElementById('pText').textContent=n+' / '+TOTAL;
+  document.getElementById('pBar').style.width=(100*n/TOTAL)+'%';
+  for(const m in MODS){const ids=MODS[m],d=ids.filter(i=>st[i]).length,p=Math.round(100*d/ids.length);
+   const el=document.querySelector('.mprog[data-mod="'+m+'"]'); if(el){el.querySelector('i').style.setProperty('--p',p+'%');el.querySelector('b').textContent=p+'%';}}
+ }
+ boxes.forEach(b=>{b.addEventListener('click',e=>e.stopPropagation());
+  b.addEventListener('change',()=>{if(b.checked)st[b.dataset.lid]=new Date().toISOString().slice(0,10);else delete st[b.dataset.lid];save();render();});});
+ document.querySelectorAll('label.done').forEach(l=>l.addEventListener('click',e=>e.stopPropagation()));
+ document.getElementById('reset').onclick=()=>{if(confirm('Clear all your learning progress?')){st={};save();render();}};
+ const L=[...document.querySelectorAll('details.lesson')];
+ document.getElementById('expand').onclick=()=>L.forEach(d=>d.open=true);
+ document.getElementById('collapse').onclick=()=>L.forEach(d=>d.open=false);
+ const root=document.documentElement, saved=localStorage.getItem(TKEY);
+ if(saved)root.dataset.theme=saved; else if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)root.dataset.theme='dark';
+ const themeBtn=document.getElementById('theme');
+ function paintTheme(){const dark=root.dataset.theme==='dark';themeBtn.textContent=dark?'Light':'Dark';themeBtn.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');}
+ themeBtn.onclick=()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem(TKEY,root.dataset.theme)}catch(e){}paintTheme();};
+ paintTheme();
+ function openHash(){const h=decodeURIComponent(location.hash.slice(1));const el=h&&document.getElementById(h);if(el&&el.tagName==='DETAILS')el.open=true;}
+ window.addEventListener('hashchange',openHash); openHash();
+ const llmBtn=document.getElementById('llmCopy'), llmCode=document.getElementById('llmPrompt');
+ if(llmBtn&&llmCode){
+  const text='Read '+new URL('llm.md', location.href).href;
+  llmCode.textContent=text;
+  llmBtn.onclick=()=>{const done=()=>{llmBtn.textContent='Copied';setTimeout(()=>{llmBtn.textContent='Copy prompt';},1500);};
+   if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(text).then(done,()=>fallbackCopy(text,done));
+   else fallbackCopy(text,done);};
+  function fallbackCopy(t,done){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}ta.remove();done();}
+ }
+ const q=document.getElementById('q');
+ q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();
+  L.forEach(d=>{const hit=!v||d.textContent.toLowerCase().includes(v);d.classList.toggle('hidden',!hit);if(v)d.open=hit;});
+  document.querySelectorAll('section.module').forEach(s=>s.classList.toggle('hidden',!!v&&!s.querySelector('details.lesson:not(.hidden)')));
+  document.querySelectorAll('a[data-nav]').forEach(a=>a.parentElement.classList.toggle('hidden',document.getElementById(aid(a.dataset.nav)).classList.contains('hidden')));
+ });
+ const side=document.getElementById('side');
+ document.getElementById('menuBtn').onclick=()=>side.classList.toggle('open');
+ side.addEventListener('click',e=>{if(e.target.closest('a')&&innerWidth<=900)side.classList.remove('open')});
+ const navA=[...document.querySelectorAll('aside nav a[href^="#"]')];
+ if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)navA.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+en.target.id));}),{rootMargin:'-10% 0px -80% 0px'});
+  document.querySelectorAll('details.lesson, section.card').forEach(s=>io.observe(s));
+ }
+ render();
+})();
+
+</script>
+</body>
+</html>

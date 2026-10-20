@@ -1,0 +1,39 @@
+== Software ==
+ R version 4.6.1 (2026-06-24) 
+  glmnet 5.1
+  qgraph 1.10.1
+  bootnet 1.9.1
+  networktools 1.6.0
+  lavaan 0.7-3
+  psych 2.6.9
+  tidyverse 2.0.0
+
+== Essential Reporting Elements for CLPN Method Sections (Checklist) ==
+ [ ] Data: Sample size, number of waves, time lags, item wording, and scoring
+ [ ] Missing data & attrition handling (listwise deletion / multiple imputation / FIML)
+ [ ] Standardization: All items z-standardized prior to estimation
+ [ ] Estimation: Nodewise LASSO regression of each T2 item on all T1 items (glmnet, alpha = 1)
+ [ ] λ selection: 10-fold cross-validation lambda.min (or lambda.1se / EBIC, with gamma = ?)
+ [ ] Random seed: set.seed(2026)
+ [ ] Covariates and penalty specification (penalty.factor)
+ [ ] Centrality: out-EI / in-EI (excluding autoregressive edges), community definitions for bridge EI
+ [ ] Stability: Nonparametric bootstrap (number of replications), case-dropping CS-coefficient
+ [ ] Sensitivity analyses: λ tuning rules, random seeds, item redundancy trimming, T2→T3 replication
+ [ ] Software versions (see above) and code/data sharing repository links (e.g., OSF)
+
+== sessionInfo() (first 15 lines; full 42 lines in R/output/sessionInfo_full.txt) ==
+R version 4.6.1 (2026-06-24)
+Platform: aarch64-apple-darwin24.6.0
+Running under: macOS Sequoia 15.8.1
+
+(Local paths, locale, and timezone omitted)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] psych_2.6.9        networktools_1.6.0 bootnet_1.9.1      lavaan_0.7-3       glmnet_5.1        
+ [6] Matrix_1.7-5       haven_2.5.5        lubridate_1.9.5    forcats_1.0.1      stringr_1.6.0     
+[11] dplyr_1.2.1        purrr_1.2.2        readr_2.2.0        tidyr_1.3.2        tibble_3.3.1      
+[16] ggplot2_4.0.3      tidyverse_2.0.0    qgraph_1.10.1     
+

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.4 Installing Packages, Importing Data, and Project Management · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-4.md" title="Plain text">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "Course Overview: Why Study CLPN", "short": "Course Overview", "intro": "A map of the whole course: what questions CLPN tries to answer, which problems in social work and psychology research it addresses, and how, over the next 16 weeks, you will work step by step toward completing an analysis on your own.", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "Motivation and big-picture roadmap: know where you are going and why it matters."}, {"id": "M1", "title": "Statistics Foundations", "short": "Statistics Foundations", "intro": "Build statistical intuition from scratch. The math uses only basic calculus ideas you already know (sums, functions, an intuition for derivatives); the focus is on 'what is this number telling us?'", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "Statistical language: mean, variance, correlation, standard error, p-value—the prerequisites for reading every number in CLPN output."}, {"id": "M2", "title": "R and RStudio: From Scratch", "short": "R and RStudio", "intro": "An introduction to programming for complete beginners. You study it side by side with Module 1 (Statistics), alternating in Weeks 2–5 (see 'Recommended Pacing'): as soon as you learn a statistical idea, you do it in R. Module 3 (Regression) comes after.", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R skills: from zero to writing CLPN estimation code independently."}, {"id": "M3", "title": "Regression Analysis", "short": "Regression Analysis", "intro": "Regression is the 'engine' of CLPN: at heart, a CLPN runs one (regularized) regression for each variable at time point 2. This module goes from a single straight line to LASSO. Study it after Module 1 (Statistics) and Module 2 (R).", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "Regression & LASSO: the engine of CLPN—each T2 node is a regularized regression."}, {"id": "M4", "title": "Longitudinal and Panel Data", "short": "Longitudinal and Panel Data", "intro": "A CLPN needs 'the same people, measured at several time points, with the same items.' This module explains how such data are structured and prepared, and the biggest headache: missing data and dropout.", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "Longitudinal data: how T1/T2 panel data are collected, reshaped, and checked for missingness."}, {"id": "M5", "title": "Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM", "short": "Traditional Cross-Lagged Panel Models", "intro": "A CLPN can be seen as an 'item-level network version' of the CLPM. First understand autoregressive and cross-lagged paths at the construct (total-score) level, then Hamaker et al.'s key criticism of the CLPM; only then can you read a CLPN correctly and write its limitations honestly.", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM & RI-CLPM: what cross-lagged paths mean and the between-person vs. within-person pitfall."}, {"id": "M6", "title": "Foundations of Network Psychometrics", "short": "Foundations of Network Psychometrics", "intro": "Learn all the basics of psychological networks on cross-sectional data first: partial correlations, GGMs, regularization, visualization, centrality. CLPN estimation, plotting and centrality indices build directly on these ideas.", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "Network psychometrics: nodes, edges, partial correlations, regularization, centrality."}, {"id": "M7", "title": "Cross-Lagged Panel Networks (CLPN)", "short": "Cross-Lagged Panel Networks", "intro": "The core module. CLPN was proposed by Wysocki, van Bork, Cramer and Rhemtulla (2022 preprint; published in 2025 as 'Cross-lagged panel networks'). The main line of this module teaches the simplified 'LASSO-only' version most common in applied research (e.g. Funkhouser et al., 2021): for each T2 item, run a LASSO-regularized regression on all T1 items and put the coefficients together into a directed network. Lesson 7.5 then introduces the full procedure recommended by Wysocki et al. (2025): LASSO edge selection → unpenalized re-estimation in lavaan (same-wave residual correlations, FIML, tests of equality across time) → in-/out-prediction, with runnable examples.", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN itself: estimation, visualization, out- and in-expected influence."}, {"id": "M8", "title": "Stability and Accuracy Assessment", "short": "Stability and Accuracy Assessment", "intro": "A network can easily 'look meaningful' and yet be unstable. Following the framework of Epskamp, Borsboom & Fried (2018), this module shows you how to use the bootstrap to check whether edges and centrality can be trusted.", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "Stability checks: bootstrap intervals and CS-coefficients to judge whether results are trustworthy."}, {"id": "M9", "title": "Reading, Critique, and Reporting Standards", "short": "Reading, Critique, and Reporting Standards", "intro": "Getting the analysis to run is only half the job; the other half is reading other people's CLPN papers, spotting the problems, and reporting your own analysis to the standards.", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "Reading papers, methodological critique, and reporting standards."}, {"id": "M10", "title": "Capstone Project: A Complete CLPN Analysis", "short": "Capstone Project", "intro": "Carry out a complete CLPN on your own, from the data to the written results. The default is the three-wave simulated data with a known true structure (4 loneliness items + 5 depression items, N = 800); if you can, you may use a public longitudinal dataset instead, after reading its license and citation requirements.", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "Capstone project: execute and write up a complete CLPN analysis end to end."}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.4" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L2-4">CLPN Syllabus</a><span class="crumb">M2 R and RStudio: From Scratch / 2.4</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L2-4.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L2-4.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html" class="cur" aria-current="page"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 2 · R &amp; RStudio from Zero · Lesson 2.4</div>
+<h1>Installing Packages, Importing Data, and Project Management</h1>
+<div class="facts"><span>Study time 1 hr 30 min</span><span>Prerequisites: <a href="L2-3.html">2.3 Data Frames and Introduction to the Tidyverse</a></span><span>R script: <a href="../R/L2-4.R">R/L2-4.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Tell install.packages() (install once) from library() (load every session)</li><li>Import CSV, Excel and SPSS (.sav) data (readr, readxl, haven)</li><li>Use an RStudio Project and relative paths, and get into the habit of a reproducible folder structure</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>package</b></li><li><b>CRAN</b><span class="en">Comprehensive R Archive Network</span></li><li><b>working directory</b></li><li><b>RStudio Project</b></li><li><b>relative path</b></li><li><b>encoding, UTF-8</b></li></ul>
+
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>Toolboxes, Bookshelves, and Files That Can Be Found</h2>
+<div class="box story"><b class="bt">"But it runs on my computer!"</b>
+<p>Xiao Lin sent an analysis script to a collaborator, who got an error the moment they ran it: <code>cannot open file 'C:/Users/XiaoLin/Desktop/thesis/data_final_v2.csv': No such file or directory</code>. Of course the collaborator's computer has no "Xiao Lin's desktop." Then came another error: <code>there is no package called 'qgraph'</code>, because the collaborator hadn't installed that package. This lesson deals with both problems: where packages come from and how to load them, and where to keep files so that other people's computers can find them too.</p></div>
+
+<h3>Packages: adding new tools to R</h3>
+<p>The functions that come with R (such as <code>mean()</code> and <code>lm()</code>) are only the basic tools. Extra tools written by others are bundled as <span class="term">packages</span> and offered for free download on <span class="term">CRAN<span class="en"> (Comprehensive R Archive Network)</span></span> (R's official package repository). The tools CLPN needs, <code>glmnet</code> (LASSO), <code>qgraph</code> (drawing networks), and <code>bootnet</code> (stability analysis), are all packages.</p>
+<div class="box analogy"><b class="bt">Analogy: buying a book vs. taking it off the shelf</b><p><code>install.packages("qgraph")</code> is buying the book: it downloads the package from CRAN and installs it on your computer, once per computer. The exception is upgrading R: packages are stored separately for each "major.minor" version of R, so you must reinstall them not only after a major upgrade (4.x → 5.0) but also after a minor one (such as 4.4 → 4.5); only after a patch upgrade (such as 4.5.0 → 4.5.1) can you keep using the packages you have. <code>library(qgraph)</code> is taking the book off the shelf and putting it on your desk: every time you open R (each new session), you have to take it down once before you can use its functions. So even after a package is installed, you still need <code>library()</code> the next time you open R. This also tells two errors apart: <code>there is no package called 'bootnet'</code> means you haven't bought it yet (not installed), so run <code>install.packages("bootnet")</code>; <code>could not find function "cv.glmnet"</code> often means the book is on the shelf but you didn't take it down (installed, but no <code>library(glmnet)</code>).</p></div>
+<ul><li>In <code>install.packages()</code> the package name needs quotes; in <code>library()</code> it usually doesn't.</li>
+<li>Don't put <code>install.packages()</code> in an analysis script that you run every time (it would download the package again each time). The course scripts use an "install only what is missing" pattern (see R code).</li>
+<li>To use one function without loading the whole package, write <code>package::function</code>, for example <code>psych::describe(dat)</code>. This also avoids confusion when two packages have a function with the same name (such as <code>dplyr::filter()</code> and <code>stats::filter()</code>).</li>
+<li>Red text when a package loads is not necessarily an error: many packages print startup messages or notes that some function has been "masked." Real errors start with <code>Error</code>.</li></ul>
+
+<h3>Working directory and paths: where does R look for files?</h3>
+<p>When R reads or writes a file, it starts from a "current folder" called the <span class="term">working directory</span>, which you can see with <code>getwd()</code>.</p>
+<ul><li><b>Absolute path</b>: written from the root of the disk, for example <code>C:/Users/XiaoLin/Desktop/thesis/data.csv</code>. It works only on your own computer.</li>
+<li><b><span class="term">Relative path</span></b>: written from the working directory, for example <code>data/clpn_sim_wide.csv</code> ("this file in the data folder inside the working directory"). As long as the other person's working directory is also the project folder, R finds it.</li></ul>
+<p>Windows paths use a backslash <code>\</code>, but inside an R string <code>\</code> is the escape character, so write a forward slash <code>/</code> or a double backslash <code>\\</code> instead.</p>
+<div class="box warnbox"><b class="bt">Why not write setwd("C:/Users/...")?</b><p><code>setwd()</code> changes the working directory with an absolute path. On another computer, under another user name, or after you move the folder, the script stops working; it depends on the folder layout of your own computer, so others cannot reproduce it. A better way is an RStudio project.</p></div>
+
+<h3>RStudio projects: one folder = one analysis</h3>
+<p>An <span class="term">RStudio project</span> is simply a folder with a <code>.Rproj</code> file in it. When you open RStudio by double-clicking the <code>.Rproj</code>, the working directory is set to that folder automatically, so every relative path works straight away. The course folder already contains <code>clpn-course.Rproj</code>. To create a new project: File → New Project → New Directory (or Existing Directory).</p>
+<p>The recommended folder structure (which is the structure of this course folder <code>clpn-course/</code>, showing only the parts that matter for R; this is what you get after unzipping <code>clpn-course.zip</code>):</p>
+<pre class="out">clpn-course/
+├── clpn-course.Rproj     ← double-click to open the project
+├── data/                 ← raw data (read-only; never edit by hand)
+└── R/                    ← analysis scripts (in this course: R/L2-4.R and others)
+    ├── solutions/        ← exercise solutions
+    └── output/           ← results, figures, and logs written by the scripts</pre>
+<p>The principle: <b>raw data are read-only</b>. All cleaning and computing happen in scripts, and results are written to output/. Then anyone who gets the whole folder can open the .Rproj, run the scripts in order, and reproduce every result from the raw data (the "checkable report" in Lesson 9.3 builds on this). For your own projects, create an RStudio project with the same structure.</p>
+<p>The first line of every course script is <code>source("R/_setup.R")</code>. That is a relative path, so it already requires the working directory to be the <code>clpn-course</code> folder; opening RStudio through <code>clpn-course.Rproj</code> guarantees this. Once loaded, <code>_setup.R</code> checks again: it looks at the current working directory and then up through its parent folders (at most 3 levels up, so 4 folders in all) for a folder that contains <code>data/clpn_sim_wide.csv</code>. If it finds one, it sets that folder as the working directory (and stores results in <code>R/output/</code>); if not, it stops with an error.</p>
+<p>If you see <code>cannot open file 'R/_setup.R'</code> or "Cannot find course root": first run <code>getwd()</code> in the Console to see where you are; then close RStudio and reopen it by double-clicking <code>clpn-course.Rproj</code> (or use the menu Session → Set Working Directory → Choose Directory… and select the <code>clpn-course</code> folder). Also check that you opened the unzipped <code>clpn-course</code> folder and that <code>data/clpn_sim_wide.csv</code> exists.</p>
+
+<h3>Importing data in different formats</h3>
+<div class="tablewrap"><table><thead><tr><th>Format</th><th>Package and function</th><th>Notes</th></tr></thead><tbody>
+<tr><td>CSV (comma-separated text)</td><td>readr: <code>read_csv()</code>; base R: <code>read.csv()</code></td><td>The most universal; recommended. Watch the file encoding</td></tr>
+<tr><td>Excel (.xlsx / .xls)</td><td>readxl: <code>read_excel("file", sheet = 1)</code></td><td>Merged cells, multi-row headers, and color coding all cause problems; tidy it into "one row per person, variable names in the first row"</td></tr>
+<tr><td>SPSS (.sav)</td><td>haven: <code>read_sav()</code></td><td>Keeps variable labels and value labels (such as 1 = female); convert to a factor with <code>as_factor()</code></td></tr>
+<tr><td>Stata (.dta), SAS</td><td>haven: <code>read_dta()</code>, <code>read_sas()</code></td><td></td></tr></tbody></table></div>
+<p>The first thing to do after importing is to check. <code>glimpse()</code> or <code>str()</code> shows the number of rows and columns and each column's type; <code>summary()</code> shows whether the ranges are plausible (a 9 on a 0–3 item may be a "missing" code that should become NA); <code>head()</code> shows the first few rows.</p>
+
+<h3>Garbled Chinese text: an encoding problem</h3>
+<p>Computers store text as numbers according to an <span class="term">encoding</span>. The international standard is UTF-8, but Excel on Chinese-language Windows often saves CSV files in GBK (also called GB2312 / CP936). If you read a GBK file as UTF-8, the Chinese characters turn into gibberish (such as "鐢锋€�"), and sometimes you get the error <code>invalid multibyte string</code>. Fixes:</p>
+<ul><li>State the encoding when reading: <code>read_csv("file.csv", locale = locale(encoding = "GBK"))</code>, or <code>read.csv("file.csv", fileEncoding = "GBK")</code>.</li>
+<li>In Excel, save as "CSV UTF-8 (Comma delimited)."</li>
+<li>Save the script itself as UTF-8 in RStudio too (File → Save with Encoding → UTF-8); otherwise Chinese comments and labels in the script become garbled. In the long run, keep all data and scripts in UTF-8.</li></ul>
+<div class="box sw"><b class="bt">Social work context: from an online survey platform to R</b><p>Many social work studies collect data on online survey platforms (in China, Wenjuanxing or Tencent Surveys; elsewhere, for example, Qualtrics). The exported Excel / CSV files often have long column names in Chinese, text answers ("strongly agree" instead of 4), and total rows. Good habits: (1) put the original export into data/ unchanged; (2) in the script, rename the columns (such as <code>lone1_t1</code>) and recode text answers into numbers; (3) write a data dictionary (the course's <code>data/data_dictionary.csv</code> is an example) that records what each variable means and what values it takes.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>No New Formulas This Lesson</h2>
+<p>This is an "engineering" lesson with no new statistical formulas. You only need to remember one "equation":</p>
+<div class="mathbox">$$\text{reproducible result} = \text{raw data} + \text{script} + \text{software versions}$$</div>
+<p>When all three are fixed, anyone can get the same result. Record software versions with <code>sessionInfo()</code> or <code>packageVersion("glmnet")</code>; when the result involves a random process (cross-validation, bootstrap), also fix the random seed with <code>set.seed()</code> (Lesson 3.5).</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Install, Load, Import, Check</h2>
+<p>Script for this lesson: <a href="../R/L2-4.R">R/L2-4.R</a>. The simplest way to install all the required packages at once:</p>
+<div class="codeblk"><div class="ctitle">Install all required packages at once (run once when you first set up)</div><pre><code class="language-r">install.packages(c(&quot;tidyverse&quot;, &quot;psych&quot;, &quot;lavaan&quot;, &quot;qgraph&quot;,
+                   &quot;bootnet&quot;, &quot;glmnet&quot;, &quot;networktools&quot;, &quot;mice&quot;))</code></pre></div>
+<p>The course script uses a safer "install only the missing packages" pattern and prints the version numbers:</p>
+<div class="codeblk"><div class="ctitle">R/L2-4.R (core part)</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+pkgs &lt;- c(&quot;tidyverse&quot;, &quot;psych&quot;, &quot;lavaan&quot;, &quot;qgraph&quot;, &quot;bootnet&quot;, &quot;glmnet&quot;,
+          &quot;networktools&quot;, &quot;mgm&quot;, &quot;igraph&quot;, &quot;readxl&quot;, &quot;haven&quot;, &quot;mice&quot;, &quot;knitr&quot;, &quot;rmarkdown&quot;,
+          &quot;lme4&quot;)
+need &lt;- pkgs[!pkgs %in% rownames(installed.packages())]
+if (length(need) &gt; 0) install.packages(need)        # install only what is missing
+for (p in pkgs) cat(sprintf(&quot;%-13s %s\n&quot;, p, utils::packageDescription(p)$Version))
+
+suppressPackageStartupMessages({ library(tidyverse); library(haven) })
+dat  &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)   # relative path
+spss &lt;- read_sav(&quot;data/clpn_sim_wide.sav&quot;)
+glimpse(dat[, 1:8])
+cat(&quot;Do CSV and SAV match? &quot;, all.equal(as.numeric(dat$dep1_t1), as.numeric(spss$dep1_t1)), &quot;\n&quot;, sep = &quot;&quot;)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Output (R/output/L2-4_log.txt, excerpt)</div><pre class="out"><code>tidyverse     2.0.0
+psych         2.6.9
+lavaan        0.7-3
+qgraph        1.10.1
+bootnet       1.9.1
+glmnet        5.1
+networktools  1.6.0
+mgm           1.2-15
+igraph        2.3.4
+readxl        1.6.0
+haven         2.5.5
+mice          3.19.0
+knitr         1.52
+rmarkdown     2.32
+lme4          2.0-6
+Rows: 800
+Columns: 8
+$ id       &lt;chr&gt; &quot;P001&quot;, &quot;P002&quot;, &quot;P003&quot;, &quot;P004&quot;, &quot;P005&quot;, &quot;P006&quot;, &quot;P007&quot;, &quot;P008…
+$ lone1_t1 &lt;dbl&gt; 3, 1, 2, 2, 3, 4, 2, 2, 3, 1, 3, 3, 1, 2, 2, 2, 2, 3, 2, 1, 2…
+$ lone2_t1 &lt;dbl&gt; 2, 2, 1, 2, 4, 2, 1, 2, 3, 1, 4, 3, 2, 1, 2, 1, 1, 3, 3, 2, 4…
+$ lone3_t1 &lt;dbl&gt; 2, 1, 2, 2, 3, 2, 2, 2, 2, 1, 1, 2, 1, 3, 1, 2, 1, 2, 2, 2, 4…
+$ lone4_t1 &lt;dbl&gt; 2, 2, 2, 2, 3, 4, 1, 3, 2, 1, 2, 2, 1, 1, 3, 2, 1, 3, 1, 1, 4…
+$ dep1_t1  &lt;dbl&gt; 0, 0, 1, 1, 1, 1, 2, 0, 1, 0, 1, 3, 0, 1, 1, 2, 0, 1, 0, 0, 1…
+$ dep2_t1  &lt;dbl&gt; 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0, 3, 1, 1, 1, 1, 0, 3, 0, 0, 0…
+$ dep3_t1  &lt;dbl&gt; 1, 1, 1, 2, 0, 0, 3, 0, 0, 0, 1, 1, 0, 2, 1, 1, 0, 1, 1, 0, 0…
+Do CSV and SAV match? TRUE</code></pre></div>
+<div class="box key"><b class="bt">Reading this code</b><ul>
+<li><code>%in%</code>: checks whether each element on the left appears on the right; <code>!</code> negates it, giving "the packages not installed."</li>
+<li><code>packageVersion()</code>: the installed version number. Your versions may be newer, which is usually fine; the methods section of a paper should report the versions you actually used.</li>
+<li><code>glimpse()</code>: shows each column's type and first few values sideways, handy for data with many columns.</li>
+<li><code>all.equal()</code>: the same column is identical in both files, so the CSV and the SAV are the same data in two formats.</li></ul></div>
+<div class="codeblk"><div class="ctitle">Checking SPSS labels, and common import options (template)</div><pre><code class="language-r">class(spss$gender)                 # the course .sav has no value labels, so this is plain numeric
+# If a .sav has value labels (such as 1 = &quot;female&quot;), turn it into a factor with haven::as_factor():
+# spss$gender_f &lt;- as_factor(spss$gender)
+
+# Excel (the course has no Excel file; this is a template):
+# library(readxl)
+# xl &lt;- read_excel(&quot;data/survey.xlsx&quot;, sheet = 1, na = c(&quot;&quot;, &quot;NA&quot;, &quot;999&quot;))
+
+# A Chinese CSV saved in GBK encoding:
+# gbk &lt;- read_csv(&quot;data/survey_gbk.csv&quot;, locale = locale(encoding = &quot;GBK&quot;))
+
+getwd()                            # confirm that the working directory is the project folder</code></pre></div>
+<div class="codeblk"><div class="ctitle">Illustrative output (getwd() shows your local course folder path)</div><pre class="out"><code>[1] &quot;numeric&quot;
+[1] &quot;/workspace/clpn-course&quot;</code></pre></div>
+<p><code>na = c("", "NA", "999")</code> tells R to treat empty cells, "NA", and 999 as missing. Many survey platforms and SPSS files use 999, 99, or −9 for "not answered." Left as they are, these are treated as real scores, which pushes means up and distorts correlations and network edges.</p>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: a five-step checkup after importing new data</h3>
+<p>Suppose a partner agency sends you <code>survey.csv</code>. Don't rush into a model; do these five steps first. Each one catches a common kind of problem:</p>
+<div class="codeblk"><pre><code class="language-r">d &lt;- read.csv(&quot;data/survey.csv&quot;)      # 1. Import (path relative to the project root)
+dim(d)                                  # 2. Rows = number of people? Columns = items + demographics?
+str(d)                                  # 3. Are the column types right? Item scores should be int/num, not chr
+summary(d)                              # 4. Are the ranges right? Do 9, 99, -9 appear on a 1–4 item?
+colSums(is.na(d))                       # 5. How much is missing in each column?
+# If 99 / -9 mean missing, change them to NA in the item columns only (not across the whole table: on a 0–100 variable, 99 may be a real score)
+item_cols &lt;- grep(&quot;^(lone|dep)&quot;, names(d), value = TRUE)
+for (v in item_cols) d[[v]][d[[v]] %in% c(99, -9)] &lt;- NA</code></pre></div>
+
+<p>Replace values only in the item columns: on a 0–100 variable such as life satisfaction, 99 may be a real answer. Go column by column, following the questionnaire's codebook.</p>
+<h3>More on SPSS value labels</h3>
+<p>When you read a .sav file with value labels using <code>read_sav()</code>, those columns have the type <code>haven_labelled</code> and print labels such as "1 [never]". Before computing statistics, you usually strip the labels with <code>haven::zap_labels()</code> to keep only the numbers, and turn categorical variables into factors with <code>haven::as_factor()</code>. Also check whether "user-missing values" defined in SPSS (such as 99) have been converted to NA.</p>
+
+<h3>A fixed opening for every script</h3>
+<p>Every script in this course starts the same way: a comment saying what the script does and which lesson it belongs to; then <code>source("R/_setup.R")</code> for the shared preparation (finding the course root folder, creating the R/output folder, setting the plot font, and defining shared functions such as <code>read_course_data()</code>); then <code>library()</code> for the packages this script needs; then reading the data. Use the same order in your own scripts: purpose comment → load packages → read data → analyze → save output. Then anyone who opens the script can see within the first 10 lines what it depends on and which data it reads.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">Why is setwd("C:/Users/...") in a script a bad idea?</p><ul class="opts"><li><button type="button" data-ok="0">Because relative paths are read faster than absolute paths</button><div class="ofb" hidden>The reading speed is the same; the problem is that the absolute path exists only on your computer.</div></li><li><button type="button" data-ok="1">The absolute path works only on your computer; another computer, another user, or a moved folder breaks it, and others cannot reproduce the analysis</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">Because setwd() changes the working directory permanently, affecting all future projects</button><div class="ofb" hidden>setwd() affects only the current session; the real problem is that the path doesn't exist on another computer.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>Use an RStudio project + relative paths instead.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Once a package is installed, why do you still need library() the next time you open R?</p><ul class="opts"><li><button type="button" data-ok="1">install only puts the package on the computer (buying the book); each new session must load it with library() before you can use it (taking it off the shelf)</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">Because packages are removed when R closes and must be reinstalled</button><div class="ofb" hidden>The package is still on the computer and doesn't need reinstalling; the new session just hasn't loaded it yet.</div></li><li><button type="button" data-ok="0">You don't; once installed it can be used directly</button><div class="ofb" hidden>An installed package still has to be loaded with library(), or its functions called as package::function.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>install.packages() once; library() once per session.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">When imported Chinese data show up as gibberish, what is the likely cause?</p><ul class="opts"><li><button type="button" data-ok="0">The CSV file has missing values</button><div class="ofb" hidden>Missing values are read as NA or empty strings; they don't turn Chinese into gibberish.</div></li><li><button type="button" data-ok="1">The file's encoding (such as GBK) differs from the encoding assumed when reading (such as UTF-8)</button><div class="ofb" hidden>Correct: use locale(encoding = "GBK"), or re-save as UTF-8.</div></li><li><button type="button" data-ok="0">R does not support Chinese</button><div class="ofb" hidden>R supports Chinese; read with the right encoding, the same file displays correctly.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>CSV files saved by Excel on Chinese-language Windows are often GBK-encoded.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">The working directory is /home/learner/clpn-course. Where does the relative path "data/clpn_sim_wide.csv" point?</p><ul class="opts"><li><button type="button" data-ok="0">/data/clpn_sim_wide.csv</button><div class="ofb" hidden>A relative path starts from the working directory, not from the root.</div></li><li><button type="button" data-ok="1">/home/learner/clpn-course/data/clpn_sim_wide.csv</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">A file on the desktop</button><div class="ofb" hidden>R doesn't look on the desktop; a relative path always starts from the working directory.</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>Relative path = working directory + the relative part.</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">After importing, you find that dep1_t1 (scored 0–3) has a maximum of 999. What is it most likely, and what do you do?</p><ul class="opts"><li><button type="button" data-ok="0">A real extreme value; keep it</button><div class="ofb" hidden>A 0–3 item cannot score 999.</div></li><li><button type="button" data-ok="1">A missing-value code; use na = c("999") when reading, or change 999 to NA afterwards</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">A calculation error by the software</button><div class="ofb" hidden>R doesn't change values when reading; 999 is a convention survey platforms and SPSS use for "not answered."</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>After importing, check every variable's range with summary() first.</div></div>
+<div class="quiz" data-kind="txt" data-ans="install.packages(&quot;qgraph&quot;) || &quot;qgraph&quot; || add quotes || quote the package name"><p class="qtext">install.packages(qgraph) gives the error object 'qgraph' not found. How do you fix it?</p><div class="numrow"><input type="text" aria-label="Your answer" placeholder="Enter answer"><button type="button" class="qbtn">Check</button></div><div class="qhint" hidden>When installing, the package name is a string.</div><div class="fb" role="status"></div><div class="qexp" hidden>Without quotes, R thinks qgraph is an object and goes looking for it.</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.4-A: Set up the project and import data</h4>
+<p>Open or create the clpn-course project folder (with <code>data/</code>, <code>R/</code>, and <code>R/output/</code>), install all packages the course needs, import a CSV file and a .sav file, and check the variables.</p>
+<details class="answer"><summary>Reference steps</summary>
+<ol><li>File → New Project → Existing Directory, and choose the course folder (the <code>clpn-course</code> you get by unzipping <code>clpn-course.zip</code>; it already contains <code>clpn-course.Rproj</code>, so you can simply double-click that).</li>
+<li>Run <code>R/L2-4.R</code> and confirm that every package prints a version number. If a package fails to install, copy the complete error message and ask for help using the template from Lesson 2.1.</li>
+<li>Create <code>R/week04.R</code>:</li></ol>
+<div class="codeblk"><pre><code class="language-r">library(tidyverse); library(haven)
+dat  &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)
+spss &lt;- read_sav(&quot;data/clpn_sim_wide.sav&quot;)
+dim(dat); dim(spss)                       # same numbers of rows and columns?
+summary(dat[, c(&quot;lone1_t1&quot;, &quot;dep1_t1&quot;, &quot;age&quot;, &quot;gender&quot;)])   # plausible ranges?
+sum(is.na(dat))                           # number of missing values
+identical(names(dat), names(spss))        # same variable names?
+sessionInfo()                             # record the versions</code></pre></div>
+<p>What to check: both data sets have 800 rows; loneliness items 1–4, depression items 0–3, age 18–85; no missing values. Write up what you found in 3–4 sentences.</p></details></div>
+<div class="exitem"><h4>Exercise 2.4-B: Find the path problems</h4>
+<p>The code below failed on a collaborator's computer. Point out two problems and fix them:</p>
+<div class="codeblk"><pre><code class="language-r">setwd(&quot;C:\Users\XiaoLin\Desktop\thesis&quot;)
+install.packages(&quot;glmnet&quot;)
+dat &lt;- read.csv(&quot;data_final_v2.csv&quot;)
+fit &lt;- cv.glmnet(X, y)</code></pre></div>
+<details class="answer"><summary>Reference answer</summary><p>(1) <code>setwd()</code> with an absolute path (and the backslashes are not escaped, so this line itself gives an error) → delete it and use an RStudio project; put the data in data/ and write <code>read.csv("data/survey_final.csv")</code> (preferably with an English file name). (2) Running <code>install.packages()</code> every time is unnecessary, while <code>library(glmnet)</code> is missing, so <code>cv.glmnet</code> gives could not find function → move the install command to a separate setup script and write <code>library(glmnet)</code> here. Also, <code>X</code> and <code>y</code> are not defined.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li><code>install.packages("pkg")</code> once per computer, <code>library(pkg)</code> once per session.</li>
+<li>Use an RStudio project + relative paths, not <code>setwd("C:/...")</code>; raw data are read-only, and results are produced by scripts.</li>
+<li>After importing, check types, ranges, and missing-value codes first; gibberish text is usually an encoding problem (GBK vs. UTF-8). Next lesson: <a href="L2-5.html">2.5 Descriptive Statistics, Correlation, and Regression in R</a>.</li></ul>
+</section>
+
+<nav class="pager"><a href="L2-3.html" class="pv"><small>Previous</small>2.3 Data Frames and Introduction to the Tidyverse</a><a href="L2-5.html" class="nx"><small>Next</small>2.5 Descriptive Statistics, Correlation, and Regression in R</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 2.4 · <a href="../index.html#L2-4">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

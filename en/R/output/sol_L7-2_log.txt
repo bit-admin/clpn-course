@@ -1,0 +1,10 @@
+Stronger CL edges in population target:
+           edge  true   min  X1se
+1 lone2 → lone4 0.142 0.127 0.081
+2  lone3 → dep1 0.118 0.073 0.033
+3  lone1 → dep2 0.102 0.085 0.000
+4   dep3 → dep4 0.169 0.135 0.083
+5   dep1 → dep5 0.126 0.086 0.027
+False positives (population target |beta| < .05 estimated as non-zero): lambda.min = 19 ; lambda.1se = 3 
+Answer: lambda.1se selects a larger lambda -> stronger penalty -> sparser network, fewer false positives but misses weak edges.
+ B["dep3","dep4"] denotes T1 dep3 (Sleep problems) -> T2 dep4 (Fatigue) (row = from, column = to): lambda.min estimate = 0.135 , population target = 0.169 

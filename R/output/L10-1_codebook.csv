@@ -1,0 +1,28 @@
+"variable","wave","label_zh","label_en","values","mean","sd"
+"lone1_t1",1,"孤独1：缺少陪伴","Loneliness 1: lack companionship","1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often",2.19,0.99
+"lone2_t1",1,"孤独2：被冷落","Loneliness 2: feel left out","1–4 同上",2.19,1
+"lone3_t1",1,"孤独3：与人隔绝","Loneliness 3: feel isolated from others","1–4 同上",2.24,0.99
+"lone4_t1",1,"孤独4：无人理解","Loneliness 4: no one really understands me","1–4 同上",2.18,0.98
+"dep1_t1",1,"抑郁1：情绪低落","Depression 1: depressed mood","0=完全不会 not at all;1=好几天 several days;2=一半以上天数 more than half the days;3=几乎每天 nearly every day",0.74,0.92
+"dep2_t1",1,"抑郁2：兴趣丧失","Depression 2: loss of interest (anhedonia)","0–3 同上",0.77,0.92
+"dep3_t1",1,"抑郁3：睡眠问题","Depression 3: sleep problems","0–3 同上",0.79,0.94
+"dep4_t1",1,"抑郁4：疲乏无力","Depression 4: fatigue","0–3 同上",0.77,0.95
+"dep5_t1",1,"抑郁5：无价值感","Depression 5: worthlessness / guilt","0–3 同上",0.76,0.93
+"lone1_t2",2,"孤独1：缺少陪伴","Loneliness 1: lack companionship","1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often",2.2,0.98
+"lone2_t2",2,"孤独2：被冷落","Loneliness 2: feel left out","1–4 同上",2.21,0.98
+"lone3_t2",2,"孤独3：与人隔绝","Loneliness 3: feel isolated from others","1–4 同上",2.23,0.96
+"lone4_t2",2,"孤独4：无人理解","Loneliness 4: no one really understands me","1–4 同上",2.23,0.97
+"dep1_t2",2,"抑郁1：情绪低落","Depression 1: depressed mood","0=完全不会 not at all;1=好几天 several days;2=一半以上天数 more than half the days;3=几乎每天 nearly every day",0.78,0.93
+"dep2_t2",2,"抑郁2：兴趣丧失","Depression 2: loss of interest (anhedonia)","0–3 同上",0.74,0.9
+"dep3_t2",2,"抑郁3：睡眠问题","Depression 3: sleep problems","0–3 同上",0.78,0.94
+"dep4_t2",2,"抑郁4：疲乏无力","Depression 4: fatigue","0–3 同上",0.74,0.93
+"dep5_t2",2,"抑郁5：无价值感","Depression 5: worthlessness / guilt","0–3 同上",0.74,0.92
+"lone1_t3",3,"孤独1：缺少陪伴","Loneliness 1: lack companionship","1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often",2.22,1
+"lone2_t3",3,"孤独2：被冷落","Loneliness 2: feel left out","1–4 同上",2.23,1
+"lone3_t3",3,"孤独3：与人隔绝","Loneliness 3: feel isolated from others","1–4 同上",2.2,0.97
+"lone4_t3",3,"孤独4：无人理解","Loneliness 4: no one really understands me","1–4 同上",2.23,0.98
+"dep1_t3",3,"抑郁1：情绪低落","Depression 1: depressed mood","0=完全不会 not at all;1=好几天 several days;2=一半以上天数 more than half the days;3=几乎每天 nearly every day",0.79,0.95
+"dep2_t3",3,"抑郁2：兴趣丧失","Depression 2: loss of interest (anhedonia)","0–3 同上",0.76,0.9
+"dep3_t3",3,"抑郁3：睡眠问题","Depression 3: sleep problems","0–3 同上",0.76,0.94
+"dep4_t3",3,"抑郁4：疲乏无力","Depression 4: fatigue","0–3 同上",0.79,0.93
+"dep5_t3",3,"抑郁5：无价值感","Depression 5: worthlessness / guilt","0–3 同上",0.75,0.94

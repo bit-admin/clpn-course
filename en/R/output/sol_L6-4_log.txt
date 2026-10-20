@@ -1,0 +1,2 @@
+Exercise 1: Plot saved to R/output/sol_L6-4_nodenames.png
+Exercise 2: T1 edge count = 28 ; T2 edge count = 29 ; correlation of edge weights between the two networks = 0.878 

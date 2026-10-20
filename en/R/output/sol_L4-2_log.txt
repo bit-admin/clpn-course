@@ -1,0 +1,17 @@
+Dimensions of long-format l6: 2400 8 
+Identical to original data after pivoting back to wide format? TRUE 
+d1 and d2 have 800 rows each, IDs perfectly aligned ✔; X and Y dimensions: 800 6 / 800 6 
+
+# A tibble: 9 × 4
+  item     T1    T2    T3
+  <chr> <dbl> <dbl> <dbl>
+1 dep1   0.74  0.78  0.79
+2 dep2   0.77  0.74  0.76
+3 dep3   0.79  0.77  0.76
+4 dep4   0.77  0.74  0.79
+5 dep5   0.76  0.74  0.75
+6 lone1  2.19  2.2   2.22
+7 lone2  2.19  2.21  2.23
+8 lone3  2.24  2.23  2.2 
+9 lone4  2.18  2.23  2.24
+Mean trajectory plot saved to: R/output/sol_L4-2_means.png

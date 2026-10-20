@@ -1,0 +1,222 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>"Translating" Concepts from Modules 1 and 2 into R Output</h2>
+<div class="box story"><b class="bt">From hand calculation to one line of code</b>
+<p>In Module 1 you computed means, standard deviations, and correlation coefficients by hand, and you learned what standard errors, confidence intervals, and p-values mean. Regression and logistic regression are covered properly only in Module 3; here you just get to know what R's regression output looks like. This lesson teaches no new statistical concepts. Instead, you learn to get all of these numbers in R at once and to read the long printout R produces. When a social work researcher gets a new data set, the first steps are almost always: descriptive statistics → correlation matrix → regression.</p></div>
+
+<h3>Descriptive statistics: get to know your data first</h3>
+<p>{{T:Descriptive statistics|}} answer "what do the data look like?": how many people (n), the typical level (mean), the spread (sd), the range (min, max), and the shape of the distribution (skew, kurtosis). Base R's <code>summary()</code> gives the minimum, quartiles, median, mean, and maximum; <code>describe()</code> from the <code>psych</code> package gives a fuller set of indices that suits psychological measurement better.</p>
+<p>Skew tells you whether a distribution is symmetric (Lesson 1.2). Near 0 means roughly symmetric; a positive value means right-skewed (most people score low, a few score very high, and the "tail" trails off to the right); a negative value means left-skewed. In the course data, the depression total has skew = 0.85, a clear right skew: in a community sample, most people have few depressive symptoms and a few have many. This is common in community samples, and it also tells you that the depression items are not normally distributed, which comes up again in Module 6 when choosing a type of correlation. A common rough rule treats |skew| &gt; 1 as clearly skewed and &gt; 2 as severely skewed, but the cutoffs differ between textbooks.</p>
+
+<h3>Correlation matrix: every pair of variables</h3>
+<p>With 5 variables there are 5 × 4 / 2 = 10 pairs of correlations. <code>cor(d)</code> computes the whole correlation matrix at once: the diagonal is 1 (each variable's correlation with itself), and the upper and lower triangles mirror each other. <code>psych::corr.test()</code> also gives a p-value for each correlation.</p>
+<div class="box warnbox"><b class="bt">corr.test()'s p-value matrix is not symmetric</b><p>Look closely at the p-value matrix in this lesson's output: "Sleep–Loneliness" is 0.0009 in the lower triangle and 0.0026 in the upper triangle. This is not a mistake. The help page of <code>corr.test()</code> explains: <b>below the diagonal are unadjusted p-values; above the diagonal are p-values adjusted for multiple comparisons (Holm's method by default)</b>. This is the multiple-testing problem from Lesson 1.6: testing 10 correlations at once calls for an adjustment. When you report, say which one you used.</p></div>
+
+<h3>Missing values: pairwise vs. listwise deletion</h3>
+<p>The course data have no missing values, but real data almost always do. If a column has an NA, <code>cor(x, y)</code> simply returns NA (Lesson 2.2: NA spreads). The <code>use</code> argument decides how missing values are handled:</p>
+<ul><li><code>use = "complete.obs"</code> (listwise deletion): uses only the people with no missing values on any variable. Every correlation is based on the same people, but a lot of data may be thrown away.</li>
+<li><code>use = "pairwise.complete.obs"</code> ({{T:pairwise deletion|}}): for each pair of variables, uses the people who have data on both. More data are used, but different correlations may rest on different people and different n.</li></ul>
+<p>Both methods implicitly assume that values are missing at random; when much is missing, or not at random, you need multiple imputation or FIML (Lesson 4.3). <code>lm()</code> uses listwise deletion by default: anyone missing any variable in the model is dropped, and <code>summary()</code> notes "(3 observations deleted due to missingness)."</p>
+
+<h3>Regression output: which Module 1 concept is each column?</h3>
+<p>The {{T:model summary|}} <code>summary(lm(...))</code> is the most important output in this lesson. Below it is taken apart; click the underlined parts for explanations:</p>
+<pre class="out annot">Call:
+lm(formula = Depression ~ Loneliness + Social_support, data = d)
+
+<span data-tip="Residual = observed value − predicted value (Lesson 3.1). This is the five-number summary of the residuals. The median is −0.71 and the maximum 10.9, while the minimum is only −6.7, so the residuals are right-skewed: a few people are much more depressed than the model predicts (consistent with the right-skewed depression total).">Residuals:
+    Min      1Q  Median      3Q     Max
+-6.6787 -2.4059 -0.7062  1.9736 10.9074 </span>
+
+Coefficients:
+               <span data-tip="Estimate = the regression coefficient b (unstandardized, Lessons 3.1–3.3): with the other predictors held constant, each 1-unit increase in this variable goes with depression b points higher on average.">Estimate</span> <span data-tip="Std. Error = the standard error of the coefficient (Lesson 1.5): how much this estimate would vary over repeated samples.">Std. Error</span> <span data-tip="t value = Estimate ÷ Std. Error: how many standard errors the estimate is from 0 (the test statistic of Lesson 1.6). For example, 0.31927 / 0.04081 ≈ 7.82.">t value</span> <span data-tip="Pr(>|t|) = the p-value (Lesson 1.6): if the true coefficient were 0, the probability of a t value at least this extreme.">Pr(>|t|)</span>
+<span data-tip="Intercept: the predicted depression score when Loneliness = 0 and Social_support = 0. The lowest possible loneliness total is 4 and the lowest social support is 1, so 0 lies outside the data, and the intercept has no practical interpretation.">(Intercept)     1.80159    0.76637   2.351    0.019 *  </span>
+<span data-tip="With social support held constant, each 1-point higher loneliness total goes with T1 depression 0.32 points higher on average; t = 7.82, p < .001.">Loneliness      0.31927    0.04081   7.824 1.62e-14 ***</span>
+<span data-tip="With loneliness held constant, each 1-point higher social support goes with depression 0.23 points lower on average, but p = .146, not significant. On its own, social support correlates −0.18 with depression (significant); once loneliness is controlled, its unique contribution is no longer clear. This is an example of 'control variables' from Lesson 3.2.">Social_support -0.23121    0.15895  -1.455    0.146    </span>
+---
+<span data-tip="The stars are only shorthand for p-value ranges: *** p < .001, ** p < .01, * p < .05, . p < .1. When you report, give the exact p-value, not just stars.">Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+
+<span data-tip="Residual standard error: the typical prediction error is about 3.2 points. Degrees of freedom 797 = 800 people − 3 parameters (intercept + 2 coefficients).">Residual standard error: 3.228 on 797 degrees of freedom</span>
+<span data-tip="R² = 0.0998: together the two predictors explain about 10% of the variance in depression. Adjusted R² applies a penalty for the number of predictors: the more predictors, the larger the penalty.">Multiple R-squared:  0.09979,	Adjusted R-squared:  0.09754 </span>
+<span data-tip="F test: whether the whole model (all predictors together) predicts better than an intercept-only model. 2 and 797 are its two degrees of freedom.">F-statistic: 44.18 on 2 and 797 DF,  p-value: < 2.2e-16</span></pre>
+<div class="box key"><b class="bt">Lookup table: summary(lm()) ↔ Modules 1 and 2</b>
+<div class="tablewrap"><table><thead><tr><th>Output</th><th>Concept</th><th>Lesson</th></tr></thead><tbody>
+<tr><td>Estimate</td><td>Regression coefficient b (point estimate)</td><td>3.1, 3.2</td></tr>
+<tr><td>Std. Error</td><td>Standard error: the SD of the sampling distribution</td><td>1.5</td></tr>
+<tr><td>t value</td><td>Test statistic = estimate ÷ standard error</td><td>1.6</td></tr>
+<tr><td>Pr(&gt;|t|)</td><td>p-value (null hypothesis: coefficient = 0)</td><td>1.6</td></tr>
+<tr><td>Estimate ± about 2 × SE</td><td>95% confidence interval (exact values from <code>confint()</code>)</td><td>1.5</td></tr>
+<tr><td>R²</td><td>Proportion of variance explained</td><td>3.1</td></tr></tbody></table></div></div>
+<p>The <code>summary()</code> of a <code>glm()</code> has almost the same structure, except that t becomes z and R² is replaced by the deviance and AIC (Lesson 3.4).</p>
+<div class="box sw"><b class="bt">Social work perspective: is an R² of 10% low?</b><p>"Explains only 10%" sounds small, but psychosocial outcomes depend on many factors, and a single psychological variable explaining around 10% of the variance is not unusual in this field. A low R² does not mean loneliness is unimportant, and a significant coefficient does not mean a large effect. When you describe the size of an effect, report the coefficient with its confidence interval and put it in practical terms (for example, "3 points higher on loneliness, about 1 standard deviation, goes with depression about 1 point higher on average").</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>A Few Relationships in the Output</h2>
+<div class="mathbox">$$t = \frac{b}{SE(b)}, \qquad 95\%\,CI \approx b \pm t_{0.975,\,df}\times SE(b)$$</div>
+<dl class="sym"><dt>\(b\)</dt><dd>The Estimate column.</dd><dt>\(SE(b)\)</dt><dd>The Std. Error column.</dd><dt>\(df\)</dt><dd>Residual degrees of freedom = \(n - p - 1\), here 800 − 2 − 1 = 797.</dd><dt>\(t_{0.975,\,df}\)</dt><dd>The 97.5% quantile of the t distribution; about 1.963 for df = 797 (R: <code>qt(0.975, 797)</code>).</dd></dl>
+<p>Example, loneliness: 0.31927 / 0.04081 ≈ 7.82; 95% CI ≈ 0.319 ± 1.963 × 0.0408 = [0.239, 0.399].</p>
+<div class="mathbox">$$R^2_{adj} = 1 - (1-R^2)\frac{n-1}{n-p-1}$$</div>
+<p>With \(n = 800\) and \(p = 2\): 1 − 0.90021 × 799/797 ≈ 0.0975, matching the output.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Descriptives → Correlations → Regression</h2>
+<p>Script for this lesson: <a href="../R/L2-5.R">R/L2-5.R</a>. Readable column names (rather than codes) make the output easier to read. Names in other languages, such as Chinese, also work, as long as the script is saved as UTF-8 (Lesson 2.4).</p>
+```r R/L2-5.R (core part)
+source("R/_setup.R")
+dat <- read_course_data()
+d <- data.frame(Loneliness = rowSums(dat[, paste0(lone_items, "_t1")]),
+                Depression = rowSums(dat[, paste0(dep_items, "_t1")]),
+                Social_support = dat$social_support_t1, Sleep = dat$sleep_hours_t1,
+                Life_satisfaction = dat$life_sat_t1)
+round(psych::describe(d)[, c("n", "mean", "sd", "min", "max", "skew")], 2)
+ct <- psych::corr.test(d)            # correlation matrix + p-values
+round(ct$r, 2); round(ct$p, 4)
+fit <- lm(Depression ~ Loneliness + Social_support, data = d)
+summary(fit)
+psych::pairs.panels(d, ellipses = FALSE)    # scatterplot matrix
+```
+```out Descriptives and correlations (R/output/L2-5_log.txt)
+                    n  mean    sd  min   max  skew
+Loneliness        800  8.80  3.08  4.0  16.0  0.36
+Depression        800  3.84  3.40  0.0  15.0  0.85
+Social_support    800  3.36  0.79  1.0   5.0 -0.14
+Sleep             800  6.81  1.02  3.1   9.9 -0.12
+Life_satisfaction 800 64.32 14.81 22.0 100.0 -0.09
+                  Loneliness Depression Social_support Sleep Life_satisfaction
+Loneliness              1.00       0.31          -0.42 -0.12             -0.33
+Depression              0.31       1.00          -0.18 -0.29             -0.25
+Social_support         -0.42      -0.18           1.00  0.05              0.35
+Sleep                  -0.12      -0.29           0.05  1.00              0.06
+Life_satisfaction      -0.33      -0.25           0.35  0.06              1.00
+                  Loneliness Depression Social_support  Sleep Life_satisfaction
+Loneliness             0e+00          0         0.0000 0.0026            0.0000
+Depression             0e+00          0         0.0000 0.0000            0.0000
+Social_support         0e+00          0         0.0000 0.1667            0.0000
+Sleep                  9e-04          0         0.1667 0.0000            0.1627
+Life_satisfaction      0e+00          0         0.0000 0.0814            0.0000
+```
+<p>Reading the p-value matrix: unadjusted below the diagonal, Holm-adjusted above. For example, "Sleep–Life satisfaction" has r = 0.06, unadjusted p = .081, adjusted p = .163; "Social support–Sleep" has r = 0.05, p = .167 (this pair happens to be the same under both methods). <code>0e+00</code> is 0 in scientific notation: p is below 0.00005 (it rounds to 0), and you report it as <i>p</i> &lt; .001.</p>
+<figure><img src="../R/output/L2-5_pairs.png" alt="pairs.panels scatterplot matrix" style="max-width:100%"><figcaption>Figure: <code>psych::pairs.panels()</code>. The diagonal shows each variable's histogram and density curve (you can see depression's clear right skew), the lower triangle shows scatterplots with fitted curves, and the upper triangle shows the correlation coefficients.</figcaption></figure>
+```r Confidence intervals and a missing-data demonstration
+round(confint(fit), 3)                         # 95% confidence intervals (3 decimals)
+d_na <- d
+d_na$Loneliness[c(3, 10, 25)] <- NA            # make 3 values missing on purpose
+cor(d_na$Loneliness, d_na$Social_support)      # NA spreads
+cor(d_na$Loneliness, d_na$Social_support, use = "pairwise.complete.obs")
+nobs(lm(Depression ~ Loneliness, data = d_na)) # lm drops incomplete cases by default: 800 − 3
+```
+```out Output (R/output/L2-5_log.txt, end)
+                2.5 % 97.5 %
+(Intercept)     0.297  3.306
+Loneliness      0.239  0.399
+Social_support -0.543  0.081
+[1] NA
+[1] -0.416814
+[1] 797
+```
+<p>The 95% CI for social support, [−0.543, 0.081], contains 0, consistent with p = .146.</p>
+```r glm() has the same summary structure (Lesson 3.4 goes into detail)
+dat$dep_sum_t2 <- rowSums(dat[, paste0(dep_items, "_t2")])
+fit_glm <- glm(help_seek_t2 ~ dep_sum_t2 + gender, data = dat, family = binomial)
+summary(fit_glm)$coefficients     # coefficient table only: Estimate, Std. Error, z value, Pr(>|z|)
+exp(coef(fit_glm))                # odds ratios (OR)
+```
+
+<!-- extra:begin -->
+<h3>Worked example: read summary(fit) line by line, then write one sentence</h3>
+```out Output (R/output/L2-5_log.txt, excerpt)
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     1.80159    0.76637   2.351    0.019 *  
+Loneliness      0.31927    0.04081   7.824 1.62e-14 ***
+Social_support -0.23121    0.15895  -1.455    0.146    
+Residual standard error: 3.228 on 797 degrees of freedom
+Multiple R-squared:  0.09979,	Adjusted R-squared:  0.09754 
+```
+
+<p>How to read the t values, confidence intervals, and R² is covered in the annotated output and in Essential Math above. Three more points:</p>
+<ol><li><b>How to state the Estimate (b)</b>: always say what is controlled for. Among people with the same social support, each 1-point higher loneliness total goes with a depression total 0.319 points higher on average; among people with the same loneliness, each 1-point higher social support goes with depression 0.231 points lower on average.</li>
+<li><b>Pr(&gt;|t|)</b>: <code>1.62e-14</code> is scientific notation for 1.62 × 10⁻¹⁴; report it as p &lt; .001.</li>
+<li><b>Residual standard error = 3.228</b>: predicting depression with this model, the typical error is about 3.2 points. The SD of the depression total itself is 3.40, so predictions for individuals are still very rough.</li></ol>
+<p><b>One-sentence report:</b> "Controlling for social support, loneliness positively predicted depression (b = 0.32, 95% CI [0.24, 0.40], p &lt; .001); controlling for loneliness, the effect of social support was not significant (b = −0.23, 95% CI [−0.54, 0.08], p = .146). The model explained 10.0% of the variance in depression."</p>
+<h3>Why did social support become "non-significant"?</h3>
+<p>In the correlation matrix, social support and depression have r = −0.18, p &lt; .001, clearly significant. In the regression it is not, because social support is moderately to strongly correlated with loneliness (r = −0.42): most of the link between social support and depression can be explained by "people with more social support are less lonely." Once loneliness is controlled for, the unique contribution left to social support is small. This is not a contradiction: a correlation answers "is there an association?", while a regression coefficient answers "how much unique association is left after controlling for the other variables?" (Lesson 3.2). Each edge of a partial correlation network (Lesson 6.2) is an association in this second sense.</p>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b>Reporting only stars.</b> <code>***</code> is only shorthand for a range of p-values and cannot replace the numbers. Report at least b (or β), the 95% CI, and p.</li></ul></div>
+
+<h3>How to read a descriptive statistics table</h3>
+<p>When you get the output of <code>describe()</code>, check it in this order. ① <b>n</b>: is every variable 800? If one has fewer, values are missing and the number of people in later analyses will change. ② <b>min / max</b>: are they within the scale's possible range? The loneliness total runs 4–16 and the depression total 0–15; neither goes out of bounds. ③ <b>mean and sd</b>: mean depression is 3.84, low relative to the maximum of 15, so the sample as a whole is not very depressed. ④ <b>skew</b>: see above; loneliness at 0.36 is fairly symmetric.</p>
+<h3>Previewing the network from the correlation matrix</h3>
+<p>The correlation matrix already hints at the shape of the network: loneliness and social support, r = −0.42, is the strongest association in the table; depression correlates −0.29 with sleep and −0.25 with life satisfaction; sleep and social support, r = 0.05, are almost unrelated. In a partial correlation network (Lesson 6.2), some correlations shrink or even disappear once other variables are controlled for, as with social support and depression above. When you reach Lesson 6.2, put this correlation matrix next to the estimated network and see which associations survive controlling for the other variables.</p>
+
+<h3>Mini exercise: reading a new coefficient</h3>
+<p>Suppose you add sleep duration to the model and get "Sleep b = −0.80, 95% CI [−1.01, −0.59]." Try writing the interpretation: among people with the same loneliness and social support, each extra hour of sleep per day goes with a depression total about 0.8 points lower on average; the interval does not contain 0, so it is significant at the .05 level. Then think: why can't you write "sleeping 1 more hour lowers depression by 0.8 points"? (Hint: these are cross-sectional data.) Note: these numbers are made up for practice and are not results from the course data.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: What does use = "pairwise.complete.obs" in cor() mean?
+- Drop every case that has any missing value || That is complete.obs (listwise deletion).
++ For each pair of variables, drop only the cases missing on those two variables || Correct: pairwise deletion.
+- Fill in missing values with the mean || pairwise only drops cases and fills in nothing; mean imputation is a different (usually not recommended) approach.
+E: The benefit is that more data are used; the cost is that different correlations may rest on different people.
+```
+```quiz
+Q: Which Module 1 concept is the Std. Error in summary(lm())?
+- The sample standard deviation || That describes differences between individuals.
++ The standard error: how much the coefficient estimate varies over repeated samples || Correct (Lesson 1.5).
+- The p-value || The p-value is in the Pr(>|t|) column.
+E: t value = Estimate / Std. Error; Pr(>|t|) is the p-value.
+```
+```quiz
+Q: A coefficient has Estimate = 0.50 and Std. Error = 0.20. What is the t value, roughly?
+N: 2.5 | 0.01
+H: t = Estimate ÷ Std. Error.
+E: 0.50 / 0.20 = 2.5.
+```
+```quiz
+Q: In psych::describe(), the depression total has skew = 0.85. What does that tell you?
++ The distribution is right-skewed: most people score low and a few score very high || Correct.
+- The distribution is left-skewed || A positive value means right skew, with the tail on the high-score side.
+- The distribution is close to normal, because |skew| is below 1 || 1 is only a rough rule of thumb; 0.85 is still a clear right skew, and this lesson treats it as non-normal.
+E: Symptom scales are often right-skewed in community samples.
+```
+```quiz
+Q: In the p-value matrix from corr.test(), the same pair of variables has different values in the upper and lower triangles. Why?
+- The lower triangle uses Pearson correlations and the upper triangle Spearman || Both triangles use the same correlation; the difference is that the upper triangle is adjusted for multiple comparisons.
++ The lower triangle holds unadjusted p-values, the upper triangle p-values adjusted for multiple comparisons (Holm by default) || Correct.
+- The upper triangle holds correlation coefficients || The whole ct$p matrix is p-values; the correlations are in ct$r.
+E: This is the multiple testing of Lesson 1.6.
+```
+```quiz
+Q: Does the intercept of 1.80 have a practical meaning in this model?
+- Yes: someone who is not lonely at all scores 1.8 on depression || The lowest possible loneliness total is 4; 0 lies outside the data.
++ Not directly: it is the prediction for loneliness = 0 and social support = 0, and neither can be 0 || Correct.
+E: To give the intercept a meaning, center the predictors first (subtract their means).
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.5-A: Reproduce the Module 1 hand calculations</h4>
+<p>Reproduce the hand-calculation exercises from Module 1: descriptive statistics, a correlation matrix, and a simple regression. Compare the correlation matrix you "expected" in Lesson 1.4 with the actual results, and write down the differences and possible reasons.</p>
+<details class="answer"><summary>Reference code and points of comparison</summary>
+```r
+x <- c(8, 10, 9, 14, 7, 12)          # the 6 loneliness scores you worked by hand in Lesson 1.2
+mean(x); var(x); sd(x)               # compare with your hand calculation
+psych::describe(d)
+round(cor(d), 2)
+summary(lm(Depression ~ Loneliness, data = d))
+```
+<p>Points of comparison (course data): loneliness–depression +0.31 (as expected); loneliness–social support −0.42 (the strongest, as expected); sleep duration–depression −0.29; social support–depression only −0.18, weaker than many people expect; sleep–social support almost 0 (0.05). Possible reasons: (1) part of the link between social support and depression runs through loneliness; (2) the data are simulated, and when they were generated, social support was linked directly only to the loneliness trait (see <code>data/simulate_data.R</code>). In real research, you would look for the reasons in theory, measurement, and the characteristics of the sample.</p></details></div>
+<div class="exitem"><h4>Exercise 2.5-B: An item-level correlation matrix</h4>
+<p>Compute the correlation matrix of the 9 items at T1 (<code>cor(dat[, vars_t(1)])</code>). Roughly what range do the correlations fall in among the loneliness items, among the depression items, and between loneliness and depression items? What does this mean for the network analysis later? Then use <code>psych::describe()</code> to look at each item's skew.</p>
+<details class="answer"><summary>Reference results</summary><p>Among loneliness items 0.44–0.51; among depression items 0.37–0.44; between loneliness and depression items 0.12–0.25 (the highest is 0.25, between lone3 Feeling isolated and dep5 Worthlessness). Item-level correlations across constructs are much weaker than within constructs, so in the network the loneliness nodes and the depression nodes will each form a cluster, with only weak bridges between the two (Modules 6 and 7). Skew: loneliness items 0.30–0.40 (close to symmetric), depression items 0.92–1.05 (right-skewed), a reminder that the depression items are not normally distributed.</p></details></div>
+<div class="exitem"><h4>Exercise 2.5-C: Missing values and the summary of glm()</h4>
+<p>(1) As in this lesson's code, make a copy <code>d_na</code> of the data and set the 3rd, 10th, and 25th values of <code>Loneliness</code> to NA. Compute <code>cor(d_na[, c("Loneliness", "Depression", "Social_support")])</code> with <code>use = "everything"</code> (the default), <code>"complete.obs"</code>, and <code>"pairwise.complete.obs"</code>. Which one returns NA? Which results of the last two are the same, which differ, and why? (2) Run this lesson's <code>fit_glm</code>, read the Estimate, z value, and p in the <code>dep_sum_t2</code> row, compute the OR, and explain it in one sentence.</p>
+<details class="answer"><summary>Reference answer</summary><p>(1) With the default <code>"everything"</code>, every correlation involving loneliness is NA. With the other two methods, the two correlations involving loneliness are identical (loneliness–depression 0.3103, loneliness–social support −0.4168), because both methods drop only the 3 people missing loneliness. What differs is depression–social support: listwise deletion (complete.obs) first deletes the whole rows of the 3 people with any missing value and computes every correlation on 797 people (−0.1729); pairwise deletion drops them only for the correlations that involve loneliness, so depression–social support still uses all 800 people (−0.1751). The difference is small, but it shows that the two methods use different samples. When several columns are missing for different people, the differences grow, and in a pairwise correlation matrix each correlation may be based on a different number of people. (Solution script: <code>R/solutions/L2-5_solution.R</code>.) (2) Estimate ≈ 0.134, z ≈ 5.43, p &lt; .001; OR = exp(0.134) ≈ 1.14. In one sentence: controlling for gender, each 1-point higher T2 depression total multiplies the odds of seeking help at T2 by about 1.14 (about 14% higher). Note that these are odds, not probabilities (Lesson 3.4).</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li><code>psych::describe()</code> shows n, mean, standard deviation, range, and skew; get to know the data before modeling.</li>
+<li><code>cor()</code> / <code>corr.test()</code> give the correlation matrix (the upper triangle of the p-values is adjusted); <code>use =</code> sets how missing values are handled.</li>
+<li><code>summary(lm())</code>: Estimate = b, Std. Error = standard error, t = b/SE, Pr = p-value; <code>confint()</code> gives the intervals. Next lesson: {{L:2.6}}.</li></ul>
+</section>

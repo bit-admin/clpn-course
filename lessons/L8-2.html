@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.2 边权重准确性：bootnet 与自定义 CLPN 估计函数 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L8-2.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="8.2" style="--c:#64748b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L8-2">CLPN 课程大纲</a><span class="crumb">M8 稳定性与准确性检验 / 8.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L8-2.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L8-2.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details open style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html" class="cur" aria-current="page"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 8 · Stability &amp; Accuracy · 第 8.2 课</div>
+<h1>边权重准确性：bootnet 与自定义 CLPN 估计函数</h1>
+<div class="facts"><span>课文学习 2 小时 30 分钟（分 2 次）</span><span>先修：<a href="L8-1.html">8.1 Bootstrap 的思想：用样本模拟“再做一次研究”</a>、<a href="L7-4.html">7.4 出期望影响、入期望影响与跨构念桥接</a></span><span>配套脚本：<a href="../R/L8-2.R">R/L8-2.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>把 7.2 的估计代码封装为函数，供 bootnet 的 estimateNetwork(default = &quot;none&quot;, fun = …, directed = TRUE) 调用</li><li>运行非参数 bootstrap，画出边权重的 bootstrap 区间</li><li>使用边权重差异检验并谨慎解读</li><li>理解正则化估计下 bootstrap 区间的解读注意事项（不能当作严格的置信区间）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>边权重准确性</b><span class="en">edge-weight accuracy</span></li><li><b>bootstrap 区间</b><span class="en">bootstrapped CI</span></li><li><b>差异检验</b><span class="en">bootstrapped difference test</span></li><li><b>自定义估计函数</b><span class="en">custom estimator</span></li><li><b>并行计算</b><span class="en">nCores</span></li></ul>
+<p>本课把 7.2 课的 CLPN 估计代码封装成函数，交给 bootnet 重复运行 1000 次，学会读懂边权重的 bootstrap 区间图和差异检验，并理解正则化估计下这些区间的局限。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>思路：把“整个估计流程”放进 bootstrap 循环</h3>
+<p>8.1 课里，每次 bootstrap 只重新算一个相关系数。现在，每次 bootstrap 要重新做整个 CLPN 估计：9 个 cv.glmnet、每个都重新交叉验证选 λ。因此需要一个 <span class="term">自定义估计函数<span class="en">（custom estimator）</span></span>：输入一份数据，输出一个 9 × 9 矩阵。bootnet 负责重抽样、调用这个函数 1000 次、汇总结果。</p>
+<h3>写成函数的三条规则</h3>
+<ol><li><b>函数只依赖它的参数。</b>不要在函数里使用外面定义的变量（如 <code>t1_vars</code>）。<span class="term">并行计算<span class="en">（nCores）</span></span> &gt; 1 时，每个子进程只拿到函数本身，看不到全局变量。课程脚本的做法：数据的前 p 列是 T1，后 p 列是 T2，函数内部用 <code>ncol(data)/2</code> 算 p。</li>
+<li><b>包函数写全名</b>：<code>glmnet::cv.glmnet</code>，子进程中不一定已经 <code>library(glmnet)</code>。</li>
+<li><b>告诉 bootnet 要保存什么</b>：<code>statistics = c("edge", "outExpectedInfluence", "inExpectedInfluence")</code>；有向网络要设 <code>directed = TRUE</code>。</li></ol>
+<h3>读懂边权重区间图</h3>
+<p><code>plot(boot, order = "sample")</code> 画出每条边，边按样本估计值从大到小排列。图中有三样东西：红线（点）= 原样本估计；黑线（点）= 1000 个 bootstrap 估计的均值；灰色带 = bootstrap 区间（这里用 <code>CIstyle = "quantiles"</code>，即 2.5% 与 97.5% 百分位）。红线和黑线不重合，是 LASSO 在重抽样本上收缩、有时把边压成 0 造成的，见下文“为什么正则化让区间偏”。下面是一个模拟版本，绿圈是课程数据的总体目标值（<code>true_B_population.csv</code>，标准 CLPN 在样本无限大时的目标）。只有模拟研究才知道它；它也不等于被试内真值（7.2 课），bootstrap 只能告诉你估计离总体目标值有多不确定，不能告诉你离被试内过程有多远。调节样本量和 λ，观察区间的变化。</p>
+<div class="widget w2" data-widget="edgeci"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>三个解读要点</h3>
+<ol><li><b>看重叠，而不是看“是否显著”。</b>如果最强的几条边区间大幅重叠，就不能说“A→B 比 C→D 强”。</li>
+<li><b>区间包含 0 的边：</b>说明至少有一部分（不少于 2.5%）bootstrap 样本中这条边被 LASSO 压成了 0 或符号相反，估计不稳定，不应重点解释。课程脚本还报告 <code>prop0</code>：这条边在 bootstrap 样本中为 0 的比例。</li>
+<li><b>区间不是严格的 95% 置信区间。</b>LASSO 把系数往 0 压，所以 bootstrap 分布是“偏向 0、在 0 处堆积”的，区间的覆盖率不能保证是 95%。Epskamp 等人（2018）建议把它理解为“估计精确度”的描述，而不是假设检验工具。</li></ol>
+<h3>课程数据的实际结果</h3>
+<div class="tablewrap"><table><tr><th>边</th><th>样本估计</th><th>bootstrap 均值</th><th>2.5%</th><th>97.5%</th><th>prop0</th><th>总体目标值</th><th>被试内真值</th></tr><tr><td>dep3 → dep4</td><td>0.135</td><td>0.129</td><td>0.050</td><td>0.214</td><td>0.000</td><td>0.169</td><td>0.160</td></tr><tr><td>lone2 → lone4</td><td>0.127</td><td>0.132</td><td>0.059</td><td>0.200</td><td>0.000</td><td>0.142</td><td>0.100</td></tr><tr><td>lone4 → dep4</td><td>0.108</td><td>0.094</td><td>0.011</td><td>0.180</td><td>0.018</td><td>0.005</td><td>0.000</td></tr><tr><td>lone4 → lone2</td><td>0.101</td><td>0.098</td><td>0.023</td><td>0.178</td><td>0.008</td><td>0.066</td><td>0.000</td></tr><tr><td>lone4 → lone3</td><td>0.096</td><td>0.098</td><td>0.016</td><td>0.176</td><td>0.013</td><td>0.064</td><td>0.000</td></tr><tr><td>dep4 → lone2</td><td>−0.090</td><td>−0.088</td><td>−0.161</td><td>−0.001</td><td>0.023</td><td>−0.083</td><td>−0.150</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">来源：R/output/L8-2_cl_edge_boot.csv（1000 次非参数 bootstrap）；最后两列是答案，来自 data/true_B_population.csv 与 data/true_B_within.csv，真实研究中没有这两列。课程脚本默认单核（<code>nCores = 1</code>），所以设定 <code>set.seed(2026)</code> 后，你自己运行得到的表应与此完全相同。如果改用多核并行，<code>set.seed()</code> 管不到每个子进程，第 2–3 位小数会略有不同；样本估计（第 2 列）仍每次完全相同。</p>
+<p>最强的 5 条交叉滞后边，区间宽度都在 0.15 左右并大幅重叠；差异检验显示它们两两之间没有一对“显著不同”。所以写作时不能说“睡眠问题 → 疲乏是最强的边”，只能说“最强的几条边包括……，它们之间的差异未达到 bootstrap 差异检验的显著水平”。</p>
+<h4>prop0 与区间端点是怎样联系起来的</h4>
+<p>表中的 prop0 和 2.5% 两列说的是同一件事的两面。对一条样本估计为正的边，bootstrap 值要么是 0（被 LASSO 压掉），要么大多是正数。把 1000 个值从小到大排，0 排在最前面。第 2.5 百分位大约是第 25 个值：只要被压成 0 的超过 25 个（prop0 &gt; 0.025），第 25 个值就是 0，下限恰好等于 0；prop0 低于 0.025 时，下限才是一个正数，而且往往只比 0 大一点。lone4 → dep4 的 prop0 为 0.018，下限 0.011；dep5 → dep4 的 prop0 为 0.022，下限 0.002。这两条边的区间“刚好不含 0”，只是因为把它们压成 0 的重抽样本不到 2.5%，再多几个就会含 0。所以读表时，下限很接近 0 的边与下限等于 0 的边要同样谨慎，不要以“含不含 0”划一条硬线。负边反过来看上限：dep4 → lone2 的上限是 −0.001，绝对值很小，情况相同。</p>
+<p>再看最后两列。表中 lone4 → lone2（区间 [0.023, 0.178]）和 lone4 → lone3（[0.016, 0.176]）是样本中最强的几条边之一，它们的总体目标值分别为 0.066 和 0.064，被试内真值却都是 0：它们是稳定特质造成的同构念边（7.2 课）。bootstrap 区间回答的是“如果重新抽一份同样的样本，这个估计会变多少”，它衡量的是相对于总体目标值的抽样不确定性。一条特质边在总体中确实存在，样本越大，它的区间越窄、越稳定地离开 0，但它始终不是被试内过程的边。所以“区间不含 0”最多说明这条边在总体中的预测关系可能不为 0，不说明它反映了被试内的动态作用。</p>
+<h3>边权重<span class="term">差异检验<span class="en">（bootstrapped difference test）</span></span></h3>
+<p>对每一对边，计算每个 bootstrap 样本中“边 A − 边 B”的差，若差值的 95% 区间不含 0，则认为两者“显著不同”。<code>plot(boot, "edge", plot = "difference")</code> 画出一个方阵：黑格 = 显著不同，灰格 = 不显著。注意：要比较的边对数量很多时，这是大量的多重比较，且同样受正则化影响，结论应保守。</p>
+<h3>例题：两条边的区间重叠，差异检验怎么判断？</h3>
+<p>以 dep3 → dep4（区间 [0.050, 0.214]）和 lone4 → dep4（[0.011, 0.180]）为例。两个区间都不含 0，而且大部分重叠。只看这两个区间，既不能说它们一样强，也不能说 dep3 → dep4 更强。差异检验的做法是：在每个 bootstrap 样本里，把同一个重抽样本估计出的两条边相减，得到 1000 个差值 \(d^{*(b)}\)，再看差值的 95% 区间是否含 0。下面是 R/L8-2.R 日志中这一部分的开头：</p>
+<div class="codeblk"><div class="ctitle">实际输出：R/output/L8-2_log.txt（节选）</div><pre class="out"><code>最强 5 条 CL 边之间的差异检验（TRUE = 95% bootstrap 区间不含 0）：
+          id1          id2       lower      upper significant
+   dep3-&gt;dep4 lone2-&gt;lone4 -0.10582369 0.10192568       FALSE
+   dep3-&gt;dep4  lone4-&gt;dep4 -0.14943357 0.07794292       FALSE</code></pre></div>
+<p>第二行就是这两条边（<code>lower</code>、<code>upper</code> 是差值区间的两端）：差值区间含 0，没有检出差异。最强 5 条边共 10 对比较，全部不显著（区间都包含 0）。差值区间比单条边的区间更宽，因为差值同时带着两条边各自的波动。</p>
+<p>为什么不能用“区间是否重叠”代替差异检验？差值的方差是</p>
+<div class="mathbox">\[\mathrm{Var}(d^*)=\mathrm{Var}(\hat\beta^*_A)+\mathrm{Var}(\hat\beta^*_B)-2\,\mathrm{Cov}(\hat\beta^*_A,\hat\beta^*_B)\]</div>
+<p>两个区间各自只反映前两项，看不到第三项。在同一个 bootstrap 样本里，两条边的估计可能一起变大、一起变小（协方差为正），差值就比两个区间看上去更稳定；也可能此消彼长（协方差为负），差值就更不稳定。dep3 → dep4 与 lone4 → dep4 都来自预测 dep4 的同一个 LASSO 回归；dep3 与 lone4 在 T1 相关时，它们在回归里分的是同一部分方差，一条边分到的多，另一条就少。即使两个估计相互独立（协方差为 0），两个区间稍有重叠时差值也可能显著；只有完全不重叠时，才大致可以推断差值显著。所以比较两条边要做差异检验，不能目测区间。</p>
+<h3>每次重抽都重新选 λ</h3>
+<p><code>clpn_fun</code> 在每个 bootstrap 样本上重新做 10 折交叉验证、重新选 λ。所以区间反映的不只是“λ 固定时系数怎么变”，还包括“λ 本身怎么变”：某次重抽选出的 λ 偏大，一批弱边会同时被压成 0；偏小，它们又会同时回来。如果在函数里把 λ 固定为全样本选出的值，区间会窄一些，但那等于假设 λ 事先已知，会低估不确定性。bootnet 对内置估计方法也是这样做的：每次重抽都把整个估计函数重跑一遍，包括选择调节参数。原则是 bootstrap 重复整个估计流程，流程中每一步的随机性都包括在内。交叉验证随机分折带来的变异（9.2 课：换种子会改变弱边）也因此进入了 bootstrap 区间，而单次估计看不到它。</p>
+<h3>常见误读与纠正</h3>
+<ul><li><b>误读：prop0 很低、区间不含 0，说明这条边在总体中确实这么强。</b>bootstrap 只在本样本内重抽，样本本身偏离总体的部分它看不出来。lone4 → dep4 的 prop0 只有 0.018，区间不含 0，但它的总体目标值只有 0.005，被试内真值为 0.000。区间描述的是“换一批同样来源的人，估计会波动多大”，不是“估计离总体值有多远”。10.2 课的完整流程（无惩罚重估，并用两段数据互相印证）对这条边的判定是“未保留”。</li>
+<li><b>误读：bootstrap 均值比样本估计小，说明样本估计偏大，可以用均值来“校正”。</b>均值偏离样本估计，主要是因为 LASSO 在每个重抽样本上又收缩了一次，有时把边压成 0。这是方法在重抽样中的表现，不是对总体偏差的估计；用它“校正”等于把收缩偏差算两次。论文中报告样本估计及其区间。</li>
+<li><b>误读：区间宽说明这条边不重要。</b>区间宽只说明估计不精确。总体中中等强度的边，在样本较小时区间也会很宽。结论应是“这份数据不足以精确估计它”，而不是“它不重要”。</li></ul>
+<h3>非参数 bootstrap 也能看中心性</h3>
+<p>因为我们保存了 outExpectedInfluence 与 inExpectedInfluence，<code>plot(boot, statistics = "outExpectedInfluence", plot = "difference")</code> 可以检验节点之间 out-EI 的差异。不过中心性“排序是否稳定”更标准的工具是下一课的 case-dropping bootstrap 与 CS 系数。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>bootstrap 区间能否当作边的“显著性检验”，用来数有几条“显著边”？</summary><p>不能。正则化估计的 bootstrap 区间覆盖率没有保证（本课“三个解读要点”第 3 条），不能换算成 p 值，“区间不含 0 的边有几条”也就不是“显著边的条数”。论文里可以报告这个数，作为准确性的概括，但措辞应是“区间不含 0”，而不是“显著”。如果需要对单条边做检验，要用 7.5 课介绍的完整流程（无惩罚重估后看 p 值；毕业项目在 10.2 课把它作为必做的敏感性分析）。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>对第 b 个 bootstrap 样本，重新估计整个矩阵：</p>
+<div class="mathbox">\[\hat B^{*(b)}=\mathrm{CLPN}\big(\text{第 } b \text{ 个重抽样本}\big),\qquad b=1,\dots,1000\]</div><div class="mathbox">\[\mathrm{CI}_{kj}=\Big[\ q_{0.025}\big(\{\hat\beta^{*(b)}_{kj}\}_b\big),\ \ q_{0.975}\big(\{\hat\beta^{*(b)}_{kj}\}_b\big)\ \Big],\qquad \mathrm{prop0}_{kj}=\frac{1}{1000}\sum_b \mathbb{1}\big[\hat\beta^{*(b)}_{kj}=0\big]\]</div><div class="mathbox">\[\text{差异检验：}\ d^{*(b)}=\hat\beta^{*(b)}_{A}-\hat\beta^{*(b)}_{B},\quad \text{若 } 0\notin[q_{0.025}(d^*),q_{0.975}(d^*)]\ \Rightarrow\ \text{“显著不同”}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\hat B^{*(b)}\)</td><td>第 b 个 bootstrap 样本上估计的 9 × 9 矩阵</td></tr><tr><td>\(q_{0.025}(\cdot)\)</td><td>第 2.5 百分位数</td></tr><tr><td>\(\mathbb{1}[\cdot]\)</td><td>示性函数：条件成立为 1，否则为 0</td></tr><tr><td>\(\mathrm{prop0}_{kj}\)</td><td>这条边在 bootstrap 中被压成 0 的比例</td></tr><tr><td>\(d^{*(b)}\)</td><td>第 b 个样本中两条边之差</td></tr></table>
+<h4>为什么正则化让区间“偏”？</h4>
+<p>回忆软阈值：\(\hat\beta=\mathrm{sign}(z)\max(|z|-\lambda,0)\)。若某条边的总体目标值是 0.06、λ ≈ 0.04，那么在相当一部分 bootstrap 样本中 |z| &lt; λ，估计恰好为 0；其余样本中估计值被减去 λ。于是 bootstrap 分布在 0 处有一个“尖峰”，其余部分整体偏向 0。百分位区间的下限常常恰好是 0（本次运行中，最强 10 条交叉滞后边的区间都没有碰到 0：靠近 0 的那一端，绝对值最小的只有 0.001，但从第 11 强的边（lone1 → dep2）起，端点就等于或几乎等于 0；再往下的弱边几乎都是如此）。这种区间不满足普通置信区间的覆盖性质。</p>
+<h4>计算量</h4>
+<p>每次 <code>cv.glmnet(nfolds = 10)</code> 要拟合 11 条 glmnet 路径：10 折各一条，最后在全部数据上再拟合一条；每条路径沿最多 100 个 λ 值求解（glmnet 用“热启动”，从大 λ 到小 λ 依次求解，比独立拟合 100 次快得多）。所以 1000 次 bootstrap × 9 个节点 × 11 条路径 ≈ 10 万条 glmnet 路径，脚本末尾 200 次手写 bootstrap 再加约 2 万条。课程脚本单核运行 1000 次约需 7–15 分钟（R/L8-2.R 在不同电脑上的实测范围，含差异检验与手写 bootstrap）。并行（<code>nCores</code> &gt; 1）可以快几倍，但 bootnet 的并行重抽样不受 <code>set.seed()</code> 控制，结果不再可重复。所以课程默认单核；初次练习可以先用 200 次。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L8-2.R 的核心部分（初次练习可先用 nBoots = 200；单核 1000 次约需 7–15 分钟）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(glmnet); library(qgraph) })
+dat &lt;- read_course_data()
+wide_items &lt;- dat[, c(vars_t(1), vars_t(2))]   # 18 列：前 9 列 T1，后 9 列 T2
+clpn_fun &lt;- function(data) {                   # 自定义估计函数：只依赖参数 data
+  p &lt;- ncol(data) / 2
+  X &lt;- scale(as.matrix(data[, 1:p]))           # T1
+  Y &lt;- scale(as.matrix(data[, (p + 1):(2 * p)]))   # T2
+  B &lt;- matrix(0, p, p)
+  for (j in seq_len(p)) {
+    cvfit &lt;- glmnet::cv.glmnet(X, Y[, j], alpha = 1, nfolds = 10)
+    B[, j] &lt;- as.numeric(coef(cvfit, s = &quot;lambda.min&quot;))[-1]
+  }
+  B                                            # 行 = T1（from），列 = T2（to）
+}
+set.seed(2026)
+net &lt;- estimateNetwork(wide_items, default = &quot;none&quot;, fun = clpn_fun,
+                       directed = TRUE, labels = items)
+set.seed(2026)
+boot &lt;- bootnet(net, nBoots = 1000, type = &quot;nonparametric&quot;,
+                nCores = 1,   # 单核：set.seed 后可重复；并行更快但不可重复
+                statistics = c(&quot;edge&quot;, &quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;))
+plot(boot, statistics = &quot;edge&quot;, order = &quot;sample&quot;, labels = TRUE, CIstyle = &quot;quantiles&quot;)
+s &lt;- as.data.frame(summary(boot, statistics = &quot;edge&quot;))
+s_cl &lt;- s[s$node1 != s$node2, c(&quot;node1&quot;, &quot;node2&quot;, &quot;sample&quot;, &quot;mean&quot;, &quot;q2.5&quot;, &quot;q97.5&quot;, &quot;prop0&quot;)]
+head(s_cl[order(-abs(s_cl$sample)), ], 10)     # 最强 10 条交叉滞后边
+plot(boot, &quot;edge&quot;, plot = &quot;difference&quot;, onlyNonZero = TRUE, order = &quot;sample&quot;)</code></pre></div>
+<p><b>说明：</b><code>default = "none", fun = clpn_fun</code> 告诉 bootnet 用我们自己的函数；<code>CIstyle = "quantiles"</code> 画百分位区间；<code>summary()</code> 返回每条边的样本值、bootstrap 均值、分位数和 prop0。脚本最后还有一个不依赖 bootnet 的“手写版”bootstrap（200 次），帮助你看清原理。</p>
+<h3>完整例题：读出一条边的 bootstrap 结果</h3>
+<p>以 lone4 → dep4 这条边为例（数值来自本次运行的 <code>R/output/L8-2_cl_edge_boot.csv</code>）：样本估计 = 0.108，bootstrap 均值 = 0.094，95% 区间 = [0.011, 0.180]，被压成 0 的比例 = 0.018。逐项解读：</p>
+<ol><li><b>样本估计</b>是用全部 800 人估计出的值，也是论文正文中报告的那个数。</li>
+<li><b>bootstrap 均值</b>与样本估计不一定谁大谁小。对中等及以上的边，均值往往略小，因为 LASSO 在每个 bootstrap 样本中都会收缩，有时还会把边压成 0。但这不是规律：上面“课程数据的实际结果”表中，lone2 → lone4 与 lone4 → lone3 的 bootstrap 均值（0.132、0.098）就略大于样本估计（0.127、0.096）。对样本估计接近 0 的弱边，均值反而常常离 0 更远，因为这条边在一部分重抽样中被估为非零。总之，bootstrap 均值不能代替样本估计，论文中报告的是样本估计及其区间。</li>
+<li><b>区间的下限</b>是否接近 0，决定了这条边是否“稳健地非零”。下限明显大于 0，说明换一批人，这条边基本还在；下限贴着 0，则说明在相当一部分 bootstrap 样本中它被删掉了。</li>
+<li><b>被压成 0 的比例</b>与区间下限传达的是同一件事，但更直观。例如比例为 0.30，就是“约三成的重抽样里这条边消失了”。</li></ol>
+<p>写法示例：“lone4 → dep4 的 bootstrap 95% 区间为 [0.011, 0.180]（B = 1000）”。如果区间下限接近 0，再补一句：“该边在部分重抽样中被压缩为 0，解释时应保持谨慎。”</p>
+<p>论文中应报告种子、B 和是否并行（并行时结果不能精确重现，见上文表格下的说明）。</p>
+<div class="box warnbox"><b class="bt">bootstrap 网络时的常见错误</b><ul>
+<li><b>自定义估计函数里用了全局变量。</b>bootnet 会把重抽样后的数据传给函数的 <code>data</code> 参数。如果函数内部仍然读取外部的 <code>dat</code>，每次 bootstrap 用的就都是原始数据，所有区间宽度都会接近 0。</li>
+<li><b>函数返回的不是矩阵，或行列名不一致。</b>bootnet 要求返回 p × p 的矩阵，并且行列名在每次 bootstrap 中都相同。</li>
+<li><b>只报告强边的区间。</b>弱边的区间同样重要，它们往往跨过 0，提醒读者网络中有很多边并不确定。</li></ul></div><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L8-2.R</code>（87 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L8-2.R  边权重准确性：bootnet 自定义 CLPN 估计函数 + 手写 bootstrap
+# (Edge-weight accuracy: custom bootnet estimator &amp; a manual bootstrap)
+# ---------------------------------------------------------------------
+# 与课件草稿相比的 3 处修正（已实测通过，bootnet 1.6+）：
+#  (1) 估计函数内部不能依赖全局变量（如 t1_vars）——并行（nCores &gt; 1）时
+#      子进程看不到它们。这里改为“前 p 列 = T1，后 p 列 = T2”，并写 glmnet::cv.glmnet。
+#  (2) estimateNetwork() 的数据只放 2p 列（T1 题目 + T2 题目，同样顺序），
+#      labels 只给 p 个节点名；返回的矩阵必须是 p × p。
+#  (3) bootnet() 要显式写 statistics = c(&quot;edge&quot;, &quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;)，
+#      否则不会保存有向网络的出/入 EI。
+# 运行时间：1000 次 × 9 个 cv.glmnet；单核约 7–15 分钟（视电脑而定，含差异检验与手写 bootstrap）。初次练习可把 n_boots 改成 200。
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(glmnet); library(qgraph) })
+log_open(&quot;L8-2_log.txt&quot;)
+dat &lt;- read_course_data()
+wide_items &lt;- dat[, c(vars_t(1), vars_t(2))]      # 18 列：前 9 列 T1，后 9 列 T2
+labs &lt;- items
+n_boots &lt;- 1000
+# 可重复性：bootnet 的并行（nCores &gt; 1）在各工作进程中用未设种子的随机数重抽样，
+# 即使 set.seed() 结果每次也会略有不同。因此默认单核（nCores = 1），set.seed() 后结果完全可重复（约慢 5–7 倍）。
+# 只想快速看看、不需要可重复时，可改为 max(1, parallel::detectCores() - 1)。
+n_cores &lt;- 1
+
+# ---- 自定义估计函数（custom estimator）----
+clpn_fun &lt;- function(data) {
+  p &lt;- ncol(data) / 2                              # 节点数 = 列数的一半
+  X &lt;- scale(as.matrix(data[, 1:p]))               # T1
+  Y &lt;- scale(as.matrix(data[, (p + 1):(2 * p)]))   # T2
+  B &lt;- matrix(0, p, p)
+  for (j in seq_len(p)) {
+    cvfit &lt;- glmnet::cv.glmnet(X, Y[, j], alpha = 1, nfolds = 10)
+    B[, j] &lt;- as.numeric(coef(cvfit, s = &quot;lambda.min&quot;))[-1]
+  }
+  B                                                # 行 = T1（from），列 = T2（to）
+}
+set.seed(2026)
+net &lt;- estimateNetwork(wide_items, default = &quot;none&quot;, fun = clpn_fun,
+                       directed = TRUE, labels = labs)
+B_hat &lt;- net$graph; dimnames(B_hat) &lt;- list(labs, labs)
+cat(&quot;估计的网络（与 L7-2 相同方法与种子，结果相同）：\n&quot;); print(round(B_hat, 2))
+
+set.seed(2026)
+boot &lt;- bootnet(net, nBoots = n_boots, type = &quot;nonparametric&quot;, nCores = n_cores,
+                statistics = c(&quot;edge&quot;, &quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;),
+                verbose = FALSE)
+saveRDS(boot, out(&quot;L8-2_boot.rds&quot;))
+
+# ---- 边权重的 bootstrap 区间图 ----
+png_open(&quot;L8-2_edge_ci.png&quot;, 1600, 3200)
+print(plot(boot, statistics = &quot;edge&quot;, order = &quot;sample&quot;, labels = TRUE, plot = &quot;area&quot;,
+           CIstyle = &quot;quantiles&quot;))
+invisible(dev.off())
+# 只看交叉滞后边：从 summary 中取出
+s &lt;- summary(boot, statistics = &quot;edge&quot;)
+s &lt;- as.data.frame(s)
+s_cl &lt;- s[s$node1 != s$node2, c(&quot;node1&quot;, &quot;node2&quot;, &quot;sample&quot;, &quot;mean&quot;, &quot;q2.5&quot;, &quot;q97.5&quot;, &quot;prop0&quot;)]
+s_cl &lt;- s_cl[order(-abs(s_cl$sample)), ]
+cat(&quot;\n最强 10 条交叉滞后边的 bootstrap 区间（q2.5–q97.5 百分位；prop0 = 被压为 0 的比例）：\n&quot;)
+print(head(s_cl, 10), row.names = FALSE, digits = 3)
+write.csv(s_cl, out(&quot;L8-2_cl_edge_boot.csv&quot;), row.names = FALSE)
+
+# ---- 边权重差异检验（bootstrapped difference test）----
+top5 &lt;- head(s_cl, 5); top5_id &lt;- paste0(top5$node1, &quot;-&gt;&quot;, top5$node2)
+png_open(&quot;L8-2_edge_difference.png&quot;, 1800, 1800)
+suppressWarnings(print(plot(boot, &quot;edge&quot;, plot = &quot;difference&quot;, onlyNonZero = TRUE, order = &quot;sample&quot;)))
+invisible(dev.off())
+cat(&quot;\n最强 5 条 CL 边之间的差异检验（TRUE = 95% bootstrap 区间不含 0）：\n&quot;)
+dt &lt;- differenceTest(boot, top5_id, top5_id, measure = &quot;edge&quot;)
+print(dt[dt$id1 &lt; dt$id2, c(&quot;id1&quot;, &quot;id2&quot;, &quot;lower&quot;, &quot;upper&quot;, &quot;significant&quot;)], row.names = FALSE)
+
+# ---- 手写版 bootstrap（不依赖 bootnet，帮助你理解原理；默认 200 次）----
+set.seed(82)
+n &lt;- nrow(wide_items); manual_B &lt;- 200
+boot_arr &lt;- array(NA, c(9, 9, manual_B), dimnames = list(labs, labs, NULL))
+for (b in 1:manual_B) {
+  idx &lt;- sample(n, n, replace = TRUE)                    # 有放回重抽个案
+  boot_arr[, , b] &lt;- clpn_fun(wide_items[idx, ])         # 在新样本上重新估计整个 CLPN
+}
+lo &lt;- apply(boot_arr, c(1, 2), quantile, .025); hi &lt;- apply(boot_arr, c(1, 2), quantile, .975)
+cat(&quot;\n手写 bootstrap（&quot;, manual_B, &quot;次）：lone3 → dep1 的区间 = [&quot;,
+    round(lo[&quot;lone3&quot;, &quot;dep1&quot;], 3), &quot;,&quot;, round(hi[&quot;lone3&quot;, &quot;dep1&quot;], 3), &quot;]；&quot;,
+    &quot;被压为 0 的比例 =&quot;, mean(boot_arr[&quot;lone3&quot;, &quot;dep1&quot;, ] == 0), &quot;\n&quot;)
+cat(&quot;注意：LASSO 会把系数往 0 压（收缩 shrinkage），所以这些区间不是严格的 95% 置信区间，\n&quot;,
+    &quot;只能作为“估计精确度”的参考（Epskamp et al., 2018）。\n&quot;)
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L8-2_edge_ci.png" alt="L8-2_edge_ci.png" loading="lazy"><figcaption>图：<code>R/output/L8-2_edge_ci.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<figure><img src="../R/output/L8-2_edge_difference.png" alt="L8-2_edge_difference.png" loading="lazy"><figcaption>图：<code>R/output/L8-2_edge_difference.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L8-2_log.txt</code></div><pre class="out"><code>估计的网络（与 L7-2 相同方法与种子，结果相同）：
+      lone1 lone2 lone3 lone4 dep1  dep2 dep3  dep4 dep5
+lone1  0.42  0.00  0.02  0.01 0.02  0.08 0.00  0.06 0.05
+lone2  0.03  0.43  0.05  0.13 0.00  0.06 0.00 -0.02 0.00
+lone3  0.00  0.00  0.34  0.02 0.07 -0.07 0.00 -0.05 0.00
+lone4  0.06  0.10  0.10  0.45 0.08  0.04 0.03  0.11 0.09
+dep1   0.00  0.04  0.00  0.00 0.31  0.09 0.08  0.05 0.09
+dep2   0.00  0.00  0.06  0.00 0.08  0.31 0.02  0.02 0.02
+dep3   0.00  0.00  0.00  0.00 0.00  0.05 0.33  0.14 0.06
+dep4   0.00 -0.09  0.02  0.04 0.03  0.02 0.04  0.28 0.00
+dep5   0.00  0.00  0.00  0.01 0.07  0.03 0.03  0.09 0.36
+
+最强 10 条交叉滞后边的 bootstrap 区间（q2.5–q97.5 百分位；prop0 = 被压为 0 的比例）：
+ node1 node2  sample    mean     q2.5    q97.5 prop0
+  dep3  dep4  0.1353  0.1295  0.05032  0.21410 0.000
+ lone2 lone4  0.1269  0.1320  0.05865  0.19995 0.000
+ lone4  dep4  0.1084  0.0945  0.01077  0.18023 0.018
+ lone4 lone2  0.1010  0.0977  0.02255  0.17759 0.008
+ lone4 lone3  0.0962  0.0985  0.01562  0.17619 0.013
+ lone4  dep5  0.0926  0.0879  0.01384  0.16117 0.011
+  dep1  dep2  0.0921  0.0888  0.00694  0.16862 0.016
+  dep5  dep4  0.0910  0.0838  0.00215  0.16517 0.022
+  dep4 lone2 -0.0895 -0.0885 -0.16145 -0.00112 0.023
+  dep1  dep5  0.0855  0.0823  0.00295  0.16454 0.019
+
+最强 5 条 CL 边之间的差异检验（TRUE = 95% bootstrap 区间不含 0）：
+          id1          id2       lower      upper significant
+   dep3-&gt;dep4 lone2-&gt;lone4 -0.10582369 0.10192568       FALSE
+   dep3-&gt;dep4  lone4-&gt;dep4 -0.14943357 0.07794292       FALSE
+   dep3-&gt;dep4 lone4-&gt;lone2 -0.14292197 0.08405991       FALSE
+   dep3-&gt;dep4 lone4-&gt;lone3 -0.14251088 0.07323721       FALSE
+ lone2-&gt;lone4  lone4-&gt;dep4 -0.14590783 0.07753343       FALSE
+ lone2-&gt;lone4 lone4-&gt;lone2 -0.14821250 0.08119175       FALSE
+ lone2-&gt;lone4 lone4-&gt;lone3 -0.15197495 0.08515809       FALSE
+  lone4-&gt;dep4 lone4-&gt;lone2 -0.08696703 0.10046870       FALSE
+  lone4-&gt;dep4 lone4-&gt;lone3 -0.10479209 0.10483695       FALSE
+ lone4-&gt;lone2 lone4-&gt;lone3 -0.08473331 0.08567538       FALSE
+
+手写 bootstrap（ 200 次）：lone3 → dep1 的区间 = [ 0 , 0.144 ]； 被压为 0 的比例 = 0.035 
+注意：LASSO 会把系数往 0 压（收缩 shrinkage），所以这些区间不是严格的 95% 置信区间，
+ 只能作为“估计精确度”的参考（Epskamp et al., 2018）。</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L8-2_cl_edge_boot.csv</code></div><pre class="out"><code>&quot;node1&quot;,&quot;node2&quot;,&quot;sample&quot;,&quot;mean&quot;,&quot;q2.5&quot;,&quot;q97.5&quot;,&quot;prop0&quot;
+&quot;dep3&quot;,&quot;dep4&quot;,0.135287407696926,0.129471978987688,0.0503173527150592,0.21409737034934,0
+&quot;lone2&quot;,&quot;lone4&quot;,0.126850718941987,0.132019473705235,0.0586523108597272,0.199945530130672,0
+&quot;lone4&quot;,&quot;dep4&quot;,0.108400448113764,0.0944922993128555,0.01077209324964,0.180232984845686,0.018
+&quot;lone4&quot;,&quot;lone2&quot;,0.100957438322429,0.097705951247645,0.0225535348511831,0.177592405480132,0.008
+&quot;lone4&quot;,&quot;lone3&quot;,0.0961831245369467,0.0984977303930879,0.0156157989386846,0.176186280322461,0.013
+&quot;lone4&quot;,&quot;dep5&quot;,0.0926492337109501,0.0879303726838663,0.0138360850857382,0.161171815548668,0.011
+&quot;dep1&quot;,&quot;dep2&quot;,0.0920906023918615,0.0887969881200704,0.00693920895198231,0.1686179405694,0.016
+&quot;dep5&quot;,&quot;dep4&quot;,0.0909795187499614,0.0838399021251792,0.0021504867951639,0.165168738539519,0.022
+&quot;dep4&quot;,&quot;lone2&quot;,-0.0895258425789192,-0.0884983172773502,-0.1614498295271,-0.0011233628313892,0.023
+&quot;dep1&quot;,&quot;dep5&quot;,0.0855406097115414,0.0822817482909843,0.00295267129950929,0.164541874942912,0.019
+&quot;lone1&quot;,&quot;dep2&quot;,0.0845292414903466,0.0779848301188417,6.03505249692496e-06,0.149292175715633,0.025
+…（共 72 行数据，此处只显示前 11 行）</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">为什么要把估计过程写成函数？</p><ul class="opts"><li><button type="button" data-ok="0">A. 为了让代码更短、更好看</button><div class="ofb" hidden>好读是附带的好处；关键是 bootnet 要在每个重抽样本上重新运行同一套估计。</div></li><li><button type="button" data-ok="1">B. bootstrap 需要在每个重抽样本上重复“整个”估计流程，函数让 bootnet 可以反复调用</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. bootnet 只接受自定义函数，不提供内置估计方法</button><div class="ofb" hidden>bootnet 有 EBICglasso 等内置方法，但没有 CLPN 的逐节点 LASSO，所以要自己写。</div></li><li><button type="button" data-ok="0">D. 写成函数后 cv.glmnet 会自动并行，运行更快</button><div class="ofb" hidden>写成函数不会改变 cv.glmnet 的速度；并行由 bootnet 的 nCores 决定，而且会破坏可重复性。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">自定义估计函数中使用了外部变量 t1_vars，并设置 nCores = 4，可能发生什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 运行更快，结果与单核完全相同</button><div class="ofb" hidden>子进程看不到全局变量，根本跑不完；即使能跑，并行的结果也不受 set.seed() 控制。</div></li><li><button type="button" data-ok="1">B. 子进程找不到 t1_vars 而报错</button><div class="ofb" hidden>正确：函数应只依赖其参数。</div></li><li><button type="button" data-ok="0">C. 能运行，但每次都用原始数据估计，区间宽度接近 0</button><div class="ofb" hidden>这是另一种错误（在函数里直接读外部的数据框 dat）的后果；这里引用的只是列名，单核能运行，多核时直接报错。</div></li><li><button type="button" data-ok="0">D. bootnet 会自动改为单核</button><div class="ofb" hidden>bootnet 不会替你检查函数是否依赖全局变量。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">一条边的 bootstrap 区间包含 0，应如何解读？</p><ul class="opts"><li><button type="button" data-ok="0">A. 这条边在总体中为 0，应从网络中删除</button><div class="ofb" hidden>区间含 0 只说明不稳定，不能证明为 0；LASSO 的 bootstrap 分布本来就在 0 处堆积。</div></li><li><button type="button" data-ok="1">B. 这条边的估计不稳定（常被压为 0 或符号不稳），不宜重点解释</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 这条边 p > .05，不显著</button><div class="ofb" hidden>似是而非：正则化估计的 bootstrap 区间不是严格的置信区间，不能换算成 p 值（本课“三个解读要点”第 3 条）。</div></li><li><button type="button" data-ok="0">D. 应增大 λ 重新估计</button><div class="ofb" hidden>看了 bootstrap 结果再改 λ 是事后调整；而且 λ 越大，被压成 0 的边越多。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么正则化估计的 bootstrap 区间不能当成普通的 95% CI？</p><ul class="opts"><li><button type="button" data-ok="0">A. 因为 1000 次 bootstrap 不够</button><div class="ofb" hidden>次数只影响端点的蒙特卡罗误差；做 10000 次，分布照样偏向 0。</div></li><li><button type="button" data-ok="1">B. LASSO 的收缩与“压为 0”让 bootstrap 分布偏向 0 并在 0 处堆积，覆盖率无保证</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 因为百分位法本身不能给出置信区间</button><div class="ofb" hidden>对无惩罚的估计，百分位区间是常用的置信区间；问题出在 LASSO 的收缩，不在百分位法。</div></li><li><button type="button" data-ok="0">D. 因为课程数据是模拟的</button><div class="ofb" hidden>真实数据同样如此；模拟数据只是让我们能看到区间相对于总体目标值的偏移。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">课程数据中最强的 5 条交叉滞后边两两差异检验均不显著。正确的写法是？</p><ul class="opts"><li><button type="button" data-ok="0">A. dep3 → dep4 是最强的边，因为它的样本估计最大</button><div class="ofb" hidden>样本估计最大不等于确实最大；差异检验显示它与其余 4 条的差别都没有超出抽样波动。</div></li><li><button type="button" data-ok="1">B. 最强的几条边包括 …，它们之间的差异未达到 bootstrap 差异检验的显著水平</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 这 5 条边一样强</button><div class="ofb" hidden>似是而非：没有检出差异不等于相等，只说明这份数据不足以排序。</div></li><li><button type="button" data-ok="0">D. 差异检验失败，结果无效</button><div class="ofb" hidden>不显著是一个结果，不是失败；它告诉你不能对这几条边排序。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：最强 5 条边的区间<span class="lvl">动手</span></h4><p>运行 R/L8-2.R（可先 200 次），报告最强 5 条交叉滞后边的样本值与 bootstrap 区间，并用差异检验判断哪些边“明显不同于”其他边。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考（1000 次，当前输出）：dep3→dep4 0.135 [0.050, 0.214]；lone2→lone4 0.127 [0.059, 0.200]；lone4→dep4 0.108 [0.011, 0.180]；lone4→lone2 0.101 [0.023, 0.178]；lone4→lone3 0.096 [0.016, 0.176]。差异检验：10 对比较全部不显著（区间都包含 0）。课程脚本单核、固定种子，跑满 1000 次应得到完全相同的结果；若先用 200 次或改用并行，区间端点会在第 2–3 位小数上略有不同。结论：这 5 条边的强弱排序不可靠，只能说它们是“较强的一组边”。</p></details></div>
+<div class="exitem"><h4>练习 2：手写 bootstrap 一条边<span class="lvl">动手</span></h4><p>仿照 8.1 课，用 <code>clpn_fun</code> 写一个 200 次的循环，只记录 B["lone3", "dep1"]，求区间和 prop0，再与两份答案比较：总体目标值（<code>data/true_B_population.csv</code> 中为 0.118）和被试内真值（<code>data/true_B_within.csv</code> 中为 0.180）。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p><code>v &lt;- replicate(200, { idx &lt;- sample(n, n, TRUE); clpn_fun(wide_items[idx, ])[3, 5] })</code>（第 3 行 lone3、第 5 列 dep1）；<code>quantile(v, c(.025, .975)); mean(v == 0)</code>。脚本的手写部分（种子 82，200 次）得到区间 [0.000, 0.144]，被压为 0 的比例 0.035。你会看到区间整体偏向 0（样本估计 0.073，低于总体目标值 0.118），可能有一定比例为 0，这就是收缩偏差在 bootstrap 中的表现。被试内真值 0.180 更高，离区间更远；这一段差距来自特质混杂，bootstrap 本来就不针对它。</p></details></div>
+<div class="exitem"><h4>练习 3：在演示中体会 λ 的作用<span class="lvl">理解</span></h4><p>在本页“边权重 bootstrap 区间”演示中，先设 λ = 0，再设 λ = 0.05。描述区间形状和“0 占比”的变化。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>λ = 0（相当于 OLS）：区间大致以估计值为中心、对称，几乎没有边恰好为 0，绿圈（总体目标值）大多落在区间内。λ = 0.05：弱边的“0 占比”大增，区间的一端卡在 0，强边的区间整体向 0 平移，绿圈（总体目标值）常落在区间上端甚至外面。说明正则化区间不是普通置信区间。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>对你的 CLPN 做 1000 次（初次练习可先做 200 次）非参数 bootstrap，报告最强 5 条交叉滞后边的区间，并判断哪些边“明显不同于”其他边。</p></div><h3>自测问题</h3><ol><li>为什么要把估计过程写成函数？</li><li>一条边的 bootstrap 区间包含 0，应如何解读？</li><li>为什么正则化估计的 bootstrap 区间不能当成普通的 95% CI？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>把 CLPN 估计写成只依赖参数的函数，交给 bootnet(default = "none", fun = …, directed = TRUE)。</li><li>必须写 statistics = c("edge", "outExpectedInfluence", "inExpectedInfluence")。</li><li>读区间：看重叠与是否含 0；prop0 = 被压为 0 的比例。</li><li>正则化 bootstrap 区间偏向 0、在 0 处堆积，不是严格 95% CI。</li><li>课程数据：最强 5 条边两两差异均不显著 → 不能对它们排序。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">bootnet 与稳定性检验（CS 系数）的标准教程，模块 6、8。</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li></ul></section>
+<nav class="pager"><a href="L8-1.html" class="pv"><small>上一课</small>8.1 Bootstrap 的思想：用样本模拟“再做一次研究”</a><a href="L8-3.html" class="nx"><small>下一课</small>8.3 个案删除 bootstrap 与 CS 系数</a></nav>
+<p class="foot">CLPN 从零开始 · 第 8.2 课 · <a href="../index.html#L8-2">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

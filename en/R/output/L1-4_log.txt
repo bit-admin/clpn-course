@@ -1,0 +1,23 @@
+Covariance: Manual = 3.268  cov() = 3.268 
+Correlation r: Manual = 0.312  cor() = 0.312 
+
+                  lone_sum_t1 dep_sum_t1 social_support_t1 sleep_hours_t1
+lone_sum_t1              1.00       0.31             -0.42          -0.12
+dep_sum_t1               0.31       1.00             -0.18          -0.29
+social_support_t1       -0.42      -0.18              1.00           0.05
+sleep_hours_t1          -0.12      -0.29              0.05           1.00
+life_sat_t1             -0.33      -0.25              0.35           0.06
+                  life_sat_t1
+lone_sum_t1             -0.33
+dep_sum_t1              -0.25
+social_support_t1        0.35
+sleep_hours_t1           0.06
+life_sat_t1              1.00
+
+Spearman r(Loneliness, Depression) = 0.316 
+Reminder: Correlation is not causation.
+
+dep1_t1 and dep3_t1: Pearson / Spearman / Polychoric correlation
+[1] 0.4
+[1] 0.387
+[1] 0.479

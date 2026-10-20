@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.5 用 R 做描述统计、相关与回归 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-5.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.5" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L2-5">CLPN 课程大纲</a><span class="crumb">M2 R 与 RStudio：从零开始 / 2.5</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L2-5.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L2-5.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html" class="cur" aria-current="page"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 2 · R &amp; RStudio from Zero · 第 2.5 课</div>
+<h1>用 R 做描述统计、相关与回归</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L2-4.html">2.4 安装包、导入数据与项目管理</a>、<a href="L1-6.html">1.6 假设检验、p 值与效应量</a></span><span>配套脚本：<a href="../R/L2-5.R">R/L2-5.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>用 psych::describe() 得到描述统计</li><li>用 cor() 计算相关矩阵并处理缺失值</li><li>用 lm() 和 glm() 做回归并读懂 summary() 输出</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>描述统计</b><span class="en">descriptive statistics</span></li><li><b>模型摘要</b><span class="en">model summary</span></li><li><b>成对删除</b><span class="en">pairwise deletion</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>把模块 1、2 的概念“翻译”成 R 输出</h2>
+<div class="box story"><b class="bt">从手算到一行代码</b>
+<p>模块 1 里你手算过平均数、标准差、相关系数，理解了标准误、置信区间和 p 值；回归和逻辑回归要到模块 3 才系统讲，这里先认识 R 的回归输出长什么样。本课不学新的统计概念，而是学会在 R 里一次得到这些数字，并读懂 R 打印出来的那一大串输出。拿到一份新数据，社会工作研究者的第一步几乎总是：描述统计 → 相关矩阵 → 回归。</p></div>
+
+<h3>描述统计：先认识你的数据</h3>
+<p><span class="term">描述统计<span class="en">（descriptive statistics）</span></span>回答“数据长什么样”：多少人（n）、平均水平（mean）、离散程度（sd）、范围（min、max）、分布形状（skew 偏度、kurtosis 峰度）。基础 R 的 <code>summary()</code> 给出最小值、四分位数、中位数、均值、最大值；<code>psych</code> 包的 <code>describe()</code> 给出更适合心理测量的一整套指标。</p>
+<p>skew（偏度）告诉你分布是否对称（1.2 课）：0 附近表示大致对称；正值表示右偏（大多数人分数低，少数人分数很高，“尾巴”拖在右边）；负值表示左偏。课程数据中抑郁总分的 skew = 0.85，是明显的右偏：社区样本中大多数人抑郁症状很少，少数人很多。这在社区样本中很常见，也说明抑郁题目的分布不是正态的，第 6 模块选择相关类型时会再考虑这一点。常见的粗略经验是 |skew| &gt; 1 视为明显偏态、&gt; 2 视为严重偏态，但不同教材的界值不同。</p>
+
+<h3>相关矩阵：所有变量两两之间的关系</h3>
+<p>当有 5 个变量时，有 5 × 4 / 2 = 10 对相关。<code>cor(d)</code> 一次算出整个相关矩阵：对角线是 1（变量与自己的相关），上下三角对称。<code>psych::corr.test()</code> 还同时给出每个相关的 p 值。</p>
+<div class="box warnbox"><b class="bt">corr.test() 的 p 值矩阵上下不对称</b><p>仔细看本课输出的 p 值矩阵：“睡眠–孤独”在下三角是 0.0009，在上三角是 0.0026。这不是错误。<code>corr.test()</code> 的帮助文档说明：<b>对角线以下是未校正的 p 值，对角线以上是经过多重比较校正（默认 Holm 法）的 p 值</b>。这对应 1.6 课的多重检验问题：同时检验 10 个相关，需要校正。报告时要说明你用的是哪一种。</p></div>
+
+<h3>缺失值：成对删除 vs 列表删除</h3>
+<p>课程数据没有缺失，但真实数据几乎都有。如果某列有 NA，<code>cor(x, y)</code> 直接返回 NA（2.2 课：NA 会传染）。参数 <code>use</code> 决定如何处理：</p>
+<ul><li><code>use = "complete.obs"</code>（列表删除，listwise）：只用所有变量都没有缺失的人。每对相关基于同一批人，但可能丢掉很多数据。</li>
+<li><code>use = "pairwise.complete.obs"</code>（<span class="term">成对删除<span class="en">（pairwise deletion）</span></span>）：每一对变量分别使用在这两个变量上都有数据的人。用到的数据更多，但不同相关可能基于不同的人、不同的 n。</li></ul>
+<p>两种方法都隐含“缺失是随机的”假设；缺失较多或不随机时，需要 4.3 课讲的多重插补或 FIML。<code>lm()</code> 默认使用列表删除：凡是模型中任一变量缺失的人都被排除，<code>summary()</code> 会提示 “(3 observations deleted due to missingness)”。</p>
+
+<h3>回归输出：每一列对应模块 1 的哪个概念？</h3>
+<p><span class="term">模型摘要<span class="en">（model summary）</span></span> <code>summary(lm(...))</code> 是本课最重要的输出。下面把它“拆开”，点击带下划线的部分看解释：</p>
+<pre class="out annot">Call:
+lm(formula = 抑郁 ~ 孤独 + 社会支持, data = d)
+
+<span data-tip="残差 = 实际值 − 预测值（3.1 课）。这里给出残差的五数概括。中位数 −0.71、最大值 10.9 而最小值只有 −6.7，说明残差右偏：少数人的抑郁比模型预测的高很多（与抑郁总分右偏一致）。">Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.6787 -2.4059 -0.7062  1.9736 10.9074 </span>
+
+Coefficients:
+            <span data-tip="Estimate = 回归系数 b（非标准化，3.1–3.3 课）：其他预测变量不变时，该变量每高 1 个单位，抑郁平均高 b 分。">Estimate</span> <span data-tip="Std. Error = 系数的标准误（1.5 课）：如果反复抽样，这个系数估计值会波动多大。">Std. Error</span> <span data-tip="t value = Estimate ÷ Std. Error：估计值离 0 有几个标准误那么远（1.6 课的检验统计量）。例如 0.31927 / 0.04081 ≈ 7.82。">t value</span> <span data-tip="Pr(>|t|) = p 值（1.6 课）：如果真实系数为 0，得到至少这么极端的 t 值的概率。">Pr(>|t|)</span>    
+<span data-tip="截距：孤独 = 0、社会支持 = 0 时的预测抑郁分。孤独总分最低是 4、社会支持最低是 1，所以 0 不在数据范围内，截距没有实际解释意义。">(Intercept)  1.80159    0.76637   2.351    0.019 *  </span>
+<span data-tip="控制社会支持后，孤独总分每高 1 分，T1 抑郁平均高 0.32 分；t = 7.82，p < .001。">孤独         0.31927    0.04081   7.824 1.62e-14 ***</span>
+<span data-tip="控制孤独后，社会支持每高 1 分，抑郁平均低 0.23 分，但 p = .146，不显著。单独看社会支持与抑郁的相关是 −0.18（显著），控制孤独后其独特作用变得不明显，这是 3.2 课“控制变量”的例子。">社会支持    -0.23121    0.15895  -1.455    0.146    </span>
+---
+<span data-tip="星号只是 p 值区间的速记：*** p < .001，** p < .01，* p < .05，. p < .1。报告时写精确 p 值，不要只写星号。">Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+
+<span data-tip="残差标准误：预测的典型误差约 3.2 分。自由度 797 = 800 人 − 3 个参数（截距 + 2 个系数）。">Residual standard error: 3.228 on 797 degrees of freedom</span>
+<span data-tip="R² = 0.0998：两个预测变量共解释抑郁约 10% 的方差。调整 R² 对预测变量个数做了惩罚，预测变量越多，惩罚越大。">Multiple R-squared:  0.09979,	Adjusted R-squared:  0.09754 </span>
+<span data-tip="F 检验：整个模型（所有预测变量一起）是否比“只有截距”的模型预测得更好。2 和 797 是它的两个自由度。">F-statistic: 44.18 on 2 and 797 DF,  p-value: < 2.2e-16</span></pre>
+<div class="box key"><b class="bt">对照表：summary(lm()) ↔ 模块 1、2</b>
+<div class="tablewrap"><table><thead><tr><th>输出</th><th>概念</th><th>在哪一课学过</th></tr></thead><tbody>
+<tr><td>Estimate</td><td>回归系数 b（点估计）</td><td>3.1、3.2</td></tr>
+<tr><td>Std. Error</td><td>标准误：抽样分布的标准差</td><td>1.5</td></tr>
+<tr><td>t value</td><td>检验统计量 = 估计 ÷ 标准误</td><td>1.6</td></tr>
+<tr><td>Pr(&gt;|t|)</td><td>p 值（原假设：系数 = 0）</td><td>1.6</td></tr>
+<tr><td>Estimate ± 约 2 × SE</td><td>95% 置信区间（用 <code>confint()</code> 得到精确值）</td><td>1.5</td></tr>
+<tr><td>R²</td><td>解释的方差比例</td><td>3.1</td></tr></tbody></table></div></div>
+<p><code>glm()</code> 的 <code>summary()</code> 结构几乎一样，只是 t 换成 z，R² 换成 deviance 和 AIC（3.4 课）。</p>
+<div class="box sw"><b class="bt">社会工作视角：R² = 10% 低吗？</b><p>“只解释了 10%”听起来很少，但心理社会结果受很多因素影响，单个心理变量解释 10% 左右的方差在这一领域并不罕见。R² 低不意味着孤独感不重要；系数显著也不意味着效应很大。描述效应大小时，最好同时报告系数、置信区间，并结合实际意义（例如“孤独感高 3 分（约 1 个标准差），抑郁平均高约 1 分”）。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>输出中的几个关系</h2>
+<div class="mathbox">$$t = \frac{b}{SE(b)}, \qquad 95\%\,CI \approx b \pm t_{0.975,\,df}\times SE(b)$$</div>
+<dl class="sym"><dt>\(b\)</dt><dd>Estimate 列。</dd><dt>\(SE(b)\)</dt><dd>Std. Error 列。</dd><dt>\(df\)</dt><dd>残差自由度 = \(n - p - 1\)，这里 800 − 2 − 1 = 797。</dd><dt>\(t_{0.975,\,df}\)</dt><dd>t 分布的 97.5% 分位数，df = 797 时约 1.963（R：<code>qt(0.975, 797)</code>）。</dd></dl>
+<p>例：孤独 \(0.31927 / 0.04081 \approx 7.82\)；95% CI ≈ \(0.319 \pm 1.963\times0.0408 = [0.239, 0.399]\)。</p>
+<div class="mathbox">$$R^2_{adj} = 1 - (1-R^2)\frac{n-1}{n-p-1}$$</div>
+<p>\(n = 800\)，\(p = 2\)：\(1 - 0.90021\times 799/797 \approx 0.0975\)，与输出一致。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>描述 → 相关 → 回归</h2>
+<p>对应脚本：<a href="../R/L2-5.R">R/L2-5.R</a>。数据框的列名可以用中文（输出更易读），但要确保脚本以 UTF-8 保存（2.4 课）。</p>
+<div class="codeblk"><div class="ctitle">R/L2-5.R（核心部分）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+d &lt;- data.frame(孤独 = rowSums(dat[, paste0(lone_items, &quot;_t1&quot;)]),
+                抑郁 = rowSums(dat[, paste0(dep_items, &quot;_t1&quot;)]),
+                社会支持 = dat$social_support_t1, 睡眠 = dat$sleep_hours_t1,
+                生活满意度 = dat$life_sat_t1)
+round(psych::describe(d)[, c(&quot;n&quot;, &quot;mean&quot;, &quot;sd&quot;, &quot;min&quot;, &quot;max&quot;, &quot;skew&quot;)], 2)
+ct &lt;- psych::corr.test(d)            # 相关矩阵 + p 值
+round(ct$r, 2); round(ct$p, 4)
+fit &lt;- lm(抑郁 ~ 孤独 + 社会支持, data = d)
+summary(fit)
+psych::pairs.panels(d, ellipses = FALSE)    # 散点图矩阵</code></pre></div>
+<div class="codeblk"><div class="ctitle">描述统计与相关（R/output/L2-5_log.txt）</div><pre class="out"><code>             n  mean    sd  min   max  skew
+孤独       800  8.80  3.08  4.0  16.0  0.36
+抑郁       800  3.84  3.40  0.0  15.0  0.85
+社会支持   800  3.36  0.79  1.0   5.0 -0.14
+睡眠       800  6.81  1.02  3.1   9.9 -0.12
+生活满意度 800 64.32 14.81 22.0 100.0 -0.09
+            孤独  抑郁 社会支持  睡眠 生活满意度
+孤独        1.00  0.31    -0.42 -0.12      -0.33
+抑郁        0.31  1.00    -0.18 -0.29      -0.25
+社会支持   -0.42 -0.18     1.00  0.05       0.35
+睡眠       -0.12 -0.29     0.05  1.00       0.06
+生活满意度 -0.33 -0.25     0.35  0.06       1.00
+            孤独 抑郁 社会支持   睡眠 生活满意度
+孤独       0e+00    0   0.0000 0.0026     0.0000
+抑郁       0e+00    0   0.0000 0.0000     0.0000
+社会支持   0e+00    0   0.0000 0.1667     0.0000
+睡眠       9e-04    0   0.1667 0.0000     0.1627
+生活满意度 0e+00    0   0.0000 0.0814     0.0000</code></pre></div>
+<p>读 p 值矩阵：下三角未校正、上三角 Holm 校正。例如“睡眠–生活满意度”r = 0.06，未校正 p = .081，校正后 p = .163；“社会支持–睡眠”r = 0.05，p = .167（这一对恰好在两种方法下相同）。<code>0e+00</code> 是科学计数法的 0，表示 p 小于 0.00005（四舍五入后为 0），报告为 <i>p</i> &lt; .001。</p>
+<figure><img src="../R/output/L2-5_pairs.png" alt="pairs.panels 散点图矩阵" style="max-width:100%"><figcaption>图：<code>psych::pairs.panels()</code>。对角线是每个变量的直方图和密度曲线（可以看到抑郁明显右偏），下三角是散点图和拟合曲线，上三角是相关系数。</figcaption></figure>
+<div class="codeblk"><div class="ctitle">置信区间与缺失值处理演示</div><pre><code class="language-r">round(confint(fit), 3)                         # 95% 置信区间（保留 3 位小数）
+d_na &lt;- d
+d_na$孤独[c(3, 10, 25)] &lt;- NA                    # 人为制造 3 个缺失
+cor(d_na$孤独, d_na$社会支持)                       # NA 传染
+cor(d_na$孤独, d_na$社会支持, use = &quot;pairwise.complete.obs&quot;)
+nobs(lm(抑郁 ~ 孤独, data = d_na))               # lm 默认删除缺失个案：800 − 3</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-5_log.txt，末尾）</div><pre class="out"><code>             2.5 % 97.5 %
+(Intercept)  0.297  3.306
+孤独         0.239  0.399
+社会支持    -0.543  0.081
+[1] NA
+[1] -0.416814
+[1] 797</code></pre></div>
+<p>社会支持的 95% CI [−0.543, 0.081] 包含 0，与 p = .146 一致。</p>
+<div class="codeblk"><div class="ctitle">glm() 的 summary 结构相同（3.4 课会细讲）</div><pre><code class="language-r">dat$dep_sum_t2 &lt;- rowSums(dat[, paste0(dep_items, &quot;_t2&quot;)])
+fit_glm &lt;- glm(help_seek_t2 ~ dep_sum_t2 + gender, data = dat, family = binomial)
+summary(fit_glm)$coefficients     # 只看系数表：Estimate、Std. Error、z value、Pr(&gt;|z|)
+exp(coef(fit_glm))                # OR</code></pre></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：逐行读懂 summary(fit)，再写成一句话</h3>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-5_log.txt，节选）</div><pre class="out"><code>Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1.80159    0.76637   2.351    0.019 *  
+孤独         0.31927    0.04081   7.824 1.62e-14 ***
+社会支持    -0.23121    0.15895  -1.455    0.146    
+Residual standard error: 3.228 on 797 degrees of freedom
+Multiple R-squared:  0.09979,	Adjusted R-squared:  0.09754 </code></pre></div>
+
+<p>t 值、置信区间和 R² 的读法见上面的注释输出和“最少数学”。这里补三点：</p>
+<ol><li><b>Estimate（b）的说法</b>：要带上“控制了谁”。在社会支持相同的人中，孤独总分每高 1 分，抑郁总分平均高 0.319 分；在孤独相同的人中，社会支持每高 1 分，抑郁平均低 0.231 分。</li>
+<li><b>Pr(&gt;|t|)</b>：<code>1.62e-14</code> 是科学计数法，等于 1.62 × 10⁻¹⁴，报告时写 p &lt; .001。</li>
+<li><b>Residual standard error = 3.228</b>：用这个模型预测抑郁，典型误差约 3.2 分。抑郁总分本身的 SD 是 3.40，说明个体层面的预测仍然很粗。</li></ol>
+<p><b>一句话报告：</b>“控制社会支持后，孤独正向预测抑郁（b = 0.32，95% CI [0.24, 0.40]，p &lt; .001）；控制孤独后，社会支持的作用不显著（b = −0.23，95% CI [−0.54, 0.08]，p = .146）。模型解释了抑郁 10.0% 的变异。”</p>
+<h3>为什么社会支持“不显著”了？</h3>
+<p>相关矩阵中，社会支持与抑郁 r = −0.18，p &lt; .001，明明是显著的。放进回归后却不显著，原因在于社会支持与孤独中等偏强地相关（r = −0.42）：社会支持与抑郁的关联，大部分可以通过“社会支持高的人更不孤独”来解释。控制孤独后，社会支持剩下的独特贡献就很小了。这不是矛盾：相关回答“有没有关联”，回归系数回答“控制其他变量后还剩多少独特关联”（3.2 课）。偏相关网络（6.2 课）的每条边也是后一种意义上的关联。</p>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b>只报星号。</b><code>***</code> 只是 p 值区间的速记，不能代替具体数值。至少报告 b（或 β）、95% CI 和 p。</li></ul></div>
+
+<h3>描述统计表应该怎么读？</h3>
+<p>拿到 <code>describe()</code> 的输出，按这个顺序检查：①<b>n</b>：是否每个变量都是 800？如果某个变量更少，说明有缺失，后面的分析人数会变。②<b>min / max</b>：是否在量表的理论范围内？孤独总分 4–16、抑郁总分 0–15，都没有越界。③<b>mean 与 sd</b>：抑郁均值 3.84，相对于满分 15 偏低，样本整体抑郁程度不高。④<b>skew</b>：见上文；孤独 0.36，较为对称。</p>
+<h3>从相关矩阵预判后面的网络</h3>
+<p>相关矩阵已经透露了网络的大致模样：孤独与社会支持 r = −0.42，是这张表里最强的关联；抑郁与睡眠 r = −0.29，与生活满意度 r = −0.25；睡眠与社会支持 r = 0.05，几乎无关。在偏相关网络（6.2 课）中，有些相关会因为控制了其他变量而缩小甚至消失，例如上面讲到的社会支持与抑郁。学到 6.2 课时，可以把这张相关矩阵和估计出的网络放在一起比较，看哪些关联在控制其他变量后保留了下来。</p>
+
+<h3>小练习：读懂一个新系数</h3>
+<p>假设把睡眠时长加入模型，得到“睡眠 b = −0.80，95% CI [−1.01, −0.59]”。试着写出解读：在孤独和社会支持相同的人中，每天多睡 1 小时，抑郁总分平均低约 0.8 分；区间不包含 0，所以在 .05 水平上显著。再想一想，为什么不能写成“多睡 1 小时可以让抑郁降低 0.8 分”？（提示：这是横断面数据。）注意：这里的数字只是为了练习而设的假设值，不是课程数据的结果。</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">cor() 的 use = "pairwise.complete.obs" 是什么意思？</p><ul class="opts"><li><button type="button" data-ok="0">删除所有有任何缺失的个案</button><div class="ofb" hidden>那是 complete.obs（列表删除）。</div></li><li><button type="button" data-ok="1">计算每一对变量的相关时，只删除在这两个变量上有缺失的个案</button><div class="ofb" hidden>正确：成对删除。</div></li><li><button type="button" data-ok="0">用均值填补缺失</button><div class="ofb" hidden>pairwise 只删除个案，不填补任何值；均值填补是另一种（通常不推荐的）做法。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>好处是用到更多数据；代价是不同相关可能基于不同的人。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">summary(lm()) 中的 Std. Error 对应模块 1 的哪个概念？</p><ul class="opts"><li><button type="button" data-ok="0">样本标准差</button><div class="ofb" hidden>那描述的是个体之间的差异。</div></li><li><button type="button" data-ok="1">标准误：系数估计值在反复抽样中的波动</button><div class="ofb" hidden>正确（1.5 课）。</div></li><li><button type="button" data-ok="0">p 值</button><div class="ofb" hidden>p 值在 Pr(>|t|) 列。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>t value = Estimate / Std. Error；Pr(>|t|) 是 p 值。</div></div>
+<div class="quiz" data-kind="num" data-ans="2.5" data-tol="0.01"><p class="qtext">某系数 Estimate = 0.50，Std. Error = 0.20。t value 约是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>t = Estimate ÷ Std. Error。</div><div class="fb" role="status"></div><div class="qexp" hidden>0.50 / 0.20 = 2.5。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">psych::describe() 中抑郁总分 skew = 0.85，说明什么？</p><ul class="opts"><li><button type="button" data-ok="1">分布右偏：多数人得分低，少数人得分很高</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">分布左偏</button><div class="ofb" hidden>正值表示右偏，尾巴拖在高分一侧。</div></li><li><button type="button" data-ok="0">分布接近正态，因为 |skew| 小于 1</button><div class="ofb" hidden>1 只是一个粗略的经验界值；0.85 仍是明显的右偏，本课把它视为非正态。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>社区样本中症状量表常见右偏。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">corr.test() 输出的 p 值矩阵中，同一对变量在上三角和下三角的值不同。为什么？</p><ul class="opts"><li><button type="button" data-ok="0">下三角用 Pearson 相关、上三角用 Spearman 相关计算</button><div class="ofb" hidden>两个三角用的是同一种相关；差别在于上三角做了多重比较校正。</div></li><li><button type="button" data-ok="1">下三角是未校正 p 值，上三角是多重比较校正（默认 Holm）后的 p 值</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">上三角是相关系数</button><div class="ofb" hidden>ct$p 整个矩阵都是 p 值；相关系数在 ct$r 里。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>这对应 1.6 课的多重检验。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">截距 1.80 在这个模型中有实际意义吗？</p><ul class="opts"><li><button type="button" data-ok="0">有：一个完全不孤独的人抑郁 1.8 分</button><div class="ofb" hidden>孤独总分最低是 4，0 不在数据范围内。</div></li><li><button type="button" data-ok="1">没有直接意义：它是孤独 = 0、社会支持 = 0 时的预测值，而两者都不可能为 0</button><div class="ofb" hidden>正确。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>若想让截距有意义，可以先把预测变量中心化（减去均值）。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.5-A：复现模块 1 的手算</h4>
+<p>复现模块 1 的手算练习：描述统计、相关矩阵、一个简单回归；把 1.4 中你“预期的”相关矩阵与真实结果对照，写下差异与可能原因。</p>
+<details class="answer"><summary>参考代码与对照要点</summary>
+<div class="codeblk"><pre><code class="language-r">x &lt;- c(8, 10, 9, 14, 7, 12)          # 1.2 课手算过的 6 个孤独分
+mean(x); var(x); sd(x)               # 与手算对照
+psych::describe(d)
+round(cor(d), 2)
+summary(lm(抑郁 ~ 孤独, data = d))</code></pre></div>
+<p>对照要点（课程数据）：孤独—抑郁 +0.31（符合预期）；孤独—社会支持 −0.42（最强，符合预期）；睡眠时长—抑郁 −0.29；社会支持—抑郁只有 −0.18，比很多人预期的弱；睡眠—社会支持几乎为 0（0.05）。可能原因：(1) 社会支持与抑郁的关联部分通过孤独感体现；(2) 数据是模拟的，生成时社会支持只与孤独特质直接关联（见 <code>data/simulate_data.R</code>）。在真实研究中，差异的原因则要从理论、测量和样本特点去找。</p></details></div>
+<div class="exitem"><h4>练习 2.5-B：题目层面的相关矩阵</h4>
+<p>计算 T1 的 9 道题目之间的相关矩阵（<code>cor(dat[, vars_t(1)])</code>）。孤独题彼此之间、抑郁题彼此之间、孤独题与抑郁题之间，相关大致在什么范围？这对后面的网络分析意味着什么？再用 <code>psych::describe()</code> 看每道题的 skew。</p>
+<details class="answer"><summary>参考结果</summary><p>孤独题之间 0.44–0.51；抑郁题之间 0.37–0.44；孤独题与抑郁题之间 0.12–0.25（最高为 lone3“与人隔绝”与 dep5“无价值感”的 0.25）。题目层面的“跨构念”相关远弱于“构念内”相关，网络中孤独和抑郁节点会各自聚成一团，两团之间只有较弱的桥（第 6、7 模块）。skew：孤独题 0.30–0.40（接近对称），抑郁题 0.92–1.05（右偏），提醒我们抑郁题目分布并非正态。</p></details></div>
+<div class="exitem"><h4>练习 2.5-C：缺失值与 glm() 的 summary</h4>
+<p>(1) 照本课代码复制一份数据 <code>d_na</code>，把 <code>孤独</code> 的第 3、10、25 个值设为 NA。分别用 <code>use = "everything"</code>（默认）、<code>"complete.obs"</code>、<code>"pairwise.complete.obs"</code> 计算 <code>cor(d_na[, c("孤独", "抑郁", "社会支持")])</code>，哪种返回 NA？后两种的结果哪些相同、哪些不同？为什么？(2) 运行本课的 <code>fit_glm</code>，读出 <code>dep_sum_t2</code> 一行的 Estimate、z value 和 p，算出 OR，并用一句话解释。</p>
+<details class="answer"><summary>参考答案</summary><p>(1) 默认 <code>"everything"</code> 下，凡涉及孤独的相关都是 NA。后两种方法中，涉及孤独的两个相关完全相同（孤独–抑郁 0.3103，孤独–社会支持 −0.4168），因为两种方法都只删掉孤独缺失的 3 人。不同的是抑郁–社会支持：“列表删除”（complete.obs）先把有任何缺失的 3 人整行删掉，所有相关都用 797 人计算（−0.1729）；“成对删除”（pairwise）只在计算涉及孤独的相关时删除他们，抑郁–社会支持仍用全部 800 人（−0.1751）。差别很小，但说明两种方法用的样本并不相同；多列在不同的人身上缺失时，差别会更大，而且成对删除得到的相关矩阵中，每个相关依据的人数都可能不同。（参考答案脚本：<code>R/solutions/L2-5_solution.R</code>。）(2) Estimate ≈ 0.134，z ≈ 5.43，p &lt; .001；OR = exp(0.134) ≈ 1.14。一句话：控制性别后，T2 抑郁总分每高 1 分，T2 求助的几率（odds）约为原来的 1.14 倍（高约 14%）。注意是“几率”而不是“概率”（3.4 课）。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li><code>psych::describe()</code> 看 n、均值、标准差、范围、偏度；先认识数据再建模。</li>
+<li><code>cor()</code> / <code>corr.test()</code> 得相关矩阵（注意 p 值上三角是校正后的）；缺失值用 <code>use =</code> 指定处理方式。</li>
+<li><code>summary(lm())</code>：Estimate = b，Std. Error = 标准误，t = b/SE，Pr = p 值；<code>confint()</code> 给区间。下一课：<a href="L2-6.html">2.6 ggplot2 绘图与 Quarto / R Markdown 可复现报告</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L2-4.html" class="pv"><small>上一课</small>2.4 安装包、导入数据与项目管理</a><a href="L2-6.html" class="nx"><small>下一课</small>2.6 ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></nav>
+<p class="foot">CLPN 从零开始 · 第 2.5 课 · <a href="../index.html#L2-5">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

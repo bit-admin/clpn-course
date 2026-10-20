@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10.1 项目设计、数据准备与分析计划 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L10-1.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="10.1" style="--c:#0f766e">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L10-1">CLPN 课程大纲</a><span class="crumb">M10 毕业项目：完整的 CLPN 分析 / 10.1</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L10-1.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L10-1.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details open style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html" class="cur" aria-current="page"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 10 · Capstone Mini-Project · 第 10.1 课</div>
+<h1>项目设计、数据准备与分析计划</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L9-3.html">9.3 报告规范：写出一份可被复核的方法与结果</a></span><span>配套脚本：<a href="../R/L10-1.R">R/L10-1.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>提出一个清晰、非因果化表述的研究问题</li><li>完成数据清理、反向计分、缺失与流失分析</li><li>写一页分析计划（简易预注册）：节点、λ 规则、种子、稳定性检验、敏感性分析，其中包括必做的 Wysocki 等人（2025）完整流程，并事先写明两种分析不一致时如何解释</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>研究问题</b><span class="en">research question</span></li><li><b>分析计划</b><span class="en">analysis plan</span></li><li><b>数据清理</b><span class="en">data cleaning</span></li><li><b>代码本</b><span class="en">codebook</span></li></ul>
+<p>从这一课起，你要独立完成一项完整的 CLPN 小研究。第一步不是跑模型，而是想清楚问什么、数据长什么样、打算怎么分析，并且在看到结果之前把这些写下来。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>毕业项目的三个阶段</h3>
+<div class="tablewrap"><table><tr><th>阶段</th><th>课</th><th>主要产出</th><th>对应脚本</th></tr><tr><td>① 设计与准备</td><td>10.1</td><td>研究问题、代码本、清理脚本、一页分析计划</td><td>R/L10-1.R</td></tr><tr><td>② 完整分析</td><td>10.2</td><td>可一键运行的分析项目 + 5 类图表；必做的完整流程敏感性分析与逐边对照表</td><td>R/L10-2.R、R/L10-2b.R</td></tr><tr><td>③ 写作与汇报</td><td>10.3</td><td>800–1200 字方法 + 结果、局限、10 分钟汇报</td><td>R/L10-3.R</td></tr></table></div>
+<p>默认数据是课程的模拟数据 <code>data/clpn_sim_wide.csv</code>：三波，每波 4 个孤独题目（1–4 分）和 5 个抑郁题目（0–3 分），N = 800，另有性别、年龄等协变量。它的好处是真实结构已知（总体目标值 <code>data/true_B_population.csv</code> 与被试内真值 <code>data/true_B_within.csv</code>，7.2 课），所以你可以检查方法估得准不准。如果条件允许，你也可以改用公开的纵向数据，使用前先读清楚它的使用许可、引用要求和伦理限制。</p>
+<h3>第一步：提出一个好的<span class="term">研究问题<span class="en">（research question）</span></span></h3>
+<p>好的 CLPN 研究问题有三个特征：</p>
+<ol><li><b>非因果化：</b>CLPN 估计的是“控制了 T1 所有题目后的时间预测关系”，不是因果效应。所以别写“孤独导致抑郁”，要写“T1 孤独题目在多大程度上独特地预测 T2 抑郁题目”。</li>
+<li><b>题目层面：</b>网络分析的价值在于看到“哪一个”题目起作用。好的问题会落到具体症状上，例如“‘无人理解’是否是从孤独通向抑郁的主要桥梁？”</li>
+<li><b>双向：</b>交叉滞后设计天然能检验两个方向，研究问题应当同时包括“反之亦然”。</li></ol>
+<div class="tablewrap"><table><tr><th>写法</th><th>评价</th></tr><tr><td>孤独感导致抑郁吗？</td><td>因果用语；变量层面</td></tr><tr><td>孤独和抑郁有关系吗？</td><td>太宽，横断面数据就能回答</td></tr><tr><td>T1 孤独题目在多大程度上独特地预测 T2 抑郁题目，反之亦然？哪些题目是主要桥梁？</td><td>非因果、题目层面、双向</td></tr></table></div>
+<h3>第二步：<span class="term">数据清理<span class="en">（data cleaning）</span></span>与<span class="term">代码本<span class="en">（codebook）</span></span></h3>
+<p>数据清理必须做。一个越界值（比如把缺失编码成 99）就足以制造一条很强的假边。代码本则是一份“变量说明书”：每个变量是什么题目、怎么计分、在哪一波测量。它让读者、审稿人和几个月后的你都能看懂数据。下面这张清单对应 <code>R/L10-1.R</code> 的各个步骤，你可以边做边勾选。</p>
+<div class="widget w2" data-widget="checklist" data-title="数据准备清单（自动保存）" data-key="prep101"><script type="application/json">["#数据清理 data cleaning", "读入数据，检查行数与列数是否符合预期", "逐个值检查每个题目是否属于允许的取值（孤独 1、2、3、4，抑郁 0、1、2、3）：越界值和 2.5 这类非整数都要抓出来，只看最小、最大值不够", "检查重复 ID", "统计每个变量、每一波的缺失值", "反向计分（如有）：新变量 = (最大值 + 最小值) − 原值", "#代码本 codebook", "每个变量：变量名、题目原文、量表、取值与含义、所属波次（R/output/L10-1_codebook.csv，题目原文取自 data/data_dictionary.csv）", "每个题目每一波的均值、标准差（同一文件；只有统计量的版本是 R/output/L10-1_codebook_stats.csv）", "标出内容高度重叠的题目对（9.2 课 goldbricker）", "#流失分析 attrition", "计算每一波的留存率", "比较留存者与流失者的基线得分", "决定缺失处理方式并写入分析计划", "#分析计划", "在运行任何 CLPN 之前写好并保存（带日期）", "写明必做的完整流程敏感性分析（R/L10-2b.R）的全部设置，以及两种分析不一致时怎样解释", "定稿后不再按结果修改；确需改动的，在报告中逐条说明改了什么、为什么改"]</script></div>
+<h3>第三步：<span class="term">流失分析<span class="en">（attrition analysis）</span></span></h3>
+<p>纵向研究几乎总会有人中途退出。关键问题是：退出的人和留下的人一样吗？在 L10-1.R 的流失示例数据中，留存率为 0.80，而流失者的 T1 抑郁总分均值（8.78）远高于留存者（2.60）。如果只分析留下来的人，样本会系统性地“更健康”：T2 的均值会被低估，题目的方差变小（范围限制，1.4 课），标准化以后的边权、LASSO 选出的边和稳定性也会受影响。这个示例中，流失只取决于 T1 抑郁，而 T1 抑郁本身就在每个回归的预测变量里，所以未标准化的回归斜率在理论上仍是无偏的；如果流失取决于没有观测到的 T2 状态（MNAR），偏差会更大（4.3 课）。这时要报告这一差异，并考虑多重插补等方法（第 4 模块）。</p>
+<h3>第四步：一页<span class="term">分析计划<span class="en">（analysis plan）</span></span></h3>
+<p>为什么要在看到结果之前写？因为 CLPN 有许多“合理的选择”：λ 规则、种子、是否加协变量、是否删除冗余题目……如果看完结果再选，人很难不被“哪个结果更好看”影响（9.2 课的“研究者自由度”）。把选择提前写下来、注明日期，就是一份简易的<span class="term">预注册<span class="en">（preregistration）</span></span>。</p>
+<h3>第五步：把完整流程列为必做的敏感性分析</h3>
+<p>本课程的主分析是应用文献中最常见的“仅 LASSO”CLPN：LASSO 选出并已收缩的系数直接当作边权（7.2–7.4 课）。提出 CLPN 的方法论文（Wysocki et al., 2025）并不推荐停在这一步。它推荐的完整流程（<a href="L7-5.html">7.5 设计选择与扩展：多波数据、协变量与被试内问题</a>）只用 LASSO 决定哪些路径固定为 0，再在结构方程模型中不加惩罚地重新估计其余路径，检验各时间段的路径是否相等，最后按 p &lt; .01 修剪。只做 LASSO 有三个问题：</p>
+<ol><li><b>假阳性多。</b>交叉验证选出的 λ 偏小，会保留不少总体中接近 0 的边，而且这个假阳性率不会随样本量增大而下降。课程数据上，lambda.min 在 T1→T2 保留了 19 条总体中 |B| &lt; 0.05 的交叉滞后边（7.2 课的找回率表用的是同一个定义）。</li>
+<li><b>系数被压向 0。</b>LASSO 的惩罚项会把保留下来的系数也缩小，所以 LASSO 系数不能直接当作效应大小。</li>
+<li><b>没有标准误、检验和拟合指标。</b>LASSO 只给出一组点估计。SEM 重估以后，才有每条路径的标准误和 p 值、整体拟合指标（χ²、CFI、TLI、RMSEA、SRMR），以及“两段时间的路径是否相等”的检验。</li></ol>
+<p>那为什么不直接把完整流程作为主分析？第一，你要阅读和比较的已发表研究大多用仅 LASSO 的做法，主分析与它们一致，结果才可以直接对照。第二，M8 的边权 bootstrap 和中心性稳定性（CS 系数）都建立在 LASSO 估计之上，完整流程没有现成的对应做法。第三，两种做法回答的问题不完全相同：LASSO 选的是“对预测有帮助的边”（以交叉验证误差为准），完整流程保留的是“无惩罚估计在 α = .01 下与 0 有显著差异的路径”。它们的偏向也相反：LASSO 偏向多报，灵敏度高、假阳性多；完整流程偏向少报，假阳性少，但会漏掉不少弱边。两者并列，读者才能看出哪些结论不依赖估计方法。</p>
+<p>因此本课程的毕业项目要求：主分析保留 LASSO；完整流程作为必做的敏感性分析（<code>R/L10-2b.R</code>），事先写进分析计划，在结果部分与主分析并列报告（10.3 课）。“必做”的意思是无论结果是否一致都要报告，不能只在两者一致时才提。</p>
+<h4>计划里要事先写明的完整流程设置</h4>
+<div class="tablewrap"><table><tr><th>设置</th><th>本课程的选择</th><th>为什么要事先定下来</th></tr><tr><td>选边用的 λ 规则与种子</td><td>与主分析相同（lambda.min，set.seed(2026)）</td><td>换规则会改变进入 SEM 的路径，等于换了一个模型</td></tr><tr><td>多段数据的合并规则</td><td>保守规则：T1→T2、T2→T3 两段都为 0 的路径才固定为 0</td><td>另一种做法（任一段为 0 就固定）更稀疏；两种做法的结果会不同</td></tr><tr><td>同期部分</td><td>同一波内所有残差两两相关</td><td>吸收同一时间段内的同期效应和共同原因；不加就等于假定同一波各题目的残差互不相关，这几乎一定不成立，模型会严重不拟合，标准误和检验也会出错</td></tr><tr><td>缺失处理</td><td>FIML（lavaan 的 missing = "ml"）</td><td>LASSO 不能处理缺失（要先删除不完整个案或插补，4.3 课），FIML 可以；两种分析用到的个案可能不同，方法部分要写明</td></tr><tr><td>最终模型的选择</td><td>等值约束的嵌套 χ² 检验 p ≥ .05，且 AIC、BIC 都不反对时用约束模型；否则用不约束模型</td><td>看了路径系数再挑模型，就是研究者自由度</td></tr><tr><td>修剪标准</td><td>p &lt; .01（原论文实例的标准）</td><td>用 .05 会多保留几条边；标准不同，“保留几条”也不同</td></tr><tr><td>节点层面的概括</td><td>in-/out-prediction（被解释方差比例）</td><td>它与期望影响的单位不同，不能放在一起排序</td></tr></table></div>
+<h4>事先写好“两种分析不一致时怎么办”</h4>
+<p>两种分析几乎一定会有不一致的边。看到结果以后再决定信哪一个，又回到了研究者自由度的问题。所以计划里要写一条判读规则。本课程的规则是：</p>
+<ul><li>两种分析都保留、方向相同的边，作为主要发现报告；</li>
+<li>只在主分析中非零、完整流程没有保留的边，写成“对估计方法敏感”，只作探索性解释，不作为实务建议的依据；</li>
+<li>完整流程保留、主分析为 0 的边，同样只作探索性报告。这种情况可能出现，因为进入 SEM 的路径是两段 LASSO 结果的并集，等值模型还合并了两段的信息；</li>
+<li>构念层面的结论（例如“孤独 → 抑郁方向的边权和大于反方向”）只有在两种分析中方向一致时，才写进摘要和实务意义。</li></ul>
+<p>规则可以有别的定法，例如把修剪标准放宽到 .05。关键是在看到结果之前定下来，在报告中照此执行；确需改动时，逐条说明改了什么、为什么改。</p>
+<p>把以上内容写进下面的模板，即可生成你的分析计划。</p>
+<div class="widget w2" data-widget="tpl" data-title="一页分析计划生成器" data-key="plan101"><script type="application/json">{"fields": [["rq", "研究问题（不用“导致”）", "如 T1 孤独题目在多大程度上独特地预测 T2 抑郁题目，反之亦然？"], ["data", "数据来源与样本", "如 课程模拟数据 clpn_sim_wide.csv，N = 800，三波"], ["nodes", "节点", "如 lone1–lone4、dep1–dep5（9 个）"], ["span", "时间段", "如 T1→T2 主分析，T2→T3 复现"], ["est", "估计方法", "如 逐节点 LASSO（glmnet），10 折 CV，题目 z 标准化"], ["rule", "λ 规则", "如 lambda.min"], ["seed", "种子", "如 set.seed(2026)"], ["cent", "中心性", "如 out-EI、in-EI、桥接 out/in-EI（不含自回归）"], ["stab", "稳定性", "如 非参数 bootstrap 1000 次；case-dropping 1000 次，CS ≥ 0.25 才解释排序"], ["sens", "其他敏感性分析", "如 lambda.1se；性别年龄为不惩罚协变量；T2→T3 复现"], ["full", "必做的敏感性分析：完整流程", "如 Wysocki 等人（2025）完整流程（R/L10-2b.R）：两段 LASSO 选边、保守规则 → lavaan 无惩罚重估（同波残差相关，FIML）→ 跨时间等值检验（嵌套 χ² + AIC/BIC）→ p < .01 修剪 → in/out-prediction"], ["agree", "两种分析不一致时", "如 两种分析都保留的边作为主要发现；只在主分析中出现的边写成“对估计方法敏感”，只作探索性解释；构念层面的结论要在两种分析中方向一致才报告"], ["miss", "缺失处理", "如 本数据无缺失；若有则报告流失分析并多重插补"], ["hyp", "预期（可选）", "如 预期孤独→抑郁方向的边总和大于反方向"]], "text": "# 分析计划（简易预注册）\n撰写日期：［今天的日期］（在看到任何 CLPN 结果之前）\n1. 研究问题：{{rq}}\n2. 数据：{{data}}\n3. 节点：{{nodes}}；时间段：{{span}}\n4. 估计：{{est}}；λ 选择规则：{{rule}}；{{seed}}\n5. 中心性：{{cent}}\n6. 准确性与稳定性：{{stab}}\n7. 敏感性分析：{{sens}}\n8. 必做的敏感性分析：{{full}}\n9. 两种分析不一致时的处理：{{agree}}\n10. 缺失与流失：{{miss}}\n11. 预期：{{hyp}}\n12. 偏离计划的处理：任何偏离都将在报告中说明内容与理由。"}</script></div>
+<div class="box key"><b class="bt">社工视角</b><p>研究问题最好来自实务中的困惑。例如你在社区服务中心接待居民时发现：有些人说“没人懂我”，有些人说“没人陪我”，哪一种更值得优先关注？这就可以转化为一个预测性的问题：“哪一个孤独题目对之后抑郁的独特预测最强（桥接出期望影响最高）？”它本身回答不了“该优先干预哪一个”（中心性不等于干预靶点，9.2 课），但可以为之后的干预研究提出假设。汇报时也可以从这个实务问题讲起。</p></div>
+<h3>常见误区</h3>
+<ul><li><b>先跑后写计划：</b>这样的计划等于没有计划。</li>
+<li><b>节点选太多：</b>节点越多，需要的样本量越大，而且增长得很快（系数个数是 p²）。没有公认的“几个节点配多少人”的标准；课程数据 N = 800 只用了 9 个节点。想放更多节点时，先按下面“最少数学”部分的第 3 个公式核算 N/p，再用 7.6 课的模拟检查关键的边能否找回。</li>
+<li><b>忽略内容重叠：</b>“情绪低落”和“心情沮丧”几乎是同一个题目，应当合并或二选一（9.2 课）。这也是完整流程的第 1 步。</li>
+<li><b>把完整流程当作“结果不好看时的备选”：</b>先看 LASSO 结果再决定做不做完整流程，或者从两种结果中挑一个好看的当主分析，敏感性分析就失去了意义。哪个是主分析、哪个是敏感性分析，计划里写定。</li></ul>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>可以用自己机构的数据吗？</summary><p>可以，但需要伦理审批、知情同意和机构授权，数据也要去标识化。这些手续办好之前，先用课程模拟数据完成整个流程。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>本课只有几个小公式，都与数据准备和设计检查有关。</p>
+<h4>1. 反向计分</h4>
+<div class="mathbox">\[x^{\text{rev}} = (x_{\max}+x_{\min}) - x\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(x\)</td><td>原始得分</td></tr><tr><td>\(x_{\max}, x_{\min}\)</td><td>量表的最高、最低可能分（如 1–4 分量表为 4 和 1）</td></tr><tr><td>\(x^{\text{rev}}\)</td><td>反向计分后的得分：1↔4、2↔3</td></tr></table>
+<p>例：1–4 分量表，原始 1 分 → (4+1)−1 = 4 分。课程数据没有反向题，但真实量表（如 UCLA 孤独量表的部分版本）常有。</p>
+<h4>2. 留存率</h4>
+<div class="mathbox">\[\text{留存率} = \frac{N_{t}}{N_{1}}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(N_1\)</td><td>第 1 波的样本量</td></tr><tr><td>\(N_t\)</td><td>第 \(t\) 波仍有数据的人数</td></tr></table>
+<p>例：640 / 800 = 0.80。再比较留存者与流失者的 T1 均值（或做 t 检验），说明流失是否与研究变量有关。</p>
+<h4>3. 参数数量与样本量的粗略检查</h4>
+<p>每个 T2 节点的 LASSO 回归有 \(p\) 个预测变量（\(p\) 是节点数）。整个网络最多 \(p^2\) 个系数，其中 \(p\) 个是自回归，\(p(p-1)\) 个是交叉滞后。本课程 \(p = 9\)，共 81 个系数；N = 800，N/p ≈ 89，每个回归中样本量是预测变量数的近 90 倍。N/p 没有公认的硬性下限，它只是一个粗略的快速核算（9.1 课）。如果你只有 N = 150 却想放 20 个节点（N/p = 7.5），每个回归的信息就很少，网络会很稀疏、很不稳定。计划自己的研究时，需要多大样本要靠模拟来定：先假定一个合理的真实网络（用预实验或已发表研究的估计值，把弱边也考虑进去），再看不同 N 下能否找回关键的边。Constantin、Schuurman 与 Vermunt（2026）给出了这种蒙特卡罗方法的一般形式，7.6 课做了简化版。</p>
+<h4>4. 完整流程的参数个数与等值检验的自由度</h4>
+<p>完整流程的路径模型里，每一段（T1→T2 或 T2→T3）有 \(p\) 条自回归路径和 \(K\) 条进入 SEM 的交叉滞后路径。不约束模型两段各自估计，共 \(2(p+K)\) 个路径参数；等值约束让同一条路径在两段共用一个参数，只剩 \(p+K\) 个。其余参数（T1 的方差协方差、各波的残差方差与同波残差协方差、截距）两个模型相同。所以嵌套 χ² 检验的自由度是：</p>
+<div class="mathbox">\[\Delta df = 2(p+K) - (p+K) = p + K,\qquad \Delta\chi^2 = \chi^2_{\text{约束}} - \chi^2_{\text{不约束}}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(p\)</td><td>节点数（课程数据为 9）</td></tr><tr><td>\(K\)</td><td>保守规则下进入 SEM 的交叉滞后路径数（每段）</td></tr><tr><td>\(\Delta\chi^2\)</td><td>约束模型比不约束模型多出的不拟合；在等值成立时近似服从自由度为 \(\Delta df\) 的 χ² 分布</td></tr></table>
+<p>课程数据中 \(K\) = 67，所以 \(\Delta df\) = 9 + 67 = 76（R/L10-2b.R 的日志会打印这个数，可以用它核对模型是否写对了）。AIC 与 BIC 都是“不拟合 + 参数个数的惩罚”：</p>
+<div class="mathbox">\[\mathrm{AIC} = -2\log L + 2q,\qquad \mathrm{BIC} = -2\log L + q\ln N\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\log L\)</td><td>模型的对数似然</td></tr><tr><td>\(q\)</td><td>模型的自由参数个数</td></tr><tr><td>\(N\)</td><td>样本量</td></tr></table>
+<p>数值越小越好。约束模型少了 \(p+K\) 个参数，只要它多出的不拟合不太大，AIC 和 BIC 就会偏向它；BIC 的惩罚随 \(\ln N\) 增大，比 AIC 更偏向简单模型。三个标准（χ² 检验、AIC、BIC）都不反对等值时，才用约束模型，这条规则要事先写进计划。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L10-1.R 的主要步骤（节选）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(tidyverse)
+raw &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)
+item_cols &lt;- c(vars_t(1), vars_t(2), vars_t(3))
+sapply(raw[item_cols], range)                      # 取值范围
+allowed &lt;- function(v) if (startsWith(v, &quot;lone&quot;)) 1:4 else 0:3
+n_bad &lt;- sapply(item_cols, function(v) sum(!is.na(raw[[v]]) &amp; !(raw[[v]] %in% allowed(v))))
+sum(n_bad)                                         # 不在允许取值内的个数（越界、非整数）
+sum(duplicated(raw$id)); sum(is.na(raw))           # 重复 ID、缺失
+# 反向计分示例：raw &lt;- raw |&gt; mutate(item_r = 5 - item)
+cb &lt;- data.frame(variable = item_cols,
+                 mean = round(colMeans(raw[item_cols]), 2),
+                 sd   = round(sapply(raw[item_cols], sd), 2))
+write.csv(cb, out(&quot;L10-1_codebook_stats.csv&quot;), row.names = FALSE)
+writeLines(plan, out(&quot;L10-1_analysis_plan.md&quot;))   # 看结果之前写好！
+# 完整代码本：把数据字典里的题目原文、取值含义并进来（脚本第 5 部分）
+dict &lt;- read.csv(&quot;data/data_dictionary.csv&quot;, fileEncoding = &quot;UTF-8&quot;)
+dict$item &lt;- sub(&quot;_t1.*$&quot;, &quot;&quot;, dict$variable)      # &quot;lone1_t1 / _t2 / _t3&quot; → &quot;lone1&quot;
+codebook &lt;- data.frame(variable = item_cols, item = sub(&quot;_t[0-9]+$&quot;, &quot;&quot;, item_cols),
+                       wave = as.integer(sub(&quot;^.*_t&quot;, &quot;&quot;, item_cols)))
+codebook &lt;- merge(codebook, dict[, c(&quot;item&quot;, &quot;label_zh&quot;, &quot;label_en&quot;, &quot;values&quot;)], by = &quot;item&quot;)
+codebook &lt;- merge(codebook, cb, by = &quot;variable&quot;)
+write.csv(codebook, out(&quot;L10-1_codebook.csv&quot;), row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)</code></pre></div>
+<h3>完整例题：从一个模糊的兴趣到一个可分析的问题</h3>
+<p>很多毕业项目一开始都是这样一句话：“我想研究社区居民的孤独和抑郁。”下面演示怎样把它一步步收窄成 CLPN 能回答的问题：</p>
+<ol><li><b>明确对象和情境：</b>“某市社区的成年居民（18 岁以上）”比“社区居民”更具体。样本从哪里来？有没有现成的追踪数据？</li>
+<li><b>明确时间：</b>CLPN 至少需要两波，最好三波（一段用于主分析，一段用于复现）。间隔多长？要能对应你关心的过程：孤独影响情绪，可能需要几个月，而不是几天。</li>
+<li><b>明确节点：</b>用哪些量表的哪些题？题目数 p 不宜太多。CLPN 有 p × p 个系数，9 个节点就有 81 个。没有公认的“N 至少是 p 的几倍”这类硬性规则；N/p 只是粗略的快速核算，需要多大样本要用模拟来定（Constantin et al., 2026；7.6 课是简化版），之后再用 bootstrap 和 CS 检查稳定性。</li>
+<li><b>写成可检验的问题：</b>“在社区成年居民中，T1 孤独的各个方面在多大程度上独特地预测 6 个月后的抑郁症状，反之亦然？”注意用的是“预测”而非“导致”，也同时问了两个方向。</li>
+<li><b>事先写下“什么结果会让我改变想法”：</b>例如，“如果孤独 → 抑郁的桥接边在 T2 → T3 中无法复现，我只把它作为探索性发现报告。”</li></ol>
+<p>本课的 <code>R/L10-1.R</code> 会生成一份简易分析计划 <code>R/output/L10-1_analysis_plan.md</code>，内容依次是研究问题、节点、估计方法、中心性、稳定性、敏感性和缺失处理。建议先填写你自己的版本，逐项定稿后再开始分析。</p>
+<div class="box warnbox"><b class="bt">项目设计阶段的常见错误</b><ul>
+<li><b>忽视伦理与数据安全。</b>社工研究的对象往往是弱势群体。使用二手数据也要确认授权范围，并去除可识别信息。</li>
+<li><b>数据清理没有留下记录。</b>每一步删除、重新编码都写进脚本，并在 codebook 中说明（<code>L10-1_codebook_stats.csv</code> 是一个示范）。</li></ul></div>
+<h3>一页计划书的自查问题</h3>
+<p>开始分析之前，用这五个问题检查计划书：①研究问题能否用一句话说清，而且没有因果用词？②每个节点为什么入选，有没有理论或文献依据？③样本量与节点数的比例是否合理，是否计划用 bootstrap 和 CS 检查稳定性？④主分析的每个设置（λ 规则、种子、协变量）是否都已写明？⑤哪些分析是敏感性分析，哪些是探索性分析，是否已事先区分？五个问题都能回答“是”，就可以开始动手了。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L10-1.R</code>（67 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L10-1.R  毕业项目①：数据准备、代码本与分析计划  (Data prep, codebook, analysis plan)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+need_output(&quot;L4-3_data_with_attrition.csv&quot;, &quot;R/L4-3.R&quot;, chain = &quot;R/L4-3.R → R/L10-1.R → R/L10-2.R → R/L10-2b.R → R/L10-3.R&quot;)   # 前置结果检查
+suppressPackageStartupMessages(library(tidyverse))
+log_open(&quot;L10-1_log.txt&quot;)
+raw &lt;- read_csv(&quot;data/clpn_sim_wide.csv&quot;, show_col_types = FALSE)
+
+# 1) 数据清理检查：取值范围、重复 ID、缺失
+item_cols &lt;- c(vars_t(1), vars_t(2), vars_t(3))
+rng &lt;- sapply(raw[item_cols], range)
+cat(&quot;所有题目取值范围：\n&quot;); print(rng)
+# 只看最小、最大值不够：2.5 这样的非整数、或 1–4 分题里混进的 0，都可能落在范围以内。
+# 所以逐个值检查：每个题目的取值必须属于允许的取值集合（孤独 1, 2, 3, 4；抑郁 0, 1, 2, 3）。
+allowed &lt;- function(v) if (startsWith(v, &quot;lone&quot;)) 1:4 else 0:3
+n_bad &lt;- sapply(item_cols, function(v) sum(!is.na(raw[[v]]) &amp; !(raw[[v]] %in% allowed(v))))
+cat(&quot;不在允许取值集合内的值的个数（越界值、非整数都会被计入）：合计 =&quot;, sum(n_bad), &quot;\n&quot;)
+if (any(n_bad &gt; 0)) print(n_bad[n_bad &gt; 0])
+stopifnot(all(n_bad == 0))
+cat(&quot;重复 ID 数 =&quot;, sum(duplicated(raw$id)), &quot;；缺失值总数 =&quot;, sum(is.na(raw)), &quot;\n&quot;)
+# （若有反向题：raw &lt;- raw |&gt; mutate(item_r = 5 - item)；本数据无反向题）
+
+# 2) 流失分析模板（本数据无流失；如用 L4-3 的流失数据可直接替换文件名）
+att &lt;- read_csv(out(&quot;L4-3_data_with_attrition.csv&quot;), show_col_types = FALSE)  # 需先运行 L4-3.R
+att$stay &lt;- !is.na(att$dep1_t2)
+cat(&quot;\n（流失数据示例）留存率 =&quot;, round(mean(att$stay), 3), &quot;\n&quot;)
+print(att |&gt; group_by(stay) |&gt; summarise(T1抑郁 = mean(rowSums(across(dep1_t1:dep5_t1))),
+                                          T1孤独 = mean(rowSums(across(lone1_t1:lone4_t1))), n = n()))
+
+# 3) 代码本 codebook：变量 + 描述统计（题目原文等说明在脚本末尾并入，见第 5 部分）
+dict &lt;- read.csv(&quot;data/data_dictionary.csv&quot;, fileEncoding = &quot;UTF-8&quot;)
+cb &lt;- data.frame(variable = item_cols, mean = round(colMeans(raw[item_cols]), 2),
+                 sd = round(sapply(raw[item_cols], sd), 2))
+write.csv(cb, out(&quot;L10-1_codebook_stats.csv&quot;), row.names = FALSE)
+clean &lt;- raw |&gt; select(id, all_of(item_cols), gender, age)
+write_csv(clean, out(&quot;L10-1_clean_data.csv&quot;))
+
+# 4) 一页分析计划（在看结果之前写好！）
+plan &lt;- c(&quot;# 分析计划（简易预注册）&quot;,
+  &quot;研究问题：T1 的孤独感题目在多大程度上独特地预测 T2 的抑郁症状题目，反之亦然？（避免“导致”）&quot;,
+  &quot;节点：lone1–lone4、dep1–dep5（9 个）；时间段：T1→T2（主分析），T2→T3（复现）&quot;,
+  &quot;估计：逐节点 LASSO（glmnet），10 折 CV，lambda.min；set.seed(2026)；题目 z 标准化&quot;,
+  &quot;中心性：out-EI、in-EI、桥接 out/in-EI（社群 = 孤独/抑郁），不含自回归边&quot;,
+  &quot;稳定性：非参数 bootstrap 1000 次；case-dropping 1000 次，CS ≥ 0.25 才解释排序&quot;,
+  &quot;敏感性：lambda.1se；加入性别、年龄为不惩罚协变量；T2→T3 复现&quot;,
+  paste0(&quot;敏感性（必做）：Wysocki 等人（2025）的完整流程（R/L10-2b.R）：LASSO 选边（T1→T2、T2→T3，两段都为 0 才固定为 0）&quot;,
+         &quot;→ lavaan 无惩罚重估（同波残差相关，FIML）→ 跨时间等值检验（嵌套 χ² + AIC/BIC）选最终模型 → 按 p &lt; .01 修剪&quot;,
+         &quot;→ in-/out-prediction；逐条报告主分析的边在完整流程中是否保留，两种分析不一致的边只作探索性解释&quot;),
+  &quot;缺失处理：本数据无缺失；若有，报告流失分析并使用多重插补&quot;)
+writeLines(plan, out(&quot;L10-1_analysis_plan.md&quot;)); cat(&quot;\n&quot;, plan, sep = &quot;\n&quot;)
+
+# 5) 完整代码本：题目原文、取值含义、波次 + 描述统计
+# 数据字典里一行对应一个题目的三波（如 &quot;lone1_t1 / _t2 / _t3&quot;），先取出题目名再与每一列对应。
+dict$item &lt;- sub(&quot;_t1.*$&quot;, &quot;&quot;, dict$variable)
+codebook &lt;- data.frame(variable = item_cols,
+                       item = sub(&quot;_t[0-9]+$&quot;, &quot;&quot;, item_cols),
+                       wave = as.integer(sub(&quot;^.*_t&quot;, &quot;&quot;, item_cols)))
+codebook &lt;- merge(codebook, dict[, c(&quot;item&quot;, &quot;label_zh&quot;, &quot;label_en&quot;, &quot;values&quot;)], by = &quot;item&quot;, sort = FALSE)
+codebook &lt;- merge(codebook, cb, by = &quot;variable&quot;, sort = FALSE)
+codebook &lt;- codebook[match(item_cols, codebook$variable),
+                     c(&quot;variable&quot;, &quot;wave&quot;, &quot;label_zh&quot;, &quot;label_en&quot;, &quot;values&quot;, &quot;mean&quot;, &quot;sd&quot;)]
+stopifnot(nrow(codebook) == length(item_cols), !anyNA(codebook$label_zh))
+write.csv(codebook, out(&quot;L10-1_codebook.csv&quot;), row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)
+cat(&quot;\n代码本（R/output/L10-1_codebook.csv，&quot;, nrow(codebook), &quot;行；这里只显示 T1 的 9 题）：\n&quot;)
+print(codebook[codebook$wave == 1, c(&quot;variable&quot;, &quot;label_zh&quot;, &quot;label_en&quot;, &quot;mean&quot;, &quot;sd&quot;)], row.names = FALSE)
+log_close()</code></pre></div></details>
+<div class="md-doc"><p class="muted">来源：<code>R/output/L10-1_analysis_plan.md</code></p><p>研究问题：T1 的孤独感题目在多大程度上独特地预测 T2 的抑郁症状题目，反之亦然？（避免“导致”）<br>
+节点：lone1–lone4、dep1–dep5（9 个）；时间段：T1→T2（主分析），T2→T3（复现）<br>
+估计：逐节点 LASSO（glmnet），10 折 CV，lambda.min；set.seed(2026)；题目 z 标准化<br>
+中心性：out-EI、in-EI、桥接 out/in-EI（社群 = 孤独/抑郁），不含自回归边<br>
+稳定性：非参数 bootstrap 1000 次；case-dropping 1000 次，CS ≥ 0.25 才解释排序<br>
+敏感性：lambda.1se；加入性别、年龄为不惩罚协变量；T2→T3 复现<br>
+敏感性（必做）：Wysocki 等人（2025）的完整流程（R/L10-2b.R）：LASSO 选边（T1→T2、T2→T3，两段都为 0 才固定为 0）→ lavaan 无惩罚重估（同波残差相关，FIML）→ 跨时间等值检验（嵌套 χ² + AIC/BIC）选最终模型 → 按 p &lt; .01 修剪→ in-/out-prediction；逐条报告主分析的边在完整流程中是否保留，两种分析不一致的边只作探索性解释<br>
+缺失处理：本数据无缺失；若有，报告流失分析并使用多重插补</p></div>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L10-1_log.txt</code></div><pre class="out"><code>所有题目取值范围：
+     lone1_t1 lone2_t1 lone3_t1 lone4_t1 dep1_t1 dep2_t1 dep3_t1 dep4_t1
+[1,]        1        1        1        1       0       0       0       0
+[2,]        4        4        4        4       3       3       3       3
+     dep5_t1 lone1_t2 lone2_t2 lone3_t2 lone4_t2 dep1_t2 dep2_t2 dep3_t2
+[1,]       0        1        1        1        1       0       0       0
+[2,]       3        4        4        4        4       3       3       3
+     dep4_t2 dep5_t2 lone1_t3 lone2_t3 lone3_t3 lone4_t3 dep1_t3 dep2_t3
+[1,]       0       0        1        1        1        1       0       0
+[2,]       3       3        4        4        4        4       3       3
+     dep3_t3 dep4_t3 dep5_t3
+[1,]       0       0       0
+[2,]       3       3       3
+不在允许取值集合内的值的个数（越界值、非整数都会被计入）：合计 = 0 
+重复 ID 数 = 0 ；缺失值总数 = 0 
+
+（流失数据示例）留存率 = 0.8 
+# A tibble: 2 × 4
+  stay  T1抑郁 T1孤独     n
+  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
+1 FALSE   8.78  10.4    160
+2 TRUE    2.6    8.42   640
+
+# 分析计划（简易预注册）
+研究问题：T1 的孤独感题目在多大程度上独特地预测 T2 的抑郁症状题目，反之亦然？（避免“导致”）
+节点：lone1–lone4、dep1–dep5（9 个）；时间段：T1→T2（主分析），T2→T3（复现）
+估计：逐节点 LASSO（glmnet），10 折 CV，lambda.min；set.seed(2026)；题目 z 标准化
+中心性：out-EI、in-EI、桥接 out/in-EI（社群 = 孤独/抑郁），不含自回归边
+稳定性：非参数 bootstrap 1000 次；case-dropping 1000 次，CS ≥ 0.25 才解释排序
+敏感性：lambda.1se；加入性别、年龄为不惩罚协变量；T2→T3 复现
+敏感性（必做）：Wysocki 等人（2025）的完整流程（R/L10-2b.R）：LASSO 选边（T1→T2、T2→T3，两段都为 0 才固定为 0）→ lavaan 无惩罚重估（同波残差相关，FIML）→ 跨时间等值检验（嵌套 χ² + AIC/BIC）选最终模型 → 按 p &lt; .01 修剪→ in-/out-prediction；逐条报告主分析的边在完整流程中是否保留，两种分析不一致的边只作探索性解释
+缺失处理：本数据无缺失；若有，报告流失分析并使用多重插补
+
+代码本（R/output/L10-1_codebook.csv， 27 行；这里只显示 T1 的 9 题）：
+ variable        label_zh                                   label_en mean   sd
+ lone1_t1 孤独1：缺少陪伴           Loneliness 1: lack companionship 2.19 0.99
+ lone2_t1   孤独2：被冷落                Loneliness 2: feel left out 2.19 1.00
+ lone3_t1 孤独3：与人隔绝    Loneliness 3: feel isolated from others 2.24 0.99
+ lone4_t1 孤独4：无人理解 Loneliness 4: no one really understands me 2.18 0.98
+  dep1_t1 抑郁1：情绪低落               Depression 1: depressed mood 0.74 0.92
+  dep2_t1 抑郁2：兴趣丧失 Depression 2: loss of interest (anhedonia) 0.77 0.92
+  dep3_t1 抑郁3：睡眠问题               Depression 3: sleep problems 0.79 0.94
+  dep4_t1 抑郁4：疲乏无力                      Depression 4: fatigue 0.77 0.95
+  dep5_t1 抑郁5：无价值感        Depression 5: worthlessness / guilt 0.76 0.93</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L10-1_clean_data.csv</code></div><pre class="out"><code>id,lone1_t1,lone2_t1,lone3_t1,lone4_t1,dep1_t1,dep2_t1,dep3_t1,dep4_t1,dep5_t1,lone1_t2,lone2_t2,lone3_t2,lone4_t2,dep1_t2,dep2_t2,dep3_t2,dep4_t2,dep5_t2,lone1_t3,lone2_t3,lone3_t3,lone4_t3,dep1_t3,dep2_t3,dep3_t3,dep4_t3,dep5_t3,gender,age
+P001,3,2,2,2,0,0,1,0,0,3,4,3,2,1,1,1,0,1,4,2,3,1,0,0,0,0,0,0,49
+P002,1,2,1,2,0,0,1,0,1,2,1,2,2,0,1,1,2,1,2,1,2,1,0,1,3,3,0,0,38
+P003,2,1,2,2,1,2,1,2,0,1,1,1,2,1,0,0,0,0,1,1,1,1,0,0,0,0,0,1,48
+P004,2,2,2,2,1,0,2,1,0,3,4,3,2,2,1,1,1,1,4,4,4,4,2,3,1,1,2,0,47
+P005,3,4,3,3,1,2,0,3,1,3,2,3,4,2,1,0,2,2,1,1,2,3,0,0,0,0,0,1,29
+P006,4,2,2,4,1,0,0,1,2,2,2,2,3,3,0,1,3,1,1,3,2,4,1,0,0,1,1,1,54
+P007,2,1,2,1,2,0,3,2,2,2,2,2,2,2,1,3,2,1,3,2,3,3,2,1,3,2,2,0,27
+P008,2,2,2,3,0,0,0,1,0,2,2,3,3,0,1,2,1,1,3,3,3,4,1,1,2,0,1,0,48
+P009,3,3,2,2,1,1,0,0,1,1,2,2,3,1,1,0,3,1,2,3,3,3,1,1,0,0,1,0,19
+P010,1,1,1,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,1,2,1,1,0,1,1,1,1,1,55
+P011,3,4,1,2,1,0,1,0,1,2,3,1,2,0,1,1,1,2,3,4,4,3,2,0,1,2,3,1,51
+…（共 800 行数据，此处只显示前 11 行）</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L10-1_codebook.csv</code></div><pre class="out"><code>&quot;variable&quot;,&quot;wave&quot;,&quot;label_zh&quot;,&quot;label_en&quot;,&quot;values&quot;,&quot;mean&quot;,&quot;sd&quot;
+&quot;lone1_t1&quot;,1,&quot;孤独1：缺少陪伴&quot;,&quot;Loneliness 1: lack companionship&quot;,&quot;1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often&quot;,2.19,0.99
+&quot;lone2_t1&quot;,1,&quot;孤独2：被冷落&quot;,&quot;Loneliness 2: feel left out&quot;,&quot;1–4 同上&quot;,2.19,1
+&quot;lone3_t1&quot;,1,&quot;孤独3：与人隔绝&quot;,&quot;Loneliness 3: feel isolated from others&quot;,&quot;1–4 同上&quot;,2.24,0.99
+&quot;lone4_t1&quot;,1,&quot;孤独4：无人理解&quot;,&quot;Loneliness 4: no one really understands me&quot;,&quot;1–4 同上&quot;,2.18,0.98
+&quot;dep1_t1&quot;,1,&quot;抑郁1：情绪低落&quot;,&quot;Depression 1: depressed mood&quot;,&quot;0=完全不会 not at all;1=好几天 several days;2=一半以上天数 more than half the days;3=几乎每天 nearly every day&quot;,0.74,0.92
+&quot;dep2_t1&quot;,1,&quot;抑郁2：兴趣丧失&quot;,&quot;Depression 2: loss of interest (anhedonia)&quot;,&quot;0–3 同上&quot;,0.77,0.92
+&quot;dep3_t1&quot;,1,&quot;抑郁3：睡眠问题&quot;,&quot;Depression 3: sleep problems&quot;,&quot;0–3 同上&quot;,0.79,0.94
+&quot;dep4_t1&quot;,1,&quot;抑郁4：疲乏无力&quot;,&quot;Depression 4: fatigue&quot;,&quot;0–3 同上&quot;,0.77,0.95
+&quot;dep5_t1&quot;,1,&quot;抑郁5：无价值感&quot;,&quot;Depression 5: worthlessness / guilt&quot;,&quot;0–3 同上&quot;,0.76,0.93
+&quot;lone1_t2&quot;,2,&quot;孤独1：缺少陪伴&quot;,&quot;Loneliness 1: lack companionship&quot;,&quot;1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often&quot;,2.2,0.98
+&quot;lone2_t2&quot;,2,&quot;孤独2：被冷落&quot;,&quot;Loneliness 2: feel left out&quot;,&quot;1–4 同上&quot;,2.21,0.98
+…（共 27 行数据，此处只显示前 11 行）</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L10-1_codebook_stats.csv</code></div><pre class="out"><code>&quot;variable&quot;,&quot;mean&quot;,&quot;sd&quot;
+&quot;lone1_t1&quot;,2.19,0.99
+&quot;lone2_t1&quot;,2.19,1
+&quot;lone3_t1&quot;,2.24,0.99
+&quot;lone4_t1&quot;,2.18,0.98
+&quot;dep1_t1&quot;,0.74,0.92
+&quot;dep2_t1&quot;,0.77,0.92
+&quot;dep3_t1&quot;,0.79,0.94
+&quot;dep4_t1&quot;,0.77,0.95
+&quot;dep5_t1&quot;,0.76,0.93
+&quot;lone1_t2&quot;,2.2,0.98
+&quot;lone2_t2&quot;,2.21,0.98
+…（共 27 行数据，此处只显示前 11 行）</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">下列哪个研究问题最适合 CLPN？</p><ul class="opts"><li><button type="button" data-ok="0">A. 孤独导致抑郁吗？</button><div class="ofb" hidden>使用了因果用语。</div></li><li><button type="button" data-ok="0">B. 孤独和抑郁相关吗？</button><div class="ofb" hidden>太宽，横断面数据就能回答。</div></li><li><button type="button" data-ok="1">C. T1 孤独题目在多大程度上独特地预测 T2 抑郁题目，反之亦然？</button><div class="ofb" hidden>正确：非因果、题目层面、双向。</div></li><li><button type="button" data-ok="0">D. T1 孤独总分能否预测 T2 抑郁总分？</button><div class="ofb" hidden>似是而非：没有因果用语，但停留在总分层面、只问一个方向，用不到 CLPN 的长处，CLPM 就能回答。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么要在看到结果之前写分析计划？</p><ul class="opts"><li><button type="button" data-ok="0">A. 这是课程的形式要求</button><div class="ofb" hidden>形式只是表面；真正的作用是防止看了结果再选分析。</div></li><li><button type="button" data-ok="1">B. 限制研究者自由度，避免根据结果挑选分析</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 保证结果与预期一致</button><div class="ofb" hidden>计划不保证结果，只保证分析不随结果改变；结果与预期不一致时照样报告。</div></li><li><button type="button" data-ok="0">D. 让结果更显著</button><div class="ofb" hidden>恰恰相反：计划的作用是防止为了显著而挑选分析。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">1–4 分量表，原始 2 分反向计分后是多少？</p><ul class="opts"><li><button type="button" data-ok="0">A. 2</button><div class="ofb" hidden>(4+1)−2 = 3。</div></li><li><button type="button" data-ok="1">B. 3</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 4</button><div class="ofb" hidden>那是原始 1 分的结果。</div></li><li><button type="button" data-ok="0">D. 1</button><div class="ofb" hidden>那是原始 4 分的结果。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">流失者的基线抑郁显著高于留存者，意味着什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 没有影响：流失者已经不在样本里了</button><div class="ofb" hidden>正因为流失者不在样本里，留下的人才系统性地“更健康”。</div></li><li><button type="button" data-ok="1">B. 只分析留存者会使样本偏“健康”，结果可能有偏，需要报告并考虑插补</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 应把流失者的缺失值用样本均值填补</button><div class="ofb" hidden>均值填补会低估方差、扭曲相关，也没有利用“流失与基线抑郁有关”这一信息；应考虑多重插补或 FIML（4.3 课）。</div></li><li><button type="button" data-ok="0">D. 只要留存率达到 80% 就可以忽略</button><div class="ofb" hidden>似是而非：本课示例的留存率正是 0.80，流失者的基线抑郁仍远高于留存者；偏差取决于流失与变量的关系，不只取决于比例。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么本课程把 Wysocki 等人（2025）的完整流程列为必做的敏感性分析？</p><ul class="opts"><li><button type="button" data-ok="0">A. 因为仅 LASSO 的结果总是错的</button><div class="ofb" hidden>不是“错”：LASSO 偏向多报边，但主分析仍用它，以便与已有文献对照。</div></li><li><button type="button" data-ok="1">B. 仅 LASSO 的做法假阳性多、系数被压向 0，方法论文推荐完整流程；两者并列，才能看出哪些结论不依赖估计方法</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 因为完整流程能把被试间与被试内效应分开</button><div class="ofb" hidden>这是常见误解。完整流程同样基于观测得分，同样混合了被试间与被试内效应（7.5 课）。</div></li><li><button type="button" data-ok="0">D. 因为完整流程保留的边更多，结果更显著</button><div class="ofb" hidden>恰恰相反：按 p < .01 修剪后，完整流程保留的边通常比 lambda.min 少得多。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">“两种分析不一致时怎么解释”的规则，应该在什么时候定？</p><ul class="opts"><li><button type="button" data-ok="0">A. 看到两种结果之后，选更合理的那一种</button><div class="ofb" hidden>看了结果再选，就是研究者自由度。</div></li><li><button type="button" data-ok="1">B. 看到任何结果之前，写进带日期的分析计划</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 审稿人问到时再定</button><div class="ofb" hidden>那时已经看过结果了。</div></li><li><button type="button" data-ok="0">D. 不用定，不一致时一律以主分析为准</button><div class="ofb" hidden>这也是一条规则，但要事先写明理由；而且只在主分析中出现的边应当标为“对估计方法敏感”。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">课程数据中，完整流程每段有 9 条自回归路径和 K 条交叉滞后路径进入 SEM。跨时间等值约束的嵌套 χ² 检验的自由度是多少？</p><ul class="opts"><li><button type="button" data-ok="0">A. K</button><div class="ofb" hidden>还要算上自回归路径：它们也被约束为两段相等。</div></li><li><button type="button" data-ok="1">B. 9 + K</button><div class="ofb" hidden>正确：不约束模型有 2(9 + K) 个路径参数，约束模型有 9 + K 个，差为 9 + K。</div></li><li><button type="button" data-ok="0">C. 2(9 + K)</button><div class="ofb" hidden>这是不约束模型的路径参数个数，不是两模型之差。</div></li><li><button type="button" data-ok="0">D. 72</button><div class="ofb" hidden>72 是可能的交叉滞后位置数。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">代码本至少应包含？</p><ul class="opts"><li><button type="button" data-ok="0">A. 只要变量名</button><div class="ofb" hidden>只有变量名，别人不知道 lone4 问的是什么。</div></li><li><button type="button" data-ok="1">B. 变量名、题目原文、量表、取值与含义、所属波次</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 每个变量的均值和标准差</button><div class="ofb" hidden>这是描述统计，是代码本的一部分；没有题目原文和计分方式，仍然看不懂变量。</div></li><li><button type="button" data-ok="0">D. 变量名和取值范围就够了，题目原文写在论文里</button><div class="ofb" hidden>似是而非：代码本要能单独使用；题目原文不在代码本里，几个月后连你自己也要回头翻论文。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：提出你的研究问题<span class="lvl">写作</span></h4><p>写出 2 个候选研究问题，用本课的三个标准（非因果、题目层面、双向）自评，选出一个。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>示例：“在三波社区成年居民数据中，T1 的哪些孤独题目最能独特地预测 T2 的抑郁症状，抑郁症状是否也反向预测孤独？”自评：非因果（用“预测”）；题目层面（“哪些题目”）；双向（“是否也反向预测”）。</p></details></div>
+<div class="exitem"><h4>练习 2：运行 L10-1.R 并检查输出<span class="lvl">动手</span></h4><p>运行 R/L10-1.R，回答：① 是否有越界值？② 重复 ID 和缺失值有多少？③ 流失示例中，留存者与流失者的 T1 孤独总分相差多少？④ 假如 lone2 是一道反向题（1–4 分），写出反向计分的 R 代码；如果反向题是 0–3 分的抑郁题，公式又是什么？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>① 没有：所有值都在允许的取值里（孤独 1–4，抑郁 0–3，没有非整数），日志里“不在允许取值集合内的值的个数”合计为 0；② 重复 ID = 0，缺失 = 0；③ 流失者 T1 孤独均值 10.4，留存者 8.42，相差约 2 分（以你的输出为准）；④ <code>raw$lone2_t1_r &lt;- 5 - raw$lone2_t1</code>（(4 + 1) − x）；0–3 分的题是 (3 + 0) − x，即 <code>3 - x</code>。不要把 <code>5 - x</code> 套到每个量表上。</p></details></div>
+<div class="exitem"><h4>练习 3：完成一页分析计划<span class="lvl">写作</span></h4><p>用本页的生成器写完分析计划，复制保存为 <code>analysis_plan.md</code>，在文件开头写上日期。之后正式分析中的每个设置都以它为准。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>可以对照 <code>R/output/L10-1_analysis_plan.md</code>。关键是：λ 规则、种子、CS 标准和敏感性分析都已经事先确定，其中包括必做的完整流程（第 8 条）和两种分析不一致时的处理（第 9 条）。</p></details></div>
+<div class="exitem"><h4>练习 4：为完整流程写计划条目<span class="lvl">写作</span></h4><p>为你的项目写出分析计划的第 8、9 两条。第 8 条逐项写明完整流程的设置（选边的 λ 规则与种子、多段合并规则、同期部分、缺失处理、最终模型的选择规则、修剪标准、节点层面的概括指标）；第 9 条写出至少三种不一致情形各自怎样报告。再想一想：如果你的数据只有两波，第 8 条中哪几项要改？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>第 8 条参照本页“计划里要事先写明的完整流程设置”表，每一项都要有具体值，不能写“按默认”。第 9 条至少区分：两种分析都保留的边；只在主分析中出现的边；只在完整流程中出现的边；构念层面的结论在两种分析中方向是否一致。</p><p>只有两波时：没有第二段，就没有多段合并规则（LASSO 为 0 的路径直接固定为 0），也做不了跨时间等值检验，最终模型就是唯一的那个路径模型，其余设置不变。这时无法用 T2→T3 检查结果能否复现，局限部分要写明。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>完成：研究问题 + 代码本 + 数据清理脚本 + 一页分析计划。分析计划定稿并注明日期之后，再进入正式分析。</p></div><h3>自测问题</h3><ol><li>你的研究问题是否避免了“导致”一词？</li><li>你的节点中是否有内容高度重叠的题目？</li><li>分析计划是否在看到结果之前就确定了 λ 的选择规则？</li><li>分析计划是否写明了完整流程的设置（保守规则、等值检验、p &lt; .01）以及两种分析不一致时的处理？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>研究问题：非因果、题目层面、双向。</li><li>数据清理：取值范围、重复 ID、缺失、反向计分；代码本记录每个变量。</li><li>流失分析：比较留存者与流失者，决定缺失处理。</li><li>在看到结果之前写好带日期的一页分析计划（简易预注册）。</li><li>主分析用仅 LASSO 的 CLPN；Wysocki 等人（2025）的完整流程是必做的敏感性分析，它的设置和“两种分析不一致时怎么办”都要事先写进计划。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li><li>Burger, J., Isvoranu, A.-M., Lunansky, G., Haslbeck, J. M. B., Epskamp, S., Hoekstra, R. H. A., Fried, E. I., Borsboom, D., & Blanken, T. F. (2023). Reporting standards for psychological network analyses in cross-sectional data. <i>Psychological Methods, 28</i>(4), 806–824. <a href="https://doi.org/10.1037/met0000471" target="_blank" rel="noopener">doi.org/10.1037/met0000471</a><div class="muted" style="font-size:.84rem">网络分析报告规范，第 9.3 课。</div></li><li>Constantin, M. A., Schuurman, N. K., & Vermunt, J. K. (2026). A general Monte Carlo method for sample size analysis in the context of network models. <i>Psychological Methods, 31</i>(3), 385–405. <a href="https://doi.org/10.1037/met0000555" target="_blank" rel="noopener">doi.org/10.1037/met0000555</a><div class="muted" style="font-size:.84rem">网络模型样本量规划的一般方法：先假定真实网络，再用模拟找出所需的 N。7.6 课的模拟是它的简化版。</div></li></ul></section>
+<nav class="pager"><a href="L9-3.html" class="pv"><small>上一课</small>9.3 报告规范：写出一份可被复核的方法与结果</a><a href="L10-2.html" class="nx"><small>下一课</small>10.2 完整分析：估计、可视化、中心性与稳定性</a></nav>
+<p class="foot">CLPN 从零开始 · 第 10.1 课 · <a href="../index.html#L10-1">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

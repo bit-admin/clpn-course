@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.2 用 lavaan 拟合 CLPM 并评估模型拟合 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L5-2.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="5.2" style="--c:#8b5cf6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L5-2">CLPN 课程大纲</a><span class="crumb">M5 传统交叉滞后面板模型（CLPM）与 RI-CLPM / 5.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L5-2.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L5-2.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details open style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html" class="cur" aria-current="page"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 5 · Cross-Lagged Panel Models · 第 5.2 课</div>
+<h1>用 lavaan 拟合 CLPM 并评估模型拟合</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L5-1.html">5.1 CLPM 的直觉：自回归路径与交叉滞后路径</a>、<a href="L2-5.html">2.5 用 R 做描述统计、相关与回归</a></span><span>配套脚本：<a href="../R/L5-2.R">R/L5-2.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>用 lavaan 语法写出并拟合一个两变量三波 CLPM</li><li>读懂参数估计和拟合指标（χ²、CFI、TLI、RMSEA、SRMR）</li><li>了解等值约束（跨波路径相等）的意义</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>lavaan</b><span class="en">latent variable analysis (R package)</span></li><li><b>模型拟合</b><span class="en">model fit</span></li><li><b>CFI / TLI</b><span class="en">comparative / Tucker–Lewis fit index</span></li><li><b>RMSEA</b><span class="en">root mean square error of approximation</span></li><li><b>SRMR</b><span class="en">standardized root mean square residual</span></li><li><b>等值约束</b><span class="en">equality constraint</span></li></ul>
+<p>上一课用两条 <code>lm()</code> 拆解了一个时间段的 CLPM；本课用结构方程模型（SEM）软件 lavaan 一次性拟合整个三波模型，学会读懂模型拟合指标，并理解为什么许多 CLPN 论文不报告这类指标。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>为什么不一直用 lm()？</h3>
+<p>用 4 个 <code>lm()</code> 也能得到三波 CLPM 的 8 条路径，但有三个不便：（1）它不能同时估计残差相关；（2）不能检验“整个模型是否与数据相符”；（3）不能方便地加约束（例如“两个时间段的路径相等”）或处理缺失数据。SEM 把所有方程放在一起估计，用一套“模型隐含的协方差矩阵”去拟合“样本协方差矩阵”。</p>
+<h3>“模型拟合”是什么意思？</h3>
+<p>想象你只给了模型有限的路径（例如：不允许 T1 孤独直接预测 T3 抑郁）。根据这些路径，模型会“推算”出所有变量之间应该有的协方差；把推算值和实际样本协方差相比，差得越少，<span class="term">模型拟合<span class="en">（model fit）</span></span> 越好。拟合差说明你的模型漏掉了数据中的重要结构。</p>
+<div class="box story"><b class="bt">类比：</b><p>模型像一张“简化地图”，拟合指标告诉你“地图和实际地形差多少”。一张完全不简化的地图（饱和模型）永远完美拟合，但也没有任何信息量。</p></div>
+<h3>四个常见拟合指标</h3>
+<div class="tablewrap"><table><tr><th>指标</th><th>英文</th><th>直觉</th><th>常用参考</th></tr><tr><td>χ² 检验</td><td>chi-square test</td><td>“模型完美吻合”的显著性检验；样本大时几乎总是显著</td><td>p > .05 表示没有显著不吻合（N 大时参考价值有限）</td></tr><tr><td>CFI / TLI</td><td>comparative / Tucker–Lewis fit index</td><td>与“所有变量都不相关”的基线模型相比，进步了多少</td><td>≥ .95 较好，≥ .90 可接受</td></tr><tr><td>RMSEA</td><td>root mean square error of approximation</td><td>每个自由度平均的“不吻合程度”，考虑了模型简约性</td><td>≤ .06 较好，> .10 较差</td></tr><tr><td>SRMR</td><td>standardized root mean square residual</td><td>观测相关与模型隐含相关之差的平均大小</td><td>≤ .08 较好</td></tr></table></div>
+<div class="box warnbox"><b class="bt">注意：</b><p>这些参考值（常称“Hu & Bentler 标准”）只是经验规则，不是法律。不同指标可能互相矛盾，而且好的拟合不代表模型“正确”，只代表“没被数据明显否定”。</p></div>
+<h3>在课程数据上的实际结果</h3>
+<p>配套脚本 <code>R/L5-2.R</code> 在 N = 800 的模拟数据上得到：χ²(4) = 67.99，p &lt; .001；CFI = .962；TLI = .856；RMSEA = .141；SRMR = .031。指标互相矛盾：CFI、SRMR 看起来尚可，但 TLI 和 RMSEA 很差。为什么？一个重要原因是：模拟数据中存在很强的稳定个人特质，标准 CLPM 没法表达“T1 的孤独与 T3 的孤独之间，除了经过 T2 以外的直接相似性”。5.3 课的 RI-CLPM 就是为此设计的，它的拟合显著更好。</p>
+<h3>等值约束：两个时间段的路径一样吗？</h3>
+<p>如果 T1→T2 与 T2→T3 的间隔相同、所处人生阶段相近，我们可能假设两段的自回归和交叉滞后相等，这叫 <span class="term">等值约束<span class="en">（equality constraint）</span></span>。好处：参数更少、估计更稳定、解释更简单（“每半年……”）。代价：如果两段确实不同，约束会让拟合变差。我们可以比较“有约束”与“无约束”两个模型（嵌套模型 χ² 差异检验），让数据告诉我们约束是否合理。</p>
+<p>lavaan 中给两条路径起同一个“标签”即可约束相等，例如 <code>dep2 ~ d*lone1</code> 和 <code>dep3 ~ d*lone2</code> 都用了标签 <code>d</code>。</p>
+<div class="box analogy"><b class="bt">与 CLPN 的联系：</b><p>本课程主线教的“仅 LASSO”简化版 CLPN 不是 SEM，而是一组独立的 LASSO 回归，所以它<b>没有</b> CFI、RMSEA 这类整体拟合指标；它也不会默认把 T1→T2 与 T2→T3 约束相等，而是分别估计后比较“复现性”（7.5 课）。Wysocki 等人（2025）推荐的完整流程则不同：它把 LASSO 选出的模型放进 lavaan 做无惩罚重估，因此<b>有</b> χ²、CFI、TLI、RMSEA，还能用嵌套 χ² 检验跨时间等值。7.5 课的 <code>R/L7-5b.R</code> 在课程数据上演示了这一做法，结果为 χ²(91) = 164.70，CFI = .988，RMSEA = .032。读 CLPN 论文时，先看作者用的是哪一种。</p></div><h3>常见问题与误区</h3><details class="ans faq"><summary>被试间和被试内的区别，用一句话怎么说？</summary><p>被试间问的是“<b>比别人</b>更孤独的人，是否也比别人更抑郁”；被试内问的是“<b>比自己平时</b>更孤独的时候，之后是否更抑郁”。前者比较不同的人，后者比较同一个人在不同时间的状态。社工干预针对的是个体的变化，所以通常更关心被试内问题。</p></details><details class="ans faq"><summary>被试间相关为正，被试内相关就一定为正吗？</summary><p>不一定。4.1 课和 5.3 课的交互图中，你可以把两者设为方向相反。经典例子：经常运动的人静息心率整体更低（被试间：运动多 ↔ 心率低），但同一个人正在运动的时候，心率比他平时更高（被试内：运动多 ↔ 心率高）。从群体层面推到个体层面要非常小心，否则会犯“生态谬误”。</p></details><details class="ans faq"><summary>社工连接</summary><p>机构评估报告常说“孤独得分高的老人抑郁也高，所以要减少孤独”。这句话混合了两个层面。更准确的说法是：“在人群层面二者相关；至于减少某位老人的孤独是否会降低他之后的抑郁，需要被试内层面的证据或干预研究。”</p></details><h3>交互回顾：CLPM 路径图</h3><p>在拟合 lavaan 模型之前，先用下图确认你要估计哪些路径：开关自回归（AR）与交叉滞后（CL）路径，看看模型中每个参数对应的箭头。</p><div class="widget w2" data-widget="clpm" data-title="CLPM 路径图：切换自回归 / 交叉滞后路径（对应 lavaan 模型语法中的回归行）"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>SEM 的核心思想用一句数学话说：找参数 \(\theta\)，让模型隐含协方差矩阵 \(\Sigma(\theta)\) 尽量接近样本协方差矩阵 \(S\)。</p>
+<div class="mathbox">\[\hat\theta = \arg\min_{\theta}\ F\big(S,\ \Sigma(\theta)\big)\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\theta\)</td><td>希腊字母 theta，所有待估参数（路径系数、方差、协方差）的集合</td></tr><tr><td>\(S\)</td><td>样本协方差矩阵：直接由数据算出</td></tr><tr><td>\(\Sigma(\theta)\)</td><td>大写 sigma：给定参数后模型“推算”出的协方差矩阵</td></tr><tr><td>\(F(\cdot)\)</td><td>差异函数（discrepancy function）。最大似然（ML）估计下它衡量 S 与 Σ(θ) 的差距</td></tr><tr><td>\(\arg\min\)</td><td>“使……最小的那个参数值”</td></tr></table>
+<h4>自由度（df）怎么来？</h4>
+<p>6 个观测变量有 \(6\times7/2 = 21\) 个方差和协方差（再加 6 个均值 = 27 个“已知信息”）。模型估计了 23 个参数（lavaan 输出 “Number of model parameters 23”，包括均值/截距），所以 \(df = 27 - 23 = 4\)。df 越多，模型越“简约”，被数据否定的机会也越多。</p>
+<h4>RMSEA 的公式（了解即可）</h4>
+<div class="mathbox">\[\mathrm{RMSEA}=\sqrt{\max\!\left(\frac{\chi^2-df}{df\,(N-1)},\,0\right)}\]</div>
+<p>代入 χ² = 67.99、df = 4、N = 800：\(\sqrt{(67.99-4)/(4\times799)} = \sqrt{0.0200}\approx 0.141\)，与输出一致。可以看到：χ² 远大于 df 时 RMSEA 就大；N 越大，同样的 χ² 对应的 RMSEA 越小。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L5-2.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+library(lavaan)
+dat  &lt;- read_course_data()
+wide &lt;- data.frame(id = dat$id)
+for (t in 1:3) {                                   # 构念总分（原始分，未标准化）
+  wide[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)])
+  wide[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)])
+}
+clpm &lt;- &#x27;
+  lone2 ~ lone1 + dep1      # ~  读作“被……预测”（回归）
+  dep2  ~ dep1  + lone1
+  lone3 ~ lone2 + dep2
+  dep3  ~ dep2  + lone2
+  lone1 ~~ dep1             # ~~ 读作“与……相关”（协方差）
+  lone2 ~~ dep2             # T2、T3 是残差协方差
+  lone3 ~~ dep3
+&#x27;
+fit &lt;- sem(clpm, data = wide, missing = &quot;fiml&quot;)   # FIML：全信息最大似然，处理缺失
+summary(fit, standardized = TRUE, fit.measures = TRUE)
+fitMeasures(fit, c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+ssol &lt;- standardizedSolution(fit)                 # 标准化估计 + 标准化估计自己的 SE 与 95% CI
+ssol[ssol$op == &quot;~&quot;, c(&quot;lhs&quot;, &quot;op&quot;, &quot;rhs&quot;, &quot;est.std&quot;, &quot;se&quot;, &quot;ci.lower&quot;, &quot;ci.upper&quot;, &quot;pvalue&quot;)]</code></pre></div>
+<p><b>读输出：</b><code>summary(..., standardized = TRUE)</code> 的 <code>Regressions:</code> 部分有 <code>Std.all</code> 列（完全标准化系数），但同一行的 <code>Std.Err</code>、<code>P(&gt;|z|)</code> 以及 <code>parameterEstimates()</code> 给出的 <code>ci.lower</code> / <code>ci.upper</code> 都属于<b>未标准化</b>估计（原始分单位）。把未标准化区间和标准化系数放在同一行，读者会误以为“0.607 的区间是 [0.524, 0.634]”，而两者根本不在同一个尺度上。所以报告 β 时，用 <code>standardizedSolution()</code>：它对标准化估计 <code>est.std</code> 用 delta 法重新计算标准误、z 检验和 95% CI，数字与 β 在同一尺度上。课程数据结果摘录：</p>
+<div class="codeblk"><div class="ctitle">实际输出摘录：R/output/L5-2_log.txt</div><pre class="out"><code>标准化解（standardizedSolution）：回归路径的标准化估计及其 95% CI
+    lhs op   rhs est.std    se ci.lower ci.upper pvalue
+1 lone2  ~ lone1   0.607 0.024    0.560    0.654  0.000
+2 lone2  ~  dep1   0.016 0.029   -0.042    0.074  0.588
+3  dep2  ~  dep1   0.539 0.026    0.488    0.590  0.000
+4  dep2  ~ lone1   0.128 0.030    0.069    0.187  0.000
+5 lone3  ~ lone2   0.559 0.027    0.507    0.612  0.000
+6 lone3  ~  dep2   0.068 0.031    0.007    0.128  0.029
+7  dep3  ~  dep2   0.548 0.027    0.495    0.602  0.000
+8  dep3  ~ lone2   0.049 0.032   -0.013    0.111  0.120
+ chisq     df pvalue    cfi    tli  rmsea   srmr 
+67.986  4.000  0.000  0.962  0.856  0.141  0.031</code></pre></div>
+<p class="muted" style="font-size:.88rem"><code>est.std</code> 与 <code>Std.all</code> 是同一个数；标准化估计的 p 值与未标准化估计的 p 值通常很接近，但不完全相同，因为两者的标准误是分别计算的。</p>
+<h4>加入等值约束并比较</h4>
+<div class="codeblk"><div class="ctitle">练习用：等值约束版本（请自己运行）</div><pre><code class="language-r">clpm_eq &lt;- &#x27;
+  lone2 ~ a*lone1 + c*dep1
+  dep2  ~ b*dep1  + d*lone1
+  lone3 ~ a*lone2 + c*dep2      # 同一标签 = 约束相等
+  dep3  ~ b*dep2  + d*lone2
+  lone1 ~~ dep1; lone2 ~~ dep2; lone3 ~~ dep3
+&#x27;
+fit_eq &lt;- sem(clpm_eq, data = wide, missing = &quot;fiml&quot;)
+anova(fit_eq, fit)     # 嵌套模型 χ² 差异检验：显著 → 约束让拟合明显变差</code></pre></div>
+<h3>完整例题：从 lavaan 输出到一张路径表</h3>
+<p>拿到 <code>summary(fit, standardized = TRUE)</code> 的长篇输出，不要从头读到尾。按下面四步提取写论文需要的信息：</p>
+<ol><li><b>先看估计是否正常结束。</b>输出顶部应有 “lavaan ... ended normally after N iterations”。如果出现 “did not converge” 或关于方差为负的警告，后面的数字都不能用。先检查变量的尺度（相差太大时可以先除以 10），或者模型是否写错。</li>
+<li><b>再看拟合（Model Test User Model 与 fitMeasures）。</b>记下 χ²、df、p，以及 CFI、TLI、RMSEA（附 90% CI）和 SRMR，一起放进表注。</li>
+<li><b>然后找 Regressions 部分。</b>每一行是一条路径，例如 <code>dep2 ~ lone1</code>。看 <code>Estimate</code>（未标准化）和 <code>Std.all</code>（标准化 β），以及 <code>P(&gt;|z|)</code>。把 4 条自回归、4 条交叉滞后整理成一张表，行是路径，列是 b、SE、β、p。</li>
+<li><b>最后看 Covariances。</b><code>lone2 ~~ dep2</code> 是 T2 两个变量的<b>残差</b>协方差，表示扣除 T1 预测之后，同一时间点上还剩多少共同变化。它不是简单的“T2 孤独与 T2 抑郁的相关”。</li></ol>
+<p>用 <code>parameterEstimates(fit, standardized = TRUE)</code> 可以把这些结果变成一个数据框，再用 <code>subset(pe, op == "~")</code> 只取回归路径，比从屏幕上手抄更不容易出错。</p>
+<div class="box warnbox"><b class="bt">代码层面的常见错误</b><ul>
+<li><b>模型字符串里变量名写错。</b>lavaan 会报 “some observed variables are not found in the data”，提示的变量名就是写错的那个。逐个对照 <code>names(dat)</code>。</li>
+<li><b>忘了 T1 变量之间的协方差。</b>lavaan 的 <code>sem()</code> 默认会估计外生变量（T1）之间的协方差，但如果你用 <code>lavaan()</code> 手写全部参数，就必须自己写上 <code>lone1 ~~ dep1</code>，否则模型会假设它们不相关，拟合会差得离谱。</li>
+<li><b>用 p 值比较两条交叉滞后路径。</b>一条 p = .001、另一条 p = .20，并不说明两者差异显著。需要像本课那样施加等值约束，再做 χ² 差异检验。</li>
+<li><b>只报 CFI 而回避 RMSEA。</b>本课数据就是一个反例：CFI 看起来尚可，RMSEA = .141 却很差。应完整报告，并讨论指标为什么不一致。</li></ul></div><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L5-2.R</code>（34 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L5-2.R  用 lavaan 拟合 CLPM 并评估模型拟合  (CLPM in lavaan; model fit)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(lavaan)
+log_open(&quot;L5-2_log.txt&quot;)
+dat &lt;- read_course_data()
+wide &lt;- data.frame(id = dat$id)
+for (t in 1:3) {                                   # 构念总分（construct scores）
+  wide[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)])
+  wide[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)])
+}
+clpm &lt;- &#x27;
+  lone2 ~ lone1 + dep1      # T2 孤独 被 T1 孤独（AR）和 T1 抑郁（CL）预测
+  dep2  ~ dep1  + lone1
+  lone3 ~ lone2 + dep2
+  dep3  ~ dep2  + lone2
+  lone1 ~~ dep1             # ~~ 表示（残差）相关
+  lone2 ~~ dep2
+  lone3 ~~ dep3
+&#x27;
+fit &lt;- sem(clpm, data = wide, missing = &quot;fiml&quot;)   # FIML：全信息最大似然，处理缺失
+print(summary(fit, standardized = TRUE, fit.measures = TRUE))   # print()：用 source() 或 run_all.R 运行时也写进日志
+pe &lt;- parameterEstimates(fit, standardized = TRUE)
+print(pe[pe$op == &quot;~&quot;, c(&quot;lhs&quot;, &quot;op&quot;, &quot;rhs&quot;, &quot;std.all&quot;, &quot;ci.lower&quot;, &quot;ci.upper&quot;, &quot;pvalue&quot;)], digits = 3)
+print(round(fitMeasures(fit, c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;)), 3))
+cat(&quot;提示：CFI ≥ .95、RMSEA ≤ .06、SRMR ≤ .08 常被当作“拟合良好”的参考。\n&quot;)
+# 标准化估计要配标准化的置信区间：standardizedSolution() 按 delta 法为 est.std 计算 SE 和 95% CI
+# （上面 parameterEstimates() 的 ci.lower / ci.upper 属于未标准化估计，不能和 std.all 并排解读）
+cat(&quot;\n标准化解（standardizedSolution）：回归路径的标准化估计及其 95% CI\n&quot;)
+ssol &lt;- standardizedSolution(fit)
+print(ssol[ssol$op == &quot;~&quot;, c(&quot;lhs&quot;, &quot;op&quot;, &quot;rhs&quot;, &quot;est.std&quot;, &quot;se&quot;, &quot;ci.lower&quot;, &quot;ci.upper&quot;, &quot;pvalue&quot;)], digits = 3)
+saveRDS(wide, out(&quot;L5_sumscores.rds&quot;))
+log_close()</code></pre></div></details>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L5-2_log.txt</code></div><pre class="out"><code>lavaan 0.7-3 ended normally after 44 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        23
+
+  Number of observations                           800
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                                      
+  Test statistic                                67.986
+  Degrees of freedom                                 4
+  P-value (Chi-square)                           0.000
+                                                      
+  Browne&#x27;s residual (NT model-based) test             
+  Test statistic                                50.189
+  Degrees of freedom                                 4
+  P-value (Chi-square)                           0.000
+
+Model Test Baseline Model:
+
+  Test statistic                              1685.320
+  Degrees of freedom                                15
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.962
+  Tucker-Lewis Index (TLI)                       0.856
+                                                      
+  Robust Comparative Fit Index (CFI)             0.962
+  Robust Tucker-Lewis Index (TLI)                0.856
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -11576.352
+  Loglikelihood unrestricted model (H1)     -11542.359
+                                                      
+  Akaike (AIC)                               23198.704
+  Bayesian (BIC)                             23306.450
+  Sample-size adjusted Bayesian (SABIC)      23233.412
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.141
+  90 Percent confidence interval - lower         0.113
+  90 Percent confidence interval - upper         0.172
+  P-value H_0: RMSEA &lt;= 0.050                    0.000
+  P-value H_0: RMSEA &gt;= 0.080                    1.000
+                                                      
+  Robust RMSEA                                   0.141
+  90 Percent confidence interval - lower         0.113
+  90 Percent confidence interval - upper         0.172
+  P-value H_0: Robust RMSEA &lt;= 0.050             0.000
+  P-value H_0: Robust RMSEA &gt;= 0.080             1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.031
+
+Goodness of Fit Index:
+
+  Goodness of Fit Index (GFI)                    0.974
+  90 Percent confidence interval - lower         0.962
+  90 Percent confidence interval - upper         0.983
+                                                      
+  Robust GFI                                     0.974
+  90 Percent confidence interval - lower         0.962
+  90 Percent confidence interval - upper         0.983
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  lone2 ~                                                               
+    lone1             0.579    0.028   20.636    0.000    0.579    0.607
+    dep1              0.014    0.025    0.542    0.588    0.014    0.016
+  dep2 ~                                                                
+    dep1              0.534    0.030   17.968    0.000    0.534    0.539
+    lone1             0.140    0.033    4.267    0.000    0.140    0.128
+  lone3 ~                                                               
+    lone2             0.574    0.032   17.993    0.000    0.574    0.559
+    dep2              0.061    0.028    2.175    0.030    0.061    0.068
+  dep3 ~                                                                
+    dep2              0.557    0.032   17.338    0.000    0.557    0.548
+    lone2             0.057    0.037    1.552    0.121    0.057    0.049
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  lone1 ~~                                                              
+    dep1              3.264    0.387    8.427    0.000    3.264    0.312
+ .lone2 ~~                                                              
+   .dep2              2.037    0.234    8.707    0.000    2.037    0.324
+ .lone3 ~~                                                              
+   .dep3              1.987    0.251    7.908    0.000    1.987    0.291
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .lone2             3.720    0.249   14.915    0.000    3.720    1.267
+   .dep2              0.505    0.291    1.733    0.083    0.505    0.150
+   .lone3             3.569    0.274   13.045    0.000    3.569    1.186
+   .dep3              1.235    0.316    3.912    0.000    1.235    0.362
+    lone1             8.804    0.109   80.852    0.000    8.804    2.859
+    dep1              3.836    0.120   31.952    0.000    3.836    1.130
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .lone2             5.389    0.269   20.000    0.000    5.389    0.625
+   .dep2              7.352    0.368   20.000    0.000    7.352    0.650
+   .lone3             5.913    0.296   20.000    0.000    5.913    0.653
+   .dep3              7.877    0.394   20.000    0.000    7.877    0.675
+    lone1             9.485    0.474   20.000    0.000    9.485    1.000
+    dep1             11.532    0.577   20.000    0.000   11.532    1.000
+
+    lhs op   rhs std.all ci.lower ci.upper pvalue
+1 lone2  ~ lone1   0.607    0.524    0.634  0.000
+2 lone2  ~  dep1   0.016   -0.036    0.064  0.588
+3  dep2  ~  dep1   0.539    0.476    0.592  0.000
+4  dep2  ~ lone1   0.128    0.076    0.204  0.000
+5 lone3  ~ lone2   0.559    0.511    0.636  0.000
+6 lone3  ~  dep2   0.068    0.006    0.115  0.030
+7  dep3  ~  dep2   0.548    0.494    0.620  0.000
+8  dep3  ~ lone2   0.049   -0.015    0.129  0.121
+ chisq     df pvalue    cfi    tli  rmsea   srmr 
+67.986  4.000  0.000  0.962  0.856  0.141  0.031 
+提示：CFI ≥ .95、RMSEA ≤ .06、SRMR ≤ .08 常被当作“拟合良好”的参考。
+
+标准化解（standardizedSolution）：回归路径的标准化估计及其 95% CI
+    lhs op   rhs est.std    se ci.lower ci.upper pvalue
+1 lone2  ~ lone1   0.607 0.024    0.560    0.654  0.000
+2 lone2  ~  dep1   0.016 0.029   -0.042    0.074  0.588
+3  dep2  ~  dep1   0.539 0.026    0.488    0.590  0.000
+4  dep2  ~ lone1   0.128 0.030    0.069    0.187  0.000
+5 lone3  ~ lone2   0.559 0.027    0.507    0.612  0.000
+6 lone3  ~  dep2   0.068 0.031    0.007    0.128  0.029
+7  dep3  ~  dep2   0.548 0.027    0.495    0.602  0.000
+8  dep3  ~ lone2   0.049 0.032   -0.013    0.111  0.120</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">lavaan 语法中 <code>~</code> 与 <code>~~</code> 分别表示？</p><ul class="opts"><li><button type="button" data-ok="0">A. 相关；回归</button><div class="ofb" hidden>反了：<code>~</code> 是回归，<code>~~</code> 才是协方差。</div></li><li><button type="button" data-ok="1">B. 回归；相关（协方差）</button><div class="ofb" hidden>正确：<code>y ~ x</code> 回归，<code>x ~~ y</code> 协方差。</div></li><li><button type="button" data-ok="0">C. 潜变量定义；回归</button><div class="ofb" hidden>潜变量定义是 <code>=~</code>，不是 <code>~</code>。</div></li><li><button type="button" data-ok="0">D. 均值；方差</button><div class="ofb" hidden>均值写作 <code>x ~ 1</code>，方差写作 <code>x ~~ x</code>；<code>~</code> 与 <code>~~</code> 本身分别表示回归和协方差。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">RMSEA = 0.141 说明什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 模型拟合很好</button><div class="ofb" hidden>RMSEA ≤ .06 才常被视为较好，.141 已超过 .10。</div></li><li><button type="button" data-ok="1">B. 模型拟合较差（> .10），模型很可能遗漏了重要结构</button><div class="ofb" hidden>正确；在本数据中，被遗漏的主要是稳定特质（见 5.3）。</div></li><li><button type="button" data-ok="0">C. 交叉滞后显著</button><div class="ofb" hidden>整体拟合指标与单条路径是否显著无关。</div></li><li><button type="button" data-ok="0">D. 样本量太小</button><div class="ofb" hidden>N = 800 不小；而且 N 越大，同样的 χ² 对应的 RMSEA 越小。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">CFI = .962 而 TLI = .856，下列说法正确的是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 只看 CFI 就够了</button><div class="ofb" hidden>只挑对自己有利的指标会掩盖模型的问题；本例中 RMSEA 也很差。</div></li><li><button type="button" data-ok="1">B. 指标互相矛盾时应综合判断，并思考模型可能缺了什么</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. TLI 一定算错了</button><div class="ofb" hidden>TLI 对模型复杂度惩罚更多，两者不同很常见，不说明计算有误。</div></li><li><button type="button" data-ok="0">D. 说明交叉滞后路径为 0</button><div class="ofb" hidden>整体拟合指标不检验任何单条路径是否为 0。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">给 T1→T2 与 T2→T3 的同类路径加“等值约束”的主要理由是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 让 p 值变小</button><div class="ofb" hidden>约束的目的是简约和稳定；为了得到更小的 p 值去选模型，属于选择性报告。</div></li><li><button type="button" data-ok="1">B. 间隔与情境相似时更简约、更稳定，且可用模型比较检验是否合理</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. lavaan 要求必须加</button><div class="ofb" hidden>lavaan 默认各路径自由估计；是否约束由研究者决定并检验。</div></li><li><button type="button" data-ok="0">D. 让 CFI 一定变大</button><div class="ofb" hidden>约束减少了自由参数，拟合通常略变差或不变，CFI 不会因此一定变大。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">许多 CLPN 论文没有报告 CFI / RMSEA，最可能的原因是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 因为题目层面的数据算不出协方差矩阵</button><div class="ofb" hidden>题目同样有协方差矩阵；完整流程的 SEM 重估正是在题目层面计算拟合指标。</div></li><li><button type="button" data-ok="1">B. 它们用的是“仅 LASSO”简化版：只做逐节点 LASSO 回归，没有把模型作为一个整体 SEM 重估，所以没有整体拟合指标；采用 Wysocki 等人（2025）完整流程（lavaan 重估）的论文会报告 χ² / CFI / TLI / RMSEA</button><div class="ofb" hidden>正确。简化版依靠交叉验证/EBIC 选 λ，并用 bootstrap 评估稳定性；完整流程在 SEM 重估后有整体拟合指标，并可用嵌套 χ² 检验跨时间等值（7.5 课，R/L7-5b.R）。</div></li><li><button type="button" data-ok="0">C. 因为 CLPN 的拟合总是完美的</button><div class="ofb" hidden>逐节点 LASSO 回归没有整体拟合检验，谈不上“总是完美”；完整流程重估后的拟合也可能不好。</div></li><li><button type="button" data-ok="0">D. 因为任何 CLPN 都不可能计算拟合指标</button><div class="ofb" hidden>完整流程的 SEM 重估就能给出这些指标（7.5）。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：APA 格式报告<span class="lvl">基础</span></h4><p>用上面的实际输出，按 APA 风格写两句话：一句报告模型拟合，一句报告“孤独 T1 → 抑郁 T2”的交叉滞后路径。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考：“CLPM 的拟合指标不一致，χ²(4) = 67.99，p &lt; .001，CFI = .962，TLI = .856，RMSEA = .141，SRMR = .031，提示模型可能遗漏了稳定的个体差异。控制 T1 抑郁后，T1 孤独显著正向预测 T2 抑郁（β = .13，95% CI [.07, .19]，p &lt; .001）。”注意：拟合指标保留三位小数、去掉前导零（APA 对上限为 1 的统计量的惯例）；β 用标准化估计。</p></details></div>
+<div class="exitem"><h4>练习 2：手算 RMSEA 与自由度<span class="lvl">理解</span></h4><p>（1）解释为什么本模型 df = 4。（2）如果同一模型在 N = 200 的样本上得到同样 χ² = 67.99，RMSEA 是多少？说明了什么？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>（1）6 个变量提供 21 个方差/协方差 + 6 个均值 = 27 条信息；模型估计 23 个参数（6 个截距/均值、8 条回归、2 个 T1 方差、4 个残差方差、3 个协方差），27 − 23 = 4。（2）\(\sqrt{63.99/(4\times199)}\approx 0.284\)。同样的 χ² 在小样本中意味着更严重的不吻合；反过来，大样本中 χ² 很容易显著，所以不能只看 χ² 的 p 值。</p></details></div>
+<div class="exitem"><h4>练习 3：等值约束检验<span class="lvl">动手</span></h4><p>运行上面“等值约束版本”代码，报告 <code>anova(fit_eq, fit)</code> 的结果，并判断是否可以把两个时间段的路径约束相等。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>判断规则：若 χ² 差异检验不显著（p &gt; .05），说明约束没有让拟合明显变差，可以采用更简约的等值模型；若显著，说明至少有一类路径在两段间不同，应报告不约束的结果并讨论原因（如间隔不同、发展阶段变化）。也可以同时参考 AIC/BIC（越小越好）。课程数据上的结果（参考答案脚本 <code>R/solutions/L5-2_solution.R</code> 末尾，日志 <code>R/output/sol_L5-2_log.txt</code>）：Δχ²(4) = 4.87，p = .301；等值模型的 AIC（23196）与 BIC（23285）都比不约束的模型（23199、23306）小。所以可以采用等值模型：两段的路径没有显著差异。（等值模型本身的拟合仍然差，χ²(8) = 72.85，RMSEA = .101，原因还是遗漏了稳定特质，见 5.3。）</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>在模拟数据上用 lavaan 拟合 CLPM，按 APA 格式报告交叉滞后路径（标准化估计、95% CI）与拟合指标。</p></div><h3>自测问题</h3><ol><li>lavaan 语法中 ~ 和 ~~ 分别代表什么？</li><li>RMSEA = 0.12 说明什么？</li><li>为什么要考虑“跨波路径相等”的约束？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>SEM 拟合 = 模型隐含协方差 Σ(θ) 与样本协方差 S 的接近程度。</li><li>常用指标：χ²、CFI/TLI（≥ .95）、RMSEA（≤ .06）、SRMR（≤ .08）；这些是经验规则，需综合判断。</li><li>课程数据上的 CLPM：RMSEA = .141、TLI = .856，提示遗漏了稳定特质。</li><li>等值约束 = 给路径相同标签；用嵌套模型 χ² 差异检验判断是否合理。</li><li>“仅 LASSO”的 CLPN 没有整体拟合指标，靠 λ 选择与 bootstrap 稳定性来“自证”（Wysocki 等人 2025 年的完整流程在无惩罚的 SEM 重估之后才有拟合指标）。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Rosseel, Y. (2012). lavaan: An R package for structural equation modeling. <i>Journal of Statistical Software, 48</i>(2), 1–36. <a href="https://doi.org/10.18637/jss.v048.i02" target="_blank" rel="noopener">doi.org/10.18637/jss.v048.i02</a><div class="muted" style="font-size:.84rem">lavaan 包的说明论文，第 5.2 课。</div></li><li>Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a><div class="muted" style="font-size:.84rem">提出 RI-CLPM，第 5.3 课必读。</div></li></ul></section>
+<nav class="pager"><a href="L5-1.html" class="pv"><small>上一课</small>5.1 CLPM 的直觉：自回归路径与交叉滞后路径</a><a href="L5-3.html" class="nx"><small>下一课</small>5.3 RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></nav>
+<p class="foot">CLPN 从零开始 · 第 5.2 课 · <a href="../index.html#L5-2">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

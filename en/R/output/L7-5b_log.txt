@@ -1,0 +1,46 @@
+Step 2 LASSO (lambda.min): T1->T2 non-zero cross-lagged edges: 52 ; T2->T3: 55 ; cross-lagged paths entering SEM under conservative rule: 67 (per lag)
+
+Step 3 SEM (unconstrained): chi^2(91) = 164.70, p < .001; CFI = 0.988; TLI = 0.959; RMSEA = 0.032 [0.024, 0.040]; SRMR = 0.023
+
+Step 3 Equality constraints (each T1->T2 path = corresponding T2->T3 path) nested chi^2 test:
+Delta chi^2(76) = 84.69, p = 0.232; AIC: constrained 53607.9 vs unconstrained 53675.2; BIC: constrained 54722.9 vs unconstrained 55146.2
+Final model: Constrained model (invariance holds; used for subsequent pruning and prediction) 
+Final model fit: chi^2(167) = 249.39; CFI = 0.987; TLI = 0.975; RMSEA = 0.025; SRMR = 0.027
+
+Comparison of T1->T2 cross-lagged edges with population target ( 36 cross-lagged edges in population target):
+                                                 Recovered False_positives
+LASSO-only (lambda.min)                                 33              19
+LASSO + SEM re-estimation, final model (p < .01)        16               0
+LASSO + SEM re-estimation, final model (p < .05)        21               1
+Comparison: unconstrained model (p < .01)                6               1
+                                                 Missed Total_est_CL
+LASSO-only (lambda.min)                               3           52
+LASSO + SEM re-estimation, final model (p < .01)     20           16
+LASSO + SEM re-estimation, final model (p < .05)     15           22
+Comparison: unconstrained model (p < .01)            30            7
+Correlation between SEM re-estimated edge weights and population target (retained paths) = 0.824 ; correlation between LASSO edge weights and population target (same paths) = 0.665 
+Example: lone3 -> dep1 population target 0.118 ; LASSO 0.073 ; SEM re-estimation 0.095 (p = 0.000186) 
+
+Step 4 In-/out-prediction (proportion of explained variance; CL = omitting autoregression):
+      inPred inPred_CL inPred_bridge outPred outPred_CL outPred_bridge
+lone1  0.264     0.024         0.003   0.021      0.003          0.003
+lone2  0.249     0.032         0.012   0.020      0.004          0.001
+lone3  0.256     0.049         0.010   0.015      0.002          0.002
+lone4  0.318     0.039         0.004   0.025      0.005          0.002
+dep1   0.233     0.039         0.014   0.019      0.006          0.001
+dep2   0.203     0.059         0.018   0.010      0.002          0.002
+dep3   0.196     0.017         0.001   0.018      0.004          0.000
+dep4   0.231     0.070         0.003   0.012      0.004          0.005
+dep5   0.257     0.062         0.013   0.013      0.001          0.000
+Highest cross-construct out-prediction: dep4 ; highest cross-construct in-prediction: dep2 
+
+Comparison of T1->T2 cross-lagged edges with within-person truth ( 8 cross-lagged edges in within-person truth):
+                                                 Recovered False_positives
+LASSO-only (lambda.min)                                  8              44
+LASSO + SEM re-estimation, final model (p < .01)         8               8
+LASSO + SEM re-estimation, final model (p < .05)         8              14
+                                                 Missed Total_est_CL
+LASSO-only (lambda.min)                               0           52
+LASSO + SEM re-estimation, final model (p < .01)      0           16
+LASSO + SEM re-estimation, final model (p < .05)      0           22
+Correlation between SEM re-estimated edge weights on retained paths and within-person truth = 0.67 

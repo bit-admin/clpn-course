@@ -1,0 +1,5 @@
+T2 -> T3, Men 373 vs. Women 427, 200 permutations
+M = 0.133 (dep5 -> dep1: Men 0.000, Women 0.133), permutation p = 0.766
+S = 0.382 (Men 1.255, Women 1.637), permutation p = 0.448
+Across 72 edges, 4 have unadjusted p < .05; minimum possible p with 200 permutations is 0.0050
+A priori specified edge lone3 -> dep1: Men 0.000, Women 0.072, single-edge permutation p = 0.333

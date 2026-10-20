@@ -1,0 +1,8 @@
+     lhs op     rhs est.std unstandardized_est
+ RI_lone ~~ RI_lone     1.0              3.401
+  RI_dep ~~  RI_dep     1.0              4.351
+ RI_lone ~~  RI_dep     0.2              0.770
+
+Correlation between the two random intercepts (stable traits) = 0.200 , 95% CI [ -0.02 , 0.42 ] (true latent trait correlation set in simulation is 0.50)
+lone: Random intercept variance = 3.40, mean observed sum score variance = 9.07, proportion of stable variance ≈ 0.38
+dep: Random intercept variance = 4.35, mean observed sum score variance = 11.52, proportion of stable variance ≈ 0.38

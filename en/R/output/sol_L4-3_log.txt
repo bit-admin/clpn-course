@@ -1,0 +1,13 @@
+dep_t1   Retained M = 2.60, Dropout M = 8.78; Welch t(227.2) = -28.12, p = <0.001
+lone_t1  Retained M = 8.42, Dropout M = 10.36; Welch t(242.1) = -7.29, p = <0.001
+age      Retained M = 45.00, Dropout M = 46.98; Welch t(241.6) = -1.51, p = 0.133
+Standardized difference in T1 depression (using total-sample SD) d ≈ 1.82 
+Standardized difference in T1 depression (using pooled within-group SD, i.e., conventional Cohen's d) d ≈ 2.65 
+
+Complete data: T2 depression mean = 3.78 ; r(T1 loneliness, T2 depression) = 0.296 
+MCAR listwise deletion: T2 depression mean = 3.82 ; r = 0.31 
+MCAR attrition analysis (T1 depression): p = 0.841 (mostly non-significant)
+
+4.3-C T2 depression mean after multiple imputation (true value 3.78 ; listwise deletion 3.06 ):
+(a) Imputation model includes dep_t1, lone_t1, gender: 3.73 
+(b) Omitting dep_t1, using only lone_t1 and gender:   3.12 

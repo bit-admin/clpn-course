@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.4 From Prediction to Causality: What Longitudinal Models Can and Cannot Claim · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L5-4.md" title="Plain text">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="5.4" style="--c:#8b5cf6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L5-4">CLPN Syllabus</a><span class="crumb">M5 Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM / 5.4</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L5-4.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L5-4.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details open style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html" class="cur" aria-current="page"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 5 · Cross-Lagged Panel Models · Lesson 5.4</div>
+<h1>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</h1>
+<div class="facts"><span>Study time 1 hr 30 min</span><span>Prerequisites: <a href="L5-3.html">5.3 RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></span><span>R script: <a href="../R/L5-4.R">R/L5-4.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Distinguish &#x27;prediction over time&#x27; (Granger-style) from causal effects</li><li>Recognize threats such as unmeasured confounding, the time lag, and measurement error</li><li>Practice writing longitudinal results in cautious, accurate language</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>temporal precedence</b></li><li><b>Granger causality</b></li><li><b>unmeasured confounding</b></li><li><b>measurement error</b></li><li><b>reverse causation</b></li></ul>
+<p>In longitudinal and CLPN papers, the most common reviewer comment is usually not "the code is wrong" but "the conclusions go too far." This lesson discusses where prediction over time ends and causal inference begins, and how to report results in accurate, restrained language.</p>
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① Intuition</span>Build the Mental Picture</h2>
+<h3>What does causal inference need?</h3>
+<p>The classic answer: to say "A causes B" you need at least (1) an association between A and B; (2) A occurring before B (<span class="term">temporal precedence</span>); (3) other explanations (such as common causes) ruled out. Cross-lagged paths in panel data help with (2) at best, and partly with (1); (3) is almost never achieved.</p>
+<h3>"Granger causality" is not real causality</h3>
+<p>The economist Granger proposed: if knowing A's past predicts B's future better than "knowing B's past" alone, then A "Granger-causes" B. The cross-lagged paths of the CLPM and CLPN are essentially predictions of this <span class="term">Granger causality</span> kind. Despite "causality" in the name, it is only predictability: "seeing many people on the street carrying umbrellas" Granger-predicts "rain later," but carrying umbrellas obviously does not cause rain. Both are driven by the same common cause, the rainy weather on its way (people learn about it from the forecast or the dark clouds and take an umbrella).</p>
+<h3>Five common threats</h3>
+<div class="tablewrap"><table><tr><th>Threat</th><th>Example: loneliness and depression</th></tr><tr><td>Unmeasured confounding</td><td>Chronic illness, widowhood or financial hardship may raise both loneliness and depression; what you did not measure, you cannot control</td></tr><tr><td>Reverse causation</td><td>Depression makes people withdraw and so become lonelier; if the two act on each other within the lag, the direction is hard to tell apart</td></tr><tr><td>Measurement error</td><td>Self-report scales contain error; error makes the autoregressive paths underestimated, so the cross-lagged paths end up "speaking for" the autoregressive paths</td></tr><tr><td>Unsuitable time lag</td><td>If the true effect peaks within 2 months, measuring every 6 months may catch it after it has faded</td></tr><tr><td>Between-/within-person confounding</td><td>See 5.3: people who are lonely in the long run are also depressed in the long run</td></tr></table></div>
+<p>The demonstration below shows the role of the time lag. Suppose the "true process" runs month by month: each month loneliness gives depression a small push, and each variable has its own inertia. Measure it with different lags and you get cross-lagged coefficients of completely different sizes.</p>
+<div class="widget w2" data-widget="lag"><noscript>Interactive widget (requires JavaScript).</noscript></div>
+<h3>Lucas (2023): why the CLPM is "almost never the right choice"</h3>
+<p>Lucas showed by simulation that whenever there are stable individual differences (and almost every psychological variable has them), the CLPM easily produces "significant" cross-lagged paths even when the true within-person effect is 0, and the larger the sample, the more easily these "false positives" reach significance. He therefore argues that you should at least use a model that handles stable traits (such as the RI-CLPM) and be very restrained about causal readings of cross-lagged paths. The critique applies equally to the standard CLPN.</p>
+<h3>A spectrum of wording: from most careful to overreaching</h3>
+<div class="tablewrap"><table><tr><th>Level</th><th>Example</th><th>Assessment</th></tr><tr><td>Descriptive</td><td>"T1 loneliness is positively correlated with T2 depression"</td><td>Safe, but says little</td></tr><tr><td>Predictive</td><td>"Controlling for baseline depression, T1 loneliness positively predicts T2 depression"</td><td>The standard wording for CLPM/CLPN</td></tr><tr><td>Suggestive</td><td>"This result is consistent with the hypothesis that loneliness may worsen depression"</td><td>Fine, if paired with a statement of limitations</td></tr><tr><td>Causal</td><td>"Loneliness causes / leads to / produces depression"</td><td>Usually not supported by observational panel data</td></tr><tr><td>Interventional</td><td>"So reducing loneliness will lower depression"</td><td>Needs an intervention study (such as a randomized controlled trial)</td></tr></table></div>
+<p>The small tool below checks your paragraph for "risky words." Paste in a conclusion you wrote and try it.</p>
+<div class="widget w2" data-widget="cause"><noscript>Interactive widget (requires JavaScript).</noscript></div>
+<div class="box sw"><b class="bt">Social work perspective:</b><p>Wording affects how resources are allocated. If your policy recommendation says "reducing loneliness will lower depression," but in reality both are caused by financial hardship, money spent only on "befriending visits" may achieve little. While wording things accurately, you can still actively propose "hypotheses worth testing in an intervention study."</p></div><h3>Common questions and pitfalls</h3><details class="ans faq"><summary>How many waves does a CLPN need?</summary><p>Two waves are enough to estimate one T1→T2 network. Three or more let you check replication (T2→T3) or use more complex models. Separating between-person and within-person effects usually needs more waves.</p></details><details class="ans faq"><summary>Social Work Connection</summary><p>When you design a longitudinal study, first ask yourself: roughly how long does the change I care about take? If an intervention shows its effect within a few weeks, measuring once every six months may miss it.</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② Essential Math</span>Write the Intuition as Equations</h2>
+<p>The math of this lesson is one central contrast: prediction and intervention are two different conditional expectations.</p>
+<div class="mathbox">\[\underbrace{\mathbb{E}[\,D_{t+1}\mid L_t = l,\ D_t = d\,]}_{\text{prediction: people observed with } L_t=l} \quad\text{vs}\quad \underbrace{\mathbb{E}[\,D_{t+1}\mid \mathrm{do}(L_t = l),\ D_t = d\,]}_{\text{intervention: setting } L_t \text{ to } l}\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(L_t,\ D_t\)</td><td>Loneliness (L) and depression (D) at time t</td></tr><tr><td>\(\mathbb{E}[\,\cdot \mid \cdot\,]\)</td><td>Conditional expectation: the average of the variable on the left among the people for whom the condition on the right holds</td></tr><tr><td>\(\mathrm{do}(L_t=l)\)</td><td>Pearl's do notation: not "observed to be" but "set to" l (for example, by an intervention)</td></tr></table>
+<p>A cross-lagged coefficient estimates the left side (prediction). The left side equals the right side only when conditions such as "no unmeasured confounding" hold. If a common cause \(U\) (such as chronic illness) raises both \(L_t\) and \(D_{t+1}\), then people observed with high \(L_t\) also tend to have high \(U\), so the left side "seems" to show an effect while the right side (actually changing loneliness) may be 0.</p>
+<h4>The math of the time lag (for reference)</h4>
+<p>If the true process runs monthly, \(\mathbf{x}_{m+1} = A\,\mathbf{x}_m + \boldsymbol\varepsilon\) (\(\mathbf{x}\) is the vector of loneliness and depression, \(A\) the monthly coefficient matrix), then the coefficient matrix for a lag of \(\Delta\) months is \(A^{\Delta}\) (the matrix to the power \(\Delta\)). In the demonstration above, \(A=\begin{pmatrix}a&0\\c&a\end{pmatrix}\), and you can work out that the cross effect at lag \(\Delta\) is \(\Delta\,a^{\Delta-1}c\): it first grows with \(\Delta\), then shrinks as \(a^{\Delta-1}\) decays. So results from studies with different lags cannot simply be compared.</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R Code</span>Implement in R</h2>
+<p>This lesson is mostly about writing and reasoning. The companion script <code>R/L5-4.R</code> uses only simulated data (only in a simulation do we know the "truth") and has four parts: ① unmeasured confounding; ② the measurement lag; ③ stable traits causing false positives in the CLPM; ④ checking a conclusion for "risky causal words." Here is the core code of part 1.</p>
+<div class="codeblk"><div class="ctitle">Small simulation: a "significant cross-lagged path" without any causation (copy into R and run)</div><pre><code class="language-r">set.seed(2026)
+N &lt;- 800
+U  &lt;- rnorm(N)                       # Unmeasured common cause (e.g., severity of a chronic illness)
+L1 &lt;- 0.6 * U + rnorm(N, 0, 0.8)     # T1 loneliness: affected by U
+D1 &lt;- 0.6 * U + rnorm(N, 0, 0.8)     # T1 depression: affected by U
+D2 &lt;- 0.5 * D1 + 0.4 * U + rnorm(N, 0, 0.7)   # T2 depression: affected by D1 and U; loneliness has NO effect on it
+summary(lm(scale(D2) ~ scale(D1) + scale(L1)))  # The L1 coefficient will be significantly &gt; 0!
+summary(lm(scale(D2) ~ scale(D1) + scale(L1) + scale(U)))  # With U controlled, the L1 coefficient ≈ 0</code></pre></div>
+<p><b>Actual results (R/output/L5-4_log.txt):</b> in the first model the coefficient of <code>scale(L1)</code> is β = 0.186 (SE = 0.028, p &lt; .001), "significant"; in the second model, with U controlled, it falls to β = 0.016 (p = 0.58), close to 0. The script also repeats the simulation 500 times: the true effect is 0, yet the loneliness coefficient has p &lt; .05 in 100% of them. At N = 800, confounding of this size produces a "significant cross-lagged path" almost every time. In real studies we usually cannot measure U, so all we can do is name this possibility in the discussion.</p>
+<div class="codeblk"><div class="ctitle">L5-4_log.txt (part 1, excerpt)</div><pre class="out"><code>→ Cross-lag of loneliness: without controlling for U, β = 0.186 (p &lt; .001); controlling for U, β = 0.016 (p = 0.58)
+Extension: changing 0.4*U to 0 yields L1 coefficient β = 0.028 (p = 0.38) — U operates only through D1, which is already controlled.
+500 simulation replications (N = 800): proportion of loneliness coefficient with p &lt; .05 = 100.0% (true effect is 0; nominal rate is 5%)</code></pre></div><div class="box key"><b class="bt">Going further:</b><p>Change <code>0.4 * U</code> to <code>0</code> and run the first model again: when U no longer affects D2 directly, what happens to L1's "false effect"? The script's answer is β = 0.028 (p = 0.38): it has essentially disappeared. The reason: U still affects D2 through D1, but D1 is already controlled, so this "borrowed" path is blocked. For a confounder to create a false effect, it has to bypass the variables you control and act on the outcome directly.</p></div>
+<h3>Part 2: a different lag gives a different coefficient</h3>
+<p>Following "the math of the time lag" above, the script works out the cross effect \(\Delta\,a^{\Delta-1}c\) month by month and checks it by repeated matrix multiplication. With a monthly autoregressive effect a = 0.80 and a monthly cross effect c = 0.15, the cross-lagged paths at lags of 1 / 3 / 6 / 12 / 24 months are 0.150 / 0.288 / 0.295 / 0.155 / 0.021, peaking at about 4 months (theoretical value \(-1/\ln a\approx4.5\)); with a = 0.90 and c = 0.05 they are 0.050 / 0.122 / 0.177 / 0.188 / 0.106, peaking at about 10 months. The same process, measured with a 1-month and a 24-month lag, gives two completely different conclusions: "effect 0.15" and "effect 0.02." The figure is <code>R/output/L5-4_lag.png</code>.</p>
+<h3>Part 3: stable traits and false positives in the CLPM</h3>
+<p>Following Lucas (2023), the script simulates data in which "trait loneliness" and "trait depression" are correlated but the within-person cross-lagged effect is exactly 0, and then tests loneliness → depression with a CLPM-style regression (D2 ~ D1 + L1). Result: 39% of samples are "significant" at N = 200, 95% at N = 800, 100% at N = 3000. As a control, with the traits removed, the share at N = 800 is only 8.0% (close to the nominal 5%; 200 simulations have sampling fluctuation). The larger the sample, the more "confidently" the CLPM reports an effect that does not exist; controlling for T1 depression does not remove the trait, because T1 depression is only a noisy measure of the trait.</p>
+<h3>Companion Script &amp; Output</h3><details class="more rsrc"><summary>Complete companion script <code>R/L5-4.R</code> (116 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L5-4.R  From prediction to causation: confounding, time lags, and stable traits
+#   (What cross-lags can and cannot tell us)
+# Companion to lesson lessons/L5-4.html. This script does not use course data;
+# it relies entirely on simulations because only in simulations do we know the &quot;ground truth.&quot;
+#   Part 1: Unmeasured confounding U manufactures a &quot;significant cross-lag&quot;
+#   Part 2: Different measurement lags produce different cross-lagged coefficients (Delta * a^(Delta-1) * c)
+#   Part 3: Stable traits (between-person differences) cause CLPM to show spurious cross-lags (core point in Lucas, 2023)
+#   Part 4: A simple helper to check for &quot;risky causal language&quot;
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+log_open(&quot;L5-4_log.txt&quot;)
+
+coef_row &lt;- function(fit, term) {                 # Extract estimate, SE, and p-value for a coefficient
+  s &lt;- summary(fit)$coefficients
+  round(s[term, c(&quot;Estimate&quot;, &quot;Std. Error&quot;, &quot;Pr(&gt;|t|)&quot;)], 4)
+}
+
+## ---------- Part 1: Unmeasured confounding ----------
+cat(&quot;========== Part 1: Unmeasured confounding ==========\n&quot;)
+set.seed(2026)
+N  &lt;- 800
+U  &lt;- rnorm(N)                                   # Unmeasured common cause (e.g., chronic illness severity)
+L1 &lt;- 0.6 * U + rnorm(N, 0, 0.8)                 # T1 loneliness: influenced by U
+D1 &lt;- 0.6 * U + rnorm(N, 0, 0.8)                 # T1 depression: influenced by U
+D2 &lt;- 0.5 * D1 + 0.4 * U + rnorm(N, 0, 0.7)      # T2 depression: influenced by D1 and U; loneliness has NO effect on it
+m_naive &lt;- lm(scale(D2) ~ scale(D1) + scale(L1))             # Like CLPM, controlling only for T1 depression
+m_ctrlU &lt;- lm(scale(D2) ~ scale(D1) + scale(L1) + scale(U))  # If we could measure and control for U
+cat(&quot;\nModel A: D2 ~ D1 + L1 (U unmeasured)\n&quot;);  print(summary(m_naive)$coefficients |&gt; round(4))
+cat(&quot;\nModel B: D2 ~ D1 + L1 + U (controlling for U)\n&quot;); print(summary(m_ctrlU)$coefficients |&gt; round(4))
+a &lt;- coef_row(m_naive, &quot;scale(L1)&quot;); b &lt;- coef_row(m_ctrlU, &quot;scale(L1)&quot;)
+cat(sprintf(&quot;\n→ Cross-lag of loneliness: without controlling for U, β = %.3f (p %s); controlling for U, β = %.3f (p = %.2f)\n&quot;,
+            a[1], if (a[3] &lt; .001) &quot;&lt; .001&quot; else paste(&quot;=&quot;, round(a[3], 3)), b[1], b[3]))
+
+# Extension exercise: U no longer directly affects D2 (change 0.4*U to 0)
+set.seed(2026)
+U  &lt;- rnorm(N); L1 &lt;- 0.6 * U + rnorm(N, 0, 0.8); D1 &lt;- 0.6 * U + rnorm(N, 0, 0.8)
+D2b &lt;- 0.5 * D1 + 0 * U + rnorm(N, 0, 0.7)
+c0 &lt;- coef_row(lm(scale(D2b) ~ scale(D1) + scale(L1)), &quot;scale(L1)&quot;)
+cat(sprintf(&quot;Extension: changing 0.4*U to 0 yields L1 coefficient β = %.3f (p = %.2f) — U operates only through D1, which is already controlled.\n&quot;, c0[1], c0[3]))
+
+# Replicate 500 times: how common are false positives?
+set.seed(1)
+p_vals &lt;- replicate(500, {
+  U &lt;- rnorm(N); L1 &lt;- 0.6 * U + rnorm(N, 0, 0.8); D1 &lt;- 0.6 * U + rnorm(N, 0, 0.8)
+  D2 &lt;- 0.5 * D1 + 0.4 * U + rnorm(N, 0, 0.7)
+  summary(lm(D2 ~ D1 + L1))$coefficients[&quot;L1&quot;, 4] })
+cat(sprintf(&quot;500 simulation replications (N = 800): proportion of loneliness coefficient with p &lt; .05 = %.1f%% (true effect is 0; nominal rate is 5%%)\n\n&quot;,
+            100 * mean(p_vals &lt; .05)))
+
+## ---------- Part 2: Time lag ----------
+cat(&quot;========== Part 2: Measurement interval (time lag) ==========\n&quot;)
+lag_effect &lt;- function(a, c, months) {          # Monthly process x[m+1] = A x[m], A = [[a,0],[c,a]]
+  A &lt;- matrix(c(a, c, 0, a), 2)                  # Fill by columns: col 1 (a, c), col 2 (0, a)
+  sapply(months, function(d) { P &lt;- diag(2); for (k in seq_len(d)) P &lt;- P %*% A; P[2, 1] })
+}
+months &lt;- 1:24
+for (pars in list(c(0.8, 0.15), c(0.9, 0.05))) {
+  ce &lt;- lag_effect(pars[1], pars[2], months)
+  cat(sprintf(&quot;Monthly autoregression a = %.2f, monthly cross-effect c = %.2f:\n&quot;, pars[1], pars[2]))
+  print(data.frame(Lag_months = c(1, 3, 6, 12, 24), Cross_lag = round(ce[c(1, 3, 6, 12, 24)], 3),
+                   Formula = round(c(1, 3, 6, 12, 24) * pars[1]^(c(1, 3, 6, 12, 24) - 1) * pars[2], 3)),
+        row.names = FALSE)
+  cat(sprintf(&quot;  Peak occurs at approximately %d months (theoretical value -1/ln(a) = %.1f)\n\n&quot;, which.max(ce), -1 / log(pars[1])))
+}
+png_open(&quot;L5-4_lag.png&quot;, width = 1800, height = 1100)
+plot(months, lag_effect(0.8, 0.15, months), type = &quot;b&quot;, pch = 19, ylim = c(0, 0.5),
+     xlab = &quot;Measurement lag (months)&quot;, ylab = &quot;Observed cross-lag (Loneliness -&gt; Depression)&quot;,
+     main = &quot;Same monthly process measured across different lags&quot;)
+lines(months, lag_effect(0.9, 0.05, months), type = &quot;b&quot;, pch = 17, col = &quot;firebrick&quot;)
+legend(&quot;topright&quot;, c(&quot;a = 0.8, c = 0.15&quot;, &quot;a = 0.9, c = 0.05&quot;), pch = c(19, 17),
+       col = c(&quot;black&quot;, &quot;firebrick&quot;), bty = &quot;n&quot;)
+invisible(dev.off())
+cat(&quot;Plot saved: R/output/L5-4_lag.png\n\n&quot;)
+
+## ---------- Part 3: Stable traits -&gt; spurious cross-lags ----------
+cat(&quot;========== Part 3: Stable traits and false positives in CLPM (Lucas, 2023) ==========\n&quot;)
+# Each person has stable loneliness trait TL and depression trait TD (correlated at 0.5);
+# within-person fluctuations have autoregression only (0.3); true within-person cross-lag is 0.
+sim_panel &lt;- function(N, trait_sd = 1) {
+  TL &lt;- rnorm(N); TD &lt;- 0.5 * TL + sqrt(1 - 0.5^2) * rnorm(N)
+  TL &lt;- trait_sd * TL; TD &lt;- trait_sd * TD
+  wl &lt;- rnorm(N); wd &lt;- rnorm(N)
+  L &lt;- D &lt;- matrix(NA, N, 3)
+  for (t in 1:3) {
+    if (t &gt; 1) { wl &lt;- 0.3 * wl + rnorm(N, 0, sqrt(1 - 0.09)); wd &lt;- 0.3 * wd + rnorm(N, 0, sqrt(1 - 0.09)) }
+    L[, t] &lt;- TL + wl; D[, t] &lt;- TD + wd
+  }
+  data.frame(L1 = L[, 1], L2 = L[, 2], D1 = D[, 1], D2 = D[, 2])
+}
+set.seed(42)
+for (n in c(200, 800, 3000)) {
+  ps &lt;- replicate(200, { d &lt;- sim_panel(n); summary(lm(D2 ~ D1 + L1, data = d))$coefficients[&quot;L1&quot;, 4] })
+  est &lt;- coef(lm(scale(D2) ~ scale(D1) + scale(L1), data = sim_panel(n)))[3]
+  cat(sprintf(&quot;N = %4d: In CLPM-style regression, proportion of \&quot;Loneliness T1 -&gt; Depression T2\&quot; with p &lt; .05 = %5.1f%% (standardized β for single sample ≈ %.3f)\n&quot;,
+              n, 100 * mean(ps &lt; .05), est))
+}
+set.seed(42)
+ps0 &lt;- replicate(200, { d &lt;- sim_panel(800, trait_sd = 0); summary(lm(D2 ~ D1 + L1, data = d))$coefficients[&quot;L1&quot;, 4] })
+cat(sprintf(&quot;Control: without stable traits (trait_sd = 0), N = 800, proportion with p &lt; .05 = %.1f%% (close to nominal 5%%, 200 replications have sampling fluctuation)\n&quot;, 100 * mean(ps0 &lt; .05)))
+cat(&quot;→ True within-person cross-lag is 0, but with correlated stable traits, CLPM will \&quot;detect\&quot; cross-lags; larger samples become more \&quot;significant\&quot;.\n&quot;,
+    &quot;  Controlling for T1 depression cannot eliminate trait influence, because T1 depression is merely a noisy measurement of the trait.\n\n&quot;)
+
+## ---------- Part 4: Checking for risky causal words ----------
+cat(&quot;========== Part 4: Checking for \&quot;risky causal words\&quot; in conclusions ==========\n&quot;)
+danger &lt;- c(&quot;cause&quot;, &quot;lead to&quot;, &quot;result in&quot;, &quot;determine&quot;, &quot;drive&quot;, &quot;root cause&quot;, &quot;will definitely&quot;, &quot;inevitably&quot;, &quot;prove&quot;)
+check_causal &lt;- function(txt) {
+  hits &lt;- danger[sapply(danger, function(w) grepl(w, txt, fixed = TRUE))]
+  if (length(hits)) cat(txt, &quot;\n   Contains: &quot;, paste(hits, collapse = &quot;, &quot;), &quot;\n&quot;, sep = &quot;&quot;)
+  else cat(txt, &quot;\n&quot;, sep = &quot;&quot;)
+  invisible(hits)
+}
+check_causal(&quot;Loneliness causes depression in older adults.&quot;)
+check_causal(&quot;Therefore reducing loneliness will lead to reduced depression.&quot;)
+check_causal(&quot;After controlling for baseline depression, T1 loneliness positively predicted T2 depression, consistent with the hypothesis that loneliness may worsen depression.&quot;)
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L5-4_lag.png" alt="L5-4_lag.png" loading="lazy"><figcaption>Figure: <code>R/output/L5-4_lag.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L5-4_log.txt</code></div><pre class="out"><code>========== Part 1: Unmeasured confounding ==========
+
+Model A: D2 ~ D1 + L1 (U unmeasured)
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   0.0000     0.0258  0.0000        1
+scale(D1)     0.5948     0.0277 21.4831        0
+scale(L1)     0.1863     0.0277  6.7284        0
+
+Model B: D2 ~ D1 + L1 + U (controlling for U)
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   0.0000     0.0239  0.0000   1.0000
+scale(D1)     0.4245     0.0297 14.2962   0.0000
+scale(L1)     0.0164     0.0297  0.5531   0.5803
+scale(U)      0.3919     0.0343 11.4229   0.0000
+
+→ Cross-lag of loneliness: without controlling for U, β = 0.186 (p &lt; .001); controlling for U, β = 0.016 (p = 0.58)
+Extension: changing 0.4*U to 0 yields L1 coefficient β = 0.028 (p = 0.38) — U operates only through D1, which is already controlled.
+500 simulation replications (N = 800): proportion of loneliness coefficient with p &lt; .05 = 100.0% (true effect is 0; nominal rate is 5%)
+
+========== Part 2: Measurement interval (time lag) ==========
+Monthly autoregression a = 0.80, monthly cross-effect c = 0.15:
+ Lag_months Cross_lag Formula
+          1     0.150   0.150
+          3     0.288   0.288
+          6     0.295   0.295
+         12     0.155   0.155
+         24     0.021   0.021
+  Peak occurs at approximately 4 months (theoretical value -1/ln(a) = 4.5)
+
+Monthly autoregression a = 0.90, monthly cross-effect c = 0.05:
+ Lag_months Cross_lag Formula
+          1     0.050   0.050
+          3     0.122   0.122
+          6     0.177   0.177
+         12     0.188   0.188
+         24     0.106   0.106
+  Peak occurs at approximately 9 months (theoretical value -1/ln(a) = 9.5)
+
+Plot saved: R/output/L5-4_lag.png
+
+========== Part 3: Stable traits and false positives in CLPM (Lucas, 2023) ==========
+N =  200: In CLPM-style regression, proportion of &quot;Loneliness T1 -&gt; Depression T2&quot; with p &lt; .05 =  39.0% (standardized β for single sample ≈ 0.012)
+N =  800: In CLPM-style regression, proportion of &quot;Loneliness T1 -&gt; Depression T2&quot; with p &lt; .05 =  95.0% (standardized β for single sample ≈ 0.085)
+N = 3000: In CLPM-style regression, proportion of &quot;Loneliness T1 -&gt; Depression T2&quot; with p &lt; .05 = 100.0% (standardized β for single sample ≈ 0.080)
+Control: without stable traits (trait_sd = 0), N = 800, proportion with p &lt; .05 = 8.0% (close to nominal 5%, 200 replications have sampling fluctuation)
+→ True within-person cross-lag is 0, but with correlated stable traits, CLPM will &quot;detect&quot; cross-lags; larger samples become more &quot;significant&quot;.
+   Controlling for T1 depression cannot eliminate trait influence, because T1 depression is merely a noisy measurement of the trait.
+
+========== Part 4: Checking for &quot;risky causal words&quot; in conclusions ==========
+Loneliness causes depression in older adults.
+   Contains: cause
+Therefore reducing loneliness will lead to reduced depression.
+   Contains: lead to
+After controlling for baseline depression, T1 loneliness positively predicted T2 depression, consistent with the hypothesis that loneliness may worsen depression.</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ Concept Check</span>Instant Check</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">At most, which condition for causal inference does "A at T1 predicts B at T2" satisfy?</p><ul class="opts"><li><button type="button" data-ok="0">A. Ruling out all other explanations</button><div class="ofb" hidden>Ruling out other explanations is exactly what observational data find hardest, and cross-lagged paths can't do it.</div></li><li><button type="button" data-ok="1">B. Temporal precedence (and association)</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. Random assignment</button><div class="ofb" hidden>Panel studies usually have no random assignment, and cross-lagged paths cannot replace it.</div></li><li><button type="button" data-ok="0">D. Error-free measurement</button><div class="ofb" hidden>Self-report scales still have measurement error, and cross-lagged paths do not remove it.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Which of these is a possible unmeasured confounder of the "loneliness → depression" relationship?</p><ul class="opts"><li><button type="button" data-ok="0">A. The wording of the loneliness items</button><div class="ofb" hidden>Wording is a measurement issue, not a third variable that affects both loneliness and depression.</div></li><li><button type="button" data-ok="1">B. Chronic illness or financial hardship</button><div class="ofb" hidden>Correct: it may affect both loneliness and depression.</div></li><li><button type="button" data-ok="0">C. Sample size</button><div class="ofb" hidden>Sample size affects precision, but it is not a third variable that affects both loneliness and depression.</div></li><li><button type="button" data-ok="0">D. The choice of λ</button><div class="ofb" hidden>λ is the analyst's setting, not something in the data that affects both variables.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">What is Granger causality closest to?</p><ul class="opts"><li><button type="button" data-ok="0">A. A real causal effect</button><div class="ofb" hidden>"Causality" is in the name, but it only shows predictability; umbrellas predicting rain is a counterexample.</div></li><li><button type="button" data-ok="1">B. Given B's past, A's past adds to the prediction of B's future</button><div class="ofb" hidden>Correct: it is "predictability."</div></li><li><button type="button" data-ok="0">C. A within-wave correlation of A and B</button><div class="ofb" hidden>Granger causality is about "the past predicting the future"; a within-wave correlation involves no time order.</div></li><li><button type="button" data-ok="0">D. A comes before B, so A causes B</button><div class="ofb" hidden>Temporal precedence is only one necessary condition for causation and cannot establish it on its own.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Which sentence is most appropriate?</p><ul class="opts"><li><button type="button" data-ok="0">A. Loneliness causes depression</button><div class="ofb" hidden>Observational panel data do not support causal wording such as "causes."</div></li><li><button type="button" data-ok="0">B. Reducing loneliness will lower depression</button><div class="ofb" hidden>This is an interventional conclusion; it needs an intervention study (such as a randomized controlled trial).</div></li><li><button type="button" data-ok="1">C. Controlling for baseline depression, T1 loneliness positively predicted depression 6 months later, consistent with the hypothesis that loneliness may worsen depression</button><div class="ofb" hidden>Correct: it states the control and the lag, and makes a careful suggestion.</div></li><li><button type="button" data-ok="0">D. Depression has no effect at all on loneliness</button><div class="ofb" hidden>Not significant ≠ absent: the sample size or the lag may simply be unsuitable.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">What is the core of Lucas's (2023) critique of the CLPM?</p><ul class="opts"><li><button type="button" data-ok="0">A. The CLPM needs samples so large that ordinary studies can't reach them</button><div class="ofb" hidden>Lucas's worry is the opposite: the larger the sample, the more easily spurious cross-lagged paths become significant.</div></li><li><button type="button" data-ok="1">B. When there are stable individual differences, the CLPM easily produces spurious cross-lagged paths, and they become "significant" more easily in large samples</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. The CLPM can't be used with three waves</button><div class="ofb" hidden>The CLPM works with three or more waves; Lesson 5.2 uses three.</div></li><li><button type="button" data-ok="0">D. The CLPM must be estimated with LASSO</button><div class="ofb" hidden>The CLPM is estimated by ordinary maximum likelihood and doesn't need LASSO; LASSO is what the CLPN uses.</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2><div class="exitem"><h4>Exercise 1: Rewrite 5 overly causal conclusions<span class="lvl">Writing</span></h4><ol><li>Loneliness causes depression in community residents.</li><li>Sleep problems are the root cause of fatigue.</li><li>Social support protects residents from depression.</li><li>Worthlessness drives the whole depression network.</li><li>Therefore social workers should intervene on loneliness first to lower depression.</li></ol><p>For each sentence, write an accurate version and give one alternative explanation.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><ol><li>"Controlling for baseline depression, T1 loneliness positively predicted T2 depression." Alternative explanation: a chronic illness causes both loneliness and depression.</li>
+<li>"T1 sleep problems had a fairly strong cross-lagged prediction of T2 fatigue." Alternative explanation: both reflect a physical illness or a side effect of medication.</li>
+<li>"Residents with higher T1 social support had lower T2 depression." Alternative explanation: people less prone to depression find it easier to get, and to perceive, support (reverse causation / between-person differences).</li>
+<li>"Worthlessness had the highest out-expected influence in the network, suggesting that it predicts later levels of other symptoms fairly strongly." Alternative explanation: the item may overlap in content with other items, or be less stable.</li>
+<li>"Loneliness may be a target worth testing in an intervention study; the present results are not enough to establish that intervening on loneliness lowers depression."</li></ol></details></div>
+<div class="exitem"><h4>Exercise 2: Draw a confounding diagram<span class="lvl">Basic</span></h4><p>Draw an arrow diagram with U (unmeasured confounder) → loneliness T1, U → depression T2, and depression T1 → depression T2. Explain why the cross-lagged path "loneliness T1 → depression T2" comes out significant.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>There is a "backdoor path" between loneliness T1 and depression T2: loneliness T1 ← U → depression T2. The regression only controls for depression T1, which does not block this path, so loneliness T1 gets a nonzero coefficient as a "proxy" for U. Only measuring and controlling for U (or a design such as randomization) can block it.</p></details></div>
+<div class="exitem"><h4>Exercise 3: Time lag<span class="lvl">Understanding</span></h4><p>In the "measurement lag" demonstration on this page, set the monthly autoregressive effect to 0.9 and the monthly cross effect to 0.05, and read off the cross-lagged paths at lags of 1, 6 and 12 months. If two papers used lags of 3 and 12 months and reached different conclusions, how would you interpret that?</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>With the formula \(\Delta\, a^{\Delta-1} c\): 1 month 0.05; 6 months \(6\times0.9^5\times0.05\approx0.177\); 12 months \(12\times0.9^{11}\times0.05\approx0.188\) (the peak is around 9–10 months). Different lags giving different coefficients is normal, so you can't simply say that "the findings are inconsistent"; the discussion should consider the difference in lags, and ideally you would use a continuous-time model or data with several lags.</p></details></div><h3>Integrative Exercise</h3><div class="box sw"><p>Rewrite 5 overly causal conclusions from papers (e.g. &#x27;loneliness leads to depression&#x27;) as accurate statements, and give one possible alternative explanation for each.</p></div><h3>Self-Check Questions</h3><ol><li>Which condition for causal inference does &#x27;A at T1 predicts B at T2&#x27; meet, at most?</li><li>Give an example of an unmeasured variable that could affect both loneliness and depression.</li><li>Why does Lucas (2023) argue that the traditional CLPM is &#x27;almost never the right choice&#x27;?</li></ol><p class='muted' style='font-size:.88rem'>Tip: Before starting the next lesson, answer each question above in one or two sentences without looking at the text.</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">Summary</span>Key Takeaways &amp; Further Reading</h2><ul><li>A cross-lagged path = Granger-style "predictability"; at most it satisfies temporal precedence, and ruling out other explanations is almost impossible.</li><li>Five threats: unmeasured confounding, reverse causation, measurement error, an unsuitable lag, between-/within-person confounding.</li><li>Prediction E[D|L] ≠ intervention E[D|do(L)].</li><li>Wording: descriptive → predictive → suggestive are fine; avoid "causes" and "will reduce."</li><li>Lucas (2023): with stable traits, the CLPM easily produces spurious cross-lagged paths, and the critique applies equally to the CLPN.</li></ul><h3>Further Reading</h3><ul class="refs"><li>Lucas, R. E. (2023). Why the cross-lagged panel model is almost never the right choice. <i>Advances in Methods and Practices in Psychological Science</i>. <a href="https://doi.org/10.1177/25152459231158378" target="_blank" rel="noopener">doi.org/10.1177/25152459231158378</a><div class="muted" style="font-size:.84rem">Further critique of the CLPM; Lesson 5.4.</div></li><li>Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a><div class="muted" style="font-size:.84rem">Introduced the RI-CLPM; required reading for Lesson 5.3.</div></li></ul></section><div class="box key"><b class="bt">Module quiz</b><p>You have finished the core lessons of this module. Take the <a href="../materials/assess_m5.html">M5 module quiz</a>, and move on to the next module once you get at least 70% right on the first try.</p></div>
+<nav class="pager"><a href="L5-3.html" class="pv"><small>Previous</small>5.3 RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a><a href="L6-1.html" class="nx"><small>Next</small>6.1 The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 5.4 · <a href="../index.html#L5-4">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

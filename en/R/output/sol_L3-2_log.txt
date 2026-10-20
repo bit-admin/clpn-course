@@ -1,0 +1,27 @@
+Loneliness coefficient: Unadjusted 0.324 -> Controlling for support and sleep 0.282 
+
+Collinearity demonstration: r(Loneliness, Duplicate) = 0.995 
+  Estimate Std. Error 
+     0.324      0.037 
+            Estimate Std. Error
+(Intercept)    0.979      0.344
+lone_sum_t1    1.275      0.368
+lone_copy     -0.957      0.369
+
+3.2-A: Coefficients for m4 (Loneliness + Support + Sleep + T1 Depression)
+      (Intercept)       lone_sum_t1 social_support_t1    sleep_hours_t1        dep_sum_t1 
+            0.332             0.128            -0.127             0.100             0.541 
+
+3.2-B: dep1_t2 ~ 9 T1 items (standardized coefficients)
+(Intercept)    lone1_t1    lone2_t1    lone3_t1    lone4_t1     dep1_t1     dep2_t1     dep3_t1     dep4_t1 
+      0.000       0.029      -0.014       0.081       0.090       0.319       0.079      -0.002       0.038 
+    dep5_t1 
+      0.069 
+Population target (dep1 column of data/true_B_population.csv)
+ lone1  lone2  lone3  lone4   dep1   dep2   dep3   dep4   dep5 
+ 0.005  0.012  0.118 -0.003  0.327  0.061  0.060  0.055  0.055 
+Largest coefficient among loneliness items:  lone4_t1 0.09 
+VIF:
+lone1_t1 lone2_t1 lone3_t1 lone4_t1  dep1_t1  dep2_t1  dep3_t1  dep4_t1  dep5_t1 
+    1.53     1.53     1.49     1.65     1.46     1.49     1.47     1.45     1.49 
+VIF for lone4_t1 = 1.65 ; all fall between 1.45 and 1.65 , well below the threshold of 5

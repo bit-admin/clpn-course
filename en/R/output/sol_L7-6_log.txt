@@ -1,0 +1,40 @@
+===== Exercise 2: Course data, longitudinal measurement invariance of 5 depression items (N = 800) =====
+      model  chisq df   CFI RMSEA   dCFI dRMSEA
+ configural  95.92 72 0.993 0.022     NA     NA
+     metric 109.69 80 0.991 0.023 -0.002  0.001
+     scalar 116.19 88 0.992 0.021  0.001 -0.002
+Chi-square difference test p-values: metric vs. configural = 0.083 ; scalar vs. metric = 0.668 
+Depression factor means at waves 2 and 3 in scalar model (wave 1 = 0): -0.019, 0.004 
+
+===== Exercise 3: Sports coaches mental health tracking data (Ackeret et al., 2023, CC0) =====
+Number of rows: 422 , number of columns: 60 
+Participants with complete responses to all 14 items in each wave: T1 = 420, T2 = 301, T3 = 259 
+Participants with complete responses across all 3 waves for the 5 social well-being items: 258 
+Correlations between built-in summary columns and item-recalculated values (should be close to 1):
+   emowb_vs_w1to3 socwb_vs_w4to8 psywb_vs_w9to14 WBcont_vs_sum
+T1           0.90           0.15            0.18          0.97
+T2           0.35           0.22            0.25          1.00
+T3           0.30           0.09            0.22          1.00
+Participants whose *_WB_cont exactly equals 'sum of 14 items - 14' (i.e., sum score scored 0-5): T1 89 / 420 participants, T2 301 / 301 participants, T3 259 / 259 participants 
+Cross-wave correlations of 14-item sum score (same participant should be similar over time): T1-T2 = 0.73 , T2-T3 = 0.76 , T1-T3 = 0.73 
+-> The item columns themselves are consistent across waves (high cross-wave correlations; T2 and T3 *_WB_cont exactly match the 14-item sum score scored 0-5), but the three subscale mean columns and overall mean column do not match (only T1 emotional well-being roughly matches), and T1 *_WB_cont only matches for a subset of participants.
+  Therefore, we compute exclusively from the item columns (t1w1 ... t3w14) rather than using the built-in subscale columns.
+
+Missing data handled via FIML (missing = "ml"), so all 422 participants enter the model:
+      model  chisq df   CFI RMSEA   dCFI dRMSEA
+ configural 141.97 72 0.958 0.062     NA     NA
+     metric 155.61 80 0.956 0.060 -0.002 -0.002
+     scalar 179.63 88 0.948 0.063 -0.008  0.003
+Chi-square difference test p-values: metric vs. configural = 0.111 ; scalar vs. metric = 0.001 
+
+Scalar step: Chi-square test is significant, but Delta CFI does not exceed -0.01 -> inspect which intercept is least invariant (score test, re-fitting with ML):
+                            Constraint    X2
+ intercept of t1w4 = intercept of t2w4 11.21
+               F1 =~ t1w4 = F2 =~ t2w4  6.44
+ intercept of t1w7 = intercept of t3w7  4.42
+
+Comparison with metric model:
+                                      model  chisq df   CFI RMSEA   dCFI
+ partial scalar (freeing intercept of t2w4) 170.08 87 0.952  0.06 -0.004
+Social well-being factor means at waves 2 and 3 (wave 1 = 0): full scalar -0.059 (SE 0.057), 0.022 (SE 0.056) ; partial scalar -0.011 (SE 0.056), 0.019 (SE 0.056) 
+(The dataset documentation mentions two possible wave intervals: 3/6 months or 6/12 months; hence we only evaluate whether the same construct is measured, without interpreting the rate of change.)

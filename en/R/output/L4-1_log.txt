@@ -1,0 +1,13 @@
+  T1   T2   T3 
+3.84 3.78 3.85 
+     T1   T2   T3
+T1 1.00 0.58 0.44
+T2 0.58 1.00 0.57
+T3 0.44 0.57 1.00
+
+Between-person variance (between) ≈ 7.9 ; within-person variance (within) ≈ 5.42 
+[1] 0.3931083
+[1] 0.2908138
+       grp     vcov
+1       id 6.094350
+2 Residual 5.417917

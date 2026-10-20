@@ -1,0 +1,250 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>Data Frames: A Register with One Row per Person</h2>
+<div class="box story"><b class="bt">From a case register to a data frame</b>
+<p>Picture a community center's case register: each row is one client, and each column is one piece of information (ID, gender, age, item scores, …). A {{T:data frame|}} in R has exactly this structure: <b>rows = cases, columns = variables, a cell = one person's value on one variable</b>. The course data <code>clpn_sim_wide.csv</code> is an 800-row × 34-column data frame: 800 people and 34 variables (ID, 9 items × 3 waves, gender, age, and so on).</p></div>
+<p>Each column of a data frame is a vector (Lesson 2.2). Within a column the type is the same; different columns can have different types (<code>id</code> is character, <code>dep1_t1</code> is numeric). All columns have the same length, and row 37 is the same person in every column.</p>
+<p>There are two common ways to take out one column:</p>
+<ul><li><code>dat$dep1_t1</code>: <code>$</code> takes a column by name and gives a vector.</li>
+<li><code>dat[, "dep1_t1"]</code>: the two-dimensional form of the brackets, <code>[row, column]</code>; leaving the part before the comma empty means "all rows." On an ordinary <code>data.frame</code> this also returns a vector, but on a tibble (see below) it returns a one-column tibble. To be sure you get a vector, use <code>dat[["dep1_t1"]]</code>.</li></ul>
+<p>In the same way, <code>dat[1:5, ]</code> takes all columns of the first 5 rows, and <code>dat[dat$gender == 1, ]</code> takes the rows of all women.</p>
+
+<h3>tidyverse: a set of "verbs" for data wrangling</h3>
+<p>The {{T:tidyverse|}} is a family of R packages with a shared design (dplyr, ggplot2, readr, tidyr, and others), developed by Hadley Wickham and colleagues. dplyr provides the core verbs for data wrangling. Each verb does one thing, and its name is an English verb:</p>
+<div class="tablewrap"><table><thead><tr><th>Verb</th><th>Works on</th><th>What it does</th><th>Social work analogy</th></tr></thead><tbody>
+<tr><td><code>select()</code></td><td><b>columns</b></td><td>Picks variables</td><td>Photocopying only the depression-scale columns of the register</td></tr>
+<tr><td><code>filter()</code></td><td><b>rows</b></td><td>Picks cases by a condition</td><td>Looking only at clients with a depression total ≥ 10</td></tr>
+<tr><td><code>mutate()</code></td><td>columns</td><td>Creates or changes variables</td><td>Adding a "total score" column at the right edge of the sheet</td></tr>
+<tr><td><code>summarise()</code></td><td>whole table → one row</td><td>Summarizes (mean, count, …)</td><td>Writing one line: "the average score is …"</td></tr>
+<tr><td><code>group_by()</code></td><td>rows</td><td>Groups the data; later steps run within each group</td><td>Counting men and women separately</td></tr>
+<tr><td><code>arrange()</code></td><td>rows</td><td>Sorts</td><td>Ordering cases from highest to lowest risk</td></tr></tbody></table></div>
+<p>Data read with <code>read_csv()</code> (readr package), and the results of dplyr, are usually a {{T:tibble|}}, a souped-up data frame. When printed, it shows only the first 10 rows and the columns that fit, and marks each column's type (<code>&lt;chr&gt;</code> character, <code>&lt;dbl&gt;</code> numeric), so it doesn't flood the screen; and it never turns strings into factors automatically. Apart from the bracket difference above, you use it like a data frame. Some older functions expect a vector; if a tibble gives you a strange error, try <code>dat$column</code> or <code>dat[["column"]]</code> instead.</p>
+
+<h3>The pipe |>: read it as "then"</h3>
+<p>The {{T:pipe|}} <code>|&gt;</code> (built into R since 4.1) passes the result on its left as the first argument of the function on its right. <code>dat |&gt; filter(gender == 1)</code> is the same as <code>filter(dat, gender == 1)</code>. The benefit is that you can chain several steps from top to bottom, like a set of instructions:</p>
+<p><code>dat |&gt; filter(...) |&gt; group_by(...) |&gt; summarise(...)</code> reads: "take the data, then filter, then group, then summarize." Online you will also see <code>%&gt;%</code>, the older pipe from the magrittr package; in ordinary use the two do the same thing. The RStudio shortcut for a pipe is <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>), but by default it inserts <code>%&gt;%</code>. To make it insert <code>|&gt;</code>, tick "Use native pipe operator, |&gt;" under Tools → Global Options → Code → Editing. All code in this course uses <code>|&gt;</code>.</p>
+<div class="widget" data-widget="dplyr"></div>
+
+<h3>Recoding and reverse scoring</h3>
+<p>{{T:Recoding|}} means turning raw values into the form the analysis needs, for example 0/1 into "Male / Female" (<code>if_else()</code>), ages into age groups (<code>case_when()</code>), or {{T:reverse scoring|}}.</p>
+<p>Many scales include reverse-worded items. On a loneliness scale, for example, the more someone agrees with "I feel there is someone I can talk to," the <i>less</i> lonely they are. If you sum the items without reversing it first, this item cancels out part of the other items' scores; in a correlation or network analysis it correlates negatively with the other items, and the network shows confusing negative edges that come only from the direction of the wording and reflect no psychological mechanism.</p>
+<div class="mathbox">$$\text{reversed score} = (\text{minimum} + \text{maximum}) - \text{raw score}$$</div>
+<p>For an item scored 1–4: reversed = 5 − raw (1↔4, 2↔3); for 0–3: 3 − raw; for 1–5: 6 − raw.</p>
+<div class="box warnbox"><b class="bt">The course data have no reverse-worded items</b><p>All 9 items in the simulated data already point the same way (higher = lonelier / more depressed). For a demonstration, the script reverses <code>social_support_t1</code> (1–5, higher = more support) into <code>support_rev = 6 − social_support_t1</code> (higher = less support), so that it points the same way as loneliness and depression. In real research, check the scale manual for which items need reversing, and after reversing, check that the items of the same scale are mostly positively correlated. Reversing only flips the sign of a correlation: if you pretend <code>lone2_t1</code> is reverse-worded (5 − raw), its correlation with <code>lone1_t1</code> goes from 0.456 to −0.456.</p></div>
+<div class="box sw"><b class="bt">Why social workers need to watch for this</b><p>Scales common in social work (social support, self-efficacy, family functioning) often mix positively and negatively worded items. Volunteers who enter the data usually type in the boxes as ticked; reverse scoring is the analyst's job. If you skip it, the usual consequences are an unusually low reliability (α) and weakened correlations between the total score and other variables.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Total Scores and Group Means</h2>
+<div class="mathbox">$$\text{depression total}_i = \sum_{k=1}^{5} \text{dep}_{k,i}$$</div>
+<dl class="sym"><dt>\(i\)</dt><dd>Person \(i\) (row \(i\) of the data frame).</dd><dt>\(k\)</dt><dd>Item \(k\) (a column).</dd><dt>\(\text{dep}_{k,i}\)</dt><dd>Person \(i\)'s score on depression item \(k\) (0–3), so the total ranges from 0 to 15.</dd></dl>
+<p>This is a sum across a row, done by <code>rowSums()</code>. A group mean:</p>
+<div class="mathbox">$$\bar y_g = \frac{1}{n_g}\sum_{i\in g} y_i$$</div>
+<p>\(g\) is a group (for example, women), \(n_g\) the number of people in it, and \(\sum_{i\in g}\) means summing only over the people in that group. In R: <code>group_by() |&gt; summarise(mean())</code>.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Chaining Five Verbs</h2>
+<p>Script for this lesson: <a href="../R/L2-3.R">R/L2-3.R</a>.</p>
+```r R/L2-3.R (core part)
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)  # a tibble (souped-up data frame)
+
+phq <- dat |> select(id, gender, starts_with("dep") & ends_with("_t1"))  # pick columns: select
+print(phq, n = 5)
+
+# Reverse-scoring example: suppose social support needs reversing (1–5 → 5–1): new value = 6 - old value
+dat <- dat |>
+  mutate(support_rev = 6 - social_support_t1,                         # reverse-scoring example
+         dep_sum_t1  = rowSums(across(c(dep1_t1:dep5_t1))))           # total score
+dat |>
+  mutate(gender_label = if_else(gender == 1, "Female", "Male")) |>
+  group_by(gender_label) |>                                            # group
+  summarise(n = n(), dep_mean = mean(dep_sum_t1), sd = sd(dep_sum_t1)) |>  # summarize
+  print()
+n_high <- dat |> filter(dep_sum_t1 >= 10) |> nrow()   # pick rows: filter
+cat("Number of participants with depression sum score >= 10: ", n_high, "\n", sep = "")
+```
+```out Output (R/output/L2-3_log.txt)
+# A tibble: 800 × 7
+  id    gender dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1
+  <chr>  <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+1 P001       0       0       0       1       0       0
+2 P002       0       0       0       1       0       1
+3 P003       1       1       2       1       2       0
+4 P004       0       1       0       2       1       0
+5 P005       1       1       2       0       3       1
+# ℹ 795 more rows
+# A tibble: 2 × 4
+  gender_label     n dep_mean    sd
+  <chr>        <int>    <dbl> <dbl>
+1 Female         427     4.21  3.52
+2 Male           373     3.41  3.21
+Number of participants with depression sum score >= 10: 65
+```
+<div class="box key"><b class="bt">Line by line</b><ul>
+<li><code>starts_with("dep") &amp; ends_with("_t1")</code>: picks the columns that "start with dep and end with _t1," that is, the 5 depression items at T1. Other selection helpers include <code>contains()</code> and <code>matches()</code>.</li>
+<li><code>dep1_t1:dep5_t1</code>: the colon means "every column from this one to that one" (it depends on the column order). <code>across()</code> bundles these columns and hands them to <code>rowSums()</code>.</li>
+<li><code>if_else(condition, yes, no)</code>: gives "Female" when the condition is TRUE, otherwise "Male."</li>
+<li><code>n()</code>: the number of people in the group. <code>summarise()</code> shrinks each group to one row. The course data have no missing values; with real data that do, <code>mean()</code> returns NA, so write <code>mean(x, na.rm = TRUE)</code> and report how many people each group actually used with <code>sum(!is.na(x))</code>.</li>
+<li><code>dat &lt;- dat |&gt; mutate(...)</code>: the result must be assigned back to <code>dat</code>; otherwise the new variable is only printed, not saved. This is one of the most common beginner mistakes.</li></ul></div>
+```r $ vs. [ ]
+dat$dep1_t1 |> head()            # a vector
+dat[, "dep1_t1"] |> head(3)      # on a tibble, a one-column tibble
+dat[["dep1_t1"]] |> head()       # a vector (same for tibble and data.frame)
+```
+```out Output (R/output/L2-3_log.txt, continued)
+[1] 0 0 1 1 1 1
+# A tibble: 3 × 1
+  dep1_t1
+    <dbl>
+1       0
+2       0
+3       1
+[1] 0 0 1 1 1 1
+```
+```r More examples: several conditions, counting, sorting
+dat |> filter(gender == 1, age < 30) |> nrow()      # comma = "and": women under 30
+dat |> count(gender)                                # counts
+dat |> arrange(desc(dep_sum_t1)) |> select(id, dep_sum_t1) |> head(3)   # the 3 highest depression totals
+```
+```out Output (R/output/L2-3_log.txt, continued)
+[1] 68
+# A tibble: 2 × 2
+  gender     n
+   <dbl> <int>
+1      0   373
+2      1   427
+# A tibble: 3 × 2
+  id    dep_sum_t1
+  <chr>      <dbl>
+1 P734          15
+2 P154          14
+3 P215          14
+```
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: one pipe for loneliness totals by gender</h3>
+<p>Task: using the T1 data, compute each person's loneliness total, keep only people aged 60 and over, and compare the mean and the count by gender. Write out the plan first (the most important step), then turn it into code:</p>
+<ol><li><b>mutate</b>: create a column <code>lone_t1</code> = the sum of the 4 loneliness items (added across the row).</li>
+<li><b>filter</b>: keep the rows with <code>age &gt;= 60</code>.</li>
+<li><b>group_by</b>: group by <code>gender</code>.</li>
+<li><b>summarise</b>: for each group, compute the count, mean, and standard deviation.</li></ol>
+```r
+source("R/_setup.R")      # finds the course root folder and defines small helpers such as read_course_data() (Lesson 2.4)
+library(dplyr)
+dat <- read_course_data()  # same as read.csv("data/clpn_sim_wide.csv")
+res <- dat |>
+  mutate(lone_t1 = lone1_t1 + lone2_t1 + lone3_t1 + lone4_t1) |>   # added across the row
+  filter(age >= 60) |>
+  group_by(gender) |>
+  summarise(n = n(), M = mean(lone_t1), SD = sd(lone_t1)) |>
+  ungroup()
+res
+```
+
+<p>If you don't run <code>source("R/_setup.R")</code> first, R reports <code>could not find function "read_course_data"</code>: this function does not come with R; the course defines it in <code>R/_setup.R</code>. If you'd rather not depend on it, replace the second line with <code>dat &lt;- read.csv("data/clpn_sim_wide.csv")</code>, as long as your working directory is the course root folder (Lesson 2.4).</p>
+<p>When you read the result, look at <code>n</code> first: the two group counts should add up to the total number of people aged 60 and over, which you can check with <code>sum(dat$age &gt;= 60)</code>. This "check the head count" step takes almost no time but catches many wrangling errors, such as a filter condition written the wrong way round, the wrong comparison sign (<code>&gt;</code> vs. <code>&gt;=</code>), or rows with missing values quietly dropped.</p>
+<h3>A classic trap: sum() inside mutate</h3>
+<p>Many beginners write <code>mutate(lone_t1 = sum(lone1_t1, lone2_t1, lone3_t1, lone4_t1))</code>. Every person then gets the same huge "total," because <code>sum()</code> adds up all items for <b>everyone</b>. There are two correct ways to add across a row: join the columns with <code>+</code>, or use <code>rowSums(across(lone1_t1:lone4_t1))</code>. Afterwards, glance at the result with <code>head()</code>: are the totals between 4 and 16, and do they differ from person to person?</p>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b>A single equals sign in filter.</b> <code>filter(gender = 1)</code> gives an error; you must write <code>filter(gender == 1)</code>.</li>
+<li><b>Forgetting ungroup after group_by.</b> The grouping "sticks" to the data, so a later mutate computes within groups (for example, group means), and the result is quietly wrong.</li>
+</ul></div>
+
+<h3>Many columns at once: across() and selection helpers</h3>
+<p>The CLPN data have 27 item columns (9 items × 3 waves); typing them one by one is slow and it's easy to miss one. dplyr has helpers that pick columns by a naming pattern: <code>starts_with("lone")</code> picks all loneliness items, <code>ends_with("_t1")</code> all wave-1 columns, and <code>lone1_t1:lone4_t1</code> a block of adjacent columns. With <code>across()</code> you can apply the same operation to several columns. For example, <code>summarise(across(ends_with("_t1"), mean))</code> computes the mean of every T1 item at once, and <code>mutate(across(starts_with("dep"), ~ .x / 3))</code> divides every depression item by 3. <code>~ .x / 3</code> is a short way to write a small function, where <code>.x</code> stands for "the current column."</p>
+<p>Watch out: <code>ends_with("_t1")</code> also picks up covariates such as social_support_t1 and sleep_hours_t1. After selecting, print the names to check, with <code>names(select(dat, ends_with("_t1")))</code>.</p>
+<h3>How to debug a long pipe</h3>
+<p>When a pipe of five or six steps fails, don't stare at the whole block. Starting from the first line, select one more line each time and run it, and check whether each step's output is what you expect: is the number of rows right, has the new column appeared, is the range of values sensible? The step after which the result goes wrong is where the problem is.</p>
+
+<h3>arrange and count as checks</h3>
+<p><code>arrange(dat, desc(age))</code> sorts by age from oldest to youngest, which helps you check extreme values: are the ages in the first and last few rows plausible? <code>count(dat, gender)</code> is short for <code>group_by(gender) |&gt; summarise(n = n())</code>. When you get new data, running count on every categorical variable quickly reveals coding problems, such as gender taking values other than 0 and 1.</p>
+
+<h3>rename: giving a column a name you'll remember</h3>
+<p><code>rename(dat, lone_total = lone_t1)</code> is written "new name = old name." It's easy to get this the wrong way round, so take care. Renaming doesn't change the data; it only makes later code and output easier to read.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: How are df$var and df[, "var"] alike, and how do they differ?
+- They are identical and always return a vector || True for an ordinary data.frame, but on a tibble [, "var"] returns a one-column tibble.
++ Both take one column by name; $ always returns a vector, while [, "var"] returns a one-column tibble on a tibble (and a vector on an ordinary data.frame) || Correct.
+- $ takes rows, [ ] takes columns || Both take columns; to take rows, put a condition before the comma inside [ ], as in dat[1:5, ].
+E: To be sure you get a vector, use df[["var"]] or df$var.
+```
+```quiz
+Q: Do filter() and select() work on rows or on columns?
++ filter() picks rows (cases), select() picks columns (variables) || Correct.
+- filter() picks columns, select() picks rows || The other way round: select picks variables (columns), filter picks cases (rows) by a condition.
+- Both pick columns; filter just adds a condition || filter evaluates its condition on each row and keeps the rows that meet it; the columns stay the same.
+E: Memory aid: filter sifts the people, select picks the questions.
+```
+```quiz
+Q: Why must reverse-worded items be dealt with before computing correlations or a network?
+- Because a reverse-worded item measures a different construct and should be a separate node in the network || A reverse-worded item still measures the same construct, only with the wording turned around; the negative edges you see without reversing reflect only the wording.
++ Unreversed, it correlates negatively with the other items of the same construct, cancels out part of the total, and creates negative edges in the network caused only by the wording direction || Correct.
+- Because reverse-worded items must be deleted || They don't need to be deleted; reverse-score them with the formula and use them as usual.
+E: After reversing, check that the items of the same scale are mostly positively correlated.
+```
+```quiz
+Q: An item is scored 0–3 and the raw score is 1. What is the reversed score?
+N: 2 | 0
+H: Reversed score = (minimum + maximum) − raw score.
+E: (0 + 3) − 1 = 2.
+```
+```quiz
+Q: You run dat |> mutate(total = rowSums(across(dep1_t1:dep5_t1))), then mean(dat$total) gives NA with the warning Unknown or uninitialised column: `total`. Why?
+- rowSums is written wrong || rowSums(across(...)) is written correctly; the warning says the column total does not exist.
++ The result was not assigned back to dat (dat <- dat |> mutate(...)), so the new column was never saved || Correct.
+- The pipe cannot be used with mutate || |> works fine with mutate(); this lesson's core code is written exactly that way.
+E: The most common beginner mistake: a pipe only prints the result; it does not change the original object.
+```
+```quiz
+Q: How many rows does dat |> group_by(gender) |> summarise(m = mean(dep_sum_t1)) return?
+N: 2 | 0
+H: summarise shrinks each group to one row.
+E: gender has two values, so 2 rows.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.3-A: Select, reverse, total, group</h4>
+<p>On the course's simulated questionnaire data: select the T1 depression items (PHQ-style), "pretend" one item is reverse-worded and rescore it (for example social support, or practice by treating <code>lone2_t1</code> as reverse-worded), create a total score, and compute means by gender.</p>
+<details class="answer"><summary>Reference code and key points</summary>
+```r
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)
+res <- dat |>
+  select(id, gender, starts_with("dep") & ends_with("_t1"), social_support_t1) |>
+  mutate(support_rev = 6 - social_support_t1,                 # 1–5 → 5–1
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1)),
+         gender_label = factor(gender, levels = c(0, 1), labels = c("Male", "Female")))
+res |>
+  group_by(gender_label) |>
+  summarise(n = n(), dep_mean = mean(dep_sum_t1), lack_support_mean = mean(support_rev))
+cor(res$social_support_t1, res$support_rev)    # -1: reversing only flips the direction
+```
+<p>Key points: (1) the reverse-scoring formula is right; (2) <code>cor()</code> confirms that the correlation between the original and reversed versions is −1; (3) the depression mean is 4.21 for women and 3.41 for men (matching the script output); (4) one sentence explaining why reverse-worded items must be dealt with before the analysis.</p></details></div>
+<div class="exitem"><h4>Exercise 2.3-B: Loneliness totals and a high-risk list</h4>
+<p>Create the T1 loneliness total <code>lone_sum_t1</code> (4 items, range 4–16). Keep the people with a loneliness total ≥ 13 and a depression total ≥ 10, sort them by depression total from high to low, and keep only <code>id</code> and the two totals. How many people are there?</p>
+<details class="answer"><summary>Reference code</summary>
+```r
+high <- dat |>
+  mutate(lone_sum_t1 = rowSums(across(lone1_t1:lone4_t1)),
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1))) |>
+  filter(lone_sum_t1 >= 13, dep_sum_t1 >= 10) |>
+  arrange(desc(dep_sum_t1)) |>
+  select(id, lone_sum_t1, dep_sum_t1)
+nrow(high)
+```
+<p>Result: 22 people. To think about: what could a "high on both" list like this be used for in services? (Prioritizing outreach, referral for assessment.) What should you be careful about when using it? (A screening cutoff is not a diagnosis; protect privacy.)</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>Data frame: rows = cases, columns = variables; <code>$</code> takes a column as a vector, <code>[row, column]</code> indexes in two dimensions.</li>
+<li>dplyr verbs: select picks columns, filter picks rows, mutate creates variables, group_by + summarise summarize by group; chain them with <code>|&gt;</code>, and remember to assign the result to save it.</li>
+<li>Reverse reverse-worded items before analysis: reversed = minimum + maximum − raw. Next lesson: {{L:2.4}}.</li></ul>
+</section>

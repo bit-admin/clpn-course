@@ -1,0 +1,45 @@
+所有题目取值范围：
+     lone1_t1 lone2_t1 lone3_t1 lone4_t1 dep1_t1 dep2_t1 dep3_t1 dep4_t1
+[1,]        1        1        1        1       0       0       0       0
+[2,]        4        4        4        4       3       3       3       3
+     dep5_t1 lone1_t2 lone2_t2 lone3_t2 lone4_t2 dep1_t2 dep2_t2 dep3_t2
+[1,]       0        1        1        1        1       0       0       0
+[2,]       3        4        4        4        4       3       3       3
+     dep4_t2 dep5_t2 lone1_t3 lone2_t3 lone3_t3 lone4_t3 dep1_t3 dep2_t3
+[1,]       0       0        1        1        1        1       0       0
+[2,]       3       3        4        4        4        4       3       3
+     dep3_t3 dep4_t3 dep5_t3
+[1,]       0       0       0
+[2,]       3       3       3
+不在允许取值集合内的值的个数（越界值、非整数都会被计入）：合计 = 0 
+重复 ID 数 = 0 ；缺失值总数 = 0 
+
+（流失数据示例）留存率 = 0.8 
+# A tibble: 2 × 4
+  stay  T1抑郁 T1孤独     n
+  <lgl>  <dbl>  <dbl> <int>
+1 FALSE   8.78  10.4    160
+2 TRUE    2.6    8.42   640
+
+
+# 分析计划（简易预注册）
+研究问题：T1 的孤独感题目在多大程度上独特地预测 T2 的抑郁症状题目，反之亦然？（避免“导致”）
+节点：lone1–lone4、dep1–dep5（9 个）；时间段：T1→T2（主分析），T2→T3（复现）
+估计：逐节点 LASSO（glmnet），10 折 CV，lambda.min；set.seed(2026)；题目 z 标准化
+中心性：out-EI、in-EI、桥接 out/in-EI（社群 = 孤独/抑郁），不含自回归边
+稳定性：非参数 bootstrap 1000 次；case-dropping 1000 次，CS ≥ 0.25 才解释排序
+敏感性：lambda.1se；加入性别、年龄为不惩罚协变量；T2→T3 复现
+敏感性（必做）：Wysocki 等人（2025）的完整流程（R/L10-2b.R）：LASSO 选边（T1→T2、T2→T3，两段都为 0 才固定为 0）→ lavaan 无惩罚重估（同波残差相关，FIML）→ 跨时间等值检验（嵌套 χ² + AIC/BIC）选最终模型 → 按 p < .01 修剪→ in-/out-prediction；逐条报告主分析的边在完整流程中是否保留，两种分析不一致的边只作探索性解释
+缺失处理：本数据无缺失；若有，报告流失分析并使用多重插补
+
+代码本（R/output/L10-1_codebook.csv， 27 行；这里只显示 T1 的 9 题）：
+ variable        label_zh                                   label_en mean   sd
+ lone1_t1 孤独1：缺少陪伴           Loneliness 1: lack companionship 2.19 0.99
+ lone2_t1   孤独2：被冷落                Loneliness 2: feel left out 2.19 1.00
+ lone3_t1 孤独3：与人隔绝    Loneliness 3: feel isolated from others 2.24 0.99
+ lone4_t1 孤独4：无人理解 Loneliness 4: no one really understands me 2.18 0.98
+  dep1_t1 抑郁1：情绪低落               Depression 1: depressed mood 0.74 0.92
+  dep2_t1 抑郁2：兴趣丧失 Depression 2: loss of interest (anhedonia) 0.77 0.92
+  dep3_t1 抑郁3：睡眠问题               Depression 3: sleep problems 0.79 0.94
+  dep4_t1 抑郁4：疲乏无力                      Depression 4: fatigue 0.77 0.95
+  dep5_t1 抑郁5：无价值感        Depression 5: worthlessness / guilt 0.76 0.93

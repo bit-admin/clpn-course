@@ -1,0 +1,266 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>A Row of Storage Slots: Vectors</h2>
+<div class="box story"><b class="bt">Sleep records for ten clients</b>
+<p>The 10 members of a community sleep-health group reported how long they slept last night (in hours): 7, 5.5, 8, (member 4 left it blank), 6, 4.5, 7.5, (member 8 left it blank), 9, 5. You want to know: how long did they sleep on average? Who slept less than 6 hours and needs closer follow-up? In Excel you would type these into one column; in R you store them in a {{T:vector|}}.</p></div>
+<p>A vector is a row of values of the <b>same type</b>, in order, with each position numbered (starting at 1). You create one with <code>c()</code>:</p>
+<p><code>sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)</code></p>
+<p>The <code>NA</code> here (Not Available) is R's special symbol for a {{T:missing value|NA}}. It means "there should be a value here, but we don't know what it is." It is not 0, and it is not an empty string.</p>
+<div class="box analogy"><b class="bt">Analogy: a numbered row of storage slots</b><p>A vector is like a row of numbered storage slots. <code>sleep[3]</code> means "open slot 3," which gives 8. A data frame (next lesson) is many such rows placed side by side: each row of slots is one variable (one column), and the same position in every row belongs to the same person.</p></div>
+
+<h3>Indexing: taking out the slots you want</h3>
+<p>Square brackets <code>[ ]</code> do {{T:indexing|}}. There are three ways to use them:</p>
+<ul><li><b>By position</b>: <code>sleep[3]</code> takes the 3rd value; <code>sleep[c(1, 3)]</code> takes the 1st and 3rd; <code>sleep[-1]</code> takes everything except the 1st (minus = drop). R counts from 1: <code>sleep[0]</code> does not give an error but returns an empty vector, so this kind of mistake is hard to spot.</li>
+<li><b>By condition (logical indexing)</b>: <code>sleep[sleep &lt; 6]</code>. R first computes <code>sleep &lt; 6</code>, which gives a run of TRUE/FALSE values, and then takes the values at the TRUE positions. So <code>x[x &gt; 5]</code> means "take every value of x that is greater than 5."</li>
+<li><b>By name</b>: if the elements of a vector have names, you can write <code>v["lone1"]</code> (in a data frame you usually write <code>df$var</code>; next lesson).</li></ul>
+<div class="widget" data-widget="vecidx"></div>
+
+<h3>Vectorization: doing the same thing to every slot at once</h3>
+<p>R's operations are {{T:vectorized|}}: <code>sleep * 60</code> multiplies every value by 60 (converting to minutes), with no loop needed. <code>sleep &lt; 6</code> also compares each value separately. Adding two vectors of the same length adds them position by position. This keeps R code short: <code>(x - mean(x)) / sd(x)</code> turns a whole column into z-scores in one line (Lesson 1.3).</p>
+
+<h3>Data types: what is in the slots</h3>
+<p>Every vector has a {{T:data type|}}, which you check with <code>class()</code>:</p>
+<div class="tablewrap"><table><thead><tr><th>Type</th><th>Example</th><th>Used for</th></tr></thead><tbody>
+<tr><td>numeric (including integer)</td><td><code>7</code>, <code>5.5</code>, <code>3L</code></td><td>Scale scores, age, sleep duration</td></tr>
+<tr><td>character</td><td><code>"Xiao Li"</code>, <code>"P001"</code></td><td>Names, IDs, open-ended answers; must be in quotes</td></tr>
+<tr><td>{{T:logical|}}</td><td><code>TRUE</code>, <code>FALSE</code></td><td>Results of comparisons, filter conditions</td></tr>
+<tr><td>{{T:factor|}}</td><td><code>factor(c(1, 0), levels = c(0, 1), labels = c("Male", "Female"))</code></td><td>Categorical variables: gender, education level, service type</td></tr></tbody></table></div>
+<p>Two key rules:</p>
+<ol><li><b>A vector can have only one type.</b> If you mix numbers and text, R turns every value into text: <code>c(1, "two", 3)</code> gives three strings. In questionnaire data, a single cell where someone typed "five" makes the whole column read as character, and <code>mean()</code> then fails. So after importing data, first check each column's type with <code>class()</code> or <code>str()</code>. Forcing a conversion, <code>as.numeric(c("3", "4", "five"))</code>, gives <code>3 4 NA</code> and the warning <code>NAs introduced by coercion</code>.</li>
+<li><b>Logical values can be used as numbers</b>: TRUE = 1, FALSE = 0. So <code>sum(sleep &lt; 6, na.rm = TRUE)</code> is "the number of people who slept less than 6 hours" (3), and <code>mean(condition)</code> is "the proportion who meet the condition."</li></ol>
+
+<h3>Why is gender better stored as a factor?</h3>
+<p>In the course data, <code>gender</code> is stored as 0/1. If you treat it as a number, R assumes "female (1) is one unit more than male (0)" and will compute a mean (0.534). For a 0/1 variable the mean equals the proportion in the category coded 1 (here, 53.4% women), so it still means something. But for a variable with three or more categories (such as "service type: 1 casework, 2 group work, 3 community work"), treating the category codes as numbers is wrong: "community = 3 times casework" makes no sense. Once stored as a factor:</p>
+<ul><li>R knows it is a category: <code>table()</code> and <code>summary()</code> give the count in each category (male 373, female 427).</li>
+<li>In a regression, R turns the factor into dummy variables automatically, with the first level as the reference group.</li>
+<li>Plots color by category automatically and label the groups "Male / Female" instead of 0 / 1.</li>
+<li><code>mean()</code> on a factor returns NA with a warning, which blocks a meaningless calculation.</li></ul>
+
+<h3>The missing value NA: an unknown that spreads</h3>
+<p><code>mean(c(1, NA, 3))</code> returns <code>NA</code>. The logic is simple: if one value is unknown, the mean is unknown too. To compute from the known values, add the argument <code>na.rm = TRUE</code> (NA remove): <code>mean(c(1, NA, 3), na.rm = TRUE)</code> returns 2. <code>sum()</code>, <code>sd()</code>, <code>min()</code>, and <code>max()</code> all have this argument.</p>
+<div class="box warnbox"><b class="bt">NA and comparisons</b><p><code>NA &lt; 6</code> is still <code>NA</code> (unknown). So <code>sleep[sleep &lt; 6]</code> returns <code>5.5 NA 4.5 NA 5.0</code>, with two NAs mixed in. The correct version adds "and not missing": <code>sleep[sleep &lt; 6 &amp; !is.na(sleep)]</code>. <code>is.na()</code> checks each value for missingness, <code>!</code> means "not," <code>&amp;</code> means "and," and <code>|</code> means "or." <code>which(sleep &lt; 6)</code> ignores NA automatically and returns positions 2, 6, 10. You also cannot find missing values with <code>x == NA</code> (the result is all NA); you must use <code>is.na(x)</code>.</p></div>
+
+
+<h3>Matrices and lists: two relatives of the vector</h3>
+<p>Later lessons use two more structures, so meet them now:</p>
+<ul><li><b>Matrix</b>: a two-dimensional table with rows and columns in which every element has the same type. <code>glmnet</code> requires the predictors as a numeric matrix (<code>as.matrix()</code> in Lesson 3.5); the CLPN result B is also a 9 × 9 matrix, and the entry in row <i>i</i>, column <i>j</i> is <code>B[i, j]</code>: before the comma is the row, after it the column. A data frame (Lesson 2.3) is also a two-dimensional table, but each column can have a different type; to hand a data frame to a function such as <code>glmnet</code> that accepts only matrices, first make sure all columns are numeric, then convert with <code>as.matrix()</code>.</li>
+<li><b>List</b>: a "big bag" that can hold things of different types and lengths. Many functions return lists; for example, the result of <code>lm()</code> holds the coefficients, residuals, fitted values, and more, and you take out one part with <code>$</code>, as in <code>fit$coefficients</code>. The <code>sessionInfo()$R.version$version.string</code> in Lesson 2.1 was digging down through a list one level at a time.</li></ul>
+<div class="box key"><b class="bt">Quick reference: functions in this lesson</b>
+<div class="tablewrap"><table><thead><tr><th>Function</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>c()</code></td><td>Combine into a vector</td></tr><tr><td><code>length()</code></td><td>Number of elements</td></tr>
+<tr><td><code>class()</code> / <code>str()</code></td><td>Show the type / structure</td></tr>
+<tr><td><code>is.na()</code></td><td>Check each value for missingness</td></tr>
+<tr><td><code>which()</code></td><td>Positions that are TRUE</td></tr>
+<tr><td><code>table()</code></td><td>Counts (frequency table)</td></tr>
+<tr><td><code>factor()</code></td><td>Create a factor; <code>levels</code> sets the order of the levels, <code>labels</code> the labels</td></tr>
+<tr><td><code>as.numeric()</code> / <code>as.character()</code></td><td>Type conversion</td></tr>
+<tr><td><code>function(x) …</code></td><td>Define a function</td></tr></tbody></table></div></div>
+<div class="box sw"><b class="bt">Social work context: missingness is information</b><p><code>na.rm = TRUE</code> just skips missing values, which means using only the people who have data. In needs-assessment questionnaires, many people leave "household income" blank. Computing mean income with <code>na.rm = TRUE</code> may overstate how well off the community is, because the poorest households are often the least willing to answer. So before using <code>na.rm</code>, check how much is missing with <code>sum(is.na(x))</code>, and think about who did not answer and why (Lesson 4.3 is about missing-data mechanisms).</p></div>
+<h3>Writing your own functions</h3>
+<p>When you need to do the same operation many times, you can wrap it in a {{T:user-defined function|}}:</p>
+<p><code>zscore &lt;- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)</code></p>
+<p>Read it as: create a function named <code>zscore</code> that takes one input <code>x</code> and returns "x minus the mean of x, divided by the standard deviation of x." If the body is longer, wrap it in curly braces <code>{ }</code>; the value of the last line is what the function returns. After that, <code>zscore(sleep)</code> is as easy as <code>mean()</code>.</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Vector Notation</h2>
+<div class="mathbox">$$\mathbf{x} = (x_1, x_2, \dots, x_n)$$</div>
+<dl class="sym"><dt>\(\mathbf{x}\)</dt><dd>Bold means a vector (a whole column of numbers).</dd><dt>\(x_i\)</dt><dd>The \(i\)-th element, R's <code>x[i]</code>.</dd><dt>\(n\)</dt><dd>The number of elements, <code>length(x)</code>.</dd></dl>
+<p>Vectorized operations work element by element: \(60\mathbf{x} = (60x_1, \dots, 60x_n)\), \(\mathbf{x}+\mathbf{y} = (x_1+y_1,\dots,x_n+y_n)\). The z-score function:</p>
+<div class="mathbox">$$z_i = \frac{x_i-\bar x}{s_x},\quad i = 1,\dots,n$$</div>
+<p>\(\bar x\) and \(s_x\) are computed from the non-missing values only (that is what <code>na.rm = TRUE</code> does); for a missing \(x_i\), \(z_i\) is still NA. Summing logical values: \(\sum_i \mathbb{1}(x_i&lt;6)\), where \(\mathbb{1}(\cdot)\) is 1 when the condition holds and 0 otherwise, which is <code>sum(x &lt; 6)</code>.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Vectors, Types, NA, and Functions</h2>
+<p>Script for this lesson: <a href="../R/L2-2.R">R/L2-2.R</a>.</p>
+```r R/L2-2.R (core part)
+sleep <- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)   # NA = missing value
+class(sleep)                                       # "numeric"
+mean(sleep)                                        # With an NA, the result is NA!
+mean(sleep, na.rm = TRUE)                          # na.rm = TRUE: drop the NAs first
+which(sleep < 6)                                   # Which people slept less than 6 hours
+sleep[sleep < 6 & !is.na(sleep)]                   # Logical indexing
+gender <- factor(c(1, 0), levels = c(0, 1), labels = c("Male", "Female"))
+gender
+zscore <- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+round(cbind(my_zscore = zscore(sleep), scale_func = as.numeric(scale(sleep))), 3)
+```
+```out Output (R/output/L2-2_log.txt)
+[1] "numeric"
+[1] NA
+[1] 6.5625
+[1]  2  6 10
+[1] 5.5 4.5 5.0
+[1] Female Male  
+Levels: Male Female
+      my_zscore scale_func
+ [1,]     0.279      0.279
+ [2,]    -0.677     -0.677
+ [3,]     0.917      0.917
+ [4,]        NA         NA
+ [5,]    -0.359     -0.359
+ [6,]    -1.315     -1.315
+ [7,]     0.598      0.598
+ [8,]        NA         NA
+ [9,]     1.554      1.554
+[10,]    -0.996     -0.996
+```
+<p>Reading the output: the 8 valid values average 6.56 hours of sleep; members 2, 6, and 10 slept less than 6 hours (5.5, 4.5, 5.0). The factor <code>gender</code> prints its labels, and <code>Levels: Male Female</code> gives the order of the levels (male is the reference group). The hand-written <code>zscore()</code> gives exactly the same result as the built-in <code>scale()</code>; <code>scale()</code> returns a matrix, so <code>as.numeric()</code> turns it back into a vector, and <code>cbind()</code> puts the two columns side by side for comparison.</p>
+```r More indexing and vectorization
+length(sleep)          # Number of elements
+sum(is.na(sleep))      # Number missing
+sleep * 60             # Vectorized: every value converted to minutes
+sleep[c(1, 3)]         # The 1st and 3rd
+sleep < 6              # Compares each value; comparing NA still gives NA
+sum(sleep < 6, na.rm = TRUE)   # TRUE counts as 1: number who slept under 6 hours
+```
+```out Output (R/output/L2-2_log.txt, continued)
+[1] 10
+[1] 2
+ [1] 420 330 480  NA 360 270 450  NA 540 300
+[1] 7 8
+ [1] FALSE  TRUE FALSE    NA FALSE  TRUE FALSE    NA FALSE  TRUE
+[1] 3
+```
+```r Type pitfalls
+as.numeric(c("3", "4", "five"))     # Text to numbers: anything that can't convert becomes NA
+dat <- read.csv("data/clpn_sim_wide.csv")
+g <- factor(dat$gender, levels = c(0, 1), labels = c("Male", "Female"))
+table(g)
+```
+```out Output (R/output/L2-2_log.txt, continued)
+[1]  3  4 NA
+Warning message:
+NAs introduced by coercion
+g
+  Male Female 
+   373    427 
+```
+
+<!-- extra:begin -->
+<h3>Worked example: missing values, type conversion, and recycling</h3>
+<p>For each line below, predict the result first, then run it in R to check. All of these come up for real when you write CLPN scripts.</p>
+```r
+x <- c(3, NA, 5, 2)
+mean(x)                    # NA: one missing value makes the result NA
+mean(x, na.rm = TRUE)      # 3.333...: (3 + 5 + 2) / 3; the denominator is 3, not 4
+sum(is.na(x))              # 1: TRUE is added as 1; the usual way to count missing values
+
+c(1, "2", 3)               # "1" "2" "3": one character value turns the whole vector into character
+as.numeric(c("4", "five")) # 4 NA, with the warning NAs introduced by coercion
+
+f <- factor(c("10", "20", "10"))
+as.numeric(f)              # 1 2 1 ! You get the level codes, not the original numbers
+as.numeric(as.character(f))  # 10 20 10: convert to character first, then to numeric
+
+c(1, 2, 3, 4) + c(10, 20)  # 11 22 13 24: the shorter vector is reused (recycling)
+y <- c(8, 6, 9)
+y[-1]                      # 6 9: minus means "drop the 1st"
+y[y > 7]                   # 8 9: a logical vector as the index
+```
+
+<p>Line by line:</p>
+<ul><li><b>NA spreads.</b> R does this on purpose: it never quietly ignores missing values. When you compute total scores for a CLPN, <code>rowSums()</code> returns NA by default if any item is missing, and you have to decide explicitly how to handle it (Lesson 4.3).</li>
+<li><b>A vector has only one type.</b> When importing from Excel, text such as "missing" or "not applicable" also turns the whole column into character.</li>
+<li><b>The factor trap.</b> Inside, a factor stores codes 1, 2, 3, … with labels attached on the outside. Calling <code>as.numeric()</code> directly gives you the codes. Data imported from SPSS often carry such labels, so be careful.</li>
+<li><b>Recycling.</b> When two vectors have different lengths, R repeats the shorter one. If the longer length is an exact multiple of the shorter one, R gives no warning, so a wrong length can silently give a wrong result.</li></ul>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li><b>Forgetting to save the result with assignment.</b> <code>sort(x)</code> only shows the sorted values; <code>x</code> itself is unchanged. You need <code>x &lt;- sort(x)</code>.</li></ul></div>
+
+<h3>Function arguments: by position or by name?</h3>
+<p>In the call <code>round(3.14159, 2)</code>, 3.14159 and 2 are two <b>arguments</b>. R lets you pass arguments by position (the 1st is the number to round, the 2nd how many decimals to keep) or by name: <code>round(x = 3.14159, digits = 2)</code>. Naming them is clearer, and then the order doesn't matter. A good habit: give the 1st argument (usually the data) by position and name all the others, as in <code>mean(x, na.rm = TRUE)</code> or <code>cor(x, y, use = "pairwise.complete.obs")</code>. When you come back to the script six months later, you will still see at a glance what each setting means.</p>
+<h3>How to read a help page</h3>
+<p>Lesson 2.1 introduced the Usage, Arguments, and Examples sections of a help page. Two more points. First, in Usage, what follows an equals sign is the default; when the default is a vector, the first element is used, so <code>method = c("pearson", "kendall", "spearman")</code> in <code>?cor</code> means Pearson by default. Second, the <b>Value</b> section says what the function returns (a vector, a matrix, or a list), which decides whether you then use <code>[ ]</code> or <code>$</code> to get at the result.</p>
+
+<h3>Mini exercise: predict these four lines</h3>
+<p>Without running the code, write down your answers: ① <code>length(c(1, NA, 3))</code>; ② <code>sum(c(2, 4) &gt; 3)</code>; ③ <code>class(c(TRUE, 2))</code>; ④ <code>rev(1:4)[2]</code>. Answers: ① 3, because NA also takes up a position; ② 1, the sum of the logical values FALSE and TRUE; ③ "numeric", because TRUE is converted to 1; ④ 3: reversed, the vector is 4 3 2 1, and the 2nd element is 3.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: What does mean(c(1, NA, 3)) return?
+- 2 || You get 2 only with na.rm = TRUE.
++ NA || Correct: one value is unknown, so the mean is unknown.
+- 1.33 || That is what you'd get by treating NA as 0 and dividing by 3; R does not treat NA as 0.
+- An error || There is no error; it just returns NA, R's way of saying "the result is unknown."
+E: The fix: mean(c(1, NA, 3), na.rm = TRUE) returns 2.
+```
+```quiz
+Q: x <- c(2, 8, 5, 9, 1). What does x[x > 5] return?
+- 2 4 || Those are the positions that which(x > 5) returns.
++ 8 9 || Correct: it takes all values greater than 5.
+- TRUE TRUE || x > 5 gives 5 logical values; the brackets then take the values at the TRUE positions, so the result is numbers.
+E: x > 5 first gives FALSE TRUE FALSE TRUE FALSE; then the values at the TRUE positions are taken.
+```
+```quiz
+Q: Why is gender better stored as a factor?
++ It is a category, not a quantity; a factor lets R count, plot, and create dummy variables in regression correctly || Correct.
+- Because stored as 0/1, mean(gender) cannot give any meaningful number || For a 0/1 variable, the mean is exactly the proportion in the category coded 1 (here, the proportion of women); the real problem is with variables of three or more categories.
+- Because a numeric variable cannot take only two values || A numeric variable can perfectly well take only 0 and 1; the problem is that R treats it as a quantity.
+E: This matters most for variables with 3 or more categories.
+```
+```quiz
+Q: What is the type of c(1, "two", 3)?
+T: character || "character" || chr
+H: A vector can have only one type, and R picks the "most accommodating" one.
+E: Every element becomes a string: "1" "two" "3".
+```
+```quiz
+Q: A vector has 10 values: 3 TRUE and 7 FALSE. What does mean() return?
+N: 0.3 | 0.001
+H: TRUE = 1, FALSE = 0.
+E: 3/10 = 0.3, the proportion of TRUE.
+```
+```quiz
+Q: Why do NAs get mixed into sleep[sleep < 6]?
+- Because sleep is character || class(sleep) returns "numeric"; the NAs that appear are exactly the two positions that were missing.
++ Because NA < 6 is NA, and indexing with NA returns NA || Correct.
+- Because R treats NA as 0, and 0 < 6 || R does not treat NA as 0; if it did, the result would contain 0, not NA.
+E: Add & !is.na(sleep), or use which().
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.2-A: A sleep vector</h4>
+<p>Store the sleep durations of 10 people in a vector (with 2 NAs), compute the mean, and find the people who slept less than 6 hours. Write a function <code>zscore(x)</code> that returns the standardized vector and compare it with <code>scale()</code>.</p>
+<details class="answer"><summary>Reference code</summary>
+```r
+sleep <- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)
+mean(sleep, na.rm = TRUE)                    # 6.5625
+which(sleep < 6)                             # 2 6 10 (which people)
+sleep[sleep < 6 & !is.na(sleep)]             # 5.5 4.5 5.0 (their hours)
+zscore <- function(x) {
+  m <- mean(x, na.rm = TRUE)
+  s <- sd(x, na.rm = TRUE)
+  (x - m) / s                                # The last line is the return value
+}
+all.equal(zscore(sleep), as.numeric(scale(sleep)))   # TRUE
+```
+<p>Points to cover: say how NA is handled; explain why <code>which()</code> gives positions while brackets give values; <code>all.equal()</code> checks whether two results are equal (within floating-point error).</p></details></div>
+<div class="exitem"><h4>Exercise 2.2-B: On the course data</h4>
+<p>Read <code>data/clpn_sim_wide.csv</code> and store the column <code>dep1_t1</code> (Depressed mood, scored 0–3) as a vector <code>d1</code>. (1) How many people scored 3? (2) What proportion scored 2 or higher? (3) Standardize <code>d1</code> with your <code>zscore()</code> and check that the result has mean 0 and standard deviation 1.</p>
+<details class="answer"><summary>Reference code</summary>
+```r
+dat <- read.csv("data/clpn_sim_wide.csv")
+d1 <- dat$dep1_t1
+sum(d1 == 3)                 # (1) 54 people
+mean(d1 >= 2)                # (2) 0.194, i.e., 19.4%
+z <- zscore(d1)
+round(c(mean(z), sd(z)), 10) # (3) 0 and 1
+```
+<p>Tip: the course data have no missing values, so <code>na.rm</code> is not needed here; but the habit of writing <code>na.rm = TRUE</code> into your own functions is useful.</p></details></div>
+<div class="exitem"><h4>Exercise 2.2-C: A factor with several categories</h4>
+<p>Create the vector <code>service &lt;- c(1, 3, 2, 2, 1, 3, 3)</code> (1 casework, 2 group work, 3 community work). Turn it into a factor with English labels, count with <code>table()</code>, and explain why <code>mean(service)</code> (on the numeric version) is meaningless.</p>
+<details class="answer"><summary>Reference answer</summary>
+```r
+service <- c(1, 3, 2, 2, 1, 3, 3)
+service_f <- factor(service, levels = 1:3, labels = c("Casework", "Group", "Community"))
+table(service_f)             # Casework 2, Group 2, Community 3
+```
+<p><code>mean(service)</code> = 2.14, and "the average service type is 2.14" means nothing: 1, 2, 3 are only labels, and 10, 20, 30 would do just as well.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>A vector is a row of values of one type; <code>[ ]</code> takes values by position, condition, or name; operations are vectorized automatically.</li>
+<li>Four basic types: numeric, character, logical (TRUE = 1), and factor (categorical variables). If a type is wrong, everything downstream goes wrong.</li>
+<li>NA spreads: use <code>na.rm = TRUE</code> and <code>is.na()</code>, and think about why values are missing. Next lesson: {{L:2.3}}.</li></ul>
+</section>

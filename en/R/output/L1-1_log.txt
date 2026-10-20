@@ -1,0 +1,78 @@
+Number of cases (rows) = 800 ; Number of variables (columns) = 34 
+
+    id lone1_t1 lone2_t1 lone3_t1 lone4_t1 dep1_t1 dep2_t1 dep3_t1 dep4_t1
+1 P001        3        2        2        2       0       0       1       0
+2 P002        1        2        1        2       0       0       1       0
+3 P003        2        1        2        2       1       2       1       2
+4 P004        2        2        2        2       1       0       2       1
+5 P005        3        4        3        3       1       2       0       3
+6 P006        4        2        2        4       1       0       0       1
+  dep5_t1
+1       0
+2       1
+3       0
+4       0
+5       1
+6       2
+'data.frame':	800 obs. of  6 variables:
+ $ id               : chr  "P001" "P002" "P003" "P004" ...
+ $ lone1_t1         : int  3 1 2 2 3 4 2 2 3 1 ...
+ $ dep1_t1          : int  0 0 1 1 1 1 2 0 1 0 ...
+ $ gender           : int  0 0 1 0 1 1 0 0 0 1 ...
+ $ age              : int  49 38 48 47 29 54 27 48 19 55 ...
+ $ social_support_t1: num  3.6 4.9 3.5 3 4.4 2.7 3.6 3.3 2.3 4.3 ...
+               variable                               label
+1                    id                      Participant ID
+2  lone1_t1 / _t2 / _t3 Loneliness 1: Lack of companionship
+3  lone2_t1 / _t2 / _t3      Loneliness 2: Feeling left out
+4  lone3_t1 / _t2 / _t3      Loneliness 3: Feeling isolated
+5  lone4_t1 / _t2 / _t3 Loneliness 4: No one understands me
+6   dep1_t1 / _t2 / _t3        Depression 1: Depressed mood
+7   dep2_t1 / _t2 / _t3      Depression 2: Loss of interest
+8   dep3_t1 / _t2 / _t3        Depression 3: Sleep problems
+9   dep4_t1 / _t2 / _t3               Depression 4: Fatigue
+10  dep5_t1 / _t2 / _t3         Depression 5: Worthlessness
+11               gender                              Gender
+12                  age                         Age (years)
+13    social_support_t1       Perceived social support (T1)
+14       sleep_hours_t1          Sleep hours per night (T1)
+15          life_sat_t1              Life satisfaction (T1)
+16         help_seek_t2       Sought professional help (T2)
+                                                                     values
+1                                                                 P001–P800
+2                                      1=never;2=rarely;3=sometimes;4=often
+3                                                              1–4 as above
+4                                                              1–4 as above
+5                                                              1–4 as above
+6  0=not at all;1=several days;2=more than half the days;3=nearly every day
+7                                                              0–3 as above
+8                                                              0–3 as above
+9                                                              0–3 as above
+10                                                             0–3 as above
+11                                                          0=male;1=female
+12                                                                    18–85
+13                                              1–5 (higher = more support)
+14                                                               3–11 hours
+15                                                                    0–100
+16                                                               0=no;1=yes
+     Variable       Level_of_measurement
+1          id Nominal (identifier label)
+2      gender       Nominal (binary 0/1)
+3    lone1_t1       Ordinal (Likert 1-4)
+4     dep1_t1              Ordinal (0-3)
+5         age                      Ratio
+6 life_sat_t1  Often treated as interval
+
+Value distribution for lone1_t1 :
+
+  1   2   3   4 
+230 288 181 101 
+
+Value distribution for dep1_t1 :
+
+  0   1   2   3 
+416 229 101  54 
+
+Cronbach's alpha (T1): Loneliness 4 items, Depression 5 items
+[1] 0.78
+[1] 0.78

@@ -1,0 +1,32 @@
+---
+title: "我的第一份可复现报告（L2-6）"
+output:
+  html_document:
+    mathjax: null      # 不从网络加载 MathJax，离线也能打开（本报告没有公式）
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv")   # 通过 R/L2-6.R 渲染时工作目录 = 课程根目录；在 RStudio 中点 Knit 前，先把 Knit Directory 设为 Project Directory
+dat <- dat |> mutate(孤独 = rowSums(across(lone1_t1:lone4_t1)),
+                     抑郁 = rowSums(across(dep1_t1:dep5_t1)))
+```
+
+## 描述统计表
+
+```{r}
+dat |> summarise(across(c(孤独, 抑郁), list(均值 = mean, 标准差 = sd))) |> knitr::kable(digits = 2)
+```
+
+## 两张图
+
+```{r}
+ggplot(dat, aes(孤独, 抑郁)) + geom_jitter(alpha = .3) + geom_smooth(method = "lm")
+ggplot(dat, aes(抑郁)) + geom_histogram(binwidth = 1)
+```
+
+## 解释
+
+孤独与抑郁总分的相关为 r = `r round(cor(dat$孤独, dat$抑郁), 2)`。数字直接来自代码，修改数据后重新 Knit 即自动更新——这就是“可复现”（reproducible）。

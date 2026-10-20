@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 纵向设计的语言：波次、时间间隔、被试内与被试间 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L4-1.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="4.1" style="--c:#ec4899">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L4-1">CLPN 课程大纲</a><span class="crumb">M4 纵向与面板数据 / 4.1</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L4-1.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L4-1.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details open style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html" class="cur" aria-current="page"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 4 · Longitudinal / Panel Data · 第 4.1 课</div>
+<h1>纵向设计的语言：波次、时间间隔、被试内与被试间</h1>
+<div class="facts"><span>课文学习 1 小时 30 分钟</span><span>先修：<a href="L1-6.html">1.6 假设检验、p 值与效应量</a></span><span>配套脚本：<a href="../R/L4-1.R">R/L4-1.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>区分横断面、重复横断面、面板（追踪）设计</li><li>理解波次（wave）与时间间隔（lag）的选择如何影响能看到的效应</li><li>初步区分被试间差异（between-person）与被试内变化（within-person）</li><li>理解测量不变性的基本含义</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>横断面数据</b><span class="en">cross-sectional data</span></li><li><b>面板数据</b><span class="en">panel data</span></li><li><b>追踪研究</b><span class="en">longitudinal / follow-up study</span></li><li><b>波次</b><span class="en">wave</span></li><li><b>时间间隔</b><span class="en">time lag</span></li><li><b>被试间</b><span class="en">between-person</span></li><li><b>被试内</b><span class="en">within-person</span></li><li><b>测量不变性</b><span class="en">measurement invariance</span></li><li><b>密集纵向数据</b><span class="en">intensive longitudinal data, ESM/EMA</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>同一批人，看几次</h2>
+<div class="box story"><b class="bt">三种“看变化”的方式</b>
+<p>某市想了解社区成年居民的孤独感是否在上升。方案甲：今年调查 800 名居民，只调查一次。方案乙：今年调查 800 名居民，明年另外抽 800 名居民再调查一次。方案丙：今年调查 800 名居民，明年、后年再找同样这 800 人各调查一次。</p>
+<p>甲是<span class="term">横断面数据<span class="en">（cross-sectional data）</span></span>：一个时间点的“快照”，能看到谁孤独、谁抑郁，但看不到任何人的变化。乙是<b>重复横断面</b>：能看到居民整体的平均水平是否变化，但不知道某个人是变好还是变差。丙是<span class="term">面板数据<span class="en">（panel data）</span></span>，来自<span class="term">追踪研究<span class="en">（longitudinal / follow-up study）</span></span>：同一批人被反复测量，既能看整体，也能看每个人的轨迹。CLPN 只能用丙这类数据。</p></div>
+<p>每一次测量叫一个<span class="term">波次<span class="en">（wave）</span></span>（T1、T2、T3……），两次测量之间的时间叫<span class="term">时间间隔<span class="en">（time lag）</span></span>。课程的模拟数据就是 800 人 × 3 波的面板数据，变量名后缀 <code>_t1</code>、<code>_t2</code>、<code>_t3</code> 表示波次。</p>
+<p>面板数据中每个人在每一波都可以通过个案 ID 一一对应，所以能计算“T1 的孤独 → 同一个人 T2 的抑郁”；两批不同的人只能比较两个群体的平均数，无法建立任何个人层面的时间先后关系。</p>
+<figure><img src="../R/output/L4-1_spaghetti.png" alt="30 人的抑郁轨迹" style="max-width:100%"><figcaption>意大利面图（spaghetti plot）：随机抽取 30 人，每条蓝线是一个人 3 波的抑郁总分，红色粗线是全体平均（3.84 → 3.78 → 3.85，几乎平坦）。平均数没变，并不代表每个人都没变：个人的线在上下波动，有人变好、有人变差。</figcaption></figure>
+
+<h3>被试间 vs 被试内：两种不同的问题</h3>
+<p>纵向数据中的差异来自两个来源：</p>
+<ul><li><b><span class="term">被试间<span class="en">（between-person）</span></span>差异</b>：人与人之间稳定的差别。小王一直比小李更孤独，这像一种“特质”。</li>
+<li><b><span class="term">被试内<span class="en">（within-person）</span></span>变化</b>：同一个人在不同时间相对于他自己平常水平的波动。小王这几个月比他平时更孤独（例如刚搬家）。</li></ul>
+<div class="box analogy"><b class="bt">类比：城市气温</b><p>“海口比哈尔滨热”是城市之间的比较（被试间）。“哈尔滨今天比哈尔滨平时热”是同一城市之内的比较（被试内）。知道海口比哈尔滨热，并不能告诉你哈尔滨某一天变热时会发生什么。</p></div>
+<p>由此有两句看起来很像、含义却完全不同的话：</p>
+<ul><li>“孤独的人更抑郁”是被试间的说法：孤独程度较高的那些人，抑郁也较高。</li>
+<li>“一个人比平时更孤独时，他也更抑郁”是被试内的说法：同一个人内部，孤独上升的时期抑郁也上升。</li></ul>
+<p>社会工作干预针对的通常是个人内部的变化（让<i>这位</i>服务对象没那么孤独，他的抑郁会不会减轻？），所以被试内的问题往往更贴近实务。但两个层面的关系可以大小不同，甚至方向相反。课程数据中：用每人 3 波平均分计算的被试间相关 r ≈ 0.39，而用“偏离自己平均”的部分计算的被试内相关 r ≈ 0.29。</p>
+<div class="widget" data-widget="betweenwithin"></div>
+<div class="box warnbox"><b class="bt">与 CLPN 的关系：被试间与被试内混合</b><p>标准 CLPM 和 CLPN 直接用原始分数做回归，被试间的稳定差异和被试内的变化混在一起。如果人与人之间存在很强的稳定差异（特质），交叉滞后系数可能部分反映的是这些稳定差异，而不是“一个人变化了之后会怎样”。Hamaker, Kuiper 和 Grasman (2015) 据此提出了随机截距 CLPM（RI-CLPM，5.3 课）。本课先建立概念：<b>总变异 = 被试间 + 被试内</b>。</p></div>
+
+<h3>时间间隔：用多久的“快门”拍照？</h3>
+<p>交叉滞后效应的大小和间隔长短密切相关。想象“孤独 → 抑郁”的影响需要大约几周才能显现，之后又逐渐消退：</p>
+<ul><li>间隔太短（例如 1 天）：影响还没来得及显现，交叉滞后效应接近 0。</li>
+<li>间隔合适（例如 1–3 个月）：恰好捕捉到影响最强的时候。</li>
+<li>间隔太长（例如 3 年）：影响早已消退或被其他事件冲淡，效应又变小。</li></ul>
+<div class="widget" data-widget="lag"></div>
+<p><small>（组件中的曲线是示意性的假设，不是课程数据的估计结果。真实的“最佳间隔”通常是未知的。）</small></p>
+<p>所以，时间间隔的选择会影响交叉滞后效应的大小：效应随时间展开和消退，每个间隔只截取了这个过程的一个片段。两项研究报告的交叉滞后系数不同，可能只是间隔不同；同一研究的结论也只适用于所选的间隔。选择间隔时，应依据理论上过程展开的速度（如抑郁症状的变化以周为单位，社会关系网络的变化可能以月或年为单位）。</p>
+
+<h3>密集纵向数据</h3>
+<p>与“每 6 个月测一次、共 3 次”相对的是<span class="term">密集纵向数据<span class="en">（intensive longitudinal data, ESM/EMA）</span></span>：用手机每天提醒数次，连续两周记录此刻的心情和社交情况（经验取样法 ESM / 生态瞬时评估 EMA）。它适合研究快速波动的过程（“刚才独处一小时后，此刻情绪是否更低落？”），每人有几十上百个观测，可以分析每个人自己的网络。面板数据（每次间隔数月）更适合研究较慢的发展过程，样本通常更大。CLPN 主要用于后者。</p>
+
+<h3>测量不变性：尺子没有变吗？</h3>
+<p>比较不同时间的分数，前提是“尺子”没变：同一道题在 T1 和 T3 对受访者意味着同样的东西。这叫<span class="term">测量不变性<span class="en">（measurement invariance）</span></span>。例如“我感到与人隔绝”：疫情封控期间与平时，人们对这句话的理解和作答标准可能不同。如果题目的含义或作答方式随时间改变，分数的变化可能反映的是“尺子变了”，而不是“人变了”。纵向测量不变性通常用验证性因子分析（CFA）逐级检验（构形 / 形态、因子载荷、截距等是否跨时间相等）。进阶选学课 <a href="L7-6.html">7.6 测量不变性与样本量规划</a> 会用 lavaan 动手演示；即使不做这一检验，写论文时也应说明是否检验过，或至少在局限中提及。</p>
+<div class="box sw"><b class="bt">社会工作情境：流动的服务对象</b><p>追踪研究中最现实的困难是“找不到人”：服务对象搬家、换手机号、退出服务。另外，参与研究本身也可能改变人（反复填写抑郁问卷可能让人更关注自己的情绪）。这些都会影响纵向数据的质量，4.3 课讨论样本流失。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>把分数拆成两部分</h2>
+<div class="mathbox">$$y_{it} = \underbrace{\bar y_i}_{\text{被试间：个人平均}} + \underbrace{(y_{it}-\bar y_i)}_{\text{被试内：偏离自己的平均}}$$</div>
+<dl class="sym"><dt>\(y_{it}\)</dt><dd>第 \(i\) 个人在第 \(t\) 波的分数（如抑郁总分）。</dd><dt>\(\bar y_i\)</dt><dd>第 \(i\) 个人在所有波次的平均分（个人平均）。</dd><dt>\(y_{it}-\bar y_i\)</dt><dd>这个人在第 \(t\) 波相对于自己平均的偏离，有正有负，每个人的偏离之和为 0。</dd></dl>
+<p>例：P001 的抑郁总分为 1、4、0，个人平均 1.67；被试内偏离为 −0.67、+2.33、−1.67。P002 为 2、5、7，平均 4.67。P002 的个人平均比 P001 高 3 分，这是被试间差异；P001 在 T2 比自己平时高 2.33 分，这是被试内变化。</p>
+<p>相应地，总方差可以近似分解为被试间方差 + 被试内方差。一个常用的指标是组内相关系数 ICC：</p>
+<div class="mathbox">$$ICC = \frac{\sigma^2_{\text{between}}}{\sigma^2_{\text{between}}+\sigma^2_{\text{within}}}$$</div>
+<p>它表示总变异中有多大比例来自人与人之间的稳定差异。用多层模型（lme4 包）估计课程数据中抑郁总分：\(\sigma^2_{\text{between}}\approx6.09\)，\(\sigma^2_{\text{within}}\approx5.42\)，\(ICC\approx 6.09/11.51\approx0.53\)，即大约一半的变异是稳定的个体差异。</p>
+<p><small>细节：L4-1.R 用“个人平均的方差”估计被试间方差，得到 7.9。它比 6.09 大，因为只有 3 波时个人平均本身也含有被试内波动的噪音（约 \(5.42/3\approx1.8\)；\(6.09+1.8\approx7.9\)）。作为直观演示没问题，严格估计要用多层模型。</small></p>
+<p><b>为什么 5.3 课说“稳定成分约占 38%”？</b>到 <a href="L5-3.html">5.3 RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a> 你会看到，RI-CLPM 估计的抑郁随机截距方差是 4.35，观测总分每波的平均方差是 11.52，比值约 0.38；孤独也是 0.38。分母和这里几乎一样（6.09 + 5.42 = 11.51，都是单波总分的方差），所以差别不在“占什么的比例”，而在两个模型怎样解释“同一个人跨波相似”。这里的多层模型 <code>y ~ 1 + (1 | id)</code> 假定一个人各波偏离自己平均的部分彼此独立，于是跨波的全部协方差都只能归给稳定的个人差异：ICC 因此约等于三个跨波相关的平均，(0.58 + 0.57 + 0.44) / 3 ≈ 0.53。RI-CLPM 则允许被试内的偏离从上一波“延续”到下一波（自回归和交叉滞后路径），跨波协方差中有一部分被归给这种延续，留给随机截距的就少了。两个数都对，回答的是不同模型下的问题；只有 3 波时，两种来源很难分清，0.38 这个估计本身也很不精确（5.3 课会看到随机截距相关的置信区间非常宽）。</p>
+<p><b>跨波相关</b>（重测相关）反映的是等级顺序的稳定性：T1 抑郁高的人，T2 是否仍然相对较高。课程数据中 T1–T2 r = 0.58，T2–T3 r = 0.57，T1–T3 r = 0.44：间隔越长，稳定性越低，这是面板数据的典型模式。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>波次均值、跨波相关、被试间与被试内</h2>
+<p>对应脚本：<a href="../R/L4-1.R">R/L4-1.R</a>。</p>
+<div class="codeblk"><div class="ctitle">R/L4-1.R（核心部分）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+dep &lt;- sapply(1:3, function(t) rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)]))  # 800 × 3 矩阵
+colnames(dep) &lt;- paste0(&quot;T&quot;, 1:3)
+round(colMeans(dep), 2)                     # 每波的平均抑郁
+round(cor(dep), 2)                          # 跨波相关（重测稳定性）
+person_mean &lt;- rowMeans(dep)                # 每个人 3 波的平均 = 被试间部分
+within &lt;- dep - person_mean                 # 偏离自己平均的部分 = 被试内部分
+cat(&quot;\n被试间方差（between）≈&quot;, round(var(person_mean), 2),
+    &quot;；被试内方差（within）≈&quot;, round(mean(apply(within, 1, var)), 2), &quot;\n&quot;)
+# 意大利面图
+set.seed(3); idx &lt;- sample(nrow(dep), 30)
+matplot(1:3, t(dep[idx, ]), type = &quot;l&quot;, lty = 1, col = rgb(0, 0, 1, .4), xaxt = &quot;n&quot;,
+        xlab = &quot;波次 wave&quot;, ylab = &quot;抑郁总分&quot;)
+axis(1, 1:3, paste0(&quot;T&quot;, 1:3)); lines(1:3, colMeans(dep), lwd = 4, col = &quot;red&quot;)</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L4-1_log.txt）</div><pre class="out"><code>  T1   T2   T3 
+3.84 3.78 3.85 
+     T1   T2   T3
+T1 1.00 0.58 0.44
+T2 0.58 1.00 0.57
+T3 0.44 0.57 1.00
+
+被试间方差（between）≈ 7.9 ；被试内方差（within）≈ 5.42 </code></pre></div>
+<div class="box key"><b class="bt">代码要点</b><ul>
+<li><code>sapply(1:3, function(t) ...)</code>：对 t = 1、2、3 各执行一次函数，结果按列拼成矩阵。<code>paste0(dep_items, "_t", t)</code> 生成 <code>"dep1_t1" … "dep5_t1"</code> 这样的列名。</li>
+<li><code>dep - person_mean</code>：矩阵减向量，R 会把向量按列循环使用，每一行减去这个人自己的平均（向量化，2.2 课）。</li>
+<li><code>apply(within, 1, var)</code>：对每一行（1 表示行，2 表示列）计算方差。</li>
+<li><code>matplot()</code>：把矩阵的每一列画成一条线；<code>t()</code> 转置，使每个人成为一列。</li></ul></div>
+<div class="codeblk"><div class="ctitle">被试间相关 vs 被试内相关（补充）</div><pre><code class="language-r">lone &lt;- sapply(1:3, function(t) rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)]))
+cor(rowMeans(lone), rowMeans(dep))                            # 被试间：个人平均之间的相关
+cor(as.vector(lone - rowMeans(lone)), as.vector(dep - rowMeans(dep)))   # 被试内：偏离之间的相关
+# 用多层模型估计方差成分与 ICC（需要 lme4 包：install.packages(&quot;lme4&quot;)）
+long &lt;- data.frame(id = rep(1:800, 3), y = as.vector(dep))
+m &lt;- lme4::lmer(y ~ 1 + (1 | id), data = long)
+as.data.frame(lme4::VarCorr(m))[, c(&quot;grp&quot;, &quot;vcov&quot;)]</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L4-1_log.txt，末尾）</div><pre class="out"><code>[1] 0.3931083
+[1] 0.2908138
+       grp     vcov
+1       id 6.094350
+2 Residual 5.417917</code></pre></div>
+<p>被试间相关（0.39）大于被试内相关（0.29）：“孤独的人更抑郁”的关联比“一个人更孤独时更抑郁”的关联更强。这两个数回答的是不同的问题。（被试内相关这样粗略计算会有些偏差，严格分析用多层模型或 RI-CLPM。）</p>
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">面板数据与“两批不同的人在两个时间点”的数据有何不同？</p><ul class="opts"><li><button type="button" data-ok="1">面板数据追踪同一批人，可以通过 ID 把每个人的 T1 与 T2 对应起来，看个人的变化</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">没有区别，只要有两个时间点就行</button><div class="ofb" hidden>重复横断面每次是不同的人，无法把某个人的 T1 和 T2 对应起来，也就无法分析个人的变化。</div></li><li><button type="button" data-ok="0">面板数据样本一定更大</button><div class="ofb" hidden>两种设计的样本量都可大可小；区别在于是否追踪同一批人。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>两批不同的人（重复横断面）只能比较群体平均。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">“孤独的人更抑郁”是哪个层面的说法？</p><ul class="opts"><li><button type="button" data-ok="1">被试间</button><div class="ofb" hidden>正确：比较的是不同的人。</div></li><li><button type="button" data-ok="0">被试内</button><div class="ofb" hidden>这句话比较的是不同的人；被试内的说法是“同一个人比平时更孤独时……”。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>两个层面的关系可以大小不同，甚至方向相反。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">“一个人比平时更孤独时，他也更抑郁”是哪个层面的说法？</p><ul class="opts"><li><button type="button" data-ok="0">被试间</button><div class="ofb" hidden>这句话的参照点是“他自己平时”，是和自己比较，不是和别人比较。</div></li><li><button type="button" data-ok="1">被试内</button><div class="ofb" hidden>正确：相对于自己平常水平的波动。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>干预关心的往往是被试内变化。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么时间间隔的选择会影响交叉滞后效应的大小？</p><ul class="opts"><li><button type="button" data-ok="0">因为间隔越长效应一定越大</button><div class="ofb" hidden>间隔过长时，效应可能已经消退或被其他事件冲淡，反而变小。</div></li><li><button type="button" data-ok="1">因为效应随时间展开和消退，不同间隔截取的是过程的不同片段；太短来不及显现，太长已经消退</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为间隔越长流失越多，样本越小</button><div class="ofb" hidden>流失会影响精度和偏差，但即使没有流失，不同间隔截取的也是过程的不同片段。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>结论只适用于所研究的间隔。</div></div>
+<div class="quiz" data-kind="num" data-ans="3.67" data-tol="0.01"><p class="qtext">P003 三波抑郁分为 6、1、0。T1 的被试内偏离是多少？（保留两位小数）</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>先算个人平均 (6+1+0)/3，再用 T1 分数减去它。</div><div class="fb" role="status"></div><div class="qexp" hidden>平均 = 2.33，6 − 2.33 = 3.67：T1 时他比自己平时高 3.67 分。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">测量不变性关心的是什么？</p><ul class="opts"><li><button type="button" data-ok="0">样本是否保持不变</button><div class="ofb" hidden>那是样本流失问题（4.3 课），不是测量工具的问题。</div></li><li><button type="button" data-ok="1">同一套题目在不同时间（或不同群体）是否测量的是同样的东西、用同样的“尺子”</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">分数是否保持不变</button><div class="ofb" hidden>分数可以随时间变化；测量不变性要求的是尺子不变，这样分数的变化才能解释为人的变化。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>尺子变了，分数的变化就无法解释为人的变化。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 4.1-A：纵向研究摘要阅读表</h4>
+<p>选两篇社工 / 心理领域的纵向研究摘要，填表：样本量、波次数、间隔、测量工具；讨论“每 6 个月测一次”和“每天测一次”适合研究的问题有何不同。</p>
+<details class="answer"><summary>表格模板与讨论要点</summary>
+<div class="tablewrap"><table><thead><tr><th>项目</th><th>研究 1</th><th>研究 2</th></tr></thead><tbody>
+<tr><td>作者、年份、期刊</td><td></td><td></td></tr><tr><td>样本（谁、多少人）</td><td></td><td></td></tr><tr><td>波次数</td><td></td><td></td></tr><tr><td>时间间隔</td><td></td><td></td></tr><tr><td>测量工具（量表名称、题数）</td><td></td><td></td></tr><tr><td>流失率</td><td></td><td></td></tr><tr><td>设计类型（横断面 / 重复横断面 / 面板）</td><td></td><td></td></tr><tr><td>是否报告测量不变性检验</td><td></td><td></td></tr><tr><td>分析方法</td><td></td><td></td></tr></tbody></table></div>
+<p>选文建议：一篇可以用课程参考文献中的 Funkhouser et al. (2021)（ABCD 研究中的 CLPN 实证范例，9.1 课精读），另一篇用中国知网或 Google Scholar 以“追踪研究 孤独感 抑郁”“longitudinal loneliness depression adults”检索。信息以原文为准，摘要里没写的（如流失率）标注“摘要未报告”。</p>
+<p>讨论要点：每 6 个月一次适合研究较慢的过程（生活事件后的适应、社会支持网络的变化、症状的发展），样本通常更大，但看不到短期波动；每天一次（ESM / 日记法）适合研究快速的情绪和行为过程（“昨天被冷落 → 今天情绪低落？”），能分析个人内部的动态，但负担重、持续时间短，结论不一定能推广到月或年的尺度。</p><p>表中最后两行的要点：两篇纵向研究都应是“面板”设计（同一批人反复测量）；若某篇其实是每年抽不同的人，那是重复横断面，不能做交叉滞后分析。测量不变性：很多应用研究没有报告，这时在表中写“未报告”，并在讨论中指出：没有检验过，就不能完全排除“分数变化来自尺子变化”。</p></details></div>
+<div class="exitem"><h4>练习 4.1-B：孤独感的被试间与被试内</h4>
+<p>仿照 L4-1.R，为孤独总分计算 3 波均值、跨波相关矩阵，以及被试间与被试内方差。与抑郁相比，孤独的稳定性更高还是更低？</p>
+<details class="answer"><summary>参考代码与结果</summary>
+<div class="codeblk"><pre><code class="language-r">lone &lt;- sapply(1:3, function(t) rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)]))
+round(colMeans(lone), 2)       # 8.80 8.87 8.88
+round(cor(lone), 2)            # T1–T2 0.61，T2–T3 0.59，T1–T3 0.47
+pm &lt;- rowMeans(lone)
+round(c(between = var(pm), within = mean(apply(lone - pm, 1, var))), 2)</code></pre></div>
+<p>孤独的跨波相关（0.61、0.59、0.47）略高于抑郁（0.58、0.57、0.44），说明在这份模拟数据中孤独的等级顺序稍稳定一些。方差分解：被试间 ≈ 6.38，被试内 ≈ 4.03（抑郁为 7.9 和 5.42）。粗略比例 6.38 / (6.38 + 4.03) ≈ 0.61（抑郁约 0.59）；注意这里的“被试间”同样含有约 1/3 的被试内噪音（每人只平均了 3 波），所以会偏大。用 lme4 估计（<code>R/solutions/L4-1_solution.R</code>）：孤独被试间 5.03、被试内 4.03、ICC ≈ 0.56；抑郁 6.09、5.42、ICC ≈ 0.53。可以核对：6.38 ≈ 5.03 + 4.03/3。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>面板数据 = 同一批人、多个波次、同样的题目；ID 让个人的时间序列能够对齐。</li>
+<li>分数 = 个人平均（被试间）+ 偏离自己平均（被试内）；两个层面回答不同的问题，CLPM / CLPN 会把两者混在一起。</li>
+<li>时间间隔决定你能看到的效应；比较时间点之间的分数还需要测量不变性。下一课：<a href="L4-2.html">4.2 宽格式与长格式：数据整形</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L3-5.html" class="pv"><small>上一课</small>3.5 过拟合与正则化：岭回归、LASSO 与交叉验证</a><a href="L4-2.html" class="nx"><small>下一课</small>4.2 宽格式与长格式：数据整形</a></nav>
+<p class="foot">CLPN 从零开始 · 第 4.1 课 · <a href="../index.html#L4-1">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

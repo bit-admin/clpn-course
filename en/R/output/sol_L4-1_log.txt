@@ -1,0 +1,18 @@
+Loneliness means across 3 waves:
+  T1   T2   T3 
+8.80 8.87 8.88 
+Loneliness cross-wave correlations:
+     T1   T2   T3
+T1 1.00 0.61 0.47
+T2 0.61 1.00 0.59
+T3 0.47 0.59 1.00
+Rough variance decomposition (variance of person means vs. within-person variance):
+           between within
+Loneliness    6.38   4.03
+Depression    7.90   5.42
+
+Variance components and ICC from multilevel model (lme4::lmer(y ~ 1 + (1 | id))):
+           between within  ICC
+Loneliness    5.03   4.03 0.56
+Depression    6.09   5.42 0.53
+(The rough method's 'between' ≈ multilevel between + within / 3, because person means across 3 waves still contain within-person noise)

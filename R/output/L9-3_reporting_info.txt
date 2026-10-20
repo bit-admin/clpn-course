@@ -1,0 +1,40 @@
+== 软件 Software ==
+ R version 4.6.1 (2026-06-24) 
+  glmnet 5.1
+  qgraph 1.10.1
+  bootnet 1.9.1
+  networktools 1.6.0
+  lavaan 0.7-3
+  psych 2.6.9
+  tidyverse 2.0.0
+
+== CLPN 方法部分必须报告的要素（勾选清单）==
+ [ ] 数据：样本量、波次、间隔、题目内容与计分
+ [ ] 缺失与流失处理（列表删除 / 多重插补 / FIML）
+ [ ] 标准化：所有题目在估计前 z 标准化
+ [ ] 估计：每个 T2 题目对全部 T1 题目做 LASSO（glmnet，alpha = 1）
+ [ ] λ 选择：10 折交叉验证 lambda.min（或 lambda.1se / EBIC，γ = ?）
+ [ ] 随机种子：set.seed(2026)
+ [ ] 协变量及是否惩罚（penalty.factor）
+ [ ] 中心性：out-EI / in-EI（不含自回归边），桥接 EI 的社群定义
+ [ ] 稳定性：非参数 bootstrap（次数）、case-dropping CS 系数
+ [ ] 敏感性分析：λ 规则、种子、去除冗余题目、T2→T3 复现
+ [ ] 软件版本（见上）与代码/数据共享链接（OSF）
+
+== sessionInfo()（前 16 行；完整的 54 行见 R/output/sessionInfo_full.txt）==
+R version 4.6.1 (2026-06-24)
+Platform: aarch64-apple-darwin24.6.0
+Running under: macOS Sequoia 15.8.1
+
+（本机路径、语言环境与时区已略去）
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.5    forcats_1.0.1      stringr_1.6.0      dplyr_1.2.1       
+ [5] purrr_1.2.2        readr_2.2.0        tidyr_1.3.2        tibble_3.3.1      
+ [9] tidyverse_2.0.0    psych_2.6.9        lavaan_0.7-3       networktools_1.6.0
+[13] bootnet_1.9.1      ggplot2_4.0.3      qgraph_1.10.1      glmnet_5.1        
+[17] Matrix_1.7-5      
+

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.4 协方差与相关：两个变量如何一起变化 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L1-4.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="1.4" style="--c:#0ea5e9">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L1-4">CLPN 课程大纲</a><span class="crumb">M1 统计学基础 / 1.4</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L1-4.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L1-4.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details open style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html" class="cur" aria-current="page"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 1 · Statistics Foundations · 第 1.4 课</div>
+<h1>协方差与相关：两个变量如何一起变化</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L1-3.html">1.3 标准化与 z 分数</a></span><span>配套脚本：<a href="../R/L1-4.R">R/L1-4.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>从散点图直觉理解协方差与相关</li><li>计算并解释皮尔逊相关系数 r 的方向与大小</li><li>知道斯皮尔曼相关与多分格相关（polychoric）适用的情境</li><li>牢记“相关不等于因果”，并能举出混杂变量的例子</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>散点图</b><span class="en">scatter plot</span></li><li><b>协方差</b><span class="en">covariance</span></li><li><b>相关系数</b><span class="en">correlation coefficient</span></li><li><b>皮尔逊相关</b><span class="en">Pearson&#x27;s r</span></li><li><b>斯皮尔曼相关</b><span class="en">Spearman&#x27;s ρ</span></li><li><b>多分格相关</b><span class="en">polychoric correlation</span></li><li><b>相关矩阵</b><span class="en">correlation matrix</span></li><li><b>混杂变量</b><span class="en">confounder</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>两个变量“一起变化”的程度</h2>
+<div class="box story"><b class="bt">一张点点图</b>
+<p>社工小陈把 800 位居民画在一张图上：横轴是 T1 孤独总分，纵轴是 T1 抑郁总分，每个人是一个点。她发现点云整体“向右上方倾斜”：孤独分高的人，抑郁分也倾向于高。但也有很多例外：有人很孤独却不抑郁，有人不孤独却很抑郁。“倾向于”到底有多强？我们需要一个数字来概括。</p></div>
+<p>这种图叫<span class="term">散点图<span class="en">（scatter plot）</span></span>。下面是课程数据的真实散点图（<a href="../R/L1-4.R">R/L1-4.R</a> 画出；为避免点重叠，给每个点加了一点随机“抖动” jitter）：</p>
+<figure style="margin:10px 0;text-align:center"><img src="../R/output/L1-4_scatter.png" alt="T1 孤独总分与抑郁总分的散点图，r = 0.31" style="max-width:min(100%,520px);border:1px solid var(--line);border-radius:10px"><figcaption class="muted" style="font-size:.85rem">图：孤独与抑郁总分（T1），红线为回归直线（3.1 课）。r = 0.31：正相关，中等偏弱，点云很散。</figcaption></figure>
+
+<h3>协方差：用“象限”来想</h3>
+<p>在点云中央画一个十字：竖线是孤独的均值，横线是抑郁的均值。于是每个点落在四个象限之一：</p>
+<ul><li>右上：两者都高于平均 → 离均差 (+)(+) = 正；</li><li>左下：两者都低于平均 → (−)(−) = 正；</li><li>左上、右下：一高一低 → 负。</li></ul>
+<p>把所有人的“离均差乘积”加起来再平均，就是<span class="term">协方差<span class="en">（covariance）</span></span>。如果大多数点落在右上和左下，协方差为正；落在左上和右下居多，为负；四个象限差不多，接近 0。</p>
+<div class="widget" data-widget="corr"></div>
+<p>在上面的模拟里勾选“显示 z 乘积的象限”，拖动 ρ（读作 rho，表示总体相关）：ρ 越接近 1，点越集中在绿色象限、越像一条直线；ρ = 0 时点云是一团圆形；ρ 为负时点集中在红色象限。再把样本量调到 10，多点几次“重新抽样”：小样本中算出的 r 会在总体 ρ 周围大幅跳动。这是下一课的主题。</p>
+
+<h3>从协方差到相关系数</h3>
+<p>协方差有个缺点：它的大小取决于量尺。孤独用 4–16 分还是 0–100 分，协方差会差很多倍。解决办法你已经会了：先把两个变量都变成 z 分数，再算协方差。这就是<span class="term">相关系数<span class="en">（correlation coefficient）</span></span>，最常用的版本叫<span class="term">皮尔逊相关<span class="en">（Pearson's r）</span></span>。它永远在 −1 到 1 之间：</p>
+<div class="tablewrap"><table><thead><tr><th>r</th><th>含义</th></tr></thead><tbody>
+<tr><td>+1</td><td>完美正相关：所有点恰好在一条向上的直线上</td></tr>
+<tr><td>0</td><td>没有<b>线性</b>关系（可能有曲线关系）</td></tr>
+<tr><td>−1</td><td>完美负相关：所有点恰好在一条向下的直线上</td></tr></tbody></table></div>
+<p>方向看符号，强弱看绝对值：r = −0.6 比 r = 0.3 更强。心理学中常引用 Cohen 的粗略标准：|r| ≈ 0.1 小、0.3 中、0.5 大，但这只是参考，不同领域的“大小”标准不同。</p>
+
+<h3>其他相关：当数据是定序的</h3>
+<ul><li><span class="term">斯皮尔曼相关<span class="en">（Spearman's rank correlation）</span></span>：先把每个变量的数值换成名次（第 1 名、第 2 名……），再算皮尔逊相关。英文文献常把它记作 Spearman's ρ；本课程用 ρ 只表示总体相关；为免混淆，斯皮尔曼相关一律记作 \(r_s\)。它只关心“排序是否一致”，对偏态和极端值更稳健。</li>
+<li><span class="term">多分格相关<span class="en">（polychoric correlation）</span></span>：假设每道李克特题背后有一个连续的、正态分布的“潜在倾向”，被切成了几个等级；它估计的是这两个潜在连续变量之间的相关。题目等级少（如 0–3）、偏态明显时常用。网络分析中常用的 <code>qgraph::cor_auto()</code> 会自动检测：等级数不多（默认 ≤ 7）的变量被当作定序变量，计算多分格相关。</li></ul>
+<p>课程数据中“情绪低落”与“睡眠问题”（T1）：皮尔逊 r = 0.40，斯皮尔曼 \(r_s\) = 0.39，多分格相关 = 0.48。多分格相关通常比皮尔逊大一些，因为皮尔逊被粗糙的 4 个等级和地板效应“压低”了。</p>
+
+<h3>什么会影响 r 的大小？范围限制</h3>
+<p>相关不仅取决于两个变量的关系有多紧，还取决于样本里变量的变化范围。如果只研究“社会支持很高”的人，社会支持几乎人人相同，它与其他变量的相关就会被压低。课程数据中，全体 800 人里社会支持与孤独总分的相关是 −0.42；只看社会支持 ≥ 4 分的 185 人，相关缩小到 −0.22。这叫<span class="term">范围限制<span class="en">（restriction of range）</span></span>。社工研究常常只在“服务对象”中取样（他们的困扰程度本来就集中在较高的范围），这时得到的相关可能比在一般人群中弱，但这不一定说明关系本身弱。</p>
+<h3>相关矩阵：网络分析的原材料</h3>
+<p>有 p 个变量时，两两之间都有一个相关，排成一张 p × p 的表，叫<span class="term">相关矩阵<span class="en">（correlation matrix）</span></span>。对角线都是 1（自己与自己），而且上下对称（A 与 B 的相关 = B 与 A 的相关）。9 道题就有 9 × 8 / 2 = 36 个不同的相关。模块 6 你会看到：横断面网络几乎完全是从这张表“加工”出来的；CLPN 则用 T1 与 T2 之间的关系做回归。两种网络的原材料都是这类相关（协方差）矩阵。</p>
+
+<h3>相关 ≠ 因果：混杂变量</h3>
+<div class="box analogy"><b class="bt">经典例子</b><p>夏天冰淇淋销量和溺水人数高度正相关。冰淇淋导致溺水吗？当然不是：天气炎热同时让人买冰淇淋和去游泳。这个同时影响两者的第三变量叫<span class="term">混杂变量<span class="en">（confounder）</span></span>。</p></div>
+<p>社工领域的例子：“社区活动参与次数”与“抑郁得分”负相关。可能的解释至少有：(1) 参与活动降低抑郁；(2) 反向因果：抑郁的人本来就不愿出门参加活动；(3) 混杂：身体健康状况好的人既能参加活动、又不容易抑郁；(4) 选择偏差：只有状态较好的人才回答了问卷。一个相关系数无法区分这四种解释。</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>协方差与 r</h2>
+<div class="mathbox">$$\operatorname{cov}(X,Y) = \frac{\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y)}{n-1} \qquad r = \frac{\operatorname{cov}(X,Y)}{s_X\, s_Y} = \frac{1}{n-1}\sum_{i=1}^{n} z_{x_i}\, z_{y_i}$$</div>
+<dl class="sym"><dt>\((x_i-\bar x)(y_i-\bar y)\)</dt><dd>第 \(i\) 个人两个离均差的乘积：同号为正，异号为负（象限图）。</dd>
+<dt>\(n-1\)</dt><dd>与方差一样，除以 \(n-1\)。</dd><dt>\(s_X, s_Y\)</dt><dd>两个变量各自的标准差；除以它们 = 消除量尺。</dd>
+<dt>\(z_{x_i} z_{y_i}\)</dt><dd>两个 z 分数的乘积；r 就是这些乘积的“平均”（除以 \(n-1\)）。</dd></dl>
+<p>小验证：一个变量和它自己的协方差是什么？\(\operatorname{cov}(X,X) = \sum (x_i-\bar x)^2/(n-1)\)，就是方差。所以 \(r(X,X) = s_X^2/(s_X s_X) = 1\)。</p>
+<h3>手算一个小例子</h3>
+<p>3 个人：孤独 \(x\) = 2, 4, 6；抑郁 \(y\) = 1, 3, 2。</p>
+<ol><li>\(\bar x = 4,\ \bar y = 2\)。离均差：\(x\): −2, 0, 2；\(y\): −1, 1, 0。</li>
+<li>乘积：2, 0, 0，和 = 2；\(\operatorname{cov} = 2/2 = 1\)。</li>
+<li>\(s_X = \sqrt{8/2}=2,\ s_Y=\sqrt{2/2}=1\)；\(r = 1/(2\times1) = 0.5\)。</li></ol>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span><code>cov()</code>、<code>cor()</code> 与相关矩阵</h2>
+<p>对应脚本：<a href="../R/L1-4.R">R/L1-4.R</a>。</p>
+<div class="codeblk"><div class="ctitle">R/L1-4.R（节选）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+dat$lone_sum_t1 &lt;- rowSums(dat[, paste0(lone_items, &quot;_t1&quot;)])
+dat$dep_sum_t1  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t1&quot;)])
+x &lt;- dat$lone_sum_t1; y &lt;- dat$dep_sum_t1
+cov_hand &lt;- sum((x - mean(x)) * (y - mean(y))) / (length(x) - 1)  # 协方差
+r_hand   &lt;- cov_hand / (sd(x) * sd(y))                             # 相关
+cat(&quot;协方差：手算&quot;, round(cov_hand, 3), &quot; cov()&quot;, round(cov(x, y), 3), &quot;\n&quot;)
+cat(&quot;相关 r：手算&quot;, round(r_hand, 3), &quot; cor()&quot;, round(cor(x, y), 3), &quot;\n&quot;)
+vars &lt;- c(&quot;lone_sum_t1&quot;, &quot;dep_sum_t1&quot;, &quot;social_support_t1&quot;, &quot;sleep_hours_t1&quot;, &quot;life_sat_t1&quot;)
+round(cor(dat[, vars]), 2)                               # 相关矩阵
+cat(&quot;\nSpearman r(孤独, 抑郁) =&quot;, round(cor(x, y, method = &quot;spearman&quot;), 3), &quot;\n&quot;)   # 斯皮尔曼相关</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L1-4_log.txt，节选）</div><pre class="out"><code>协方差：手算 3.268  cov() 3.268
+相关 r：手算 0.312  cor() 0.312
+
+                  lone_sum_t1 dep_sum_t1 social_support_t1 sleep_hours_t1
+lone_sum_t1              1.00       0.31             -0.42          -0.12
+dep_sum_t1               0.31       1.00             -0.18          -0.29
+social_support_t1       -0.42      -0.18              1.00           0.05
+sleep_hours_t1          -0.12      -0.29              0.05           1.00
+life_sat_t1             -0.33      -0.25              0.35           0.06
+                  life_sat_t1
+lone_sum_t1             -0.33
+dep_sum_t1              -0.25
+social_support_t1        0.35
+sleep_hours_t1           0.06
+life_sat_t1              1.00
+
+Spearman r(孤独, 抑郁) = 0.316</code></pre></div>
+<p>相关矩阵有 5 列，一行放不下时 R 会把最后一列折到下面单独打印（控制台更宽时可能不折行）；内容是同一张 5 × 5 的表。</p>
+<p>读相关矩阵：对角线全是 1；上下三角对称。最强的关系是孤独与社会支持（r = −0.42：社会支持越多，越不孤独）。睡眠时长与抑郁 r = −0.29。这五个变量就是 1.4 练习 A 要你“预测”的那张表。</p>
+<div class="codeblk"><div class="ctitle">定序题目：三种相关的比较</div><pre><code class="language-r">x2 &lt;- dat[, c(&quot;dep1_t1&quot;, &quot;dep3_t1&quot;)]          # 情绪低落、睡眠问题（0–3 分）
+round(cor(x2)[1, 2], 3)                        # 皮尔逊
+round(cor(x2, method = &quot;spearman&quot;)[1, 2], 3)   # 斯皮尔曼
+round(psych::polychoric(x2)$rho[1, 2], 3)      # 多分格相关</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L1-4_log.txt，末尾）</div><pre class="out"><code>[1] 0.4
+[1] 0.387
+[1] 0.479</code></pre></div>
+<div class="box warnbox"><b class="bt">缺失值</b><p>如果数据中有 NA，<code>cor()</code> 默认返回 NA。可以加 <code>use = "pairwise.complete.obs"</code>（每一对变量用各自都不缺的个案）或 <code>use = "complete.obs"</code>（只用所有变量都不缺的个案）。2.5 课和 4.3 课详谈两者的区别。</p></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：手算协方差与 r</h3>
+<p>5 个人的孤独 x = 1、2、3、4、5，抑郁 y = 2、4、5、4、5。</p>
+<ol><li>均值：x̄ = 3，ȳ = 4。</li>
+<li>离均差：x 为 −2、−1、0、1、2；y 为 −2、0、1、0、1。</li>
+<li>离均差乘积：4、0、0、0、2，和 = 6，协方差 = 6 ÷ 4 = 1.5。</li>
+<li>标准差：x 的离均差平方和为 10，SD = √(10/4) ≈ 1.581；y 的为 6，SD = √(6/4) ≈ 1.225。</li>
+<li>r = 1.5 ÷ (1.581 × 1.225) ≈ 0.775。</li></ol>
+<p>可以在 R 里核对：<code>cor(c(1,2,3,4,5), c(2,4,5,4,5))</code>。你会看到，乘积为正的点（第 1、5 人：同时低于、同时高于均值）在推高 r；乘积为 0 的点（有一个变量正好在均值上）不贡献任何信息。</p>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li>忽视异常值。在小样本里，一个极端个案就能把 r 从 0.1 拉到 0.4。画散点图，或用斯皮尔曼相关做一次对照。</li>
+<li>脱离情境给 r 贴“强 / 弱”的标签。r = 0.3 在心理社会研究中相当常见，也不算小：r² = 0.09，即约 9% 的变异可以“共享”。</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">r = −0.6 和 r = 0.3，哪个关系更强？</p><ul class="opts"><li><button type="button" data-ok="1">r = −0.6</button><div class="ofb" hidden>正确：强弱看绝对值，0.6 &gt; 0.3；负号只表示方向。</div></li><li><button type="button" data-ok="0">r = 0.3，因为它是正数</button><div class="ofb" hidden>符号表示方向，不表示强弱。</div></li><li><button type="button" data-ok="0">一样强</button><div class="ofb" hidden>绝对值不同：0.6 与 0.3 差了一倍。</div></li><li><button type="button" data-ok="0">无法比较，因为一个是正相关、一个是负相关</button><div class="ofb" hidden>强弱只看绝对值，方向不同的相关照样可以比较强弱。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>“负相关”不等于“弱相关”。</div></div>
+<div class="quiz" data-kind="num" data-ans="-1" data-tol="0.001"><p class="qtext">3 个人的数据：x = 1, 2, 3；y = 6, 4, 2。皮尔逊相关 r 是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>画一下这 3 个点：它们是否恰好在一条直线上？方向向上还是向下？</div><div class="fb" role="status"></div><div class="qexp" hidden>三点恰好在一条向下的直线上（x 每增加 1，y 减少 2），所以 r = −1。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么说相关矩阵是网络分析的“原材料”？</p><ul class="opts"><li><button type="button" data-ok="0">因为网络图就是把相关矩阵原封不动画出来</button><div class="ofb" hidden>通常会进一步加工（偏相关、正则化），见模块 6。</div></li><li><button type="button" data-ok="1">因为网络中节点之间的边，是从变量之间的相关（或协方差）结构加工出来的统计关联</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为相关矩阵经过网络加工后，边就能解读为因果</button><div class="ofb" hidden>偏相关、正则化都不能把相关变成因果；混杂、反向因果等解释依然存在。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>横断面网络从相关矩阵出发计算偏相关；CLPN 则用跨时间的回归，但回归本身也只依赖于变量的协方差。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">r = 0 能说明两个变量“完全没有关系”吗？</p><ul class="opts"><li><button type="button" data-ok="0">能</button><div class="ofb" hidden>这是本课提醒的误读：r 只衡量直线关系，U 形关系的 r 可能接近 0。</div></li><li><button type="button" data-ok="0">能，只要样本量足够大</button><div class="ofb" hidden>样本量大只能让 r 估得更准；曲线关系的 r 再准也还是接近 0。</div></li><li><button type="button" data-ok="1">不能：r 只衡量线性关系，两者可能有很强的曲线关系（如 U 形）</button><div class="ofb" hidden>正确。所以一定要画散点图。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>例如压力与表现可能呈倒 U 形：适度压力表现最好。这种关系的皮尔逊 r 可能接近 0。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">“社会支持与抑郁负相关”的可能解释中，哪一项是“反向因果”？</p><ul class="opts"><li><button type="button" data-ok="0">社会支持降低了抑郁</button><div class="ofb" hidden>这是通常假设的方向（支持 → 抑郁），不是反向。</div></li><li><button type="button" data-ok="1">抑郁的人更少主动联系他人，因而获得的社会支持更少</button><div class="ofb" hidden>正确：箭头方向与常见假设相反。</div></li><li><button type="button" data-ok="0">身体健康同时影响社会支持和抑郁</button><div class="ofb" hidden>这是混杂变量：第三个变量同时影响两者，两者之间不一定有直接作用。</div></li><li><button type="button" data-ok="0">只有支持多的人才填了问卷</button><div class="ofb" hidden>这是选择偏差：谁进入样本本身造成了关联。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>纵向数据可以帮助区分方向（谁先谁后），交叉滞后模型就是为此提出的。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">网络分析中常用的 <code>qgraph::cor_auto()</code> 对 0–3 分的抑郁题会怎么处理？</p><ul class="opts"><li><button type="button" data-ok="0">直接计算皮尔逊相关</button><div class="ofb" hidden>它会先检测变量是否为定序；只有 4 个等级的题目不会按皮尔逊处理。</div></li><li><button type="button" data-ok="1">把它当作定序变量，计算多分格相关</button><div class="ofb" hidden>正确：等级数不多的变量（默认 ≤ 7 个等级）被当作定序处理。</div></li><li><button type="button" data-ok="0">先把题目换成名次，计算斯皮尔曼相关</button><div class="ofb" hidden>那是斯皮尔曼相关的做法；cor_auto() 对定序变量用的是多分格相关。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>6.4 课用 bootnet 估计网络时会看到参数 corMethod = "cor_auto"。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 1.4-A：先猜，再验证</h4>
+<p>不看数据，为 5 个变量（孤独、睡眠、抑郁情绪、社会支持、运动）画出你预期的相关矩阵，每格填 + / − / 0，并为每个格子写一个字的理由。之后在 2.5 课用真实数据对照。</p>
+<details class="answer"><summary>参考预期与课程数据对照</summary>
+<p>常见预期：孤独—抑郁 +；孤独—社会支持 −；睡眠时长—抑郁 −；社会支持—抑郁 −；运动—抑郁 −；运动—睡眠 +（课程数据中没有“运动”变量，这一行只做预期）。</p>
+<p>课程数据 T1（总分层面）：孤独—抑郁 0.31；孤独—社会支持 −0.42；睡眠时长—抑郁 −0.29；社会支持—抑郁 −0.18；社会支持—睡眠 0.05（几乎为 0）。写下差异时，可以思考：为什么社会支持与睡眠几乎无关？（提示：模拟数据中睡眠时长主要由“睡眠问题”题目决定，与孤独特质无关。真实数据可能不同。）</p></details></div>
+<div class="exitem"><h4>练习 1.4-B：社工领域的“冰淇淋与溺水”</h4>
+<p>写一个社工领域的混杂例子：两个变量相关，但相关主要来自第三个变量。画出三者的箭头图。</p>
+<details class="answer"><summary>参考示例</summary>
+<p>“接受低保救助的家庭，子女学业成绩更低。”这不说明救助降低了成绩；家庭经济困难同时导致了申请救助和学习资源不足。箭头：经济困难 → 救助；经济困难 → 成绩。如果在分析中“控制”家庭收入，救助与成绩的关联可能大幅减弱甚至反转（3.2 课的多元回归就是做这件事）。</p></details></div>
+<div class="exitem"><h4>练习 1.4-C：R 动手</h4>
+<p>计算 T1 的 9 道题目之间的相关矩阵（<code>cor(dat[, vars_t(1)])</code>），找出：(1) 相关最强的一对题目；(2) 跨构念（孤独题 × 抑郁题）中相关最强的一对；(3) 对 <code>dep2_t1</code> 和 <code>dep4_t1</code> 分别算皮尔逊、斯皮尔曼和多分格相关（代码见本课“三种相关的比较”），用一句话说明哪一个最大、为什么。</p>
+<details class="answer"><summary>参考代码与提示</summary>
+<div class="codeblk"><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+R &lt;- round(cor(dat[, vars_t(1)]), 2)
+R
+R[paste0(lone_items, &quot;_t1&quot;), paste0(dep_items, &quot;_t1&quot;)]   # 行 = 孤独题，列 = 抑郁题：跨构念的 4 × 5 块</code></pre></div>
+<p>提示：孤独题之间约 0.44–0.51（lone1–lone4 与 lone2–lone4 均为 0.51）；抑郁题之间约 0.37–0.44；跨构念的在 0.12–0.25 之间，最强的是 lone3（与人隔绝）与 dep5（无价值感），r = 0.25。同一构念内的相关明显更强，所以网络图中同色节点会聚在一起。</p>
+<p>第 (3) 问：通常多分格相关最大，皮尔逊和斯皮尔曼较接近。课程数据中 <code>dep2_t1</code> 与 <code>dep4_t1</code> 的皮尔逊、斯皮尔曼、多分格相关依次约为 0.44、0.43、0.52（<code>R/solutions/L1-4_solution.R</code>）。原因是 0–3 分只有 4 个等级、又有地板效应，皮尔逊把粗糙的等级当成精确数值，相关被“压低”；多分格相关估计的是背后连续倾向之间的相关（与“情绪低落—睡眠问题”的 0.40 / 0.39 / 0.48 是同一模式）。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>协方差 = 离均差乘积的平均；相关 r = 标准化后的协方差，范围 −1 到 1，符号看方向，绝对值看强弱。</li>
+<li>定序、偏态的题目可考虑斯皮尔曼或多分格相关；相关矩阵是网络分析的原材料。</li>
+<li>相关 ≠ 因果：至少还有反向因果、混杂、选择偏差等解释。下一课：<a href="L1-5.html">1.5 抽样、标准误与置信区间</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L1-3.html" class="pv"><small>上一课</small>1.3 标准化与 z 分数</a><a href="L1-5.html" class="nx"><small>下一课</small>1.5 抽样、标准误与置信区间</a></nav>
+<p class="foot">CLPN 从零开始 · 第 1.4 课 · <a href="../index.html#L1-4">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

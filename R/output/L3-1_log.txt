@@ -1,0 +1,25 @@
+
+Call:
+lm(formula = dep_sum_t1 ~ social_support_t1, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.6085 -2.7286 -0.7286  2.0458 11.5722 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)         6.3604     0.5163  12.320  < 2e-16 ***
+social_support_t1  -0.7519     0.1497  -5.023 6.27e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.348 on 798 degrees of freedom
+Multiple R-squared:  0.03065,	Adjusted R-squared:  0.02944 
+F-statistic: 25.23 on 1 and 798 DF,  p-value: 6.273e-07
+
+解读：社会支持每高 1 分，预测的抑郁总分变化 -0.75 分。
+OLS 直线的残差平方和 RSS = 8942.8 
+“手画”直线 y = 8 - 1.2x 的 RSS = 9057.9 （一定 ≥ OLS）
+       1        2 
+4.856545 3.352655 
+图已保存：R/output/L3-1_regression.png、R/output/L3-1_resid_fitted.png

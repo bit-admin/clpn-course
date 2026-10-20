@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.4 出期望影响、入期望影响与跨构念桥接 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L7-4.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="7.4" style="--c:#ef4444">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L7-4">CLPN 课程大纲</a><span class="crumb">M7 交叉滞后面板网络（CLPN） / 7.4</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L7-4.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L7-4.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details open style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html" class="cur" aria-current="page"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 7 · Cross-Lagged Panel Networks · 第 7.4 课</div>
+<h1>出期望影响、入期望影响与跨构念桥接</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L7-3.html">7.3 CLPN 可视化与解读</a></span><span>配套脚本：<a href="../R/L7-4.R">R/L7-4.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>计算并解释出期望影响（out-EI：一个节点预测其他节点的总量）与入期望影响（in-EI：一个节点被其他节点预测的总量）</li><li>区分“预测性强”节点与“易被预测”节点的说法及其局限</li><li>计算只看跨构念边的桥接出 / 入 EI</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>出期望影响</b><span class="en">out-expected influence, out-EI</span></li><li><b>入期望影响</b><span class="en">in-expected influence, in-EI</span></li><li><b>出强度 / 入强度</b><span class="en">out-strength / in-strength</span></li><li><b>桥接出 EI</b><span class="en">bridge out-EI</span></li><li><b>驱动节点</b><span class="en">driver node（谨慎用语）</span></li></ul>
+<p>6.5 课的强度与期望影响是为无向网络设计的。在有向的 CLPN 中，每个节点都有“出边”（它预测别人）和“入边”（别人预测它），于是 EI 自然分成两个：出期望影响和入期望影响。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>两个问题，两个指标</h3>
+<ul><li><span class="term">出期望影响<span class="en">（out-expected influence, out-EI）</span></span>：这个节点在 T1 时，对 T2 其他节点的预测总量有多大？即矩阵 B 第 k 行（去掉对角线）之和。out-EI 高的节点常被称为“预测性强”的节点。</li>
+<li><span class="term">入期望影响<span class="en">（in-expected influence, in-EI）</span></span>：这个节点在 T2 时，被 T1 其他节点预测的总量有多大？即第 j 列（去掉对角线）之和。in-EI 高的节点“易被预测”，可能是其他困扰的“下游”。</li></ul>
+<p>和 6.5 课一样，“强度”版本取绝对值后求和：<span class="term">出强度 / 入强度<span class="en">（out-strength / in-strength）</span></span>。CLPN 中有负边时，优先报告 EI 版本。</p>
+<p>这两个指标来自哪里？用 out-EI / in-EI 概括 CLPN 节点，是应用文献中的常见做法（例如 Funkhouser et al., 2021），本课程主线也沿用它。Wysocki 等人（2025）的完整流程用的是另一套指标：in-prediction 与 out-prediction，以“被解释方差的比例”来概括节点，而不是把边权直接相加（定义和公式见 <a href="L7-5.html#full-clpn">7.5 课</a>）。两者回答的问题相近（一个节点预测别人有多强、被别人预测有多强），但量尺不同：EI 是带符号的系数之和，正负边会相互抵消；in-/out-prediction 是 0–1 之间的方差比例。读论文时先看作者用的是哪一种，两种数值不能直接比较。</p>
+<h3>为什么不包括自回归？</h3>
+<p>自回归是节点“预测自己”，而 out-EI / in-EI 想回答的是“与其他节点的关系”。如果包括自回归，指标会被自回归主导（0.3–0.45 远大于交叉滞后边），排序基本就变成了“谁最稳定”。因此计算时去掉对角线。</p>
+<h3>桥接出 / 入 EI：构念之间的“通道”</h3>
+<p>只累加跨构念的边：<span class="term">桥接出 EI<span class="en">（bridge out-EI）</span></span> = 一个孤独题指向所有抑郁题的边之和（或一个抑郁题指向所有孤独题的边之和）；桥接入 EI 同理。这直接回答我们最关心的问题：<i>哪道孤独题最能预测之后的抑郁？哪道抑郁题最容易被之前的孤独预测？</i></p>
+<p>下面的组件同时显示了网络、四个指标的表格和条形图（基于课程数据的总体目标值矩阵 true_B_population，不是 lambda.min 估计，也不是被试内真值）。点击节点查看它的出入边；然后对照表格，确认 out-EI 就是“出边权重之和”。</p>
+<div class="widget w2" data-widget="clpn" data-title="出 / 入期望影响与桥接 EI（课程数据的总体目标值 true_B_population）" data-mode="ei"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>课程数据（lambda.min 估计）的实际结果</h3>
+<div class="tablewrap"><table><tr><th>节点</th><th>out-EI</th><th>in-EI</th><th>桥接 out</th><th>桥接 in</th></tr><tr><td>lone1 缺少陪伴</td><td>0.252</td><td>0.092</td><td>0.217</td><td>0.000</td></tr><tr><td>lone2 被冷落</td><td>0.237</td><td>0.055</td><td>0.039</td><td>−0.050</td></tr><tr><td>lone3 与人隔绝</td><td>−0.027</td><td>0.248</td><td>−0.046</td><td>0.081</td></tr><tr><td>lone4 无人理解</td><td><b>0.608</b></td><td>0.198</td><td><b>0.347</b></td><td>0.048</td></tr><tr><td>dep1 情绪低落</td><td>0.352</td><td>0.349</td><td>0.045</td><td><b>0.177</b></td></tr><tr><td>dep2 兴趣丧失</td><td>0.193</td><td>0.316</td><td>0.055</td><td>0.116</td></tr><tr><td>dep3 睡眠问题</td><td>0.250</td><td>0.192</td><td>0.000</td><td>0.026</td></tr><tr><td>dep4 疲乏</td><td>0.068</td><td><b>0.401</b></td><td>−0.028</td><td>0.097</td></tr><tr><td>dep5 无价值感</td><td>0.224</td><td>0.309</td><td>0.007</td><td>0.141</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">来源：R/output/L7-4_log.txt。孤独 → 抑郁边权总和 = 0.557；抑郁 → 孤独 = 0.079。</p>
+<p>读法：lone4（无人理解）的 out-EI 和桥接 out-EI 都最高；dep4（疲乏）的 in-EI 最高；dep1（情绪低落）的桥接 in-EI 最高。孤独→抑郁方向的总边权远大于反方向，与 5.1 课 CLPM 的结论（孤独 → 抑郁 0.13 vs 抑郁 → 孤独 0.02）方向一致。</p>
+<div class="box warnbox"><b class="bt">但请注意：</b><p>两份答案中，lone4 的出边都没有这么突出。用总体目标值算，lone4 的 out-EI 是 0.283，在 9 个节点中排第 7；用被试内真值算是 0.120，排第 4。它唯一的跨构念被试内边是 lone4 → dep5（0.120）。估计值中 lone4 → dep4（0.108）在总体目标值中只有 0.005，被试内真值为 0.000，是假阳性。也就是说，单次估计的中心性排序可能误导。8.3 课的 CS 系数检查的是这种排序在本样本中稳不稳定；它是否接近答案，只有在模拟数据里才能核对。</p></div>
+<p>构念层面的总和也可以和两份答案对照（R/output/L7-4_log.txt 末尾）：</p>
+<div class="tablewrap"><table><tr><th>方向</th><th>lambda.min 估计</th><th>总体目标值</th><th>被试内真值</th></tr><tr><td>孤独 → 抑郁（4 × 5 条边之和）</td><td>0.557</td><td>0.426</td><td>0.440</td></tr><tr><td>抑郁 → 孤独（5 × 4 条边之和）</td><td>0.079</td><td>0.141</td><td>−0.030</td></tr></table></div>
+<p>“孤独 → 抑郁”大于反方向，这一点在三列中都成立。但“抑郁 → 孤独”在总体目标值中为正（0.141），在被试内真值中却略为负（−0.030）：被试内的抑郁 → 孤独边只有两条，dep2 → lone3（0.120）和 dep4 → lone2（−0.150），一正一负，几乎抵消；总体目标值中负边被削弱到 −0.083，其余 18 个位置又多是很小的正值，合起来就成了正数。所以即使样本无限大，标准 CLPN 给出的“抑郁 → 孤独为正”也不是被试内过程的写照。</p>
+<h3>完整例题：lone4 的出期望影响由哪些边组成？</h3>
+<p>EI 是一个总和，解释之前先把它拆开。lone4 的 out-EI 是 B 矩阵 lone4 那一行（去掉对角线）的 8 个数之和：</p>
+<div class="tablewrap"><table><tr><th>T1 lone4 → T2</th><th>lambda.min 估计</th><th>总体目标值</th><th>被试内真值</th></tr><tr><td>缺少陪伴（lone1）</td><td>0.064</td><td>0.061</td><td>0.000</td></tr><tr><td>被冷落（lone2）</td><td>0.101</td><td>0.066</td><td>0.000</td></tr><tr><td>与人隔绝（lone3）</td><td>0.096</td><td>0.064</td><td>0.000</td></tr><tr><td>情绪低落（dep1）</td><td>0.082</td><td>−0.003</td><td>0.000</td></tr><tr><td>兴趣丧失（dep2）</td><td>0.039</td><td>0.002</td><td>0.000</td></tr><tr><td>睡眠问题（dep3）</td><td>0.026</td><td>0.005</td><td>0.000</td></tr><tr><td>疲乏（dep4）</td><td>0.108</td><td>0.005</td><td>0.000</td></tr><tr><td>无价值感（dep5）</td><td>0.093</td><td>0.083</td><td>0.120</td></tr><tr><td>合计（out-EI）</td><td>0.608</td><td>0.283</td><td>0.120</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">来源：R/output/L7-2_B_lambda_min.csv（与本课同一个估计）与 R/output/L7-4_log.txt；两份答案来自 data/ 下的两个 CSV。</p>
+<ol><li><b>没有一条强边。</b>8 条出边全部为正，最大的 lone4 → dep4 也只有 0.108。0.6 左右的 out-EI 是很多条小边累加起来的，而不是某一条强的预测关系。</li>
+<li><b>小边正是误差集中的地方。</b>LASSO（lambda.min）保留的小边里假阳性最多（7.2 课）。把 8 条边加起来，每条边的误差也一起加了进去：估计值的合计是 0.608，总体目标值只有 0.283。差距主要来自 lone4 → dep4、lone4 → dep1 等在总体中接近 0 的边。</li>
+<li><b>对照被试内真值。</b>8 条边中只有 lone4 → dep5（0.120）是被试内真值中的边；指向另外 3 道孤独题的边是特质边。</li></ol>
+<p>所以读到“某节点 out-EI 最高”时，先看它是由一两条强边还是许多小边构成的。前一种情况可以回到那一两条边去检查（8.2 课的区间）；后一种情况下，总和对抽样误差和 λ 规则都很敏感，换用 lambda.1se 后排名可能就变了。这也是 8.3 课要检查 EI 排序稳定性的原因。</p>
+<h3>“<span class="term">驱动节点<span class="en">（driver node）</span></span>”这个说法</h3>
+<p>一些论文把 out-EI 高的节点称为 driver（驱动者）、in-EI 高的称为 receiver。这些词有强烈的因果暗示。更谨慎的用语是：“具有最强的预测性（most predictive）”/“最易被预测（most predicted）”。要把一个节点称为干预靶点，还需要：(1) 指标稳定（CS ≥ 0.25，最好 ≥ 0.5）；(2) 在其他样本/时间段中复现；(3) 理论上合理且可干预；(4) 最终由干预研究检验。</p>
+
+<p><b>社工视角：</b>在小组工作中，有的成员“说得多”（影响别人），有的成员“受影响多”（容易被别人带动情绪）。出 EI 和入 EI 就是在症状网络里区分这两种角色。一个节点可以两者都高，也可以只高一种。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>社工连接</summary><p>如果“疲乏”的 in-EI 最高，说明半年后的疲乏能被之前的多种困扰预测，它是各种困扰的“汇聚点”。在随访中，疲乏可能是一个值得监测的信号；但它是不是值得干预的目标，是另一个问题，需要方向和干预研究的证据。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<div class="mathbox">\[\text{out-EI}_k=\sum_{j\neq k}\beta_{kj}\quad(\text{第 }k\text{ 行求和}),\qquad \text{in-EI}_j=\sum_{k\neq j}\beta_{kj}\quad(\text{第 }j\text{ 列求和})\]</div><div class="mathbox">\[\text{bridge out-EI}_k=\sum_{j\notin C(k)}\beta_{kj},\qquad \text{bridge in-EI}_j=\sum_{k\notin C(j)}\beta_{kj}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\beta_{kj}\)</td><td>CLPN 系数：T1 的 k → T2 的 j</td></tr><tr><td>\(\sum_{j\neq k}\)</td><td>对第 k 行除对角线外的所有元素求和</td></tr><tr><td>\(C(k)\)</td><td>节点 k 所属的构念（孤独或抑郁）</td></tr><tr><td>\(j\notin C(k)\)</td><td>只对另一个构念的节点求和</td></tr></table>
+<h4>一个检验：两种总和相等</h4>
+<p>所有节点的 out-EI 之和 = 所有节点的 in-EI 之和 = 矩阵所有非对角元素之和（每条边恰好被一个节点“发出”、一个节点“接收”）。课程数据：out-EI 总和 = 0.252 + 0.237 − 0.027 + 0.608 + 0.352 + 0.193 + 0.250 + 0.068 + 0.224 ≈ 2.157，in-EI 总和 ≈ 2.159（四舍五入误差）。同理，所有孤独节点的桥接 out 之和 = “孤独 → 抑郁”边权总和 = 0.557。这是检查代码的好方法。</p>
+<h4>R 中的对应</h4>
+<p><code>rowSums(CL)</code> = out-EI；<code>colSums(CL)</code> = in-EI；其中 CL 是对角线已置 0 的矩阵。<code>rowSums(abs(CL))</code> 与 <code>colSums(abs(CL))</code> 则是出/入强度。</p>
+
+<h3>完整例题：手算出 / 入期望影响和桥接指标</h3>
+<p>3 个节点：孤独 L（孤独构念），情绪低落 D1、疲乏 D2（抑郁构念）。交叉滞后边（自回归不计）为：L → D1 = 0.20，L → D2 = 0.10，D1 → L = −0.05，D2 → D1 = 0.15，D1 → D2 = 0，D2 → L = 0。</p>
+<div class="tablewrap"><table><tr><th>节点</th><th>出 EI（它指向别人的边之和）</th><th>入 EI（别人指向它的边之和）</th><th>桥接出 EI（只算指向另一构念）</th><th>桥接入 EI（只算来自另一构念）</th></tr><tr><td>L</td><td>0.20 + 0.10 = 0.30</td><td>−0.05 + 0 = −0.05</td><td>0.30</td><td>−0.05</td></tr><tr><td>D1</td><td>−0.05 + 0 = −0.05</td><td>0.20 + 0.15 = 0.35</td><td>−0.05</td><td>0.20</td></tr><tr><td>D2</td><td>0 + 0.15 = 0.15</td><td>0.10 + 0 = 0.10</td><td>0</td><td>0.10</td></tr></table></div>
+<ul><li><b>核对：</b>所有节点的出 EI 之和 = 0.30 − 0.05 + 0.15 = 0.40，入 EI 之和 = −0.05 + 0.35 + 0.10 = 0.40。两者必然相等，因为每条边都恰好是一个节点的“出”和另一个节点的“入”。这是检查计算有没有出错的好办法。</li>
+<li><b>D2 的出 EI 是 0.15，桥接出 EI 却是 0：</b>它唯一的出边 D2 → D1 在抑郁构念内部。如果研究问题是“抑郁中的哪个症状预测孤独”，D2 不是答案。</li>
+<li><b>D1 的入 EI 最高（0.35）：</b>它是最“容易被预测”的节点。但其中只有 0.20 来自孤独（桥接入 EI），另外 0.15 来自抑郁内部。</li></ul>
+<p>课程数据的实际结果（<code>R/L7-4.R</code>，lambda.min）：出 EI 最高的是 lone4“无人理解”（0.608），它的桥接出 EI 也最高（0.347）；构念层面，孤独 → 抑郁的边权之和为 0.557，抑郁 → 孤独只有 0.079。方向上的不对称，与数据生成模型中孤独 → 抑郁的边更多是一致的。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L7-4.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(qgraph)
+dat &lt;- read_course_data()
+set.seed(2026)
+B  &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)])
+CL &lt;- cl_only(B); p &lt;- ncol(CL)
+outEI &lt;- rowSums(CL)   # 从该节点出发的边（预测他人）
+inEI  &lt;- colSums(CL)   # 指向该节点的边（被他人预测）
+comm  &lt;- c(rep(&quot;孤独&quot;, 4), rep(&quot;抑郁&quot;, 5))
+bridgeOut &lt;- sapply(seq_len(p), function(k) sum(CL[k, comm != comm[k]]))
+bridgeIn  &lt;- sapply(seq_len(p), function(j) sum(CL[comm != comm[j], j]))
+data.frame(节点 = rownames(CL), outEI, inEI, bridgeOut, bridgeIn)
+sum(CL[comm == &quot;孤独&quot;, comm == &quot;抑郁&quot;])   # 孤独 → 抑郁 边权总和
+sum(CL[comm == &quot;抑郁&quot;, comm == &quot;孤独&quot;])   # 抑郁 → 孤独 边权总和
+# qgraph 内置指标（有向网络）
+g &lt;- qgraph(CL, directed = TRUE, DoNotPlot = TRUE)
+centralityPlot(g, include = c(&quot;OutExpectedInfluence&quot;, &quot;InExpectedInfluence&quot;), scale = &quot;raw0&quot;)</code></pre></div>
+<p><b>说明：</b><code>sapply(1:p, function(k) …)</code> 对每个节点 k 计算一次；<code>comm != comm[k]</code> 选出与 k 不同构念的列。<code>centralityPlot(…, scale = "raw0")</code> 显示原始值（以 0 为参照），也可用 <code>"z-scores"</code>。</p><div class="box warnbox"><b class="bt">计算与解读 EI 的常见错误</b><ul>
+<li><b>行和与列和用反。</b>B 按“行 → 列”存放时，出 EI = 行和（<code>rowSums(B)</code>），入 EI = 列和（<code>colSums(B)</code>）。用反了，出和入就会对调。</li>
+<li><b>忽视负边的抵消。</b>EI 是带符号的加总，一个节点可能有一条 +0.2 和一条 −0.2 的边，EI 为 0。同时查看边表，才能知道 EI 背后到底是什么。</li>
+</ul></div>
+<h3>小练习：单条边变动对出入 EI 的影响</h3>
+<p>在上面的例题中，如果新增一条边 D2 → L = 0.10，哪些数会变？参考答案：D2 的出 EI 从 0.15 变为 0.25，桥接出 EI 从 0 变为 0.10；L 的入 EI 从 −0.05 变为 0.05，桥接入 EI 也变为 0.05；出 EI 之和与入 EI 之和都变为 0.50。一条边总是同时改变两个节点的指标，一个“出”，一个“入”。</p>
+<p>最后提醒：EI 的大小依赖于网络中有哪些节点。增加或删除一个节点，其他节点的 EI 都可能改变，所以不同研究之间的 EI 数值不能直接比较。</p><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L7-4.R</code>（58 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-4.R  出期望影响、入期望影响与跨构念桥接  (out-EI, in-EI, bridge EI)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(qgraph)
+log_open(&quot;L7-4_log.txt&quot;)
+dat &lt;- read_course_data()
+set.seed(2026)
+B &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)])
+CL &lt;- cl_only(B); p &lt;- ncol(CL)
+
+# ---- 课件代码 ----
+outEI &lt;- rowSums(CL)   # 第 k 行求和：从该节点出发的边（预测他人）
+inEI  &lt;- colSums(CL)   # 第 j 列求和：指向该节点的边（被他人预测）
+comm  &lt;- c(rep(&quot;孤独&quot;, 4), rep(&quot;抑郁&quot;, 5))
+bridgeOut &lt;- sapply(seq_len(p), function(k) sum(CL[k, comm != comm[k]]))   # 只算跨构念的出边
+bridgeIn  &lt;- sapply(seq_len(p), function(j) sum(CL[comm != comm[j], j]))   # 只算跨构念的入边
+res &lt;- data.frame(节点 = rownames(CL), 中文 = item_zh[rownames(CL)], 构念 = comm,
+                  outEI, inEI, bridgeOut, bridgeIn, row.names = NULL)
+print(res, digits = 3)
+write.csv(res, out(&quot;L7-4_EI.csv&quot;), row.names = FALSE)
+
+# 哪个构念更多地“预测”另一个？
+l2d &lt;- sum(CL[comm == &quot;孤独&quot;, comm == &quot;抑郁&quot;]); d2l &lt;- sum(CL[comm == &quot;抑郁&quot;, comm == &quot;孤独&quot;])
+cat(&quot;\n孤独 → 抑郁 边权之和 =&quot;, round(l2d, 3), &quot;；抑郁 → 孤独 边权之和 =&quot;, round(d2l, 3), &quot;\n&quot;)
+
+# 并排条形图（z 分数也可以；这里用原始值）
+png_open(&quot;L7-4_EI_bars.png&quot;, 2000, 1000)
+par(mfrow = c(1, 2), mar = c(4, 7, 3, 1))
+cols &lt;- ifelse(comm == &quot;孤独&quot;, &quot;#56B4E9&quot;, &quot;#E69F00&quot;)
+barplot(rev(outEI), horiz = TRUE, las = 1, col = rev(cols), names.arg = rev(paste(rownames(CL), item_zh)),
+        main = &quot;出期望影响 out-EI&quot;, cex.names = .8); abline(v = 0)
+barplot(rev(inEI), horiz = TRUE, las = 1, col = rev(cols), names.arg = rev(paste(rownames(CL), item_zh)),
+        main = &quot;入期望影响 in-EI&quot;, cex.names = .8); abline(v = 0)
+invisible(dev.off())
+# qgraph 自带：有向网络的 InExpectedInfluence / OutExpectedInfluence
+g &lt;- qgraph(CL, directed = TRUE, DoNotPlot = TRUE)
+png_open(&quot;L7-4_centralityPlot.png&quot;, 1400, 1400)
+suppressWarnings(print(centralityPlot(g, include = c(&quot;OutExpectedInfluence&quot;, &quot;InExpectedInfluence&quot;),
+                     scale = &quot;raw0&quot;, print = FALSE)))
+invisible(dev.off())
+# ---- 与两种真值对照（只有模拟数据能做）----
+# 总体目标值 data/true_B_population.csv：标准 CLPN 在样本无限大时的目标，含稳定特质的作用；
+# 被试内真值 data/true_B_within.csv：生成数据时用的被试内滞后系数。两者算出的 EI 也不同。
+Bt &lt;- true_B()[rownames(CL), colnames(CL)]; diag(Bt) &lt;- 0
+Bw &lt;- as.matrix(read.csv(&quot;data/true_B_within.csv&quot;, row.names = 1))[rownames(CL), colnames(CL)]; diag(Bw) &lt;- 0
+tru &lt;- data.frame(节点 = rownames(CL), outEI_估计 = outEI, outEI_总体目标 = rowSums(Bt), outEI_被试内 = rowSums(Bw),
+                  inEI_估计 = inEI, inEI_总体目标 = colSums(Bt), inEI_被试内 = colSums(Bw), row.names = NULL)
+cat(&quot;\n估计的 EI 与两种真值算出的 EI：\n&quot;); print(tru, digits = 3)
+rho &lt;- function(a, b) round(cor(a, b, method = &quot;spearman&quot;), 2)
+cat(&quot;out-EI 排序与总体目标值的斯皮尔曼相关 =&quot;, rho(outEI, rowSums(Bt)), &quot;；与被试内真值 =&quot;, rho(outEI, rowSums(Bw)), &quot;\n&quot;)
+cat(&quot;in-EI 排序与总体目标值的斯皮尔曼相关 =&quot;, rho(inEI, colSums(Bt)), &quot;；与被试内真值 =&quot;, rho(inEI, colSums(Bw)), &quot;\n&quot;)
+cat(&quot;孤独 → 抑郁 边权之和：估计&quot;, round(l2d, 3), &quot;；总体目标值&quot;, round(sum(Bt[comm == &quot;孤独&quot;, comm == &quot;抑郁&quot;]), 3),
+    &quot;；被试内真值&quot;, round(sum(Bw[comm == &quot;孤独&quot;, comm == &quot;抑郁&quot;]), 3), &quot;\n&quot;)
+cat(&quot;抑郁 → 孤独 边权之和：估计&quot;, round(d2l, 3), &quot;；总体目标值&quot;, round(sum(Bt[comm == &quot;抑郁&quot;, comm == &quot;孤独&quot;]), 3),
+    &quot;；被试内真值&quot;, round(sum(Bw[comm == &quot;抑郁&quot;, comm == &quot;孤独&quot;]), 3), &quot;\n&quot;)
+write.csv(tru, out(&quot;L7-4_EI_truth.csv&quot;), row.names = FALSE)
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L7-4_EI_bars.png" alt="L7-4_EI_bars.png" loading="lazy"><figcaption>图：<code>R/output/L7-4_EI_bars.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<figure><img src="../R/output/L7-4_centralityPlot.png" alt="L7-4_centralityPlot.png" loading="lazy"><figcaption>图：<code>R/output/L7-4_centralityPlot.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L7-4_log.txt</code></div><pre class="out"><code>   节点     中文 构念   outEI   inEI bridgeOut bridgeIn
+1 lone1 缺少陪伴 孤独  0.2520 0.0924   0.21723   0.0000
+2 lone2   被冷落 孤独  0.2374 0.0550   0.03900  -0.0501
+3 lone3 与人隔绝 孤独 -0.0266 0.2475  -0.04647   0.0813
+4 lone4 无人理解 孤独  0.6083 0.1980   0.34718   0.0478
+5  dep1 情绪低落 抑郁  0.3521 0.3491   0.04478   0.1767
+6  dep2 兴趣丧失 抑郁  0.1931 0.3157   0.05482   0.1160
+7  dep3 睡眠问题 抑郁  0.2503 0.1918   0.00000   0.0256
+8  dep4     疲乏 抑郁  0.0679 0.4005  -0.02779   0.0973
+9  dep5 无价值感 抑郁  0.2242 0.3087   0.00706   0.1414
+
+孤独 → 抑郁 边权之和 = 0.557 ；抑郁 → 孤独 边权之和 = 0.079 
+
+估计的 EI 与两种真值算出的 EI：
+   节点 outEI_估计 outEI_总体目标 outEI_被试内 inEI_估计 inEI_总体目标
+1 lone1     0.2520          0.341         0.14    0.0924         0.241
+2 lone2     0.2374          0.352         0.10    0.0550         0.162
+3 lone3    -0.0266          0.322         0.18    0.2475         0.308
+4 lone4     0.6083          0.283         0.12    0.1980         0.302
+5  dep1     0.3521          0.309         0.10    0.3491         0.363
+6  dep2     0.1931          0.328         0.12    0.3157         0.339
+7  dep3     0.2503          0.389         0.16    0.1918         0.277
+8  dep4     0.0679          0.170        -0.15    0.4005         0.360
+9  dep5     0.2242          0.245         0.00    0.3087         0.387
+  inEI_被试内
+1        0.00
+2       -0.15
+3        0.12
+4        0.10
+5        0.18
+6        0.14
+7        0.00
+8        0.16
+9        0.22
+out-EI 排序与总体目标值的斯皮尔曼相关 = 0.17 ；与被试内真值 = 0.04 
+in-EI 排序与总体目标值的斯皮尔曼相关 = 0.88 ；与被试内真值 = 0.88 
+孤独 → 抑郁 边权之和：估计 0.557 ；总体目标值 0.426 ；被试内真值 0.44 
+抑郁 → 孤独 边权之和：估计 0.079 ；总体目标值 0.141 ；被试内真值 -0.03 </code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L7-4_EI.csv</code></div><pre class="out"><code>&quot;节点&quot;,&quot;中文&quot;,&quot;构念&quot;,&quot;outEI&quot;,&quot;inEI&quot;,&quot;bridgeOut&quot;,&quot;bridgeIn&quot;
+&quot;lone1&quot;,&quot;缺少陪伴&quot;,&quot;孤独&quot;,0.252018541221287,0.0924124180328372,0.217228794209573,0
+&quot;lone2&quot;,&quot;被冷落&quot;,&quot;孤独&quot;,0.237401964330907,0.0550449324472284,0.0389965868193749,-0.0501450688070183
+&quot;lone3&quot;,&quot;与人隔绝&quot;,&quot;孤独&quot;,-0.026619366109592,0.247523423718511,-0.0464668020416347,0.0812598583322024
+&quot;lone4&quot;,&quot;无人理解&quot;,&quot;孤独&quot;,0.608272530840878,0.1980184450163,0.347184846010372,0.0477541844038989
+&quot;dep1&quot;,&quot;情绪低落&quot;,&quot;抑郁&quot;,0.352093982913651,0.349096123123199,0.0447787189896995,0.176650016289936
+&quot;dep2&quot;,&quot;兴趣丧失&quot;,&quot;抑郁&quot;,0.193092704604265,0.315697747467757,0.0548223080776954,0.116034477640364
+&quot;dep3&quot;,&quot;睡眠问题&quot;,&quot;抑郁&quot;,0.250336258646136,0.191758218824389,0,0.0256089286947938
+&quot;dep4&quot;,&quot;疲乏&quot;,&quot;抑郁&quot;,0.0679054886382101,0.400462778127651,-0.0277912965172067,0.0972599919076043
+&quot;dep5&quot;,&quot;无价值感&quot;,&quot;抑郁&quot;,0.224233308331918,0.308721326659787,0.00705924337889484,0.141390010464987</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L7-4_EI_truth.csv</code></div><pre class="out"><code>&quot;节点&quot;,&quot;outEI_估计&quot;,&quot;outEI_总体目标&quot;,&quot;outEI_被试内&quot;,&quot;inEI_估计&quot;,&quot;inEI_总体目标&quot;,&quot;inEI_被试内&quot;
+&quot;lone1&quot;,0.252018541221287,0.341,0.14,0.0924124180328372,0.241,0
+&quot;lone2&quot;,0.237401964330907,0.352,0.1,0.0550449324472284,0.162,-0.15
+&quot;lone3&quot;,-0.026619366109592,0.322,0.18,0.247523423718511,0.308,0.12
+&quot;lone4&quot;,0.608272530840878,0.283,0.12,0.1980184450163,0.302,0.1
+&quot;dep1&quot;,0.352093982913651,0.309,0.1,0.349096123123199,0.363,0.18
+&quot;dep2&quot;,0.193092704604265,0.328,0.12,0.315697747467757,0.339,0.14
+&quot;dep3&quot;,0.250336258646136,0.389,0.16,0.191758218824389,0.277,0
+&quot;dep4&quot;,0.0679054886382101,0.17,-0.15,0.400462778127651,0.36,0.16
+&quot;dep5&quot;,0.224233308331918,0.245,0,0.308721326659787,0.387,0.22</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">rowSums(CL) 与 colSums(CL) 分别对应？</p><ul class="opts"><li><button type="button" data-ok="0">A. in-EI；out-EI</button><div class="ofb" hidden>反了：行是出发点，行和是一个节点指向别人的边之和，即 out-EI。</div></li><li><button type="button" data-ok="1">B. out-EI；in-EI</button><div class="ofb" hidden>正确：行 = 出发点，列 = 终点。</div></li><li><button type="button" data-ok="0">C. 强度；EI</button><div class="ofb" hidden>强度与 EI 的区别在于是否取绝对值，与行列无关；rowSums(abs(CL)) 才是出强度。</div></li><li><button type="button" data-ok="0">D. 自回归；交叉滞后</button><div class="ofb" hidden>CL 的对角线已经置 0，行和、列和里都没有自回归。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么计算 EI 时通常不包括自回归边？</p><ul class="opts"><li><button type="button" data-ok="0">A. 自回归总是负的</button><div class="ofb" hidden>课程数据的自回归都为正（约 0.28–0.45）。</div></li><li><button type="button" data-ok="1">B. 指标关心与其他节点的关系；包括自回归会让排序被稳定性主导</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 自回归太小，加进去对排序没有影响</button><div class="ofb" hidden>相反：自回归（0.3–0.45）远大于交叉滞后边，加进去会主导排序。</div></li><li><button type="button" data-ok="0">D. 自回归不是回归系数</button><div class="ofb" hidden>它也是回归系数（T1 的 k → T2 的 k）；不计入是因为它回答的是另一个问题（稳定性）。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">out-EI 最高的节点一定是最好的干预靶点吗？</p><ul class="opts"><li><button type="button" data-ok="0">A. 是</button><div class="ofb" hidden>这是过度推论：课程数据中 out-EI 最高的 lone4，在两份答案中都不突出（见本课“但请注意”）。</div></li><li><button type="button" data-ok="1">B. 不一定：还需要稳定性（CS）、复现、理论与可干预性，以及干预研究的检验</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 只要 out-EI > 0.5 就是</button><div class="ofb" hidden>没有这样的阈值；EI 的大小还取决于网络中有哪些节点。</div></li><li><button type="button" data-ok="0">D. 是，只要它的 out-EI 的 bootstrap 区间不包含 0</button><div class="ofb" hidden>区间不含 0 只说明估计不太可能为 0；排序是否稳定、能否复现、是否可干预，仍需要别的证据。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">一个孤独节点的桥接 out-EI 是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 它指向所有节点的边之和</button><div class="ofb" hidden>那是 out-EI，还包括指向同构念（孤独）节点的边。</div></li><li><button type="button" data-ok="1">B. 它指向所有抑郁节点的边之和</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 所有抑郁节点指向它的边之和</button><div class="ofb" hidden>方向反了：那是它的桥接 in-EI。</div></li><li><button type="button" data-ok="0">D. 它指向所有抑郁节点的边的绝对值之和</button><div class="ofb" hidden>取绝对值的是桥接出强度；桥接出 EI 保留符号，负边会抵消。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">所有节点 out-EI 之和与所有节点 in-EI 之和的关系是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 前者总是更大</button><div class="ofb" hidden>每条边恰好被计入一次 out-EI、一次 in-EI，两个总和必然相等。</div></li><li><button type="button" data-ok="1">B. 相等（都等于所有交叉滞后边之和）</button><div class="ofb" hidden>正确：可用来检查代码。</div></li><li><button type="button" data-ok="0">C. 只有在没有负边时才相等</button><div class="ofb" hidden>负边同样被计入一次“出”、一次“入”，有负边时两者仍然相等。</div></li><li><button type="button" data-ok="0">D. 互为相反数</button><div class="ofb" hidden>两者相等，不是相反数。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：out/in-EI 条形图与构念比较<span class="lvl">动手</span></h4><p>运行 R/L7-4.R，打开 L7-4_EI_bars.png。回答：哪一个构念更多地“预测”另一个？用两个总和数字支持你的回答，并写一句限定。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>孤独 → 抑郁边权总和 0.557，抑郁 → 孤独 0.079：在本样本中，孤独题目对之后抑郁题目的预测总量远大于反方向。限定：“这是基于单次 LASSO 估计的描述性比较，尚未考虑抽样变异（可用 bootstrap 检验差异），且结果可能受稳定个体差异影响。”</p></details></div>
+<div class="exitem"><h4>练习 2：手算并核对<span class="lvl">基础</span></h4><p>已知某 3 节点 CLPN 的 CL 矩阵（行 → 列）：A→B = 0.2，A→C = −0.1，B→C = 0.3，C→A = 0.05，其余 0。求每个节点的 out-EI、in-EI，并验证两者总和相等。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>out-EI：A = 0.1，B = 0.3，C = 0.05（总和 0.45）。in-EI：A = 0.05，B = 0.2，C = 0.2（总和 0.45）。相等 。</p></details></div>
+<div class="exitem"><h4>练习 3：估计的 EI 排序 vs 两份答案<span class="lvl">拓展</span></h4><p>用 <code>true_B()</code> 读入总体目标值矩阵，再用 <code>read.csv("data/true_B_within.csv", row.names = 1)</code> 读入被试内真值矩阵。分别去掉对角线、计算 out-EI，并与估计的 out-EI 做斯皮尔曼相关（<code>cor(…, method = "spearman")</code>）。in-EI 也做一遍。排序一致吗？这说明了什么？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考代码：<code>Bt &lt;- true_B(); diag(Bt) &lt;- 0; cor(rowSums(Bt), outEI, method = "spearman")</code>；被试内真值同理（R/L7-4.R 末尾已经把两种对照都算好）。课程数据上的结果：</p>
+<ul><li><b>out-EI</b>：与总体目标值的斯皮尔曼相关只有 0.17，与被试内真值只有 0.04。估计中 lone4 排第一（0.608）；总体目标值中最高的是 dep3（0.389）和 lone2（0.352），lone4（0.283）排第 7；被试内真值中最高的又是 lone3（0.180）。两份答案给出的 out-EI 排序本身就不一样。</li>
+<li><b>in-EI</b>：与总体目标值、被试内真值的斯皮尔曼相关分别为 0.88 和 0.88，一致得多。</li></ul>
+<p>结论有两层。第一，单次估计的中心性排序可能受抽样变异和 LASSO 选择的影响，需要用 case-dropping bootstrap（8.3）评估其稳定性后再解释。第二，即使排序稳定、甚至与总体目标值一致，它也未必是被试内过程的排序：out-EI 把特质造成的同构念小边也加了进去。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>计算所有节点的 out-EI 与 in-EI，画成并排条形图；再只保留“孤独 → 抑郁”与“抑郁 → 孤独”方向的边计算桥接 EI，回答：哪一个构念更多地“预测”另一个？</p></div><h3>自测问题</h3><ol><li>为什么计算 EI 时通常不包括自回归边？</li><li>out-EI 最高的节点一定是最好的干预靶点吗？还需要什么证据？</li><li>rowSums(CL) 与 colSums(CL) 分别对应哪个指标？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>out-EI = 行和（预测他人）；in-EI = 列和（被他人预测）；都不含自回归。</li><li>桥接 out/in-EI 只算跨构念边，回答“哪道孤独题最能预测之后的抑郁”。</li><li>课程数据：孤独→抑郁总边权 0.557 vs 抑郁→孤独 0.079；lone4 out-EI 最高、dep4 in-EI 最高。</li><li>单次估计的排序可能误导 → 必须看 CS 系数（8.3）。</li><li>避免 driver 等因果暗示词；用“最具预测性 / 最易被预测”。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Robinaugh, D. J., Millner, A. J., & McNally, R. J. (2016). Identifying highly influential nodes in the complicated grief network. <i>Journal of Abnormal Psychology, 125</i>(6), 747–757. <a href="https://doi.org/10.1037/abn0000181" target="_blank" rel="noopener">doi.org/10.1037/abn0000181</a><div class="muted" style="font-size:.84rem">提出期望影响（EI）指标，第 6.5 课。</div></li><li>Jones, P. J., Ma, R., & McNally, R. J. (2021). Bridge centrality: A network approach to understanding comorbidity. <i>Multivariate Behavioral Research, 56</i>(2), 353–367. <a href="https://doi.org/10.1080/00273171.2019.1614898" target="_blank" rel="noopener">doi.org/10.1080/00273171.2019.1614898</a><div class="muted" style="font-size:.84rem">桥接中心性与 networktools 包，第 6.5 / 7.4 课。</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li></ul></section>
+<nav class="pager"><a href="L7-3.html" class="pv"><small>上一课</small>7.3 CLPN 可视化与解读</a><a href="L7-5.html" class="nx"><small>下一课</small>7.5 设计选择与扩展：多波数据、协变量与被试内问题</a></nav>
+<p class="foot">CLPN 从零开始 · 第 7.4 课 · <a href="../index.html#L7-4">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

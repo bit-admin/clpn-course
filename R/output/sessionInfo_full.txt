@@ -1,0 +1,54 @@
+R version 4.6.1 (2026-06-24)
+Platform: aarch64-apple-darwin24.6.0
+Running under: macOS Sequoia 15.8.1
+
+（本机路径、语言环境与时区已略去）
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.5    forcats_1.0.1      stringr_1.6.0      dplyr_1.2.1       
+ [5] purrr_1.2.2        readr_2.2.0        tidyr_1.3.2        tibble_3.3.1      
+ [9] tidyverse_2.0.0    psych_2.6.9        lavaan_0.7-3       networktools_1.6.0
+[13] bootnet_1.9.1      ggplot2_4.0.3      qgraph_1.10.1      glmnet_5.1        
+[17] Matrix_1.7-5      
+
+loaded via a namespace (and not attached):
+  [1] Rdpack_2.6.6         mnormt_2.1.2         pbapply_1.7-5       
+  [4] polynom_1.4-1        gridExtra_2.3.1      fdrtool_1.2.18      
+  [7] rlang_1.3.0          magrittr_2.0.5       otel_0.2.0          
+ [10] e1071_1.7-17         compiler_4.6.1       gdata_3.0.1         
+ [13] IsingSampler_0.5.0   png_0.1-9            vctrs_0.7.3         
+ [16] reshape2_1.4.5       quadprog_1.5-8       pkgconfig_2.0.3     
+ [19] shape_1.4.6.1        fastmap_1.2.0        backports_1.5.1     
+ [22] pbivnorm_0.6.0       rmarkdown_2.32       tzdb_0.5.0          
+ [25] NetworkToolbox_1.4.4 nloptr_2.2.1         xfun_0.62           
+ [28] jomo_2.7-6           mgm_1.2-15           pan_2.0             
+ [31] jpeg_0.1-11          broom_1.0.13         parallel_4.6.1      
+ [34] cluster_2.1.8.2      R6_2.6.1             stringi_1.8.9       
+ [37] RColorBrewer_1.1-3   smacof_2.1-7         boot_1.3-32         
+ [40] rpart_4.1.27         Rcpp_1.1.2           iterators_1.0.14    
+ [43] knitr_1.52           snow_0.4-4           base64enc_0.1-6     
+ [46] R.utils_2.13.0       weights_1.1.2        timechange_0.4.0    
+ [49] nnls_1.6             splines_4.6.1        nnet_7.3-20         
+ [52] igraph_2.3.4         tidyselect_1.2.1     rstudioapi_0.19.0   
+ [55] abind_1.4-8          doParallel_1.0.17    codetools_0.2-20    
+ [58] lattice_0.22-9       plyr_1.8.9           withr_3.0.3         
+ [61] S7_0.2.2             evaluate_1.0.5       foreign_0.8-91      
+ [64] survival_3.8-6       proxy_0.4-29         pillar_1.11.1       
+ [67] mice_3.19.0          checkmate_2.3.4      foreach_1.5.2       
+ [70] stats4_4.6.1         IsingFit_0.4         ellipse_0.5.0       
+ [73] reformulas_0.4.4     mantar_0.3.2         generics_0.1.4      
+ [76] mathjaxr_2.0-0       hms_1.1.4            scales_1.4.0        
+ [79] minqa_1.2.8          gtools_3.9.5         class_7.3-23        
+ [82] glue_1.8.1           Hmisc_5.3-0          tools_4.6.1         
+ [85] data.table_1.18.6.1  lme4_2.0-6           mvtnorm_1.4-2       
+ [88] grid_4.6.1           plotrix_3.8-14       rbibutils_2.4.1     
+ [91] colorspace_2.1-4     nlme_3.1-169         htmlTable_2.5.0     
+ [94] eigenmodel_1.12      Formula_1.2-6        cli_3.6.6           
+ [97] corpcor_1.6.10       glasso_1.11          gtable_0.3.6        
+[100] R.methodsS3_1.8.2    digest_0.6.39        wordcloud_2.6       
+[103] htmlwidgets_1.6.4    farver_2.1.2         htmltools_0.5.9     
+[106] R.oo_1.27.1          lifecycle_1.0.5      mitml_0.4-5         
+[109] MASS_7.3-65         

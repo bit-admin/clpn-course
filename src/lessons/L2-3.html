@@ -1,0 +1,251 @@
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>数据框：一张“一人一行”的登记表</h2>
+<div class="box story"><b class="bt">从个案登记表到数据框</b>
+<p>社区中心的个案登记表：每一行是一位服务对象，每一列是一项信息（编号、性别、年龄、各题得分……）。R 里的{{T:数据框|data frame}}就是这种结构：<b>行 = 个案（case），列 = 变量（variable），格子 = 某人在某变量上的值</b>。课程数据 <code>clpn_sim_wide.csv</code> 就是一个 800 行 × 34 列的数据框：800 个人，34 个变量（编号、9 道题 × 3 个时间点、性别、年龄等）。</p></div>
+<p>数据框的每一列都是一个向量（2.2 课），同一列内类型相同，不同列可以类型不同（<code>id</code> 是字符，<code>dep1_t1</code> 是数值）。所有列长度相同，第 37 行在每一列里都代表同一个人。</p>
+<p>取出一列有两种常见写法：</p>
+<ul><li><code>dat$dep1_t1</code>：用 <code>$</code> 按名字取出一列，得到一个向量。</li>
+<li><code>dat[, "dep1_t1"]</code>：方括号的二维版本 <code>[行, 列]</code>，逗号前空着表示“所有行”。对普通 <code>data.frame</code>，它也返回向量；但对 tibble（见下），它返回只有一列的 tibble。如果要确保得到向量，用 <code>dat[["dep1_t1"]]</code>。</li></ul>
+<p>同理 <code>dat[1:5, ]</code> 取前 5 行的所有列，<code>dat[dat$gender == 1, ]</code> 取所有女性的行。</p>
+
+<h3>tidyverse：给数据整理配一套“动词”</h3>
+<p>{{T:tidyverse|tidyverse}} 是一组设计风格统一的 R 包（dplyr、ggplot2、readr、tidyr 等），由 Hadley Wickham 等人开发。其中 dplyr 提供了数据整理的核心“动词”，每个动词做一件事，名字就是英文动词：</p>
+<div class="tablewrap"><table><thead><tr><th>动词</th><th>作用于</th><th>做什么</th><th>社会工作类比</th></tr></thead><tbody>
+<tr><td><code>select()</code></td><td><b>列</b></td><td>挑选变量</td><td>从登记表里只复印“抑郁量表”那几栏</td></tr>
+<tr><td><code>filter()</code></td><td><b>行</b></td><td>按条件挑选个案</td><td>只看抑郁总分 ≥ 10 的服务对象</td></tr>
+<tr><td><code>mutate()</code></td><td>列</td><td>新建或修改变量</td><td>在表格最右边加一栏“总分”</td></tr>
+<tr><td><code>summarise()</code></td><td>整表 → 一行</td><td>汇总（均值、人数……）</td><td>写一句“平均分是多少”</td></tr>
+<tr><td><code>group_by()</code></td><td>行</td><td>分组，之后的操作在每组内进行</td><td>男女分开统计</td></tr>
+<tr><td><code>arrange()</code></td><td>行</td><td>排序</td><td>按风险高低排列个案</td></tr></tbody></table></div>
+<p>用 <code>read_csv()</code>（readr 包）读入的数据，以及 dplyr 处理后的结果，常常是{{T:tibble|tibble}}，即一种“加强版”数据框：打印时只显示前 10 行和放得下的列，并标出每列类型（<code>&lt;chr&gt;</code> 字符、<code>&lt;dbl&gt;</code> 数值），不会刷屏；不会自动把字符串变成因子。除了上面提到的方括号区别，用法与数据框基本相同。一些旧函数要求输入向量，用 tibble 遇到奇怪的报错时，试试改用 <code>dat$列名</code> 或 <code>dat[["列名"]]</code>。</p>
+
+<h3>管道 |>：读作“然后”</h3>
+<p>{{T:管道|pipe, |&gt;}} <code>|&gt;</code>（R 4.1 起内置）把左边的结果作为右边函数的第一个参数。<code>dat |&gt; filter(gender == 1)</code> 等价于 <code>filter(dat, gender == 1)</code>。好处是可以把多个步骤从上到下串起来，像一份操作说明：</p>
+<p><code>dat |&gt; filter(...) |&gt; group_by(...) |&gt; summarise(...)</code> 读作：“拿数据，然后筛选，然后分组，然后汇总。”你也会在网上看到 <code>%&gt;%</code>，那是 magrittr 包的旧式管道，在常见用法下两者效果相同。RStudio 插入管道的快捷键是 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>（Mac：<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>），但它默认插入的是 <code>%&gt;%</code>。要让它插入 <code>|&gt;</code>，在 Tools → Global Options → Code → Editing 中勾选 “Use native pipe operator, |&gt;”。本课程的代码一律用 <code>|&gt;</code>。</p>
+<div class="widget" data-widget="dplyr"></div>
+
+<h3>变量重编码与反向计分</h3>
+<p>{{T:变量重编码|recoding}}是把原始值转换成分析需要的形式，例如把 0/1 转成“男 / 女”（<code>if_else()</code>），把年龄分组（<code>case_when()</code>），或者{{T:反向计分|reverse scoring}}。</p>
+<p>很多量表包含反向题：例如孤独量表中“我觉得有人可以倾诉”，同意程度越高反而越不孤独。如果不先反向计分就直接求和，这道题会抵消其他题的分数；在相关或网络分析中，它与其他题会呈现负相关，画出来的网络会出现令人困惑的负边，而这些负边仅仅来自题目的措辞方向，不反映任何心理机制。</p>
+<div class="mathbox">$$\text{反向分} = (\text{最小值} + \text{最大值}) - \text{原始分}$$</div>
+<p>例如 1–4 分的题：反向分 = 5 − 原始分（1↔4，2↔3）；0–3 分的题：3 − 原始分；1–5 分：6 − 原始分。</p>
+<div class="box warnbox"><b class="bt">课程数据里没有反向题</b><p>模拟数据中的 9 道题都已是同一方向（分数越高越孤独 / 越抑郁）。为了演示，脚本把 <code>social_support_t1</code>（1–5，越高支持越多）反向为 <code>support_rev = 6 − social_support_t1</code>（越高支持越少），让它与孤独、抑郁同方向。实际研究中，务必对照量表手册确认哪些题需要反向，并在反向后检查：同一量表的题目之间应基本为正相关。反向前后相关系数只是变号：例如把 <code>lone2_t1</code> 假装反向（5 − 原分），它与 <code>lone1_t1</code> 的相关从 0.456 变成 −0.456。</p></div>
+<div class="box sw"><b class="bt">为什么社工尤其要注意</b><p>社会工作常用的量表（如社会支持、自我效能、家庭功能量表）经常混合正向和反向题。录入数据的志愿者往往按原始勾选录入，反向计分是分析者的责任。漏掉这一步，最常见的后果是：信度（α）异常低、总分与其他变量的相关被削弱。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>总分、分组均值</h2>
+<div class="mathbox">$$\text{抑郁总分}_i = \sum_{k=1}^{5} \text{dep}_{k,i}$$</div>
+<dl class="sym"><dt>\(i\)</dt><dd>第 \(i\) 个人（数据框的第 \(i\) 行）。</dd><dt>\(k\)</dt><dd>第 \(k\) 道题（列）。</dd><dt>\(\text{dep}_{k,i}\)</dt><dd>第 \(i\) 个人在第 \(k\) 道抑郁题上的得分（0–3），所以总分范围 0–15。</dd></dl>
+<p>这是“按行求和”，对应 <code>rowSums()</code>。分组均值：</p>
+<div class="mathbox">$$\bar y_g = \frac{1}{n_g}\sum_{i\in g} y_i$$</div>
+<p>\(g\) 表示一组（如女性），\(n_g\) 是组内人数，\(\sum_{i\in g}\) 表示只对属于该组的人求和，对应 <code>group_by() |&gt; summarise(mean())</code>。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>五个动词串起来</h2>
+<p>对应脚本：<a href="../R/L2-3.R">R/L2-3.R</a>。</p>
+```r R/L2-3.R（核心部分）
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)  # tibble（加强版数据框）
+
+phq <- dat |> select(id, gender, starts_with("dep") & ends_with("_t1"))  # 选列 select
+print(phq, n = 5)
+
+# 反向计分（reverse scoring）示例：假设社会支持需要反向（1–5 → 5–1）：新值 = 6 - 原值
+dat <- dat |>
+  mutate(support_rev = 6 - social_support_t1,                         # 反向计分示例
+         dep_sum_t1  = rowSums(across(c(dep1_t1:dep5_t1))))           # 生成总分
+dat |>
+  mutate(性别 = if_else(gender == 1, "女", "男")) |>
+  group_by(性别) |>                                                    # 分组
+  summarise(人数 = n(), 抑郁均值 = mean(dep_sum_t1), 标准差 = sd(dep_sum_t1)) |>  # 汇总
+  print()
+n_high <- dat |> filter(dep_sum_t1 >= 10) |> nrow()   # 筛选行 filter
+cat("抑郁总分 ≥ 10 的人数：", n_high, "\n")
+```
+```out 输出（R/output/L2-3_log.txt）
+# A tibble: 800 × 7
+  id    gender dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1
+  <chr>  <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+1 P001       0       0       0       1       0       0
+2 P002       0       0       0       1       0       1
+3 P003       1       1       2       1       2       0
+4 P004       0       1       0       2       1       0
+5 P005       1       1       2       0       3       1
+# ℹ 795 more rows
+# A tibble: 2 × 4
+  性别   人数 抑郁均值 标准差
+  <chr> <int>    <dbl>  <dbl>
+1 女      427     4.21   3.52
+2 男      373     3.41   3.21
+抑郁总分 ≥ 10 的人数： 65
+```
+<div class="box key"><b class="bt">逐句解释</b><ul>
+<li><code>starts_with("dep") &amp; ends_with("_t1")</code>：选择“以 dep 开头并且以 _t1 结尾”的列，即 T1 的 5 道抑郁题。还有 <code>contains()</code>、<code>matches()</code> 等选择助手。</li>
+<li><code>dep1_t1:dep5_t1</code>：冒号表示“从这一列到那一列之间的所有列”（依赖列的顺序）。<code>across()</code> 把这些列打包交给 <code>rowSums()</code>。</li>
+<li><code>if_else(条件, 是, 否)</code>：条件为 TRUE 时取“女”，否则取“男”。</li>
+<li><code>n()</code>：组内人数。<code>summarise()</code> 把每组压缩成一行。课程数据没有缺失值；真实数据有缺失时，<code>mean()</code> 会返回 NA，要写 <code>mean(x, na.rm = TRUE)</code>，并用 <code>sum(!is.na(x))</code> 报告每组实际用了多少人。</li>
+<li><code>dat &lt;- dat |&gt; mutate(...)</code>：注意要把结果赋值回 <code>dat</code>，否则新变量只会打印出来而不会被保存。这是初学者最常见的错误之一。</li></ul></div>
+```r $ 与 [ ] 的区别
+dat$dep1_t1 |> head()            # 向量
+dat[, "dep1_t1"] |> head(3)      # tibble 返回的是一列的 tibble
+dat[["dep1_t1"]] |> head()       # 向量（对 tibble 和 data.frame 都一样）
+```
+```out 输出（R/output/L2-3_log.txt，续）
+[1] 0 0 1 1 1 1
+# A tibble: 3 × 1
+  dep1_t1
+    <dbl>
+1       0
+2       0
+3       1
+[1] 0 0 1 1 1 1
+```
+```r 更多例子：多条件筛选、计数、排序
+dat |> filter(gender == 1, age < 30) |> nrow()      # 逗号 = “并且”：30 岁以下女性
+dat |> count(gender)                                # 计数
+dat |> arrange(desc(dep_sum_t1)) |> select(id, dep_sum_t1) |> head(3)   # 抑郁总分最高的 3 人
+```
+```out 输出（R/output/L2-3_log.txt，续）
+[1] 68
+# A tibble: 2 × 2
+  gender     n
+   <dbl> <int>
+1      0   373
+2      1   427
+# A tibble: 3 × 2
+  id    dep_sum_t1
+  <chr>      <dbl>
+1 P734          15
+2 P154          14
+3 P215          14
+```
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：一条管道算出“按性别分组的孤独总分”</h3>
+<p>任务：用 T1 数据计算每人的孤独总分，只保留 60 岁及以上的人，再按性别比较均值和人数。先写出思路（这一步最重要），再翻译成代码：</p>
+<ol><li><b>mutate</b>：新建一列 <code>lone_t1</code> = 4 道孤独题之和（按行相加）。</li>
+<li><b>filter</b>：保留 <code>age &gt;= 60</code> 的行。</li>
+<li><b>group_by</b>：按 <code>gender</code> 分组。</li>
+<li><b>summarise</b>：每组算出人数、均值和标准差。</li></ol>
+```r
+source("R/_setup.R")      # 找到课程根目录，并定义 read_course_data() 等小函数（2.4 课）
+library(dplyr)
+dat <- read_course_data()  # 等于 read.csv("data/clpn_sim_wide.csv")
+res <- dat |>
+  mutate(lone_t1 = lone1_t1 + lone2_t1 + lone3_t1 + lone4_t1) |>   # 按行相加
+  filter(age >= 60) |>
+  group_by(gender) |>
+  summarise(n = n(), M = mean(lone_t1), SD = sd(lone_t1)) |>
+  ungroup()
+res
+
+```
+
+<p>如果不先运行 <code>source("R/_setup.R")</code>，R 会报 <code>could not find function "read_course_data"</code>：这个函数不是 R 自带的，而是课程在 <code>R/_setup.R</code> 里定义的。不想依赖它时，第二行换成 <code>dat &lt;- read.csv("data/clpn_sim_wide.csv")</code>，前提是工作目录是课程根目录（2.4 课）。</p>
+<p>读结果时先看 <code>n</code>：两组人数加起来，应该等于 60 岁以上的总人数，可以用 <code>sum(dat$age &gt;= 60)</code> 核对。这种“对一下人数”的检查几乎不花时间，却能发现不少整理错误，例如筛选条件写反、比较符号写错（<code>&gt;</code> 与 <code>&gt;=</code>），或者有缺失值的行被悄悄丢掉。</p>
+<h3>一个经典陷阱：mutate 里用 sum()</h3>
+<p>很多初学者会写 <code>mutate(lone_t1 = sum(lone1_t1, lone2_t1, lone3_t1, lone4_t1))</code>。结果每个人的“总分”都是同一个很大的数，因为 <code>sum()</code> 把<b>所有人</b>的所有题都加在了一起。按行相加有两种正确写法：直接用 <code>+</code> 连接，或者用 <code>rowSums(across(lone1_t1:lone4_t1))</code>。写完后用 <code>head()</code> 看一眼：总分是否在 4–16 之间，每个人是否不同。</p>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b>在 filter 里写单个等号。</b><code>filter(gender = 1)</code> 会报错，必须写 <code>filter(gender == 1)</code>。</li>
+<li><b>group_by 之后忘了 ungroup。</b>分组状态会“粘”在数据上，后面的 mutate 会按组计算（例如组内均值），结果悄悄出错。</li>
+</ul></div>
+
+<h3>一次处理很多列：across() 与选择助手</h3>
+<p>CLPN 数据有 27 道题目列（9 题 × 3 波），一列一列手写既慢又容易漏。dplyr 提供了按名字规律选列的“助手”：<code>starts_with("lone")</code> 选所有孤独题，<code>ends_with("_t1")</code> 选第 1 波的所有列，<code>lone1_t1:lone4_t1</code> 选相邻的一段列。配合 <code>across()</code>，可以把同一个操作作用到多列上。例如，<code>summarise(across(ends_with("_t1"), mean))</code> 一次算出 T1 所有题的均值；<code>mutate(across(starts_with("dep"), ~ .x / 3))</code> 把所有抑郁题除以 3。<code>~ .x / 3</code> 是一个简写的小函数，<code>.x</code> 代表“当前这一列”。</p>
+<p>要特别注意：<code>ends_with("_t1")</code> 会同时选中 social_support_t1、sleep_hours_t1 等协变量。选完之后，最好用 <code>names(select(dat, ends_with("_t1")))</code> 打印出来确认一下。</p>
+<h3>长管道怎样调试？</h3>
+<p>一条五六步的管道出错时，不要盯着整段看。从第一行开始，每次多选中一行运行，看每一步的输出是否符合预期：行数对不对，新列有没有出现，数值范围是否合理。哪一步之后结果开始不对，问题就出在哪一步。</p>
+
+<h3>arrange 与 count 的检查用途</h3>
+<p><code>arrange(dat, desc(age))</code> 按年龄从大到小排序，可以用来检查极端值：排在最前和最后的几行，年龄是否合理？<code>count(dat, gender)</code> 是 <code>group_by(gender) |&gt; summarise(n = n())</code> 的简写。拿到新数据后，对每个分类变量都 count 一次，能很快发现编码问题，例如性别出现了 0、1 之外的值。</p>
+
+<h3>rename：给列换个好记的名字</h3>
+<p><code>rename(dat, 孤独总分 = lone_t1)</code> 的写法是“新名字 = 旧名字”，容易写反，要特别留意。改名不会改变数据本身，只是让后面的代码和输出更易读。</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+```quiz
+Q: df$var 与 df[, "var"] 有什么异同？
+- 完全相同，任何时候都返回向量 || 对普通 data.frame 是这样，但 tibble 的 [, "var"] 返回只有一列的 tibble。
++ 都按名字取出一列；$ 总是返回向量，而 [, "var"] 对 tibble 返回一列的 tibble（对普通 data.frame 返回向量） || 正确。
+- $ 取行，[ ] 取列 || 两者都取列；取行要在 [ ] 的逗号前写条件，如 dat[1:5, ]。
+E: 想确保得到向量，用 df[["var"]] 或 df$var。
+```
+```quiz
+Q: filter() 和 select() 分别作用在行还是列？
++ filter() 选行（个案），select() 选列（变量） || 正确。
+- filter() 选列，select() 选行 || 反了：select 挑变量（列），filter 按条件挑个案（行）。
+- 两者都选列，filter 只是多了按条件挑选的功能 || filter 的条件对每一行求值，留下的是满足条件的行，列不变。
+E: 记忆法：filter 过滤“人”，select 挑选“题”。
+```
+```quiz
+Q: 为什么反向计分题在做相关 / 网络之前必须先处理？
+- 因为反向题测的是另一个构念，应在网络中作为单独的节点处理 || 反向题测的仍是同一构念，只是措辞方向相反；不反向时出现的负边只反映措辞。
++ 不反向的话，它与同一构念的其他题呈负相关，总分被抵消，网络中出现只由措辞方向造成的负边 || 正确。
+- 因为反向题必须删除 || 反向题不必删除；按公式反向计分后照常使用。
+E: 反向后检查同一量表的题目是否基本为正相关。
+```
+```quiz
+Q: 一道 0–3 分的题，原始分为 1，反向计分后是多少？
+N: 2 | 0
+H: 反向分 = (最小值 + 最大值) − 原始分。
+E: (0 + 3) − 1 = 2。
+```
+```quiz
+Q: 运行 dat |> mutate(total = rowSums(across(dep1_t1:dep5_t1))) 后，再运行 mean(dat$total) 得到 NA，并出现警告 Unknown or uninitialised column: `total`。原因？
+- rowSums 写错了 || rowSums(across(...)) 的写法是对的；警告说的是 total 这一列不存在。
++ 没有把结果赋值回 dat（dat <- dat |> mutate(...)），新列没有被保存 || 正确。
+- 管道符不能和 mutate 一起用 || |> 与 mutate() 可以正常配合，本课的核心代码就是这样写的。
+E: 这是初学者最常见的错误：管道只打印结果，不改变原对象。
+```
+```quiz
+Q: dat |> group_by(gender) |> summarise(m = mean(dep_sum_t1)) 返回几行？
+N: 2 | 0
+H: summarise 把每组压缩为一行。
+E: gender 有两个取值，所以 2 行。
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.3-A：选题、反向、总分、分组</h4>
+<p>在课程的模拟问卷数据上：选出 T1 的抑郁题目（PHQ 风格）、把一道题“假装”为反向题重新计分（例如社会支持，或把 <code>lone2_t1</code> 当作反向题练习）、生成总分、按性别分组求均值。</p>
+<details class="answer"><summary>参考代码与要点</summary>
+```r
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)
+res <- dat |>
+  select(id, gender, starts_with("dep") & ends_with("_t1"), social_support_t1) |>
+  mutate(support_rev = 6 - social_support_t1,                 # 1–5 → 5–1
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1)),
+         性别        = factor(gender, levels = c(0, 1), labels = c("男", "女")))
+res |>
+  group_by(性别) |>
+  summarise(人数 = n(), 抑郁均值 = mean(dep_sum_t1), 支持缺乏均值 = mean(support_rev))
+cor(res$social_support_t1, res$support_rev)    # -1：反向只是翻转方向
+```
+<p>要点：(1) 反向计分公式写对；(2) 用 <code>cor()</code> 验证反向前后相关为 −1；(3) 女性抑郁均值 4.21，男性 3.41（与脚本输出一致）；(4) 写一句话解释为什么反向题要在分析前处理。</p></details></div>
+<div class="exitem"><h4>练习 2.3-B：孤独总分与高风险名单</h4>
+<p>为 T1 生成孤独总分 <code>lone_sum_t1</code>（4 道题，范围 4–16），筛选出孤独总分 ≥ 13 且抑郁总分 ≥ 10 的人，按抑郁总分从高到低排序，只保留 <code>id</code>、两个总分。共有多少人？</p>
+<details class="answer"><summary>参考代码</summary>
+```r
+high <- dat |>
+  mutate(lone_sum_t1 = rowSums(across(lone1_t1:lone4_t1)),
+         dep_sum_t1  = rowSums(across(dep1_t1:dep5_t1))) |>
+  filter(lone_sum_t1 >= 13, dep_sum_t1 >= 10) |>
+  arrange(desc(dep_sum_t1)) |>
+  select(id, lone_sum_t1, dep_sum_t1)
+nrow(high)
+```
+<p>结果：22 人。思考：这种“双高”名单在服务中可以用于什么？（优先外展、转介评估）使用时要注意什么？（筛查分界值不等于诊断；保护隐私。）</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>数据框：行 = 个案，列 = 变量；<code>$</code> 取列得向量，<code>[行, 列]</code> 二维索引。</li>
+<li>dplyr 动词：select 选列、filter 选行、mutate 建变量、group_by + summarise 分组汇总；用 <code>|&gt;</code> 串起来，记得赋值保存。</li>
+<li>反向题先反向再分析：反向分 = 最小 + 最大 − 原分。下一课：{{L:2.4}}。</li></ul>
+</section>

@@ -1,0 +1,29 @@
+ELSOC data preprocessing log
+Data: Reproducible Research, Centre for Social Conflict and Cohesion Studies COES, 2022,
+      "Estudio Longitudinal Social de Chile 2016-2021", https://doi.org/10.7910/DVN/LQMURF,
+      Harvard Dataverse, V1 (CC0 1.0)
+File: ELSOC_Wide_2016_2021_v1.00_R.RData  MD5 = a5a45571d39cf9db12e1949fdcb6fff2 (verified)
+
+Raw data: 4447 rows x 1848 columns
+Sample composition (muestra): original sample 2928 participants; refreshment sample (from 2018 onward) 1519 participants
+
+PHQ items (ELSOC item order swaps items 6 and 7 relative to standard PHQ-9; 1 = Never ... 5 = Almost every day):
+  phq1  Little interest            Frecuencia: Poco interes o alegria
+  phq2  Depressed mood             Frecuencia: Decaimiento, pesadez o desesperanza
+  phq3  Sleep problems             Frecuencia: Dificultad para dormir o exceso de suennio
+  phq4  Fatigue                    Frecuencia: Cansancio o sensacion de falta de energia
+  phq5  Appetite change            Frecuencia: Apetito disminuido o aumentado
+  phq6  Trouble concentrating      Frecuencia: Dificultad para concentrarse
+  phq7  Low self-worth             Frecuencia: Mala opinion de si mismo
+  phq8  Psychomotor retardation    Frecuencia: Enlentecimiento fisico
+  (Item 9 'thoughts of death or self-harm' not exported: high-risk item, excluded from pedagogical exercises.)
+
+Original sample N = 2928 
+  Wave 1 (2016) complete PHQ-8: 2890 participants
+  Wave 2 (2017) complete PHQ-8: 2445 participants
+  Wave 3 (2018) complete PHQ-8: 2187 participants
+  Complete across Waves 1–2: 2415 participants; complete across Waves 1–3: 2026 participants (for CLPN analysis)
+  Complete across Waves 1–3: 1259 females (62.1%); 2016 age M = 46.9, SD = 15.1, range 18–88
+
+Written data/elsoc_phq8_wide.csv: 2928 rows x 27 columns (identical to the bundled course file)
+Next step: source("R/case_elsoc.R")

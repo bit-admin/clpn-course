@@ -1,0 +1,35 @@
+     true    OLS LASSO_min LASSO_1se
+Xx1   0.5  0.547     0.456     0.314
+Xx2   0.4  0.563     0.477     0.355
+Xx3   0.3  0.455     0.326     0.186
+Xx4   0.0 -0.050     0.000     0.000
+Xx5   0.0  0.093     0.000     0.000
+Xx6   0.0 -0.047     0.000     0.000
+Xx7   0.0 -0.042    -0.010     0.000
+Xx8   0.0  0.102     0.000     0.000
+Xx9   0.0 -0.272    -0.152     0.000
+Xx10  0.0  0.066     0.000     0.000
+Xx11  0.0 -0.123    -0.007     0.000
+Xx12  0.0 -0.070     0.000     0.000
+Xx13  0.0 -0.066     0.000     0.000
+Xx14  0.0 -0.013     0.000     0.000
+Xx15  0.0  0.013     0.000     0.000
+LASSO (lambda.1se) non-zero coefficient count = 3 ; Non-zero count among spurious variables = 0 
+LASSO (lambda.min) non-zero coefficient count = 6 ; Non-zero count among spurious variables = 3 
+Test data mean squared error: OLS 1.208, LASSO 1.120; OLS training error 0.941
+seed = 1: lambda.min = 0.0155, lambda.1se = 0.1198, non-zero coefficients under 1se: 6, lone1_t1 = 0.000
+seed = 2: lambda.min = 0.0155, lambda.1se = 0.0906, non-zero coefficients under 1se: 7, lone1_t1 = 0.010
+
+3.5-C: Ridge regression lambda.min = 0.1952 (LASSO lambda.min = 0.0128)
+            ridge_min lasso_min
+(Intercept)     0.000     0.000
+lone1_t1        0.055     0.048
+lone2_t1        0.017     0.000
+lone3_t1       -0.003     0.000
+lone4_t1        0.092     0.102
+dep1_t1         0.160     0.173
+dep2_t1         0.122     0.122
+dep3_t1         0.150     0.160
+dep4_t1         0.109     0.105
+dep5_t1         0.150     0.159
+Ridge regression non-zero count under lambda.min = 9 (out of 9); Under LASSO = 7 

@@ -1,0 +1,195 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>"Is this difference real, or just chance?"</h2>
+<div class="box story"><b class="bt">Are women more depressed?</b>
+<p>In the course dataset, women (n = 427) had a mean T1 depression total score of 4.21, while men (n = 373) averaged 3.41, a difference of 0.79 points. Your supervisor asks: "Is this 0.79 a real difference between the two groups, or did we just happen to draw it in this sample?" In the previous lesson you saw that every sample statistic varies from sample to sample; even if men and women did not differ at all in the population, a sample difference of exactly 0 is almost impossible. We need a rule for deciding how large a difference has to be before it is unlikely to be "just chance."</p></div>
+<h3>The logic of hypothesis testing: assume "no effect," then see how "surprising" the data are</h3>
+<div class="box analogy"><b class="bt">Analogy: a court trial</b><p>A court works on the "presumption of innocence": it first assumes the defendant is innocent, then looks at the evidence. Only if this evidence would be very unlikely to turn up if the defendant were innocent does the judge find them guilty. A verdict of "not guilty" for lack of evidence does not prove the defendant innocent; it only means "reasonable doubt could not be ruled out."</p></div>
+<p>A statistical test follows the same logic:</p>
+<ol><li>State the {{T:null hypothesis, H₀|}}: "no effect." For example, "in the population, men and women have the same mean depression." Its opposite is the {{T:alternative hypothesis|}} H₁: "there is a difference."</li>
+<li>Assuming H₀ is true, compute how likely it is to get data like ours (or more extreme). This probability is the {{T:p-value|}}.</li>
+<li>If p is small (below a {{T:significance level, α|}} fixed in advance, usually α = 0.05), we say the data are "not very compatible" with H₀, reject H₀, and call the result "statistically significant." Otherwise we "do not reject H₀."</li></ol>
+<div class="widget" data-widget="pval"></div>
+<p>Drag the slider: the more extreme the observed test statistic (the further from 0), the smaller the area of the two red tails (the p-value). Once |z| is above 1.96, p &lt; 0.05. For the gender difference in depression in the course data, t = −3.33, p ≈ 0.0009: if men and women really did not differ in the population, the chance of drawing a difference this large (or larger) would be less than one in a thousand.</p>
+<h3>Common misreadings of the p-value</h3>
+<div class="box warnbox"><b class="bt">p = 0.03 does <u>not</u> mean any of the following</b>
+<ul><li>"The probability that the null hypothesis is true is 3%." The p-value is computed <b>assuming H₀ is true</b>; it can't be turned around to give you the probability that H₀ is true.</li>
+<li>"The result has a 97% probability of being true." Same reason.</li>
+<li>"The effect is large or practically important." The p-value depends on both the size of the effect and the sample size; see below.</li>
+<li>"p = 0.06 proves there is no effect." "Not significant" only means there isn't enough evidence; it doesn't prove "no difference."</li>
+<li>"p = 0.049 and p = 0.051 are fundamentally different." 0.05 is just a conventional line.</li></ul>
+<p>Right: "If the null hypothesis is true, the probability of observing a result at least this extreme is 0.03."</p></div>
+<h3>Statistically significant ≠ important in practice: effect sizes</h3>
+<p>The size of a p-value depends on two things: how big the effect is and how big the sample is. With a very large sample, even differences too tiny to matter in practice become "significant": SE shrinks with \(\sqrt n\), so any nonzero difference is eventually detected. That is why you must also report an {{T:effect size|}}: an index that describes "how big the effect is" and does not grow with the sample size.</p>
+<ul><li>Cohen's d: the difference between two group means divided by the pooled standard deviation, "how many standard deviations apart the two groups are." Rough guide: 0.2 small, 0.5 medium, 0.8 large. In the course data, the gender difference in depression has d = 0.235: highly significant statistically, but a small effect. In social work practice, this means gender is not a strong marker for telling who is at risk of depression; differences between individuals are much larger than the difference between the groups.</li>
+<li>The correlation coefficient r and the standardized regression coefficient β are effect sizes themselves. The edge weights of a CLPN are a kind of effect size.</li></ul>
+<h3>Two kinds of error, and statistical power</h3>
+<div class="tablewrap"><table><thead><tr><th></th><th>Truth: H₀ is true (no effect)</th><th>Truth: H₀ is false (effect exists)</th></tr></thead><tbody>
+<tr><td>Decision: reject H₀</td><td>{{T:Type I error|}} (false positive), probability = α</td><td>Correct detection, probability = power</td></tr>
+<tr><td>Decision: do not reject H₀</td><td>Correct</td><td>Type II error (false negative), probability = β</td></tr></tbody></table></div>
+<p>{{T:statistical power|}} = 1 − β: the probability that a study detects an effect when the effect really exists. Power depends on the effect size, the sample size, and α. Small studies have low power and easily miss real small effects; and the results that "happen to be significant" in small samples often overestimate the effect. Social work studies often have small samples, so keep this in mind especially when you read a "not significant" result. (Note: the β in this table is the probability of a Type II error; it is the same Greek letter as the regression coefficient β but means something completely different.)</p>
+<h3>Multiple comparisons: a network with 190 possible edges</h3>
+<p>α = 0.05 means: each time you run a test for which H₀ is true, there is a 5% chance of a Type I error. What if you run many tests at once? A cross-sectional network with 20 nodes has 20 × 19 / 2 = 190 pairs of nodes. If you test every pair for significance, then even if all the true relations are 0, on average 190 × 0.05 = 9.5 "significant" false edges will appear. This is the {{T:multiple comparisons|}} problem.</p>
+<div class="widget" data-widget="multitest"></div>
+<p>Tick the Bonferroni correction (dividing α by the number of tests) and the false edges almost disappear; the price is a very high bar, so real small effects are also hard to detect. Network analysis usually goes another way: {{T:regularization|}} (the LASSO of Lesson 3.5, the graphical lasso of Lesson 6.3). Instead of testing edge by edge, the model shrinks edges that are not strong enough to 0. That is why many CLPN papers show no p-value for each edge. But note: <b>regularization does not control false positives</b>. When λ is chosen by cross-validation (<code>lambda.min</code>), the edges that are kept often include quite a few false positives ({{L:7.2}} shows the actual numbers); the full procedure recommended in the CLPN methods papers also filters paths by p-value at the end ({{L:7.5}}).</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Test statistics and Cohen's d</h2>
+<h3>Most test statistics look like this</h3>
+<div class="mathbox">$$\text{test statistic} = \frac{\text{estimate} - \text{value under H}_0}{SE} \qquad \text{Example:}\; z = \frac{(\bar x_1 - \bar x_2) - 0}{SE(\bar x_1 - \bar x_2)}$$</div>
+<p>Read it as: "how many standard errors the estimate is from the null hypothesis." The further away, the more "surprising" under H₀, and the smaller p. |z| &gt; 1.96 ⇔ two-sided p &lt; 0.05 ⇔ the 95% CI does not contain 0: these three say the same thing. The "t value = Estimate / Std. Error" in R's <code>summary(lm())</code> is this formula (Lesson 2.5).</p>
+<h3>Definition of the p-value</h3>
+<div class="mathbox">$$p = P\big(\,|Z| \ge |z_{\text{obs}}| \;\big|\; H_0 \text{ is true}\big)$$</div>
+<dl class="sym"><dt>\(P(\cdot)\)</dt><dd>Probability.</dd><dt>Vertical bar \(\mid\)</dt><dd>Read "given that." The p-value is a conditional probability: the condition is that H₀ is true.</dd><dt>\(|Z| \ge |z_{\text{obs}}|\)</dt><dd>"At least as extreme as the observed value" (two-sided: counting both tails).</dd></dl>
+<p>In calculus terms: the p-value is the area of the two tails under the normal curve, that is, the integral of the density function \(2\int_{|z|}^{\infty} \varphi(u)\,du\), where \(\varphi\) is the standard normal density function.</p>
+<h3>Cohen's d</h3>
+<div class="mathbox">$$d = \frac{\bar x_1 - \bar x_2}{s_p}, \qquad s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}}$$</div>
+<p>\(s_p\) is the pooled standard deviation (pooled SD): the square root of a weighted average of the two groups' variances. Course data: \(d = (4.21-3.41)/s_p \approx 0.235\), from which you can work back to \(s_p \approx 3.37\).</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>t-test, effect size, and a multiple-comparisons simulation</h2>
+<p>Script: <a href="../R/L1-6.R">R/L1-6.R</a>.</p>
+```r 1. t-test: do women and men differ in depression total?
+source("R/_setup.R")
+dat <- read_course_data()
+dat$dep_sum_t1 <- rowSums(dat[, paste0(dep_items, "_t1")])
+t.test(dep_sum_t1 ~ gender, data = dat)     # ~ reads as "grouped by"
+```
+```out Output (R/output/L1-6_log.txt)
+	Welch Two Sample t-test
+
+data:  dep_sum_t1 by gender
+t = -3.3345, df = 796.39, p-value = 0.0008939
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -1.2601649 -0.3262758
+sample estimates:
+mean in group 0 mean in group 1 
+       3.412869        4.206089 
+```
+<p>Item by item:</p>
+<ul><li><code>Welch Two Sample t-test</code>: a t-test that does not assume the two groups have equal variances (R's default, and the safer choice).</li>
+<li><code>t = -3.3345</code>: the test statistic. It is negative because R computes "group 0 (men) minus group 1 (women)."</li>
+<li><code>df</code>: degrees of freedom, which set the shape of the t distribution; in the Welch test they can be a fraction.</li>
+<li><code>p-value = 0.0008939</code>: p ≈ 0.0009 &lt; 0.05.</li>
+<li><code>95 percent confidence interval: -1.26 -0.33</code>: the 95% CI of the difference in means (men − women); it does not contain 0, in line with p &lt; 0.05.</li></ul>
+```r 2. Effect size: Cohen's d
+m <- tapply(dat$dep_sum_t1, dat$gender, mean)    # Mean by gender
+s <- tapply(dat$dep_sum_t1, dat$gender, sd)
+n <- table(dat$gender)
+sp <- sqrt(((n[1] - 1) * s[1]^2 + (n[2] - 1) * s[2]^2) / (sum(n) - 2))   # Pooled SD
+cat("Cohen's d =", round((m[2] - m[1]) / sp, 3), "(0.2 small / 0.5 medium / 0.8 large)\n")
+```
+```out Output (R/output/L1-6_log.txt)
+Cohen's d = 0.235 (0.2 small / 0.5 medium / 0.8 large)
+```
+```r 3. Multiple comparisons: 20 unrelated variables → 190 correlation tests
+set.seed(1)
+noise <- matrix(rnorm(200 * 20), 200, 20)        # 200 people × 20 pure-noise variables
+pv <- c()
+for (i in 1:19) for (j in (i + 1):20) pv <- c(pv, cor.test(noise[, i], noise[, j])$p.value)
+cat("In pure noise, among 190 correlations, number with p < .05:", sum(pv < .05),
+    "(expecting ~9.5 false positives)\n")
+cat("Number significant after Bonferroni correction:", sum(p.adjust(pv, "bonferroni") < .05), "\n")
+```
+```out Output (R/output/L1-6_log.txt, excerpt)
+In pure noise, out of 190 correlations, those with p < .05 count: 15 (expected ~9.5 false positives)
+Number significant after Bonferroni correction: 0 
+```
+<p>This time there happened to be 15 false positives (the expected number is 9.5, and each simulation varies). <code>p.adjust(pv, "bonferroni")</code> multiplies each p-value by 190 (capped at 1), which is the same as dividing α by 190.</p>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: from a mean difference to a p-value</h3>
+<p>An intervention group and a control group have 50 people each. After the intervention, their mean loneliness is 5 and 6, and both groups have SD 2.</p>
+<ol><li>Effect size: Cohen's d = (6 − 5) / 2 = 0.5, "medium."</li>
+<li>Standard error of the difference in means = 2 × √(1/50 + 1/50) = 2 × 0.2 = 0.4.</li>
+<li>t = 1 / 0.4 = 2.5, 98 degrees of freedom, two-sided p ≈ .014.</li></ol>
+<p>Same d = 0.5, but only 10 people per group: SE = 2 × √(0.2) ≈ 0.894, t ≈ 1.12, p ≈ .28, "not significant." The effect didn't change; only the amount of evidence did. That is why papers should report both the effect size and the p-value.</p>
+<div class="box warnbox"><b class="bt">Common Mistakes</b>
+<ul><li>Trying many analyses and reporting only the significant one (p-hacking). Changing covariates, subsamples, or scoring: every attempt is another test; the multiple-comparisons simulation shows that 190 tests give on average 9.5 results that are "significant by chance." If you report only the significant one, readers can't know how many tries were behind it. The remedy is to write the analysis plan in advance ({{L:10.1}}) and report every analysis you ran.</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: Does p = 0.03 mean "the probability that the null hypothesis is true is 3%"?
+- Yes || This is the first misreading listed in this lesson: the p-value is computed assuming H₀ is true, so it can't be turned around to give the probability that H₀ is true.
+- No, it means "the research hypothesis has a 97% probability of being correct" || This is the same misreading in other words; the p-value doesn't give the probability that any hypothesis is true.
++ No: the p-value is the probability of obtaining data at least as extreme as observed, assuming H₀ is true || Correct. The "condition" of the p-value is that H₀ is true; it can't be turned around to give the probability that H₀ is true.
+E: Analogy: "If the defendant is innocent, the probability of this evidence appearing is low" is not equivalent to "the probability that the defendant is innocent is low."
+```
+```quiz
+Q: With a very large sample (e.g., n = 100,000), why do even tiny effects become "significant"?
+- Because data from large samples are of higher quality || Data quality doesn't improve automatically with sample size; the result is significant because the SE got smaller.
++ Because SE shrinks at the rate of √n, the test statistic = Estimate / SE becomes very large even when the estimate itself is tiny || Correct. That is why you report effect sizes.
+- Because α automatically gets larger || α is set by the researcher in advance and doesn't change with sample size.
+- Because the effect itself becomes larger in large samples || Effect size is a property of the population and does not change with sample size; what changes is the precision of the estimate.
+E: For example, r = 0.02 with n = 100,000 gives p far below 0.001, yet r = 0.02 means almost nothing in practice.
+```
+```quiz
+Q: In a network with 20 nodes, you test the 190 edges one by one (α = 0.05, and all true edges are 0). How many false positive edges appear on average?
+N: 9.5 | 0.01
+H: The probability of a Type I error on each edge is α.
+E: 190 × 0.05 = 9.5. This is the multiple comparisons problem, and one of the reasons network analysis uses regularization.
+```
+```quiz
+Q: A small study (n = 30) finds "no significant effect" of a community intervention on depression (p = 0.20). What is the most appropriate conclusion?
+- The intervention has no effect || "Not significant" doesn't mean "shown not to work"; a small sample has low power and may miss a real effect.
++ The evidence isn't enough to tell whether the intervention works; with a small sample and low power, a real effect may have been missed || Correct. The effect size and confidence interval should also be reported.
+- The intervention made depression worse || The p-value itself doesn't give a direction, and a non-significant result supports no conclusion in either direction.
+- Raise α to 0.25 so that the result becomes significant || Changing α after seeing the result is a form of p-hacking; α has to be set in advance.
+E: Reporting the effect size and 95% CI lets readers see the range of "how big the effect might be."
+```
+```quiz
+Q: The gender difference in depression has p ≈ 0.0009 and Cohen's d = 0.235. Which reading is best?
+- Gender is the most important predictor of depression || d = 0.235 is a small effect, and this lesson didn't compare it with other predictors.
+- Because p is very small, the effect is very large || This is a misreading this lesson names: p is small mainly because the sample is large (n = 800); it is the effect size d that describes how big the effect is.
++ The difference is statistically reliable, but the effect is small: the differences between individuals within each group are much larger than the difference between the groups || Correct.
+E: Always look at the p-value and the effect size together.
+```
+```quiz
+Q: True or false: "|z| &gt; 1.96," "two-sided p &lt; 0.05," and "the 95% CI does not contain 0" say the same thing.
++ True || Correct: for tests based on the normal approximation, the three are equivalent.
+- False || 95% CI = estimate ± 1.96 × SE; an estimate more than 1.96 SE from 0 is the same as an interval that doesn't contain 0, and the same as a two-sided p &lt; 0.05.
+E: If the estimate is more than 1.96 SE away from 0, the interval "estimate ± 1.96 SE" can't contain 0.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-on practice</h2>
+<div class="exitem"><h4>Exercise 1.6-A: Find the errors in p-value statements</h4>
+<p>Decide whether each of these 6 statements is right; rewrite the wrong ones.</p>
+<ol><li>"p = 0.01, so the research hypothesis has a 99% probability of being correct."</li>
+<li>"p = 0.04, so if the null hypothesis is true, the probability of a result at least this extreme is 4%."</li>
+<li>"p = 0.12, which shows that loneliness and depression are unrelated."</li>
+<li>"The intervention group did significantly better than the control group (p &lt; .001), which shows the intervention effect is very large."</li>
+<li>"Study A found p = 0.04 and study B p = 0.06, so the two studies contradict each other."</li>
+<li>"The result is significant (p = 0.02), with effect size d = 0.15, a small effect."</li></ol>
+<details class="answer"><summary>Answers</summary>
+<ol><li>A p-value is not the probability that a hypothesis is true. Rewrite: "If the null hypothesis is true, the probability of a result at least this extreme is 1%."</li>
+<li>Correct.</li>
+<li>Not significant ≠ unrelated. Rewrite: "No statistically significant association was found (p = 0.12); judging by the confidence interval, the data are compatible both with no association and with a small one."</li>
+<li>A p-value doesn't reflect the size of an effect. Rewrite: "The difference was statistically significant (p &lt; .001), effect size d = … (report it)."</li>
+<li>Both p-values are near 0.05, so the strength of evidence is almost the same; compare the effect sizes and confidence intervals instead of looking at which side of 0.05 they fall.</li>
+<li>Right, and it is good practice: it reports both significance and the effect size.</li></ol></details></div>
+<div class="exitem"><h4>Exercise 1.6-B: Think it through (150 words)</h4>
+<p>A network with 20 nodes has 190 possible edges. What goes wrong if you test each edge for significance one by one? What could you do about it?</p>
+<details class="answer"><summary>Key points</summary>
+<ul><li>Problem: multiple comparisons → even if all true edges are 0, you expect about 9.5 false positive edges; the network plot "looks rich," but many edges are noise.</li>
+<li>What to do: (1) correct α (Bonferroni etc.), but power drops sharply; (2) regularized estimation (LASSO / graphical lasso), which shrinks weak edges to 0; this is the mainstream approach in network analysis (Lessons 3.5, 6.3), but it does not control the false positive rate by itself; (3) assess edge stability with the bootstrap (Module 8); (4) replicate in an independent sample.</li></ul></details></div>
+<div class="exitem"><h4>Exercise 1.6-C: In R</h4>
+<p>Run <code>R/L1-6.R</code>, then change <code>set.seed(1)</code> in the multiple-comparisons simulation to other numbers and run it 5 times, noting the number of false positives each time. Is their average close to 9.5?</p>
+<details class="answer"><summary>Hint</summary><p>The count goes up and down around 9.5. Model answer <code>R/solutions/L1-6_solution.R</code>: seeds 2–6 give 11, 8, 12, 9, 12 false positives, mean 10.4. One step further: wrap the whole simulation in <code>replicate(200, {...})</code>; the mean over 200 seeds is 9.29, very close to the theoretical 9.5; single runs range from 0 to 19, and the middle 90% lie between about 5 and 15.</p></details></div>
+<div class="exitem"><h4>Exercise 1.6-D: Walk through a test as a "trial"</h4>
+<p>Take this lesson's gender difference in depression (t = −3.33, p ≈ 0.0009) and write out three steps: (1) H₀ and H₁; (2) what the p-value says; (3) your decision (α = 0.05). Then answer: if this decision were wrong, which type of error would it be? And for a study with n = 30 and p = 0.20, which type of error might it make?</p>
+<details class="answer"><summary>Answer</summary>
+<p>(1) H₀: in the population, men and women have the same mean depression total; H₁: they differ. (2) If H₀ were true, the probability of drawing a difference at least this large would be about 0.0009. (3) p &lt; 0.05, so reject H₀: the difference is statistically significant (and report d = 0.235, a small effect). We rejected H₀, so if this is wrong it is a Type I error (false positive). With n = 30 and p = 0.20 we do not reject H₀; if a real effect exists, that is a Type II error (false negative), which happens easily with a small sample and low power.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three things to take away</h2>
+<ul><li>p-value = the probability of a result at least this extreme if H₀ is true; it is not the probability that H₀ is true, and it doesn't measure the size of the effect.</li>
+<li>Always report effect sizes (d, r, β) and confidence intervals too; in large samples even tiny effects are significant.</li>
+<li>With many edges, testing them one by one produces many false positives. Network analysis usually shrinks weak edges to 0 with regularization, but regularization does not guarantee there are no false positives either. This is the end of M1; once you have finished the R basics in {{L:2.1}}–{{L:2.6}}, the next statistics module moves on to regression, starting with {{L:3.1}}.</li></ul>
+</section>

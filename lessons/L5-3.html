@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.3 RI-CLPM：把“稳定的个人特质”与“被试内变化”分开 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L5-3.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="5.3" style="--c:#8b5cf6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L5-3">CLPN 课程大纲</a><span class="crumb">M5 传统交叉滞后面板模型（CLPM）与 RI-CLPM / 5.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L5-3.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L5-3.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details open style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html" class="cur" aria-current="page"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 5 · Cross-Lagged Panel Models · 第 5.3 课</div>
+<h1>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L5-2.html">5.2 用 lavaan 拟合 CLPM 并评估模型拟合</a></span><span>配套脚本：<a href="../R/L5-3.R">R/L5-3.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>理解 Hamaker, Kuiper &amp; Grasman (2015) 的核心批评：CLPM 混淆了被试间与被试内效应</li><li>理解随机截距（random intercept）代表稳定的、类特质的个体差异</li><li>比较 CLPM 与 RI-CLPM 结果，并解释差异</li><li>知道 RI-CLPM 至少需要 3 波数据</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>随机截距交叉滞后面板模型</b><span class="en">random-intercept CLPM, RI-CLPM</span></li><li><b>随机截距</b><span class="en">random intercept</span></li><li><b>类特质稳定性</b><span class="en">trait-like stability</span></li><li><b>被试内效应</b><span class="en">within-person effect</span></li><li><b>被试间效应</b><span class="en">between-person effect</span></li><li><b>中心化</b><span class="en">centering</span></li></ul>
+<p>这一课区分被试间与被试内两类问题，并介绍能把两者分开的 RI-CLPM。CLPN 论文的局限部分需要讨论这一点，审稿人也常问：“你的结果是被试间还是被试内？”</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>两个听起来很像、其实完全不同的问题</h3>
+<ul><li><b>被试间（between-person）问题：</b>“比别人更孤独的人，是否也比别人更抑郁？”比较的是不同的人。</li>
+<li><b>被试内（within-person）问题：</b>“当一个人比他自己平时更孤独时，他之后是否会比自己平时更抑郁？”比较的是同一个人在不同时间。</li></ul>
+<p>社工干预真正关心的往往是第二个问题：如果我们帮助某位居民减少孤独（相对于他自己），他的抑郁会不会随之改善？但 CLPM 的系数混合了这两种信息。</p>
+<p>下面的演示中，12 个人、每人 6 次测量。你可以分别设定“被试间”与“被试内”的相关。默认设置是：孤独特质高的人抑郁特质也高（ρ<sub>B</sub> = 0.7），但对同一个人来说，孤独比平时高的时候抑郁反而略低（ρ<sub>W</sub> = −0.4）。切换三种视图看看。</p>
+<div class="widget w2" data-widget="bw"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<p>你会发现：把所有点混在一起算出的相关，主要由“人与人之间的差异”决定，和“每个人内部的关系”可能方向相反。这种现象在统计学中与辛普森悖论（Simpson's paradox）和生态谬误（ecological fallacy）同源。</p>
+<h3>Hamaker 等人（2015）的批评</h3>
+<p>Hamaker、Kuiper 和 Grasman 指出：许多心理特征都有 <span class="term">类特质稳定性<span class="en">（trait-like stability）</span></span>：有些人就是长期比别人更孤独。CLPM 的自回归路径会把这种“稳定的个体差异”当成“从 T1 到 T2 的延续”，于是：</p>
+<ol><li>自回归被高估（看起来很稳定，其实是“人不同”而不是“状态延续”）；</li>
+<li>交叉滞后可能被高估、低估，甚至方向相反，因为它掺杂了“特质之间的相关”；</li>
+<li>研究者以为得到了被试内的动态过程，其实很大部分是被试间差异。</li></ol>
+<h3>RI-CLPM 的解决办法：给每个人一个“个人基线”</h3>
+<p><span class="term">随机截距交叉滞后面板模型<span class="en">（random-intercept CLPM, RI-CLPM）</span></span> 把每个观测分数拆成两部分：</p>
+<div class="box story"><b class="bt">分解：</b><p>观测分数 = 总体均值 + 个人稳定的偏离（<span class="term">随机截距<span class="en">（random intercept）</span></span>，跨时间不变）+ 这一次相对于个人基线的偏离（<span class="term">被试内成分<span class="en">（within-person component）</span></span>，随时间变化）</p></div>
+<p>然后自回归和交叉滞后只放在“被试内成分”之间。于是交叉滞后的含义变成：<i>某人在 T1 比他自己平时更孤独，他在 T2 是否比他自己平时更抑郁。</i>这才是更接近“过程”的问题。两个随机截距之间的相关，则单独表示被试间关系（“长期孤独的人也长期抑郁”）。</p>
+<h3>课程数据上的对比</h3>
+<p>模拟数据在生成时故意设定了较强的稳定特质（孤独与抑郁特质相关 .50）。配套脚本 <code>R/L5-3.R</code> 的实际结果：</p>
+<div class="tablewrap"><table><tr><th>路径</th><th>CLPM（标准化）</th><th>RI-CLPM 被试内（标准化）</th></tr><tr><td>孤独 T1 → 孤独 T2（自回归）</td><td>0.607</td><td>0.348</td></tr><tr><td>抑郁 T1 → 抑郁 T2（自回归）</td><td>0.539</td><td>0.218</td></tr><tr><td>孤独 T1 → 抑郁 T2（交叉滞后）</td><td>0.128</td><td>0.265</td></tr><tr><td>抑郁 T1 → 孤独 T2（交叉滞后）</td><td>0.016</td><td>0.083</td></tr><tr><td>孤独 T2 → 孤独 T3（自回归）</td><td>0.559</td><td>0.198</td></tr><tr><td>抑郁 T2 → 孤独 T3（交叉滞后）</td><td>0.068</td><td>0.245</td></tr><tr><td>模型比较</td><td>χ²(4) = 67.99</td><td>χ²(1) = 0.33；Δχ²(3) = 67.65，p &lt; .001</td></tr></table></div>
+<p>两点观察：（1）RI-CLPM 的自回归大幅变小：CLPM 的“稳定性”很大一部分来自被试间差异。（2）交叉滞后的数值也变了，例如“抑郁 T2 → 孤独 T3”从 0.068 变成 0.245。第（2）点要小心：下一节对照大样本值会看到，这个变化主要是这一份样本的抽样波动，不能据此说“抑郁 → 孤独”在被试内更强。（注意：被试内成分的方差较小，标准化后的数值不能与 CLPM 直接逐一比大小，但“自回归变小”这一点是稳健的。另外，严格地说，CLPM 相当于把随机截距的方差固定为 0，而方差不能小于 0，这个值落在参数空间的边界上，普通的 χ² 差异检验因此偏保守；这里差异极大（Δχ² = 67.65），结论不受影响。）</p>
+<h3>与大样本值对照：一份样本离总体有多远</h3>
+<p>课程数据是模拟的，生成模型已知。配套脚本 <code>R/L5-3b.R</code> 用 20 万人的大样本拟合同样的两个模型，得到样本无限大时的标准化路径（下表的“大样本值”）。这里的对象是总分，不是 9 道题，所以它和 7.2 课起使用的两张题目层面的矩阵不是一回事：CLPM 一行的大样本值是 CLPM 的总体目标值（含特质混杂），RI-CLPM 被试内各行的大样本值则对应生成模型里总分层面的被试内过程。然后再按同一个生成模型重复生成 200 份 N = 800 的数据，看一份样本的估计会在大样本值周围波动多大。</p>
+<div class="tablewrap"><table><tr><th>路径（RI-CLPM 被试内，标准化）</th><th>大样本值</th><th>课程样本</th><th>200 份 N = 800 样本的 90% 范围</th></tr><tr><td>孤独 T1 → 孤独 T2（自回归）</td><td>0.332</td><td>0.348</td><td>[0.215, 0.440]</td></tr><tr><td>孤独 T1 → 抑郁 T2（交叉滞后）</td><td>0.093</td><td>0.265</td><td>[−0.016, 0.197]</td></tr><tr><td>抑郁 T1 → 孤独 T2（交叉滞后）</td><td>0.012</td><td>0.083</td><td>[−0.121, 0.093]</td></tr><tr><td>抑郁 T2 → 孤独 T3（交叉滞后）</td><td>0.011</td><td>0.245</td><td>[−0.095, 0.124]</td></tr><tr><td>随机截距相关（被试间）</td><td>0.459</td><td>0.200</td><td>[0.325, 0.588]</td></tr></table></div><div class="box story"><b class="bt">这张表说明：</b><ol><li><b>自回归变小是对的。</b>被试内自回归的大样本值是 0.332，而 CLPM 在样本无限大时也会给出 0.605：CLPM 的“稳定性”确实被稳定特质抬高了。</li><li><b>真实的方向和 CLPM 一样，课程样本却把两个方向都估大了。</b>被试内的大样本值是孤独 → 抑郁约 0.093、抑郁 → 孤独约 0.012，与 CLPM 的方向一致（孤独 → 抑郁更强）。课程样本的“孤独 T1 → 抑郁 T2 = 0.265”比 200 份重复样本的估计都大，“抑郁 T2 → 孤独 T3 = 0.245”也比 200 份重复样本的估计都大；同时随机截距相关 0.200 在 200 份重复样本中只有 1 份不比它大。这几个数是一起偏的：随机截距少吸收了一部分孤独与抑郁之间的被试间关联，这部分关联就转到了被试内交叉滞后上。课程数据恰好是一份不太典型的样本。</li><li><b>3 波、N = 800 时，RI-CLPM 的被试内交叉滞后很不精确。</b>一份样本的估计可以落在上表第四列那么宽的范围里，只看点估计比较两个方向，很容易得出相反的结论。</li></ol><p>所以 RI-CLPM 的价值在于去掉被试间混杂，代价是精度。报告时一定要给出置信区间；要比较两个方向，应检验它们的差值，而不是比较两个点估计。</p></div>
+<div class="box warnbox"><b class="bt">对 CLPN 的直接含义：</b><p>CLPN（无论是本课程主线的“仅 LASSO”简化版，还是 Wysocki 等人 2025 年的完整流程）用的都是观测题目分数，<b>没有</b>随机截距，所以和 CLPM 一样混合了被试间与被试内信息。课程数据中，<code>data/true_B_within.csv</code>（被试内真值：生成数据时用的被试内结构）与 <code>data/true_B_population.csv</code>（总体目标值：CLPN 在无限大样本中会收敛到的答案）明显不同，后者多了许多由稳定特质造成的小正边。7.2 课起两者会并列出现，7.5 课专门讨论。</p></div>
+<h3>RI-CLPM 的条件与局限</h3>
+<ul><li>至少需要 3 波数据：2 波时无法把“稳定部分”和“变化部分”分开（模型不可识别）。</li>
+<li>它假设特质部分跨时间完全不变；若存在长期趋势，可能需要更复杂的模型（例如加入随机斜率或线性趋势；Mulder 和 Hamaker（2021）讨论的三种扩展则是加入不随时间变化的预测变量与结果变量、多组比较和多指标模型）。</li>
+<li>它仍然只是“被试内的时间预测”，不能自动变成因果（5.4 课）。</li></ul>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>CLPM 不是已经用自回归控制了 T1 吗，为什么稳定特质还会漏进交叉滞后？</summary><p>因为 CLPM 控制的是 T1 的<b>观测分数</b>，而观测分数 = 稳定特质 + 这一次的状态（再加测量误差）。控制一个只部分反映特质的分数，只能吸收特质的一部分，就像用一道有噪声的题目去“控制”一个构念。剩下没被吸收的特质部分仍然同时影响 T2 的孤独和 T2 的抑郁；如果孤独特质与抑郁特质相关，T1 孤独就会借着这条通道预测 T2 抑郁，表现为一条交叉滞后路径。状态成分占观测分数的比例越大、特质之间的相关越强，漏进来的就越多。RI-CLPM 的随机截距把特质单独建模，交叉滞后只放在被试内成分之间，这个通道就被切断了（前提是特质跨时间不变）。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>以孤独为例，对个体 \(i\) 在时间 \(t\) 的观测分数：</p>
+<div class="mathbox">\[\text{孤独}_{it} = \mu_t + \kappa_i + w_{it}\]</div><div class="mathbox">\[w^{L}_{i,t+1} = \alpha\, w^{L}_{it} + \gamma\, w^{D}_{it} + u^{L}_{i,t+1}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(i,\ t\)</td><td>下标：第 i 个人，第 t 次测量</td></tr><tr><td>\(\mu_t\)</td><td>希腊字母 mu：第 t 波的总体均值（所有人的平均）</td></tr><tr><td>\(\kappa_i\)</td><td>希腊字母 kappa：第 i 个人的随机截距 = 他稳定地高于/低于平均多少（跨时间不变）</td></tr><tr><td>\(w_{it}\)</td><td>被试内成分：这一次相对于他自己基线的偏离（within）</td></tr><tr><td>\(w^{L},\ w^{D}\)</td><td>上标 L = 孤独，D = 抑郁的被试内成分</td></tr><tr><td>\(\alpha\)</td><td>alpha：被试内自回归（比自己平时更孤独的状态会延续多少）</td></tr><tr><td>\(\gamma\)</td><td>gamma：被试内交叉滞后（比自己平时更抑郁 → 下一次比自己平时更孤独）</td></tr><tr><td>\(u_{i,t+1}\)</td><td>被试内方程的残差（新冲击，innovation）</td></tr></table>
+<h4>为什么 CLPM 会出偏差？一个两行推导</h4>
+<p>若忽略 \(\kappa_i\)，用 \(\text{孤独}_t\) 预测 \(\text{孤独}_{t+1}\)，两者的协方差为</p>
+<div class="mathbox">\[\mathrm{Cov}(\text{孤独}_t,\text{孤独}_{t+1}) = \underbrace{\mathrm{Var}(\kappa)}_{\text{被试间}} + \underbrace{\mathrm{Cov}(w_t, w_{t+1})}_{\text{被试内}}\]</div>
+<p>第一项与时间过程毫无关系，却被 CLPM 当成“稳定性”。同理，孤独与抑郁两个随机截距的协方差 \(\mathrm{Cov}(\kappa^L,\kappa^D)\) 会混入交叉滞后。RI-CLPM 通过把 \(\kappa\) 作为潜变量单独估计，把这两部分分开。</p>
+<div class="box analogy"><b class="bt">在 lavaan 中怎么实现：</b><p>随机截距 = 一个潜变量，它到三波观测分数的因子载荷全部固定为 1（<code>RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3</code>）；每个观测分数再有一个被试内潜变量（载荷 1），观测变量自身的误差方差固定为 0。</p></div></section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L5-3.R 的核心部分（结构参照 Mulder & Hamaker 的 lavaan 示例）</div><pre><code class="language-r">riclpm &lt;- &#x27;
+  # 1) 随机截距：每个人稳定的“特质水平”，载荷固定为 1
+  RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3
+  RI_dep  =~ 1*dep1  + 1*dep2  + 1*dep3
+  # 2) 被试内成分
+  wl1 =~ 1*lone1; wl2 =~ 1*lone2; wl3 =~ 1*lone3
+  wd1 =~ 1*dep1;  wd2 =~ 1*dep2;  wd3 =~ 1*dep3
+  # 3) 被试内自回归与交叉滞后
+  wl2 ~ wl1 + wd1;  wd2 ~ wd1 + wl1
+  wl3 ~ wl2 + wd2;  wd3 ~ wd2 + wl2
+  # 4) 同期相关与（残差）方差
+  wl1 ~~ wd1; wl2 ~~ wd2; wl3 ~~ wd3
+  wl1 ~~ wl1; wd1 ~~ wd1; wl2 ~~ wl2; wd2 ~~ wd2; wl3 ~~ wl3; wd3 ~~ wd3
+  RI_lone ~~ RI_lone; RI_dep ~~ RI_dep; RI_lone ~~ RI_dep
+  # 5) 随机截距与 T1 被试内成分不相关；观测变量误差固定为 0
+  RI_lone ~~ 0*wl1 + 0*wd1;  RI_dep ~~ 0*wl1 + 0*wd1
+  lone1 ~~ 0*lone1; lone2 ~~ 0*lone2; lone3 ~~ 0*lone3
+  dep1 ~~ 0*dep1;   dep2 ~~ 0*dep2;   dep3 ~~ 0*dep3
+&#x27;
+fit_ri &lt;- lavaan(riclpm, data = wide, missing = &quot;fiml&quot;,
+                 meanstructure = TRUE, int.ov.free = TRUE)
+summary(fit_ri, standardized = TRUE, fit.measures = TRUE)
+anova(fit_c, fit_ri)    # 与 CLPM 比较（CLPM 嵌套在 RI-CLPM 中）</code></pre></div>
+<p><b>逐块理解：</b>第 1 块定义两个随机截距；第 2 块给每个观测分数配一个被试内潜变量；第 3 块是我们关心的被试内动态；第 4 块是同期相关和方差；第 5 块是识别所需的固定约束。<code>wide</code> 与 <code>fit_c</code> 来自脚本前面部分（与 5.2 相同的总分与 CLPM）。</p>
+<div class="box key"><b class="bt">读结果时看什么：</b><p>（1）<code>RI_lone ~~ RI_dep</code> 的标准化值 = 被试间相关；（2）随机截距方差是否明显大于 0（若接近 0，RI-CLPM 与 CLPM 结论相近）；（3）<code>wl2 ~ wd1</code> 等被试内交叉滞后；（4）<code>anova()</code> 的模型比较。</p></div><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L5-3.R</code>（46 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L5-3.R  RI-CLPM：分离稳定特质与被试内变化  (Random-intercept CLPM)
+# 结构参照 Mulder &amp; Hamaker (2021) 的 lavaan 示例
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(lavaan)
+log_open(&quot;L5-3_log.txt&quot;)
+dat &lt;- read_course_data()
+wide &lt;- data.frame(id = dat$id)
+for (t in 1:3) {
+  wide[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)])
+  wide[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)])
+}
+riclpm &lt;- &#x27;
+  # 1) 随机截距（random intercepts）：每个人稳定的“特质水平”，因子载荷固定为 1
+  RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3
+  RI_dep  =~ 1*dep1  + 1*dep2  + 1*dep3
+  # 2) 被试内成分（within-person components）
+  wl1 =~ 1*lone1; wl2 =~ 1*lone2; wl3 =~ 1*lone3
+  wd1 =~ 1*dep1;  wd2 =~ 1*dep2;  wd3 =~ 1*dep3
+  # 3) 被试内的自回归与交叉滞后
+  wl2 ~ wl1 + wd1;  wd2 ~ wd1 + wl1
+  wl3 ~ wl2 + wd2;  wd3 ~ wd2 + wl2
+  # 4) 同期相关与（残差）方差
+  wl1 ~~ wd1; wl2 ~~ wd2; wl3 ~~ wd3
+  wl1 ~~ wl1; wd1 ~~ wd1; wl2 ~~ wl2; wd2 ~~ wd2; wl3 ~~ wl3; wd3 ~~ wd3
+  RI_lone ~~ RI_lone; RI_dep ~~ RI_dep; RI_lone ~~ RI_dep
+  # 5) 随机截距与 T1 被试内成分不相关；观测变量的测量误差固定为 0
+  RI_lone ~~ 0*wl1 + 0*wd1;  RI_dep ~~ 0*wl1 + 0*wd1
+  lone1 ~~ 0*lone1; lone2 ~~ 0*lone2; lone3 ~~ 0*lone3
+  dep1 ~~ 0*dep1;   dep2 ~~ 0*dep2;   dep3 ~~ 0*dep3
+&#x27;
+fit_ri &lt;- lavaan(riclpm, data = wide, missing = &quot;fiml&quot;, meanstructure = TRUE, int.ov.free = TRUE)
+print(summary(fit_ri, standardized = TRUE, fit.measures = TRUE))   # print()：用 source() 或 run_all.R 运行时也写进日志
+
+clpm &lt;- &#x27;lone2 ~ lone1 + dep1; dep2 ~ dep1 + lone1; lone3 ~ lone2 + dep2; dep3 ~ dep2 + lone2
+         lone1 ~~ dep1; lone2 ~~ dep2; lone3 ~~ dep3&#x27;
+fit_c &lt;- sem(clpm, data = wide, missing = &quot;fiml&quot;)
+get &lt;- function(f) { pe &lt;- standardizedSolution(f); pe &lt;- pe[pe$op == &quot;~&quot;, ]
+  setNames(round(pe$est.std, 3), paste(pe$rhs, &quot;→&quot;, pe$lhs)) }
+cat(&quot;\n===== CLPM vs RI-CLPM 标准化路径 =====\nCLPM：\n&quot;); print(get(fit_c))
+cat(&quot;RI-CLPM（被试内）：\n&quot;); print(get(fit_ri))
+print(anova(fit_c, fit_ri))
+cat(&quot;模拟数据设定了较强的稳定特质：RI-CLPM 的自回归明显变小，说明 CLPM 的“稳定性”\n&quot;,
+    &quot;很大一部分来自被试间差异。标准 CLPN 也有同样的局限（见 7.5）。\n&quot;)
+log_close()</code></pre></div></details>
+<details class="more rsrc"><summary>本课补充脚本 <code>R/L5-3b.R</code>（111 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L5-3b.R  RI-CLPM 的结果离真值有多远？(How far is one sample from the truth?)
+# 课程数据是模拟的，生成模型已知。本脚本做两件事：
+#   1. 用 20 万人的大样本拟合同样的 CLPM 与 RI-CLPM，得到“样本无限大时”的标准化路径（真值）
+#   2. 重复生成 200 份 N = 800 的数据，看一份样本的估计会在真值周围波动多大
+# 运行约 1–3 分钟。结果写入 R/output/L5-3b_log.txt 与 L5-3b_truth.csv。
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(lavaan)
+log_open(&quot;L5-3b_log.txt&quot;)
+
+# ---- 读取生成模型 --------------------------------------------------------
+# 只执行 data/simulate_data.R 中“定义模型”的部分（N &lt;- 800 之前：B、Psi、gen_panel()、to_likert()），
+# 不会重新生成或覆盖课程数据文件。
+ex &lt;- parse(&quot;data/simulate_data.R&quot;)
+stop_at &lt;- which(vapply(ex, function(e) identical(deparse(e)[1], &quot;N &lt;- 800&quot;), logical(1)))
+stopifnot(length(stop_at) == 1)
+sim &lt;- new.env()
+for (e in ex[seq_len(stop_at - 1)]) eval(e, sim)
+
+# 把题目得分加成三波总分（与 L5-3.R 相同）
+to_sums &lt;- function(X) {
+  out &lt;- list()
+  for (t in 1:3) {
+    lik &lt;- sim$to_likert(X[[t]])
+    out[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(lik[, 1:4])
+    out[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(lik[, 5:9])
+  }
+  as.data.frame(out)
+}
+
+riclpm &lt;- &#x27;
+  RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3
+  RI_dep  =~ 1*dep1  + 1*dep2  + 1*dep3
+  wl1 =~ 1*lone1; wl2 =~ 1*lone2; wl3 =~ 1*lone3
+  wd1 =~ 1*dep1;  wd2 =~ 1*dep2;  wd3 =~ 1*dep3
+  wl2 ~ wl1 + wd1;  wd2 ~ wd1 + wl1
+  wl3 ~ wl2 + wd2;  wd3 ~ wd2 + wl2
+  wl1 ~~ wd1; wl2 ~~ wd2; wl3 ~~ wd3
+  wl1 ~~ wl1; wd1 ~~ wd1; wl2 ~~ wl2; wd2 ~~ wd2; wl3 ~~ wl3; wd3 ~~ wd3
+  RI_lone ~~ RI_lone; RI_dep ~~ RI_dep; RI_lone ~~ RI_dep
+  RI_lone ~~ 0*wl1 + 0*wd1;  RI_dep ~~ 0*wl1 + 0*wd1
+  lone1 ~~ 0*lone1; lone2 ~~ 0*lone2; lone3 ~~ 0*lone3
+  dep1 ~~ 0*dep1;   dep2 ~~ 0*dep2;   dep3 ~~ 0*dep3
+&#x27;
+clpm &lt;- &#x27;lone2 ~ lone1 + dep1; dep2 ~ dep1 + lone1; lone3 ~ lone2 + dep2; dep3 ~ dep2 + lone2
+         lone1 ~~ dep1; lone2 ~~ dep2; lone3 ~~ dep3&#x27;
+
+# 取出标准化路径；RI-CLPM 的被试内变量名 wl/wd 改写成 lone/dep，便于与 CLPM 对齐
+paths &lt;- function(fit) {
+  pe &lt;- standardizedSolution(fit)
+  pe &lt;- pe[pe$op == &quot;~&quot; | (pe$op == &quot;~~&quot; &amp; pe$lhs == &quot;RI_lone&quot; &amp; pe$rhs == &quot;RI_dep&quot;), ]
+  nm &lt;- ifelse(pe$op == &quot;~&quot;, paste(pe$rhs, &quot;→&quot;, pe$lhs), &quot;RI_lone ~~ RI_dep&quot;)
+  nm &lt;- gsub(&quot;wl&quot;, &quot;lone&quot;, gsub(&quot;wd&quot;, &quot;dep&quot;, nm))
+  setNames(pe$est.std, nm)
+}
+# 注意：lavaan 0.7 拟合前后会保存并恢复随机数状态。若把 to_sums(gen_panel(...)) 直接作为参数传入，
+# 数据要到 lavaan 内部才生成，随机数状态随后被恢复，每次都会抽到同一份样本。
+# 所以先用 force(d) 在 lavaan 之外生成数据。
+fit_both &lt;- function(d, ...) {
+  force(d)
+  list(
+    CLPM    = paths(sem(clpm, data = d, ...)),
+    RICLPM  = paths(lavaan(riclpm, data = d, meanstructure = TRUE, int.ov.free = TRUE, ...)))
+}
+
+# ---- 1. 课程数据（与 L5-3.R 相同的模型）-----------------------------------
+dat &lt;- read_course_data()
+wide &lt;- data.frame(row.names = seq_len(nrow(dat)))
+for (t in 1:3) {
+  wide[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)])
+  wide[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)])
+}
+course &lt;- fit_both(wide, missing = &quot;fiml&quot;)
+
+# ---- 2. 真值：20 万人的大样本 ---------------------------------------------
+set.seed(5302)
+truth &lt;- fit_both(to_sums(sim$gen_panel(200000)$X))
+
+# ---- 3. 抽样波动：200 份 N = 800 的样本 -----------------------------------
+R_REP &lt;- 200
+set.seed(5303)
+reps &lt;- lapply(seq_len(R_REP), function(r) {
+  res &lt;- tryCatch(suppressWarnings(fit_both(to_sums(sim$gen_panel(800)$X))), error = function(e) NULL)
+  res
+})
+ok &lt;- !vapply(reps, is.null, logical(1))
+cat(&quot;200 次重复中成功拟合：&quot;, sum(ok), &quot;次\n\n&quot;)
+
+rows &lt;- list()
+for (m in c(&quot;CLPM&quot;, &quot;RICLPM&quot;)) {
+  sims &lt;- do.call(rbind, lapply(reps[ok], `[[`, m))
+  for (p in names(truth[[m]])) {
+    rows[[length(rows) + 1]] &lt;- data.frame(
+      model = m, path = p,
+      truth = truth[[m]][[p]], course = course[[m]][[p]],
+      q05 = unname(quantile(sims[, p], .05)), q95 = unname(quantile(sims[, p], .95)),
+      sd = sd(sims[, p]),
+      pct = mean(sims[, p] &lt;= course[[m]][[p]]))   # 课程样本的估计在 200 份样本中的百分位
+  }
+}
+tab &lt;- do.call(rbind, rows)
+write.csv(tab, out(&quot;L5-3b_truth.csv&quot;), row.names = FALSE)
+
+cat(&quot;===== 标准化路径：真值（N = 200000）、课程样本、200 份 N = 800 样本的 90% 范围 =====\n&quot;)
+show &lt;- tab; show[, 3:7] &lt;- round(show[, 3:7], 3); show$pct &lt;- round(tab$pct, 2)
+print(show, row.names = FALSE)
+cat(&quot;\n读法：truth 是样本无限大时的值；course 是课程数据（N = 800）的估计；\n&quot;,
+    &quot;[q05, q95] 是同一生成模型下 200 份 N = 800 样本的估计范围；pct 是课程样本的估计排在第几个百分位。\n&quot;,
+    &quot;RI-CLPM 的被试内交叉滞后在 3 波、N = 800 时波动很大：单份样本的方向判断并不可靠。\n&quot;)
+log_close()</code></pre></div></details>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L5-3_log.txt</code></div><pre class="out"><code>lavaan 0.6-19 ended normally after 116 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        26
+
+  Number of observations                           800
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                                      
+  Test statistic                                 0.333
+  Degrees of freedom                                 1
+  P-value (Chi-square)                           0.564
+
+Model Test Baseline Model:
+
+  Test statistic                              1685.320
+  Degrees of freedom                                15
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.006
+                                                      
+  Robust Comparative Fit Index (CFI)             1.000
+  Robust Tucker-Lewis Index (TLI)                1.006
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -11542.526
+  Loglikelihood unrestricted model (H1)     -11542.359
+                                                      
+  Akaike (AIC)                               23137.052
+  Bayesian (BIC)                             23258.852
+  Sample-size adjusted Bayesian (SABIC)      23176.287
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.078
+  P-value H_0: RMSEA &lt;= 0.050                    0.822
+  P-value H_0: RMSEA &gt;= 0.080                    0.044
+                                                      
+  Robust RMSEA                                   0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.078
+  P-value H_0: Robust RMSEA &lt;= 0.050             0.822
+  P-value H_0: Robust RMSEA &gt;= 0.080             0.044
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.003
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RI_lone =~                                                            
+    lone1             1.000                               1.844    0.598
+    lone2             1.000                               1.844    0.628
+    lone3             1.000                               1.844    0.613
+  RI_dep =~                                                             
+    dep1              1.000                               2.086    0.615
+    dep2              1.000                               2.086    0.620
+    dep3              1.000                               2.086    0.610
+  wl1 =~                                                                
+    lone1             1.000                               2.469    0.801
+  wl2 =~                                                                
+    lone2             1.000                               2.285    0.778
+  wl3 =~                                                                
+    lone3             1.000                               2.374    0.790
+  wd1 =~                                                                
+    dep1              1.000                               2.674    0.789
+  wd2 =~                                                                
+    dep2              1.000                               2.638    0.784
+  wd3 =~                                                                
+    dep3              1.000                               2.710    0.792
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  wl2 ~                                                                 
+    wl1               0.322    0.070    4.607    0.000    0.348    0.348
+    wd1               0.071    0.055    1.286    0.198    0.083    0.083
+  wd2 ~                                                                 
+    wd1               0.215    0.071    3.044    0.002    0.218    0.218
+    wl1               0.284    0.064    4.452    0.000    0.265    0.265
+  wl3 ~                                                                 
+    wl2               0.206    0.086    2.395    0.017    0.198    0.198
+    wd2               0.221    0.061    3.620    0.000    0.245    0.245
+  wd3 ~                                                                 
+    wd2               0.210    0.077    2.728    0.006    0.205    0.205
+    wl2               0.231    0.083    2.790    0.005    0.195    0.195
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  wl1 ~~                                                                
+    wd1               2.490    0.542    4.597    0.000    0.377    0.377
+ .wl2 ~~                                                                
+   .wd2               2.245    0.319    7.028    0.000    0.441    0.441
+ .wl3 ~~                                                                
+   .wd3               2.273    0.291    7.822    0.000    0.409    0.409
+  RI_lone ~~                                                            
+    RI_dep            0.770    0.522    1.476    0.140    0.200    0.200
+    wl1               0.000                               0.000    0.000
+    wd1               0.000                               0.000    0.000
+  RI_dep ~~                                                             
+    wl1               0.000                               0.000    0.000
+    wd1               0.000                               0.000    0.000
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .lone1             8.804    0.109   80.810    0.000    8.804    2.857
+   .lone2             8.869    0.104   85.431    0.000    8.869    3.020
+   .lone3             8.885    0.106   83.592    0.000    8.885    2.955
+   .dep1              3.836    0.120   31.993    0.000    3.836    1.131
+   .dep2              3.784    0.119   31.820    0.000    3.784    1.125
+   .dep3              3.849    0.121   31.831    0.000    3.849    1.125
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    wl1               6.094    0.612    9.953    0.000    1.000    1.000
+    wd1               7.151    0.709   10.081    0.000    1.000    1.000
+   .wl2               4.439    0.385   11.531    0.000    0.850    0.850
+   .wd2               5.834    0.511   11.414    0.000    0.838    0.838
+   .wl3               4.791    0.352   13.606    0.000    0.850    0.850
+   .wd3               6.452    0.446   14.458    0.000    0.879    0.879
+    RI_lone           3.401    0.585    5.818    0.000    1.000    1.000
+    RI_dep            4.351    0.698    6.238    0.000    1.000    1.000
+   .lone1             0.000                               0.000    0.000
+   .lone2             0.000                               0.000    0.000
+   .lone3             0.000                               0.000    0.000
+   .dep1              0.000                               0.000    0.000
+   .dep2              0.000                               0.000    0.000
+   .dep3              0.000                               0.000    0.000
+
+===== CLPM vs RI-CLPM 标准化路径 =====
+CLPM：
+lone1 → lone2  dep1 → lone2   dep1 → dep2  lone1 → dep2 lone2 → lone3 
+        0.607         0.016         0.539         0.128         0.559 
+ dep2 → lone3   dep2 → dep3  lone2 → dep3 
+        0.068         0.548         0.049 
+RI-CLPM（被试内）：
+wl1 → wl2 wd1 → wl2 wd1 → wd2 wl1 → wd2 wl2 → wl3 wd2 → wl3 wd2 → wd3 wl2 → wd3 
+    0.348     0.083     0.218     0.265     0.198     0.245     0.205     0.195 
+
+Chi-Squared Difference Test
+
+       Df   AIC   BIC   Chisq Chisq diff   RMSEA Df diff Pr(&gt;Chisq)    
+fit_ri  1 23137 23259  0.3334                                          
+fit_c   4 23199 23306 67.9855     67.652 0.16413       3  1.358e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+模拟数据设定了较强的稳定特质：RI-CLPM 的自回归明显变小，说明 CLPM 的“稳定性”
+ 很大一部分来自被试间差异。标准 CLPN 也有同样的局限（见 7.5）。</code></pre></div>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L5-3b_log.txt</code></div><pre class="out"><code>200 次重复中成功拟合： 200 次
+
+===== 标准化路径：真值（N = 200000）、课程样本、200 份 N = 800 样本的 90% 范围 =====
+  model              path truth course    q05   q95    sd  pct
+   CLPM     lone1 → lone2 0.605  0.607  0.566 0.651 0.026 0.48
+   CLPM      dep1 → lone2 0.037  0.016 -0.018 0.070 0.030 0.30
+   CLPM       dep1 → dep2 0.587  0.539  0.537 0.629 0.027 0.06
+   CLPM      lone1 → dep2 0.088  0.128  0.035 0.138 0.032 0.89
+   CLPM     lone2 → lone3 0.603  0.559  0.564 0.644 0.025 0.03
+   CLPM      dep2 → lone3 0.037  0.068 -0.016 0.092 0.032 0.82
+   CLPM       dep2 → dep3 0.584  0.548  0.543 0.625 0.025 0.08
+   CLPM      lone2 → dep3 0.090  0.049  0.037 0.134 0.029 0.09
+ RICLPM     lone1 → lone2 0.332  0.348  0.215 0.440 0.069 0.60
+ RICLPM      dep1 → lone2 0.012  0.083 -0.121 0.093 0.070 0.91
+ RICLPM       dep1 → dep2 0.308  0.218  0.156 0.423 0.077 0.14
+ RICLPM      lone1 → dep2 0.093  0.265 -0.016 0.197 0.064 1.00
+ RICLPM     lone2 → lone3 0.331  0.198  0.197 0.433 0.071 0.06
+ RICLPM      dep2 → lone3 0.011  0.245 -0.095 0.124 0.068 1.00
+ RICLPM       dep2 → dep3 0.303  0.205  0.159 0.418 0.080 0.14
+ RICLPM      lone2 → dep3 0.096  0.195 -0.022 0.188 0.064 0.96
+ RICLPM RI_lone ~~ RI_dep 0.459  0.200  0.325 0.588 0.084 0.00
+
+读法：truth 是样本无限大时的值；course 是课程数据（N = 800）的估计；
+ [q05, q95] 是同一生成模型下 200 份 N = 800 样本的估计范围；pct 是课程样本的估计排在第几个百分位。
+ RI-CLPM 的被试内交叉滞后在 3 波、N = 800 时波动很大：单份样本的方向判断并不可靠。</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L5-3b_truth.csv</code></div><pre class="out"><code>&quot;model&quot;,&quot;path&quot;,&quot;truth&quot;,&quot;course&quot;,&quot;q05&quot;,&quot;q95&quot;,&quot;sd&quot;,&quot;pct&quot;
+&quot;CLPM&quot;,&quot;lone1 → lone2&quot;,0.604687936077752,0.607145327060687,0.566281326663995,0.65099686559002,0.0261988686125308,0.485
+&quot;CLPM&quot;,&quot;dep1 → lone2&quot;,0.0365239538527359,0.015956047271949,-0.0180250562917844,0.0700710214917912,0.0298692844095738,0.3
+&quot;CLPM&quot;,&quot;dep1 → dep2&quot;,0.587303778740626,0.539074595547164,0.537270005205912,0.62914009844375,0.0270707551049227,0.06
+&quot;CLPM&quot;,&quot;lone1 → dep2&quot;,0.0879165282495845,0.128018802981637,0.0351141755917081,0.137820843987588,0.0323403845530846,0.89
+&quot;CLPM&quot;,&quot;lone2 → lone3&quot;,0.602829791245302,0.559441253464314,0.564206295460295,0.64434221575027,0.0254205738885859,0.03
+&quot;CLPM&quot;,&quot;dep2 → lone3&quot;,0.0365473728844299,0.0676264370941587,-0.01642407971199,0.0923787927984511,0.0321890576421487,0.825
+&quot;CLPM&quot;,&quot;dep2 → dep3&quot;,0.584396017528112,0.548481264111531,0.543022518149386,0.624724366297519,0.0246760440515826,0.08
+&quot;CLPM&quot;,&quot;lone2 → dep3&quot;,0.0899066941954487,0.0490983453922623,0.0370380924254594,0.13383150229977,0.0290795315603217,0.09
+&quot;RICLPM&quot;,&quot;lone1 → lone2&quot;,0.332133116022926,0.348090025437253,0.215025926527238,0.439698824847042,0.0694062495076092,0.605
+&quot;RICLPM&quot;,&quot;dep1 → lone2&quot;,0.0121205959605814,0.0827767761710593,-0.120852560457725,0.0927026835830503,0.0695152763269765,0.91
+&quot;RICLPM&quot;,&quot;dep1 → dep2&quot;,0.308402012099213,0.218407810203266,0.156291754482405,0.423243537773567,0.0771091225286179,0.14
+…（共 17 行数据，此处只显示前 11 行）</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">“一个人比他自己平时更孤独时，之后会比自己平时更抑郁”描述的是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 被试间效应</button><div class="ofb" hidden>被试间比较的是不同的人；这句话的参照点是他自己。</div></li><li><button type="button" data-ok="1">B. 被试内效应</button><div class="ofb" hidden>正确：参照点是“他自己平时”。</div></li><li><button type="button" data-ok="0">C. 同期相关</button><div class="ofb" hidden>同期相关描述同一时刻的共同变化，不涉及“之后”。</div></li><li><button type="button" data-ok="0">D. 测量误差</button><div class="ofb" hidden>测量误差是分数中的随机噪声，不是一种关于“之后”的关系。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">RI-CLPM 中的随机截距代表什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 每波的总体均值</button><div class="ofb" hidden>每波的总体均值是 μ_t，所有人共用；随机截距是每个人自己的稳定偏离。</div></li><li><button type="button" data-ok="1">B. 每个人稳定的、跨时间不变的个体差异（类特质部分）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 交叉滞后系数</button><div class="ofb" hidden>交叉滞后放在被试内成分之间，不在随机截距上。</div></li><li><button type="button" data-ok="0">D. 测量误差</button><div class="ofb" hidden>模型中观测误差固定为 0；随机截距是跨时间稳定的部分，不是误差。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么 RI-CLPM 至少需要 3 波数据？</p><ul class="opts"><li><button type="button" data-ok="0">A. 软件限制</button><div class="ofb" hidden>这是统计识别问题，换任何软件都一样。</div></li><li><button type="button" data-ok="1">B. 2 波时无法把稳定部分与变化部分分开（不可识别）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 因为至少需要两个时间段才能估计交叉滞后</button><div class="ofb" hidden>两波就有一个时间段，CLPM 照样能估计交叉滞后；RI-CLPM 需要 3 波是为了分开稳定部分与变化部分。</div></li><li><button type="button" data-ok="0">D. 因为要估计等值约束</button><div class="ofb" hidden>等值约束是可选的；不加约束时，2 波的 RI-CLPM 同样不可识别。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在课程数据中，从 CLPM 换到 RI-CLPM 后，自回归系数明显变小。最合理的解释是？</p><ul class="opts"><li><button type="button" data-ok="0">A. RI-CLPM 拟合更差，所以系数被压低</button><div class="ofb" hidden>RI-CLPM 的拟合明显更好（Δχ²(3) = 67.65）；系数变小是因为稳定的个体差异被随机截距分走了。</div></li><li><button type="button" data-ok="1">B. CLPM 的“稳定性”很大一部分来自稳定的被试间差异</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 说明被试内的状态其实没有惯性</button><div class="ofb" hidden>被试内自回归仍为正（如 0.348），只是比 CLPM 小：惯性存在，但没有 CLPM 显示的那么强。</div></li><li><button type="button" data-ok="0">D. 被试内过程更稳定</button><div class="ofb" hidden>恰恰相反：被试内自回归更小，说明状态的延续比 CLPM 显示的弱。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">标准 CLPN 是否已经区分了被试间与被试内？</p><ul class="opts"><li><button type="button" data-ok="0">A. 是，CLPN 天然是被试内模型</button><div class="ofb" hidden>这是常见误解：CLPN 用的是观测分数，没有随机截距。</div></li><li><button type="button" data-ok="1">B. 否，它基于观测分数，像 CLPM 一样混合了两者，解读与写局限时要说明</button><div class="ofb" hidden>正确：这是 CLPN 论文“局限性”里必须写的一点。</div></li><li><button type="button" data-ok="0">C. 只有用 lambda.1se 时才区分</button><div class="ofb" hidden>λ 只决定压缩掉多少边，不会把稳定特质从分数中分离出来。</div></li><li><button type="button" data-ok="0">D. 只要标准化就区分了</button><div class="ofb" hidden>标准化只改变单位，不能去除稳定特质。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：被试间与被试内各举一例<span class="lvl">基础</span></h4><p>以“社会参与”和“孤独感”为例，各写一句被试间和被试内的研究问题，并想象二者方向可能相反的情境。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>被试间：“社会参与多的居民是否比参与少的居民更不孤独？”（可能为负相关）。被试内：“当一位居民某段时间比自己平时参与更多活动时，他是否比自己平时更孤独？”可能为正：例如刚搬到新社区的居民被邀请参加大量活动，正处于适应期，反而感到孤独。这说明两层关系可以方向相反。</p></details></div>
+<div class="exitem"><h4>练习 2：看懂表格并写 200 字解释<span class="lvl">写作</span></h4><p>根据上面的 CLPM vs RI-CLPM 对照表，写一段 200 字左右的解释，供给“没学过统计的社工同事”阅读。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考要点：① 普通模型（CLPM）显示孤独和抑郁“很稳定”，并且主要是孤独预测抑郁；② 但这份数据里，有些人长期就比别人更孤独、更抑郁，这种“长期差异”被普通模型误当成了变化过程；③ 把每个人的长期水平扣除后（RI-CLPM），我们看到的是“比自己平时更孤独/更抑郁”的波动之间的关系：这份样本里两个方向的估计都不小，但对照大样本值（本页“与大样本值对照”一节）可以看到，3 波、N = 800 时这些被试内交叉滞后波动很大，不能据此判断哪个方向更强；④ 因此，若干预目标是改变个人状态，应该看去掉长期差异以后的结果，同时承认这类估计不精确，而且仍是统计预测而非因果。</p></details></div>
+<div class="exitem"><h4>练习 3：动手：随机截距方差<span class="lvl">动手</span></h4><p>运行 <code>R/L5-3.R</code>，在 <code>summary(fit_ri)</code> 中找到 <code>RI_lone ~~ RI_lone</code>、<code>RI_dep ~~ RI_dep</code> 与 <code>RI_lone ~~ RI_dep</code> 的标准化估计，回答：被试间相关有多大？与模拟设定的 0.50 接近吗？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>在 <code>Covariances:</code> 部分找 <code>RI_lone ~~ RI_dep</code> 的 <code>Std.all</code>，它就是两个随机截距的相关。模拟中的特质相关设定为 0.50，但观测分数是由“特质 + 题目特异成分 + 被试内状态”再切成李克特等级得来的，所以估计值不一定等于 0.50。本数据的实际结果（<code>R/solutions/L5-3_solution.R</code>）是：随机截距相关 = 0.20，95% CI [−0.02, 0.42]，明显低于 0.50，而且区间很宽。主要原因是抽样误差：在同一个生成模型下，样本无限大时随机截距相关应为 0.459（<code>R/L5-3b.R</code>），200 份 N = 800 样本的 90% 范围是 [0.325, 0.588]，课程样本的 0.200 在 200 份重复样本中只有 1 份不比它大。只有 3 波数据时，RI-CLPM 刚好能识别，“稳定部分”与“被试内部分”很难分清，所以估计很不精确。大样本值本身也略低于 0.50，那是次要原因：每道题还有自己独立的稳定成分，女性在抑郁题上有稳定偏移，李克特等级化也会削弱相关。另外，随机截距方差（孤独 3.40、抑郁 4.35）约占观测总分方差（每波方差的平均：孤独 9.07、抑郁 11.52）的 38%。这比 4.1 课用多层模型算出的抑郁 ICC（0.53）小：多层模型把跨波的全部协方差都归给稳定的个人差异，RI-CLPM 则把其中一部分归给被试内偏离的延续（详见 4.1 课“为什么 5.3 课说稳定成分约占 38%”一段）。只有 3 波时这两种来源很难分开，所以 0.38 和随机截距相关一样不精确。即使模型“结构正确”，在 3 波、N = 800 的条件下，被试间参数的估计也可能离大样本值较远，报告时要附上置信区间。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>参照 Mulder &amp; Hamaker 提供的 lavaan 示例代码结构，在同一份模拟数据上拟合 RI-CLPM（模拟时已设定较强的稳定特质），比较两个模型的交叉滞后估计，写一段 200 字的解释。</p></div><h3>自测问题</h3><ol><li>为什么 CLPM 的交叉滞后效应可能是“假”的？</li><li>RI-CLPM 的交叉滞后路径回答的是“谁比别人更…”还是“一个人比他自己平时更…”？</li><li>标准 CLPN 是否已经区分了被试间与被试内？这对解读意味着什么？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>被试间：人与人比较；被试内：一个人与自己平时比较。二者可以方向相反。</li><li>Hamaker 等人（2015）：CLPM 把稳定特质混进自回归和交叉滞后。</li><li>RI-CLPM = 随机截距（稳定部分）+ 被试内成分（动态部分），至少 3 波。</li><li>课程数据：RI-CLPM 的自回归大幅下降，模型拟合显著更好；被试内交叉滞后在 3 波、N = 800 时很不精确，单份样本不能用来判断方向（大样本值见 L5-3b.R）。</li><li>标准 CLPN 没有随机截距，解读和写局限时必须说明这一点。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a><div class="muted" style="font-size:.84rem">提出 RI-CLPM，第 5.3 课必读。</div></li><li>Mulder, J. D., & Hamaker, E. L. (2021). Three extensions of the random intercept cross-lagged panel model. <i>Structural Equation Modeling: A Multidisciplinary Journal, 28</i>(4), 638–648. <a href="https://doi.org/10.1080/10705511.2020.1784738" target="_blank" rel="noopener">doi.org/10.1080/10705511.2020.1784738</a><div class="muted" style="font-size:.84rem">配套 lavaan / Mplus 示例代码网站：jeroendmulder.github.io/RI-CLPM</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li></ul></section>
+<nav class="pager"><a href="L5-2.html" class="pv"><small>上一课</small>5.2 用 lavaan 拟合 CLPM 并评估模型拟合</a><a href="L5-4.html" class="nx"><small>下一课</small>5.4 从预测到因果：纵向模型能说什么、不能说什么</a></nav>
+<p class="foot">CLPN 从零开始 · 第 5.3 课 · <a href="../index.html#L5-3">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

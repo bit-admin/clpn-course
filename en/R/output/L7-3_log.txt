@@ -1,0 +1,30 @@
+Autoregressive edges (AR):
+lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5 
+0.416 0.434 0.341 0.445 0.315 0.310 0.331 0.281 0.361 
+
+Top 10 strongest cross-lagged edges:
+  from    to  weight              type               from_en
+  dep3  dep4  0.1353 CL (cross-lagged)        Sleep problems
+ lone2 lone4  0.1269 CL (cross-lagged)      Feeling left out
+ lone4  dep4  0.1084 CL (cross-lagged) No one understands me
+ lone4 lone2  0.1010 CL (cross-lagged) No one understands me
+ lone4 lone3  0.0962 CL (cross-lagged) No one understands me
+ lone4  dep5  0.0926 CL (cross-lagged) No one understands me
+  dep1  dep2  0.0921 CL (cross-lagged)        Depressed mood
+  dep5  dep4  0.0910 CL (cross-lagged)         Worthlessness
+  dep4 lone2 -0.0895 CL (cross-lagged)               Fatigue
+  dep1  dep5  0.0855 CL (cross-lagged)        Depressed mood
+                 to_en
+               Fatigue
+ No one understands me
+               Fatigue
+      Feeling left out
+      Feeling isolated
+         Worthlessness
+      Loss of interest
+               Fatigue
+      Feeling left out
+         Worthlessness
+
+Cautious reporting example: "Controlling for all T1 items, T1 'No one understands me' had the strongest unique (cross-construct) predictive effect on T2 'Fatigue' (beta = 0.11)",
+rather than "No one understands me causes Fatigue".

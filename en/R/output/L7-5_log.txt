@@ -1,0 +1,23 @@
+Correlation between T1->T2 and T2->T3 cross-lagged edge weights = 0.64 
+CL edges non-zero in both networks = 40 ; present in only one network = 27 
+Autoregressive edges:
+     lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5
+T1T2 0.416 0.434 0.341 0.445 0.315 0.310 0.331 0.281 0.361
+T2T3 0.384 0.330 0.345 0.385 0.398 0.238 0.366 0.278 0.279
+
+Max difference in edge weights before vs. after adding covariates = 0.0177 ; correlation = 0.9967 
+            lambda.min
+(Intercept)      0.000
+lone1_t1         0.019
+lone2_t1         0.000
+lone3_t1         0.079
+lone4_t1         0.084
+dep1_t1          0.309
+dep2_t1          0.074
+dep3_t1          0.000
+dep4_t1          0.027
+dep5_t1          0.062
+gender           0.062
+
+Limitation: Standard CLPN is based on observed scores, conflating between-person (stable traits) and within-person effects;
+ Because stable traits were simulated in this dataset, small within-construct edges appear that are absent from the true within-person B.

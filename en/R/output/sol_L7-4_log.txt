@@ -1,0 +1,4 @@
+Loneliness -> Depression: non-zero edges = 15 , sum = 0.557 
+Depression -> Loneliness: non-zero edges = 8 , sum = 0.079 
+Comparison with population target: Loneliness -> Depression = 0.426 ; Depression -> Loneliness = 0.141 
+Answer: rowSums(CL) = out-EI, colSums(CL) = in-EI; autoregressive edges are excluded because they are much larger than CL edges and would mask cross-lagged differences.

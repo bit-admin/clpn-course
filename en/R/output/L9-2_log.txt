@@ -1,0 +1,14 @@
+           CL_edges strongest_edge highest_outEI highest_inEI
+lambda.min "52"     "dep3 → dep4"  "lone4"       "dep4"      
+lambda.1se "17"     "dep3 → dep4"  "lone4"       "dep1"      
+ebic       "31"     "dep3 → dep4"  "lone4"       "dep4"      
+
+Across 20 random seeds: always non-zero CL edges = 49 ; always 0 = 12 ; intermittent = 11 
+→ Reports must explicitly state the random seed; repeated CV can also be used to mitigate randomness.
+
+
+Potentially redundant item pairs (goldbricker):
+lone2_t1 & lone1_t1   dep4_t1 & dep3_t1 lone3_t1 & lone1_t1 lone4_t1 & lone1_t1 lone3_t1 & lone2_t1 
+          0.0000000           0.0000000           0.1428571           0.1428571           0.1428571 
+lone4_t1 & lone2_t1   dep2_t1 & dep1_t1   dep5_t1 & dep1_t1   dep5_t1 & dep2_t1 
+          0.1428571           0.1428571           0.1428571           0.1428571 

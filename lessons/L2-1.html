@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 安装 R 与 RStudio，运行第一行代码 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-1.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.1" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L2-1">CLPN 课程大纲</a><span class="crumb">M2 R 与 RStudio：从零开始 / 2.1</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L2-1.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L2-1.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html" class="cur" aria-current="page"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 2 · R &amp; RStudio from Zero · 第 2.1 课</div>
+<h1>安装 R 与 RStudio，运行第一行代码</h1>
+<div class="facts"><span>课文学习 1 小时 30 分钟</span><span>先修：<a href="L0-1.html">0.1 课程地图、学习方法与工具准备</a></span><span>配套脚本：<a href="../R/L2-1.R">R/L2-1.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>在自己的电脑上安装 R 与 RStudio（Posit）并认识四个窗格</li><li>区分控制台（console）与脚本（script），学会保存 .R 文件</li><li>把 R 当计算器使用，学会赋值 &lt;- 与对象命名</li><li>学会使用帮助：?函数名、读报错信息、怎样整理问题向他人求助（最小可复现例子）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>R</b><span class="en">R language</span></li><li><b>RStudio / Posit</b><span class="en">IDE</span></li><li><b>控制台</b><span class="en">console</span></li><li><b>脚本</b><span class="en">script</span></li><li><b>对象</b><span class="en">object</span></li><li><b>赋值</b><span class="en">assignment, &lt;-</span></li><li><b>函数</b><span class="en">function</span></li><li><b>报错</b><span class="en">error message</span></li><li><b>最小可复现例子</b><span class="en">minimal reproducible example</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>R 是什么？为什么要学写代码？</h2>
+<div class="box story"><b class="bt">一份会“自己重做”的分析</b>
+<p>小周用 SPSS 点菜单做完了毕业论文的分析。答辩前一周，小周发现有 12 份问卷录入错了，改正后必须重新跑一遍。他不记得三个月前点过哪些菜单、勾过哪些选项，只好从头摸索，熬了两个通宵。同组的小林用 R 写了一个脚本：改正数据后，按一下“运行”，一分钟后所有表格和图都更新了。代码就是一份完整、精确、可以重复执行的分析记录。</p></div>
+<p><span class="term">R<span class="en">（R language）</span></span> 是一门专门为统计分析设计的免费、开源的编程语言。CLPN 所需的工具（<code>glmnet</code>、<code>qgraph</code>、<code>bootnet</code> 等）都是 R 的扩展包，在 SPSS 里没有对应的菜单。这是本课程使用 R 的直接原因。</p>
+<p><span class="term">RStudio / Posit<span class="en">（IDE）</span></span> 是写 R 代码的“工作台”（集成开发环境，Integrated Development Environment）。RStudio 现由 Posit 公司开发（该公司 2022 年由 RStudio 更名为 Posit），软件仍叫 RStudio Desktop，有免费版本。关系可以这样理解：R 是发动机，RStudio 是汽车的仪表盘和方向盘。必须先装 R，RStudio 才能工作。</p>
+
+<h3>安装步骤</h3>
+<ol><li><b>安装 R</b>：访问 CRAN（R 的官方发布网站 <code>https://cran.r-project.org</code>），选择你的系统（Windows / macOS），下载最新版本并按默认选项安装。国内下载慢时，可以在 CRAN 镜像列表中选择国内高校镜像（如清华大学 TUNA 镜像）。</li>
+<li><b>安装 RStudio Desktop</b>：访问 Posit 官网（<code>https://posit.co/download/rstudio-desktop/</code>），下载免费版本并安装。</li>
+<li><b>打开 RStudio</b>（不是打开 R）。在左下方的窗口输入 <code>1 + 1</code> 回车，看到 <code>[1] 2</code> 就说明成功了。</li></ol>
+<div class="box warnbox"><b class="bt">最常见的安装坑</b><ul><li><b>中文用户名 / 中文路径</b>：如果 Windows 用户名是中文（如 <code>C:\Users\张三</code>），某些包的安装可能出问题。建议把课程文件夹放在纯英文路径下（如 <code>D:\clpn-course</code>）。</li>
+<li>先装 R 再装 RStudio；如果 RStudio 提示找不到 R，重新安装 R 后重启电脑。</li>
+<li>Mac 用户注意选择与芯片对应的 R 版本（Apple Silicon 为 arm64，Intel 为 x86_64）。</li></ul>
+<p>本课程脚本在 R 4.5 和 R 4.6 下测试过；你安装的版本更新也没关系。</p></div>
+
+<h3>RStudio 的四个窗格</h3>
+<div class="widget" data-widget="panes"></div>
+<ul><li><b>脚本编辑器</b>（左上）：写代码、保存代码的地方，像 Word 文档。</li>
+<li><b><span class="term">控制台<span class="en">（console）</span></span></b>（左下）：真正执行代码的地方，显示结果。<code>&gt;</code> 是提示符，表示“R 在等你输入”。</li>
+<li><b>环境</b>（右上，Environment）：列出你创建过的所有对象，例如 <code>age</code>、<code>scores</code>。</li>
+<li><b>文件 / 图形 / 包 / 帮助</b>（右下）：浏览文件、看画出的图、查看帮助页面。</li></ul>
+
+<h3>控制台 vs 脚本：草稿纸 vs 笔记本</h3>
+<p>在控制台直接输入代码，回车就执行，但关掉 RStudio 就没了，像在草稿纸上算题。<span class="term">脚本<span class="en">（script）</span></span>是一个 <code>.R</code> 文本文件，代码可以保存、修改、注释、重复运行、发给合作者，像一本记录完整的笔记本。<b>原则：除了临时试一下，所有分析代码都写在脚本里。</b></p>
+<p>在脚本里运行代码：把光标放在某一行（或选中几行），按 <kbd>Ctrl</kbd> + <kbd>Enter</kbd>（Mac：<kbd>Cmd</kbd> + <kbd>Enter</kbd>），这一行就被送到控制台执行。新建脚本：菜单 File → New File → R Script（快捷键 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>N</kbd>）；保存：<kbd>Ctrl</kbd>+<kbd>S</kbd>，文件名建议只用英文、数字和下划线，例如 <code>week02.R</code>。</p>
+
+<h3>对象与赋值：给盒子贴标签</h3>
+<p>R 里的一切数据都存在<span class="term">对象<span class="en">（object）</span></span>里。<code>age &lt;- 21</code> 的意思是：“创建一个名叫 <code>age</code> 的盒子，把 21 放进去”。箭头 <code>&lt;-</code> 叫<span class="term">赋值<span class="en">（assignment, &lt;-）</span></span>（RStudio 快捷键 <kbd>Alt</kbd> + <kbd>-</kbd>）。之后写 <code>age</code>，R 就会取出盒子里的 21。</p>
+<div class="box analogy"><b class="bt">类比：贴标签的储物盒</b><p>赋值就像往储物盒里放东西并贴上标签。<code>age &lt;- 22</code> 会把盒子里原来的 21 换成 22（旧值被覆盖，R 不会提醒你）。右上角的“环境”窗格就是你的储物架，列出所有盒子和里面的东西。</p></div>
+<p><b>命名规则</b>：名字可以包含字母、数字、点和下划线，必须以字母或点开头；以点开头时，点后面不能紧跟数字（<code>.2x</code> 不合法，R 会把 <code>.2</code> 读成数字 0.2）；不能有空格；不能用 <code>if</code>、<code>TRUE</code>、<code>NA</code> 等保留字；<b>区分大小写</b>（<code>Age</code> 和 <code>age</code> 是两个不同的对象；逻辑值只能写成 <code>TRUE</code>/<code>FALSE</code>，写成 <code>true</code> 会报 object not found）。推荐用小写字母加下划线，例如 <code>dep_sum_t1</code>。避免用 <code>mean</code>、<code>c</code>、<code>data</code> 这样与常用函数同名的名字。</p>
+<p><code>=</code> 在大多数情况下也能赋值（<code>age = 21</code>），但 R 社区的惯例是用 <code>&lt;-</code> 赋值，<code>=</code> 留给函数参数（如 <code>mean(x, na.rm = TRUE)</code>）。而 <code>==</code> 是“比较是否相等”，返回 <code>TRUE</code> 或 <code>FALSE</code>：<code>x &lt;- 5</code> 是“把 5 放进 x”，<code>x == 5</code> 是“问：x 等于 5 吗？”。</p>
+
+<h3>函数：会做事的“机器”</h3>
+<p><span class="term">函数<span class="en">（function）</span></span>是“输入 → 处理 → 输出”的机器，写法是函数名加圆括号，括号里放输入（参数）。例如 <code>mean(scores)</code> 计算平均数，<code>sqrt(16)</code> 开平方，<code>round(3.14159, 2)</code> 四舍五入到两位小数。<code>c()</code> 是最常用的函数之一：把多个值“组合”（combine）成一个向量。</p>
+
+<h3>求助的三种方式</h3>
+<ol><li><b>帮助页面</b>：在控制台输入 <code>?mean</code>，右下窗格会打开 <code>mean</code> 的说明书。重点看 Usage（怎么写）、Arguments（每个参数是什么）、Examples（例子，可以直接复制运行）。不知道函数名时用 <code>??"standard deviation"</code> 模糊搜索。</li>
+<li><b>读<span class="term">报错<span class="en">（error message）</span></span></b>：红色的 <code>Error</code> 不是“电脑坏了”，而是 R 在告诉你哪里不对。遇到报错，第一步是读完报错信息，找出它提到的函数名或对象名。常见报错和读法见 R 代码部分。</li>
+<li><b>向别人提问</b>（同学、同事或网上论坛）：提供一个<span class="term">最小可复现例子<span class="en">（minimal reproducible example）</span></span>，即别人复制粘贴就能重现你的问题的最短代码。“我的代码跑不了”几乎没法回答，提问要按下面的模板准备材料。</li></ol>
+<div class="box key"><b class="bt">提问模板</b><ol><li>我想做什么（目标）。</li><li>我运行的代码：最短的、能重现问题的几行，包括 <code>library()</code> 和数据。数据不要写“我的数据”，而要让别人也能运行：可以现造几行（例如 <code>dat &lt;- data.frame(x = c(1, 2, NA))</code>），也可以用 <code>dput(head(d))</code> 把你自己数据的前几行转成可复制的代码。</li><li>完整的报错信息（复制文字，不要只发截图）。</li><li>我已经尝试过什么。</li><li><code>sessionInfo()</code> 的输出（R 和包的版本）。</li></ol><p>很多时候，在准备最小例子的过程中你自己就找到了问题。</p></div>
+<div class="box sw"><b class="bt">社会工作者学编程</b><p>你不需要成为程序员。你需要的是能读懂、修改、运行别人写好的分析脚本，并在出错时知道去哪里找原因。这和社会工作者阅读政策文件很像：不必会写法律，但要能读懂条款、找到适用的部分。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>R 作为计算器</h2>
+<p>本课几乎没有新数学，只需知道 R 里的运算符号：</p>
+<div class="tablewrap"><table><thead><tr><th>数学</th><th>R 写法</th><th>例子 → 结果</th></tr></thead><tbody>
+<tr><td>\(a+b,\ a-b\)</td><td><code>+ -</code></td><td><code>1 + 1</code> → 2</td></tr>
+<tr><td>\(a\times b\)</td><td><code>*</code></td><td><code>21 * 365</code> → 7665</td></tr>
+<tr><td>\(a\div b\)</td><td><code>/</code></td><td><code>10 / 3</code> → 3.333333</td></tr>
+<tr><td>\(a^b\)</td><td><code>^</code></td><td><code>2^10</code> → 1024</td></tr>
+<tr><td>\(\sqrt{a}\)</td><td><code>sqrt()</code></td><td><code>sqrt(16)</code> → 4</td></tr>
+<tr><td>\(e^{a},\ \ln a\)</td><td><code>exp()</code>, <code>log()</code></td><td><code>exp(0.134)</code> → 1.143（3.4 课的 OR）</td></tr>
+<tr><td>\(\bar x=\frac{1}{n}\sum x_i\)</td><td><code>mean()</code></td><td><code>mean(c(3, 5, 2, 4))</code> → 3.5</td></tr></tbody></table></div>
+<dl class="sym"><dt>\(a, b\)</dt><dd>任意数字或存有数字的对象。</dd><dt>\(e\)</dt><dd>自然常数，约 2.718。</dd><dt>\(\ln\)</dt><dd>自然对数；R 的 <code>log()</code> 默认就是 \(\ln\)，以 10 为底用 <code>log10()</code>。</dd><dt>\(\bar x\)</dt><dd>平均数（1.2 课）。</dd></dl>
+<p>运算顺序与数学一致：先乘方，再乘除，后加减；用圆括号改变顺序。输出前面的 <code>[1]</code> 不是结果的一部分，它表示“这一行从第 1 个元素开始”，因为 R 把所有结果都看作向量（2.2 课）。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>你的第一个脚本</h2>
+<p>对应脚本：<a href="../R/L2-1.R">R/L2-1.R</a>。在 RStudio 中打开它，把光标放在每一行，按 <kbd>Ctrl</kbd>+<kbd>Enter</kbd> 逐行运行。</p>
+<div class="codeblk"><div class="ctitle">R/L2-1.R（核心部分）</div><pre><code class="language-r"># 这是注释：R 会忽略 # 后面的内容
+1 + 1
+age &lt;- 21                    # &lt;- 是“赋值”（assignment）：把 21 存进名为 age 的对象
+age * 365                    # 年龄换算成天数（约）
+scores &lt;- c(3, 5, 2, 4)      # c() 把数字组合成向量（vector）
+mean(scores)                 # 函数（function）：名字 + 圆括号
+# ?mean                      # 打开帮助页面（在 RStudio 里去掉 # 再运行）
+sessionInfo()$R.version$version.string</code></pre></div>
+<div class="codeblk"><div class="ctitle">控制台输出（R/output/L2-1_log.txt）</div><pre class="out"><code>[1] 2
+[1] 7665
+[1] 3.5
+[1] &quot;R version 4.6.1 (2026-06-24)&quot;</code></pre></div>
+<p>注意：赋值语句 <code>age &lt;- 21</code> 本身不输出任何东西；想看值，就单独写一行 <code>age</code>。最后一行显示 R 版本（你的电脑上可能不同）。</p>
+<div class="codeblk"><div class="ctitle">赋值 vs 比较</div><pre><code class="language-r">x &lt;- 5        # 赋值：把 5 存进 x
+x == 5        # 比较：x 等于 5 吗？
+x == 3
+my_age &lt;- 21; friend_age &lt;- 23; teacher_age &lt;- 45   # 分号可以把几句写在一行
+my_age + friend_age + teacher_age</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-1_log.txt）</div><pre class="out"><code>[1] TRUE
+[1] FALSE
+[1] 89</code></pre></div>
+<h3>最常见的报错，以及怎样修好</h3>
+<p>初学 R 时，大部分时间都花在报错上。下面把最常见的几类报错放在一起，每行故意写错一处。以下是英文界面下的报错原文（中文界面会显示中文翻译，例如“错误: 找不到对象'score'”）。</p>
+<div class="codeblk"><div class="ctitle">故意写错（逐行运行）</div><pre><code class="language-r">Mean(scores)             # 大小写错了
+mena(scores)             # 函数名拼错了
+mean(score)              # 对象名拼错了（少了 s）
+&quot;a&quot; + 1                  # 字符不能做加法
+mean(scores) sd(scores)  # 一行里写了两条命令
+mean(scores              # 少了右括号</code></pre></div>
+<div class="codeblk"><div class="ctitle">报错信息与含义（示意：英文界面下的报错原文，每条下面的 → 是解释）</div><pre class="out"><code>Error in Mean(scores) : could not find function &quot;Mean&quot;
+  → 找不到名为 Mean 的函数：R 区分大小写，应为 mean。
+Error in mena(scores) : could not find function &quot;mena&quot;
+  → 同一类报错：函数名拼错；或者函数属于某个还没有 library() 加载的包（2.4 课）。
+Error: object &#x27;score&#x27; not found
+  → 找不到对象 score：拼写错误，或者忘了先运行创建它的那一行。
+Error in &quot;a&quot; + 1 : non-numeric argument to binary operator
+  → 对非数字做了数学运算：检查变量是不是被读成了字符（2.2 课）。
+Error: unexpected symbol in &quot;mean(scores) sd&quot;
+  → R 读到一个不该出现的符号：两条命令之间缺少换行或分号。中文逗号、括号、引号会引发类似的 unexpected input。
++
+  → 控制台出现 + 而不是 &gt; ：R 认为命令还没写完（缺括号或引号）。补上 ) 回车，或按 Esc 取消。</code></pre></div>
+<p>“object not found”最常见的修法是回头运行创建对象的那一行，再重新运行出错的代码：</p>
+<div class="codeblk"><div class="ctitle">修好“object not found”</div><pre><code class="language-r">scores &lt;- c(3, 5, 2, 4)  # 先运行创建它的那一行（注意拼写：Scores 与 scores 是两个名字）
+mean(scores)</code></pre></div>
+<div class="box key"><b class="bt">读报错的三步</b><ol><li>看报错的<b>最后一行</b>，找关键词：<code>could not find function</code>、<code>object ... not found</code>、<code>unexpected</code>……</li><li>找它点名的对象或函数，回到出错的那一行，核对拼写、大小写、括号和引号是否成对，以及是否已运行过创建对象的代码。</li><li>还看不懂，就把报错原文（英文）复制到搜索引擎，几乎所有初学者的报错都有人问过。可以用 <code>Sys.setenv(LANGUAGE = "en")</code> 把报错切换成英文，方便搜索。仍然解决不了，再按上面的提问模板向别人求助。</li></ol></div>
+
+<!-- extra:begin -->
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b>输入法停在中文状态。</b>中文逗号“，”、中文括号“（）”和中文引号“”都会导致 unexpected input。写代码时把输入法切换成英文，只在引号里面写中文。</li>
+<li><b>把文件存在桌面或“下载”文件夹里。</b>路径一乱，<code>read.csv()</code> 就找不到文件。从第一天起就用本课程的文件夹结构（2.4 课会讲 RStudio 项目）。</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">脚本和控制台有什么区别？为什么要写在脚本里？</p><ul class="opts"><li><button type="button" data-ok="0">控制台的代码会自动存进 .R 文件，所以两者一样可以复现</button><div class="ofb" hidden>控制台只留下零散的历史记录（History），不是一份按顺序整理、带注释、可以直接重跑的分析文件。</div></li><li><button type="button" data-ok="1">控制台执行后不保存；脚本可以保存、修改、注释、重复运行和分享，分析才可复现</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">脚本运行得更快</button><div class="ofb" hidden>速度一样：脚本里的代码也是送到控制台执行的。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>脚本是你分析的完整记录；数据改了，重新运行一遍就行。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">x <- 5 和 x == 5 有什么区别？</p><ul class="opts"><li><button type="button" data-ok="1">前者把 5 赋值给 x；后者比较 x 是否等于 5，返回 TRUE/FALSE</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">两者都是赋值，== 只是更严格的写法</button><div class="ofb" hidden>== 不改变 x，它只返回 TRUE 或 FALSE；赋值用 <- （或 =）。</div></li><li><button type="button" data-ok="0">前者比较，后者赋值</button><div class="ofb" hidden>正好反了：<- 是赋值箭头，== 才是比较。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>= 可以赋值，== 才是比较。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">运行 Mean(c(1, 2, 3)) 后出现 could not find function "Mean"。最可能的原因？</p><ul class="opts"><li><button type="button" data-ok="0">需要先运行 install.packages("Mean") 安装这个函数</button><div class="ofb" hidden>mean() 是 R 自带的函数，不用安装；问题在于 Mean 的大写 M。</div></li><li><button type="button" data-ok="1">R 区分大小写，函数名应为 mean</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">c(1, 2, 3) 里有对象还没有创建</button><div class="ofb" hidden>那样的报错是 object ... not found；这里 R 说的是找不到函数。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>另一种常见原因是函数来自某个包，而你忘了 library() 加载它。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">遇到报错，第一步应该做什么？</p><ul class="opts"><li><button type="button" data-ok="0">立刻截图发给别人求助</button><div class="ofb" hidden>应先自己读报错；即使求助，也要复制报错文字，而不是只发截图。</div></li><li><button type="button" data-ok="0">用 Sys.setenv(LANGUAGE = "en") 切换成英文再运行</button><div class="ofb" hidden>切换语言只是方便搜索，报错的内容不变；第一步仍是读懂它说了什么。</div></li><li><button type="button" data-ok="1">完整读一遍报错信息，找到它点名的函数或对象，回到代码核对</button><div class="ofb" hidden>正确。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>读不懂再搜索英文原文，最后带着最小可复现例子去问人。</div></div>
+<div class="quiz" data-kind="num" data-ans="10" data-tol="0"><p class="qtext">在 R 中输入 2^3 + 4 / 2，结果是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>先乘方，再除法，最后加法。</div><div class="fb" role="status"></div><div class="qexp" hidden>2^3 = 8，4/2 = 2，8 + 2 = 10。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">以下哪个对象名合法且推荐？</p><ul class="opts"><li><button type="button" data-ok="0">2nd_score</button><div class="ofb" hidden>不能以数字开头。</div></li><li><button type="button" data-ok="0">dep sum</button><div class="ofb" hidden>不能有空格。</div></li><li><button type="button" data-ok="1">dep_sum_t1</button><div class="ofb" hidden>正确：小写字母加下划线，清楚易读。</div></li><li><button type="button" data-ok="0">mean</button><div class="ofb" hidden>合法但不推荐：会和 mean() 函数混淆。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>字母开头、无空格、区分大小写；推荐小写加下划线。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.1-A：安装与第一份脚本</h4>
+<p>完成安装并截图（RStudio 四个窗格都可见，控制台显示 <code>1 + 1</code> 的结果）；新建脚本 <code>week02.R</code>：计算你的年龄换算成天数、给 3 个对象赋值并相加；故意写错一行代码，记录报错信息并尝试自己解释。</p>
+<details class="answer"><summary>参考脚本</summary>
+<div class="codeblk"><pre><code class="language-r"># week02.R  —— 我的第一个 R 脚本
+# 作者：（填写）   日期：（填写）
+my_age &lt;- 21                 # 换成你的真实年龄
+my_age * 365                 # 约等于天数（没算闰年）
+my_age * 365.25              # 稍微精确一点
+
+a &lt;- 3
+b &lt;- 4.5
+c_val &lt;- 10                  # 不用 c 作名字，避免和 c() 混淆
+a + b + c_val
+
+# 故意写错：
+# sum(a, b, c_vall)
+# 报错：Error: object &#x27;c_vall&#x27; not found
+# 我的解释：对象名多打了一个 l，R 找不到这个对象。</code></pre></div>
+<p>评分要点：脚本有注释；对象命名规范；能用自己的话解释报错。</p></details></div>
+<div class="exitem"><h4>练习 2.1-B：读帮助页面</h4>
+<p>运行 <code>?round</code>。(1) <code>round()</code> 有哪两个参数？(2) <code>round(2.5)</code> 和 <code>round(3.5)</code> 分别是多少？去帮助页面里找原因。</p>
+<details class="answer"><summary>参考答案</summary><p>(1) <code>x</code>（要舍入的数）和 <code>digits</code>（保留几位小数，默认 0）。(2) <code>round(2.5)</code> 返回 2，<code>round(3.5)</code> 返回 4。帮助页面说明：R 遵循 IEC 60559 标准，对“正好在中间”的数取最近的偶数（“四舍六入五成双”），与中学学的“四舍五入”不同。</p></details></div>
+<div class="exitem"><h4>练习 2.1-C：写一个最小可复现例子</h4>
+<p>假设你运行 <code>mean(c(1, 2, NA))</code> 得到 <code>NA</code>，不知道为什么。用上面的提问模板写一条求助消息（发给同学，或贴到论坛）。</p>
+<details class="answer"><summary>参考示例</summary><p>“你好，我想计算一列睡眠时长的平均数，但结果是 NA。最小例子：<code>x &lt;- c(1, 2, NA); mean(x)</code>，输出 <code>[1] NA</code>，没有报错。我查了 <code>?mean</code>，看到有 <code>na.rm</code> 参数，但不确定是否应该用它。R 版本 4.6.1。”（答案：<code>mean(x, na.rm = TRUE)</code> 返回 1.5，下一课会讲。）</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>R 是语言（发动机），RStudio 是工作台；分析代码写在脚本里，用 Ctrl+Enter 运行。</li>
+<li><code>&lt;-</code> 赋值，<code>==</code> 比较；对象名区分大小写；函数 = 名字 + 圆括号。</li>
+<li>报错先读，再查，再带着最小可复现例子提问。下一课：<a href="L2-2.html">2.2 R 基本语法：向量、数据类型与函数</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L1-6.html" class="pv"><small>上一课</small>1.6 假设检验、p 值与效应量</a><a href="L2-2.html" class="nx"><small>下一课</small>2.2 R 基本语法：向量、数据类型与函数</a></nav>
+<p class="foot">CLPN 从零开始 · 第 2.1 课 · <a href="../index.html#L2-1">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

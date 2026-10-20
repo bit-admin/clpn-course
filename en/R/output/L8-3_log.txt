@@ -1,0 +1,26 @@
+=== Correlation Stability Analysis === 
+
+Sampling levels tested:
+   nPerson Drop%   n
+1      200  75.0 109
+2      262  67.2  88
+3      324  59.5  80
+4      387  51.6 106
+5      449  43.9  98
+6      511  36.1  90
+7      573  28.4 108
+8      636  20.5 115
+9      698  12.7 109
+10     760   5.0  97
+
+Maximum drop proportions to retain correlation of 0.7 in at least 95% of the samples:
+
+inExpectedInfluence: 0.516 
+  - For more accuracy, run bootnet(..., caseMin = 0.439, caseMax = 0.595) 
+
+outExpectedInfluence: 0.205 
+  - For more accuracy, run bootnet(..., caseMin = 0.127, caseMax = 0.284) 
+
+Accuracy can also be increased by increasing both 'nBoots' and 'caseN'.
+inExpectedInfluence    CS = 0.52 -> just reaches 0.5 (one grid step above cutoff): marginally stable; altering seed may drop to lower step; interpret rankings with caution
+outExpectedInfluence   CS = 0.20 -> unstable (< 0.25); do not interpret rankings

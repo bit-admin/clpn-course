@@ -1,0 +1,187 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>"1 point" or "55 points": which stands out more?</h2>
+<div class="box story"><b class="bt">Two different rulers</b>
+<p>Mrs. Li scored 1 on the "Sleep problems" item (0–3) and 55 on "Life satisfaction" (0–100). Chen, a young social worker, wants to know: compared with other people in the community, in which area does Mrs. Li "stand out" more? Comparing 1 with 55 directly makes no sense; it is like asking which is bigger, "1 meter" or "55 jin" (a Chinese unit of weight, half a kilogram). We need a "common ruler."</p></div>
+<p>The common ruler is "how many standard deviations above (or below) the mean." In the previous lesson you saw that the standard deviation is "the typical distance from the mean." Someone 1 standard deviation above the mean is "fairly high," whatever the original scale; 2 standard deviations above is "unusually high." Converting raw scores into this unit is called {{T:standardization|}}, and the result is called a {{T:z-score|}}.</p>
+<div class="widget" data-widget="zscore"></div>
+<p>Using the T1 means and SDs in the course data: sleep problems has mean 0.79 and SD 0.94, so a score of 1 gives z = (1 − 0.79) / 0.94 ≈ 0.22, only slightly above average; life satisfaction has mean 64.32 and SD 14.81, so 55 gives z ≈ −0.63, about two-thirds of a standard deviation below average. Conclusion: Mrs. Li is relatively more "unusual" on life satisfaction (on the low side). Drag the sliders above to try other combinations.</p>
+<div class="box analogy"><b class="bt">Analogy: currency exchange</b><p>"100" in Chinese yuan, US dollars, or Japanese yen is worth very different amounts. To compare prices, you first convert everything into one currency. The z-score is that common currency: whatever the original {{T:scale (metric)|}}, everything is expressed in units of "1 standard deviation," which stands for the same relative distance from the mean.</p></div>
+<h3>Three properties of z-scores</h3>
+<ol><li>A set of z-scores always has mean 0 and standard deviation 1. z = 0 means "exactly average."</li>
+<li>Standardizing does not change the shape of the distribution. If the data were right-skewed, the z-scores are still right-skewed: standardizing does <b>not</b> make data normal. In the course data, the skewness of "Depressed mood" is 1.05 both before and after standardizing.</li>
+<li>Standardizing does not change the correlation between two variables. Correlation never "cared" about the scale in the first place (in the next lesson you will see that the correlation coefficient is just the sum of the products of z-scores divided by \(n-1\), which you can think of as the "average" z-product). In the course data, the correlation between sleep problems and life satisfaction is −0.20 both before and after standardizing.</li></ol>
+<p>All standardizing does is "shift" each variable (subtract the mean, so the center moves to 0) and "rescale" it (divide by the SD, so the unit becomes 1 standard deviation). It is like moving a photo to the middle of the canvas and resizing it to a standard size: what is in the photo (its shape, its relations to other variables) does not change.</p>
+<h3>If the distribution is roughly normal, z-scores convert to percentiles</h3>
+<p>Combined with the 68–95–99.7 rule: z = 1 is above about 84% of people, z = 2 above about 97.7%, and z = −1 above only about 16%. This conversion is reliable only when the distribution is close to normal; for strongly right-skewed depression items, look directly at the actual percentages in the sample.</p>
+<h3>"Relative to whom?": the reference group</h3>
+<p>A z-score is always computed relative to the mean and SD of some group of people. The same raw score can give very different z-scores in different reference groups: a depression total of 8 might be z ≈ 1.2 (high) among ordinary community residents, but z ≈ −0.5 (low) among clinic outpatients. Manuals for psychological scales often give the mean and SD of a large sample (the "norms"), so that you can place an individual's score against the norms. Many scales go one step further and convert to T-scores: \(T = 50 + 10z\), so the mean is 50 and the SD is 10, which avoids negative numbers and decimals. It is just a linear conversion of the z-score.</p>
+<div class="box sw"><b class="bt">A practice example</b><p>A social worker gives the same loneliness questionnaire in two communities. Mr. Zhang in community A scores 12, and Ms. Liu in community B also scores 12. If community A is lonely overall (mean 11) and community B is not very lonely (mean 7), then within their own communities Ms. Liu "stands out" more. But to judge "who needs services more," you might want one common reference (for example, a citywide sample or the scale's norms) rather than each community's own mean. Which reference group to use depends on the question you want to answer.</p></div>
+<h3>A small trap in longitudinal data</h3>
+<p>In panel data, if you standardize T1 and T2 separately (each with its own wave's mean and SD), both waves end up with mean 0, and the information "did the sample get better or worse on average from T1 to T2?" is wiped out. For CLPN this usually doesn't matter: CLPN asks "are people who are relatively high at T1 also relatively high at T2?" (a linear relation between people's relative positions), not whether the average level rose or fell. But if your research question is "did people improve on average after the intervention?", you cannot do this. For every data-processing step, ask: "what information does it wipe out?"</p>
+<h3>Why does this matter for CLPN?</h3>
+<p>Later in the course you will again and again <code>scale()</code> first and then analyze, for two reasons:</p>
+<ul><li>To make coefficients comparable ({{L:3.3}}): loneliness items are scored 1–4, depression items 0–3, age 18–85. Without standardizing, the size of a regression coefficient depends on the units of the scale, so you can't compare which edge is stronger. After standardizing, every coefficient reads the same way: "when the predictor is 1 standard deviation higher, the outcome changes on average by this many standard deviations."</li>
+<li>To make the penalty fair (preview of {{L:3.5}}): LASSO "taxes" the size of all coefficients at the same rate. If one variable is in yuan and another in units of 10,000 yuan, an equally strong relation gives a tiny coefficient for the first and a large one for the second, and the tax is no longer fair. Standardize first, and all coefficients are penalized on the same scale.</li></ul>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>One formula</h2>
+<div class="mathbox">$$z_i = \frac{x_i - \bar{x}}{s}$$</div>
+<dl class="sym"><dt>\(x_i\)</dt><dd>Person \(i\)'s raw score.</dd><dt>\(\bar x\)</dt><dd>The sample mean of the variable.</dd><dt>\(s\)</dt><dd>The sample standard deviation of the variable.</dd><dt>\(z_i\)</dt><dd>Person \(i\)'s z-score: how many standard deviations above (+) or below (−) the mean.</dd></dl>
+<p>The other way round, from z you can get back the raw score: \(x_i = \bar x + z_i \cdot s\). Example: with mean 10 and SD 3, z = 1.5 corresponds to a raw score of \(10 + 1.5\times 3 = 14.5\).</p>
+<h3>Why is the mean of z always 0 and its SD always 1?</h3>
+<p>The numerator \(x_i-\bar x\) is the deviation; in the previous lesson you checked that deviations always add up to 0, so the mean of z is 0. As for the SD: every deviation is divided by the same number \(s\), so the new standard deviation is also divided by \(s\), giving \(s/s=1\). (The general rule: multiply all numbers by a positive number \(a\) and the SD is multiplied by \(a\); add a constant to all numbers and the SD does not change.)</p>
+<h3>By hand</h3>
+<p>The same 6 loneliness totals: 8, 10, 9, 14, 7, 12 (mean 10, SD ≈ 2.608). Person 4, with 14: \(z = (14-10)/2.608 \approx 1.53\); person 5, with 7: \(z=(7-10)/2.608\approx -1.15\).</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Standardizing by hand vs. <code>scale()</code></h2>
+<p>Script: <a href="../R/L1-3.R">R/L1-3.R</a>.</p>
+```r R/L1-3.R (excerpt)
+source("R/_setup.R")
+dat <- read_course_data()
+x <- c(8, 10, 9, 14, 7, 12)
+z <- (x - mean(x)) / sd(x)                       # z-scores by hand
+round(cbind(raw = x, z_score = z, scale_fn = as.numeric(scale(x))), 3)
+cat("Mean of z-scores =", round(mean(z), 10), ", SD =", sd(z), "\n")
+```
+```out Output (R/output/L1-3_log.txt)
+     raw_score z_score scale_func
+[1,]         8  -0.767     -0.767
+[2,]        10   0.000      0.000
+[3,]         9  -0.383     -0.383
+[4,]        14   1.534      1.534
+[5,]         7  -1.150     -1.150
+[6,]        12   0.767      0.767
+Mean of z-scores = 0 , SD = 1 
+```
+<p><code>round(mean(z), 10)</code>: decimal arithmetic on a computer has tiny rounding errors, so the mean may show up as something like <code>1.2e-16</code>, "almost 0"; rounded to 10 decimal places it is 0. <code>cbind()</code> puts several columns side by side into one table.</p>
+```r Two variables on different scales: standardize several columns at once
+zz <- scale(dat[, c("dep3_t1", "life_sat_t1")])   # scale() standardizes each column separately
+round(head(cbind(dat[, c("dep3_t1", "life_sat_t1")], zz)), 2)
+```
+```out Output (R/output/L1-3_log.txt)
+  dep3_t1 life_sat_t1 dep3_t1 life_sat_t1
+1       1          55    0.22       -0.63
+2       1          49    0.22       -1.03
+3       1          74    0.22        0.65
+4       2          27    1.29       -2.52
+5       0          63   -0.84       -0.09
+6       0          78   -0.84        0.92
+```
+<p>Person 1 is Mrs. Li from our story. Person 4 has a life satisfaction of 27, z = −2.52: 2.5 standard deviations below average, which is very rare; a social worker might want to give this person particular attention.</p>
+```r Check two properties: the correlation and the skewness don't change
+round(cor(dat$dep3_t1, dat$life_sat_t1), 4)   # Correlation of the raw scores
+round(cor(zz[, 1], zz[, 2]), 4)                 # Correlation after standardizing
+round(psych::skew(dat$dep1_t1), 3)              # Skewness: raw scores
+round(psych::skew(scale(dat$dep1_t1)[, 1]), 3)  # Skewness: after standardizing
+```
+```out Output (R/output/L1-3_log.txt, end)
+[1] -0.2024
+[1] -0.2024
+[1] 1.049
+[1] 1.049
+```
+<div class="box warnbox"><b class="bt">A common pitfall</b><p><code>scale()</code> returns a matrix that also carries "attributes" recording the mean and SD. If you just want a plain series of numbers, use <code>as.numeric(scale(x))</code> or <code>scale(x)[, 1]</code> (the code in {{L:3.5}} does this).</p></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: two scales, which stands out more?</h3>
+<p>Suppose a resident has a depression total of 10 (sample mean 4, SD 3) and a loneliness total of 12 (sample mean 9, SD 3). z<sub>depression</sub> = (10 − 4)/3 = 2.0, z<sub>loneliness</sub> = (12 − 9)/3 = 1.0. In raw scores "12 is bigger than 10," but compared with the rest of this sample, the resident stands out more on depression: 2 standard deviations above the mean, against only 1 for loneliness.</p>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li>Turning z straight into a percentile. "z = 1 means above 84% of people" holds only when the distribution is roughly normal; for right-skewed depression items, this conversion can be far off. Exercise 1.3-B has a real example.</li>
+<li>Computing the SD by hand with the population formula (dividing by n) and comparing the result with <code>scale()</code>. <code>scale()</code> uses <code>sd()</code>, which divides by n − 1; in small samples the two kinds of z-score differ visibly.</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: A variable has mean 10 and standard deviation 3. Someone scores 16. What is their z-score?
+N: 2 | 0.01
+H: z = (x − mean) / SD.
+E: (16 − 10) / 3 = 2: 2 standard deviations above average.
+```
+```quiz
+Q: What does a z-score of 0 mean?
+- The person's raw score is 0 || z = 0 has nothing to do with whether the raw score is 0; someone with a raw score of 0 usually has a negative z.
++ The person's score is exactly equal to the mean || Correct.
+- The person did not answer the question || A missing value in R is NA; it is not turned into z = 0.
+- The person is at the 50th percentile of the reference group, with half the people below them || The mean equals the median only when the distribution is symmetric; with strong right skew, someone with z = 0 may already be above more than half the people.
+E: The sign of z tells you above or below average; its size tells you how many standard deviations away.
+```
+```quiz
+Q: After you standardize both loneliness and depression, what happens to the correlation between them?
+- It gets larger, because standardizing removes the interference from different scales || Correlation is not affected by scale to begin with, so there is no "interference" to remove; shifting and rescaling don't change a correlation.
+- It gets smaller || A correlation is not affected by linear shifting and rescaling, so it doesn't get smaller.
++ It doesn't change at all || Correct: standardizing is only shifting and rescaling, and correlation doesn't depend on scale anyway.
+- It becomes 1 || Standardizing doesn't make two different variables identical; only a variable's correlation with itself (or a linear transformation of itself) is 1.
+E: In the course data, the correlation between sleep problems and life satisfaction is −0.2024 both before and after standardizing.
+```
+```quiz
+Q: A strongly right-skewed depression item is standardized. What does its distribution look like afterward?
+- It becomes normal || This is the misunderstanding this lesson names: standardizing only shifts and rescales; it doesn't change the shape.
++ Still right-skewed, exactly the same shape; only the center moves to 0 and the unit becomes 1 SD || Correct.
+- It becomes left-skewed || Subtracting the mean and dividing by a positive number can't flip the direction of the distribution.
+- Its skewness becomes 0, because z-scores have mean 0 || Mean 0 and symmetry are two different things; in the course data, the skewness of "Depressed mood" is 1.05 before and after standardizing.
+E: To change the shape of a distribution you need a nonlinear transformation (such as taking logs); that is a different matter.
+```
+```quiz
+Q: In the course data, person 4's life satisfaction has z = −2.52. If the distribution is roughly normal, about what proportion of people are lower than this person?
+- About 16% || That is the case for z = −1.
+- About 2.5% || About 2.5% goes with z = −1.96; −2.52 is more extreme.
++ Less than 1% || Correct: under a normal distribution, the proportion with z &lt; −2.52 is about 0.6%.
+- About 50% || That is the case for z = 0; −2.52 is far below the mean.
+E: Remember: about 5% lie beyond ±2 SD (both sides together), and about 0.3% beyond ±3 SD.
+```
+```quiz
+Q: Why are variables usually standardized before LASSO (regularized regression)? (Take a guess; Lesson 3.5 gives the answer.)
+- Because LASSO can only handle normal data || LASSO doesn't require normality; and standardizing can't make data normal anyway.
++ Because LASSO penalizes the size of all coefficients in the same way, and the size of a coefficient depends on the scale; standardizing puts every variable's coefficient on the same starting line || Correct.
+- Because standardizing raises the correlations between variables, so edges are more likely to be kept || Standardizing doesn't change correlations.
+- Because without standardizing, LASSO shrinks every coefficient to 0 || Without standardizing, the penalty falls more heavily on some variables than others, but it doesn't shrink all coefficients to 0; the problem is "fairness," not "everything disappears."
+E: R's glmnet standardizes internally by default (standardize = TRUE) and converts the coefficients back to the original scale; the course's CLPN code still calls scale() explicitly first, so that the coefficients it outputs are standardized coefficients directly.
+```
+```quiz
+Q: A scale reports T-scores, T = 50 + 10z. Someone has a T-score of 65. What is their z-score?
+N: 1.5 | 0.01
+H: Put 65 into T = 50 + 10z and solve for z.
+E: (65 − 50) / 10 = 1.5: 1.5 standard deviations above the mean of the reference group.
+```
+```quiz
+Q: A researcher standardizes the T1 and T2 depression totals separately, finds that both waves have mean 0, and writes "depression levels did not change over time." Is this conclusion right?
+- Yes: both means are 0, so there was no change || The means of 0 are produced by standardizing each wave separately; they say nothing about whether depression changed.
++ No: standardizing separately forces each wave's mean to 0, and that step itself wipes out any change in the average level || Correct. To look at average change, use the raw scores (or standardize with one common mean and SD).
+- Yes, because standardizing doesn't change the data || Standardizing doesn't change the shape or the correlations, but it does change the mean and SD to 0 and 1.
+- No, because standardizing changed the correlation between the two waves || Standardizing doesn't change correlations; the problem is that the means were forced to 0.
+E: For every data-processing step, ask: "what information does it wipe out?"
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-on practice</h2>
+<div class="exitem"><h4>Exercise 1.3-A: z-scores by hand</h4>
+<p>Using the 6 numbers from Exercise 1.2-A (2, 4, 1, 3, 4, 4; mean 3, SD ≈ 1.265), compute each person's z-score and check that they add up to 0.</p>
+<details class="answer"><summary>Answer</summary>
+<p>z = (x − 3) / 1.265: 2 → −0.79; 4 → 0.79; 1 → −1.58; 3 → 0; 4 → 0.79; 4 → 0.79. Sum = −0.79 + 0.79 − 1.58 + 0 + 0.79 + 0.79 = 0. In R: <code>round(scale(c(2, 4, 1, 3, 4, 4))[, 1], 2)</code>.</p></details></div>
+<div class="exitem"><h4>Exercise 1.3-B: Comparing different scales</h4>
+<p>Find two variables in the course data with different scales (for example <code>dep3_t1</code>, sleep problems, 0–3, and <code>life_sat_t1</code>, life satisfaction, 0–100), standardize them in R, and find out on which variable person 10 is more "unusual." Write 2–3 sentences: why can't you compare the raw scores directly?</p>
+<details class="answer"><summary>Example code and key points</summary>
+```r
+source("R/_setup.R")
+dat <- read_course_data()
+zz <- scale(dat[, c("dep3_t1", "life_sat_t1")])
+round(zz[10, ], 2)          # Person 10's two z-scores
+```
+<p>Result (<code>R/solutions/L1-3_solution.R</code>): person 10 scores 0 on sleep problems, z = −0.84, and 75 on life satisfaction, z = 0.72. Going by |z| alone, sleep problems looks a little more "unusual." But that conclusion doesn't hold: <code>dep3_t1</code> is strongly right-skewed, and 0 is the most common answer: 397 of the 800 people (49.6%) score 0. On sleep problems, person 10 is exactly like half the sample, not rare at all. If you read z = −0.84 as if the distribution were normal, you would think "only about 20% of people are lower," when in fact nobody is lower and half the sample is tied with this person. Life satisfaction is roughly symmetric: about 27% score 75 or more, not far from the "about 24% are higher" you would estimate from z = 0.72; only in this case can z be read approximately as "how rare."</p>
+<p>So a better answer is: the two z-scores tell us this person is 0.84 SD below the mean on one variable and 0.72 SD above the mean on the other; but for a strongly skewed variable, the size of |z| can't be converted into "how rare," and you should look directly at percentiles or frequencies (<code>mean(dat$dep3_t1 &lt;= 0)</code>, <code>table(dat$dep3_t1)</code>). This is what "z-scores don't change the shape of the distribution" means in real data. The other points: the size of a raw score depends on the units and range of the scale (0–3 vs. 0–100), so there is no common reference point; z-scores use "this sample's mean" as the reference and "this sample's SD" as the unit, which lets you compare relative positions. Note that z-scores are relative to this sample: in another sample, the same raw score may give a different z.</p></details></div>
+<div class="exitem"><h4>Exercise 1.3-C: Something to think about</h4>
+<p>A colleague says: "I standardized all the items, so now they're all normally distributed and I can safely use Pearson correlations." Is he right?</p>
+<details class="answer"><summary>Answer</summary><p>No. Standardizing only shifts and rescales; it doesn't change the shape of the distribution. A right-skewed item is still right-skewed after standardizing, and an item with a floor effect still has lots of people squeezed onto the same lowest value. Whether Pearson correlation is suitable depends on the original distribution and the level of measurement ({{L:1.4}}).</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three things to take away</h2>
+<ul><li>z = (x − mean) / SD: "how many standard deviations above average," a common language across different scales.</li>
+<li>After standardizing, the mean is 0 and the SD is 1, but the shape of the distribution and the correlations don't change.</li>
+<li>CLPN standardizes before estimating, so that coefficients are comparable and the LASSO penalty is fair. Next lesson: {{L:1.4}}.</li></ul>
+</section>

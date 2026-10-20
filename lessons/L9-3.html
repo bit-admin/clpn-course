@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9.3 报告规范：写出一份可被复核的方法与结果 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L9-3.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="9.3" style="--c:#a855f7">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L9-3">CLPN 课程大纲</a><span class="crumb">M9 阅读、批判与报告规范 / 9.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L9-3.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L9-3.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details open style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html" class="cur" aria-current="page"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 9 · Reading, Critique &amp; Reporting · 第 9.3 课</div>
+<h1>报告规范：写出一份可被复核的方法与结果</h1>
+<div class="facts"><span>课文学习 1 小时 30 分钟</span><span>先修：<a href="L9-2.html">9.2 批判性评估：CLPN 常见问题清单</a></span><span>配套脚本：<a href="../R/L9-3.R">R/L9-3.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>学习 Burger et al. (2023) 横断面网络报告规范，并迁移到 CLPN 情境</li><li>列出 CLPN 方法部分必须报告的要素（数据、缺失处理、标准化、估计函数与 λ 选择、种子、软件版本、稳定性检验）</li><li>了解共享代码与数据（OSF）、预注册的基本做法</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>报告规范</b><span class="en">reporting standards</span></li><li><b>预注册</b><span class="en">preregistration</span></li><li><b>开放科学</b><span class="en">open science</span></li><li><b>软件版本</b><span class="en">sessionInfo()</span></li><li><b>敏感性分析</b><span class="en">sensitivity analysis</span></li></ul>
+<p>你的分析再好，如果别人不知道你“具体做了什么”，就没法检验、复现或比较。本课把 M7–M8 的所有分析决定整理成一份报告清单，再给你一个可以直接改写的方法部分模板。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>为什么需要<span class="term">报告规范<span class="en">（reporting standards）</span></span>？</h3>
+<p>设想你读到：“我们采用 LASSO 估计了交叉滞后网络。”你不知道 λ 是怎么选的，是否做了标准化，种子是多少，有没有协变量，缺失怎么处理，用的什么软件版本。任何一项不同，网络都可能不同（9.2 课：只换种子，就有约 15% 的边“时有时无”）。报告规范的目的，是让读者不用问作者就能知道每一个影响结果的决定。</p>
+<h3>Burger 等人（2023）的报告规范</h3>
+<p>Burger、Isvoranu、Lunansky 等人为横断面心理网络分析提出了一套报告规范（发表于 <i>Psychological Methods</i>），覆盖从研究问题、数据、估计，到稳定性与解释的各个环节。目前还没有专门针对 CLPN 的官方规范，所以本课的做法是：以这套规范的总体思路为框架，把它迁移到 CLPN 情境，再加上纵向数据和逐节点回归特有的要素，包括波次与间隔、流失、λ 规则、自回归边、out/in-EI 和复现。写论文时请同时阅读原文，需要时引用。</p>
+<h3>交互清单：CLPN 报告检查表</h3>
+<p>下面的清单是课程整理的“CLPN 方法与结果必须报告的要素”。勾选会自动保存在浏览器里；点击“导出为文本”可以复制到笔记里，或贴进方法提纲后面一起存档。</p>
+<div class="widget w2" data-widget="checklist" data-title="CLPN 报告检查清单（自动保存）" data-key="report93"><script type="application/json">["#一、数据与样本", "样本来源、招募方式、纳入/排除标准", "每一波的样本量、测量时间与间隔", "节点：每个题目的完整内容、所属量表与计分方式（反向计分？）", "描述统计：每个题目每一波的均值、标准差、偏度（发现严重偏态要说明）", "#二、缺失与流失", "每一波的缺失率与流失率", "流失分析：留下者与流失者在基线上是否不同", "缺失处理方法（列表删除 / 多重插补 / 其他）及理由", "#三、估计", "估计框架：每个 T+1 题目对全部 T 题目做逐节点 LASSO 回归；写明是“仅 LASSO”简化版（如 Funkhouser et al., 2021），还是 Wysocki et al.（2025）的完整流程（LASSO 选边 + lavaan 无惩罚重估）", "是否在估计前对题目进行 z 标准化", "软件与函数：glmnet::cv.glmnet，alpha = 1", "λ 选择规则（lambda.min / lambda.1se / EBIC 及 γ）与交叉验证折数", "随机种子（set.seed）", "协变量：有哪些、是否惩罚（penalty.factor）", "#四、可视化与中心性", "网络图：是否显示自回归、显示阈值、maximum、布局算法、配色含义", "自回归边表与（全部或最强）交叉滞后边表", "中心性指标及计算方式：out-EI / in-EI 不含自回归；桥接指标的社群定义", "#五、准确性与稳定性", "非参数 bootstrap：次数、区间类型（百分位），并说明正则化区间的局限", "边权重差异检验（如使用）", "case-dropping bootstrap：次数、CS 系数（cor = 0.7）及解释标准（0.25 / 0.5）", "只对 CS 达标的中心性指标解释排序", "#六、敏感性与复现", "λ 规则的替代分析", "协变量 / 去除冗余题目 / 种子 等敏感性分析", "多波复现（T2→T3）或独立样本复现（如有）", "#七、开放科学", "R 与各包版本（sessionInfo()）", "代码与（可共享的）数据链接（如 OSF）", "预注册或分析计划（如有），并说明与计划的偏离", "#八、解释与局限", "避免因果用语；说明边是时间上的预测关系", "讨论被试间 / 被试内混淆", "讨论测量（单题信度、内容重叠）、样本与间隔的局限"]</script></div>
+<h3>只写“采用 LASSO 估计”缺了什么？</h3>
+<p>至少缺这些：估计框架（逐节点回归，每个 T2 节点对所有 T1 节点）、是否标准化、λ 规则与折数、随机种子、协变量与惩罚、软件与版本。这些都写齐了，读者才能理解你的网络为什么是这个样子。</p>
+<h3><span class="term">开放科学<span class="en">（open science）</span></span>：共享代码与数据</h3>
+<ul><li><b>代码：</b>把你的 R 脚本（或 Quarto 项目）上传到 OSF（Open Science Framework）或 GitHub，在论文中给出链接。课程的脚本结构（<code>R/_setup.R</code> + 每课一个脚本 + <code>R/output/</code>）就是一个很好的模板。</li>
+<li><b>数据：</b>涉及服务对象的数据往往不能公开。可以共享的有：相关矩阵、模拟的“合成数据”，或在伦理审批允许的范围内共享去标识化数据。</li>
+<li><b><span class="term">软件版本<span class="en">（sessionInfo()）</span></span>：</b>在脚本最后运行 <code>sessionInfo()</code>，记录 R 和所有包的版本（R/L9-3.R 会自动生成）。</li></ul>
+<h3><span class="term">预注册<span class="en">（preregistration）</span></span></h3>
+<p>预注册是在看到数据（或结果）之前，把研究问题、假设和分析计划公开登记（例如在 OSF 上）。登记带时间戳，之后不能修改。它是限制“研究者自由度”最有力的工具。即使不正式预注册，也应在分析前写好一页分析计划（10.1 课），并在论文中说明“与计划的偏离及理由”。</p>
+<h3>社会工作研究中的特别注意</h3>
+<p>社工研究的样本常常来自特定机构或社区（如某个街道的居民、某家机构的服务对象）。报告时要说清楚样本的代表性边界：结论能推广到谁、不能推广到谁。如果数据来自服务记录或干预项目，还要说明测量是否由服务者本人完成（可能有社会期许偏差），以及伦理审批与知情同意的情况。这些不是“网络方法”的内容，但审稿人和实务读者都会关心。</p>
+<h3>方法部分模板（填空生成）</h3>
+<p>把你的项目信息填进去，下面会自动生成一段可以改写的方法部分（数据分析小节）。请务必用自己的语言改写，并核对每一项都与代码一致。</p>
+<div class="widget w2" data-widget="tpl" data-title="CLPN 方法部分（数据分析）模板" data-key="meth93"><script type="application/json">{"fields": [["N", "样本量 N", "如 800"], ["waves", "波次与间隔", "如 三波，间隔 6 个月"], ["nodes", "节点描述", "如 UCLA 孤独 4 题与 PHQ 抑郁 5 题"], ["miss", "缺失处理", "如 本数据无缺失 / 多重插补 20 次"], ["rule", "λ 规则", "如 10 折交叉验证 lambda.min"], ["seed", "随机种子", "如 2026"], ["cov", "协变量", "如 性别与年龄（不惩罚）/ 无"], ["nboot", "bootstrap 次数", "如 1000"], ["sens", "敏感性分析", "如 lambda.1se；T2→T3 复现"], ["soft", "软件版本", "如 R 4.4.1，glmnet 4.1-8，bootnet 1.6"]], "text": "数据分析。我们采用交叉滞后面板网络（CLPN；Wysocki et al., 2025）分析 {{nodes}} 在 {{waves}} 中的纵向关系（N = {{N}}）。估计采用应用研究中常用的“仅 LASSO”方式（如 Funkhouser et al., 2021）：以正则化回归系数直接作为边权，未进行 Wysocki et al.（2025）建议的无惩罚 SEM 重估与修剪。缺失数据处理：{{miss}}。所有题目在估计前进行 z 标准化。对每个 T2 题目，以全部 T1 题目（包括该题目自身的 T1 得分）为预测变量进行 LASSO 回归（glmnet，alpha = 1），λ 采用 {{rule}} 选择，随机种子为 {{seed}}；协变量：{{cov}}。所得回归系数构成有向权重矩阵，其中对角线为自回归边、非对角线为交叉滞后边。我们计算了各节点的出期望影响与入期望影响（不含自回归边），以及以孤独与抑郁为社群的桥接出/入期望影响。边权重的准确性通过 {{nboot}} 次非参数 bootstrap 评估；中心性稳定性通过 {{nboot}} 次个案删除 bootstrap 评估，并计算相关稳定性系数（CS；Epskamp et al., 2018），仅对 CS ≥ 0.25 的指标解释排序。敏感性分析包括：{{sens}}。分析使用 {{soft}} 完成，代码见补充材料。"}</script></div>
+<h3>常见误区</h3>
+<ul><li><b>“结果稳定”而不给数字：</b>必须写出 CS 系数的具体值，并说明是哪个指标（out-EI 还是 in-EI）。本课程数据中 in-EI 的 CS 在 0.44–0.52 之间（取决于哪次运行，本次 8.3 课为 0.52），out-EI 只有约 0.20，笼统地说“稳定”就是错的。</li>
+<li><b>只报告显著的部分：</b>不稳定的结果同样要报告，读者需要知道哪些结论不稳。</li>
+<li><b>方法与代码不一致：</b>论文写 lambda.1se，代码用的却是默认的 lambda.min。投稿前请逐项对照。</li></ul>
+</section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>本课的“最少数学”是：哪些数字必须出现在报告中，以及它们之间该怎么互相核对。</p>
+<div class="tablewrap"><table><tr><th>数字</th><th>符号</th><th>核对关系</th></tr><tr><td>样本量（每波 / 分析用）</td><td>\(N_1, N_2, N_3,\ N_{\text{分析}}\)</td><td>列表删除时 \(N_{\text{分析}}\le \min(N_t)\)；否则说明插补</td></tr><tr><td>节点数</td><td>\(p\)</td><td>交叉滞后边最多 \(p(p-1)\) 条</td></tr><tr><td>非零交叉滞后边数</td><td>\(E\)</td><td>密度 \(=E/[p(p-1)]\)</td></tr><tr><td>自回归范围</td><td>\(\min_k\beta_{kk},\ \max_k\beta_{kk}\)</td><td>通常全部为正（为负需解释）</td></tr><tr><td>bootstrap 次数</td><td>\(B\)</td><td>常用 1000；少于 500 需说明</td></tr><tr><td>CS 系数</td><td>\(\mathrm{CS}_{\text{out}},\ \mathrm{CS}_{\text{in}}\)</td><td>与 0.25 / 0.5 比较</td></tr><tr><td>敏感性一致性</td><td>\(r\)</td><td>主分析与替代分析的边权相关</td></tr></table></div>
+<p>符号说明：\(N_t\) 是第 \(t\) 波的样本量；\(p\) 是每一波的节点（题目）数；\(\beta_{kk}\) 是节点 \(k\) 的自回归系数（矩阵对角线）；\(E\) 是非零交叉滞后边数；\(B\) 是 bootstrap 重抽样次数。</p>
+<h4>out-EI 与 in-EI 的总和核对</h4>
+<div class="mathbox">\[\sum_k \text{out-EI}_k=\sum_j \text{in-EI}_j=\sum_{k\neq j}\hat\beta_{kj}\]</div>
+<p>每条交叉滞后边 \(\hat\beta_{kj}\) 恰好被算进一次 out-EI（起点 \(k\)）和一次 in-EI（终点 \(j\)），所以两列总和必须相等。如果表格中两列总和差得很远，说明代码或表格有误（7.4 课）。</p>
+<h4>报告精度</h4>
+<p>边权重与中心性一般保留 2–3 位小数，CS 系数保留 2 位。APA 格式（第 7 版）中，绝对值不可能大于 1 的统计量（r、p、比例、CS 系数）小数点前不写 0，如 r = .52、p = .019、CS = .52；可能大于 1 的统计量（M、SD、未标准化系数 B、t、χ²）保留 0。标准化系数 β 通常也按这条规则省略 0（β = .14）；中文期刊常保留（β = 0.14）。按投稿期刊的要求选一种，全文保持一致。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L9-3.R 的核心部分：自动生成“分析信息清单”</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+log_open(&quot;L9-3_reporting_info.txt&quot;)
+pk &lt;- c(&quot;glmnet&quot;, &quot;qgraph&quot;, &quot;bootnet&quot;, &quot;networktools&quot;, &quot;lavaan&quot;, &quot;psych&quot;, &quot;tidyverse&quot;)
+cat(&quot;== 软件 Software ==\n&quot;, R.version.string, &quot;\n&quot;)
+for (p in pk) cat(sprintf(&quot;  %s %s\n&quot;, p, utils::packageDescription(p)$Version))   # 保留包自己的写法，如 4.1-8
+# ……（脚本中还会打印一份勾选式报告清单）
+suppressPackageStartupMessages(for (p in pk) library(p, character.only = TRUE))   # 先加载，sessionInfo() 才会列出它们
+si &lt;- capture.output(print(sessionInfo()))
+writeLines(si, out(&quot;sessionInfo_full.txt&quot;))      # 完整版存档，附在补充材料里
+k &lt;- grep(&quot;^loaded via a namespace&quot;, si)[1]       # 日志只放到直接加载的包为止
+cat(head(si, k - 1), sep = &quot;\n&quot;)
+log_close()</code></pre></div>
+<p>生成的 <code>R/output/L9-3_reporting_info.txt</code> 可以直接附在补充材料中（见下方实际输出）。<code>sessionInfo()</code> 会列出所有已加载的包，其中大半是间接载入的依赖包（loaded via a namespace）。所以日志里只放到直接加载的包为止（R 版本、操作系统和直接加载的分析包，方法部分需要的信息都在这里）。注意要先用 <code>library()</code> 加载分析用到的包再调用 <code>sessionInfo()</code>，否则它们不会出现在 “other attached packages” 里。课程仓库里公开的这份输出删去了本机的数值库路径、语言环境和时区；你自己的研究不必删，只是公开前要想好是否愿意公开这些信息，完整内容另存为 <code>R/output/sessionInfo_full.txt</code>。版本号用 <code>packageDescription(p)$Version</code> 取，保留包作者的写法（如 glmnet 4.1-8）；<code>as.character(packageVersion(p))</code> 会写成 4.1.8，与 CRAN 和 <code>sessionInfo()</code> 不一致。建议在你的毕业项目主脚本最后也加上这几行。</p>
+<h3>完整例题：把一段不合格的方法描述改写成可复核的版本</h3>
+<p><b>改写前：</b>“我们使用 LASSO 估计了交叉滞后网络，并用 bootstrap 检验了稳定性。”</p>
+<p>这句话缺了什么？读者无法知道：用的是哪个软件包和版本；变量是否标准化；λ 怎样选（交叉验证几折，lambda.min 还是 lambda.1se，种子是多少）；是否纳入协变量、协变量是否被惩罚；中心性用的是哪些指标、是否包含自回归；bootstrap 是哪一种、做了多少次；CS 用什么标准。</p>
+<p><b>改写后：</b>“交叉滞后面板网络采用逐节点 LASSO 回归估计（R 4.5，glmnet 4.1-8）。所有题目先进行 z 标准化；每个 T2 节点以 9 个 T1 节点为预测变量，λ 由 10 折交叉验证按 lambda.min 选取（set.seed(2026)），性别与年龄作为不受惩罚的协变量纳入敏感性分析。中心性计算出期望影响与入期望影响，以及以孤独、抑郁为社群的桥接指标，均不包含自回归边。边权准确性采用 1000 次非参数 bootstrap 评估；中心性稳定性采用 1000 次个案删除 bootstrap，以相关 ≥ 0.7、比例 ≥ 95% 计算 CS 系数，CS ≥ 0.25 时才解释排序。分析代码与模拟数据见补充材料。”</p>
+<p>改写后的段落比原来长了好几倍，但每一句都对应一个读者会追问的决定。对照本课的报告检查表，逐条确认都已写到。</p>
+<div class="box warnbox"><b class="bt">撰写方法部分的常见错误</b><ul>
+<li><b>只写“采用默认设置”。</b>默认值会随软件版本改变，必须写出具体数值。</li>
+<li><b>不报告排除了多少人、为什么排除。</b>流失和缺失处理应有一句明确的交代（4.3 课）。</li>
+<li><b>把事后才做的选择写得像事先计划好的。</b>如果某个分析是看了结果之后才加的，应该如实写明“探索性”。</li></ul></div><p>一个实用的检验方法：请一位没有参与分析的同学，只根据你的方法部分和数据重写代码。如果对方需要来问你任何一个设置，说明方法部分还缺这一项。</p><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L9-3.R</code>（39 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L9-3.R  报告规范：可被复核的方法与结果  (Reporting: versions, seeds, settings)
+# 自动生成一份“分析信息清单”，可直接粘贴到方法部分/补充材料
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+log_open(&quot;L9-3_reporting_info.txt&quot;)
+pk &lt;- c(&quot;glmnet&quot;, &quot;qgraph&quot;, &quot;bootnet&quot;, &quot;networktools&quot;, &quot;lavaan&quot;, &quot;psych&quot;, &quot;tidyverse&quot;)
+cat(&quot;== 软件 Software ==\n&quot;, R.version.string, &quot;\n&quot;)
+# 版本号用包自己的写法（DESCRIPTION 里的 Version，如 glmnet 的 &quot;4.1-8&quot;）。
+# as.character(packageVersion(p)) 会把连字符改成点（&quot;4.1.8&quot;），与 sessionInfo() 和 CRAN 上的写法不一致。
+for (p in pk) cat(sprintf(&quot;  %s %s\n&quot;, p, utils::packageDescription(p)$Version))
+cat(&quot;\n== CLPN 方法部分必须报告的要素（勾选清单）==\n&quot;,
+&quot;[ ] 数据：样本量、波次、间隔、题目内容与计分\n&quot;,
+&quot;[ ] 缺失与流失处理（列表删除 / 多重插补 / FIML）\n&quot;,
+&quot;[ ] 标准化：所有题目在估计前 z 标准化\n&quot;,
+&quot;[ ] 估计：每个 T2 题目对全部 T1 题目做 LASSO（glmnet，alpha = 1）\n&quot;,
+&quot;[ ] λ 选择：10 折交叉验证 lambda.min（或 lambda.1se / EBIC，γ = ?）\n&quot;,
+&quot;[ ] 随机种子：set.seed(2026)\n&quot;,
+&quot;[ ] 协变量及是否惩罚（penalty.factor）\n&quot;,
+&quot;[ ] 中心性：out-EI / in-EI（不含自回归边），桥接 EI 的社群定义\n&quot;,
+&quot;[ ] 稳定性：非参数 bootstrap（次数）、case-dropping CS 系数\n&quot;,
+&quot;[ ] 敏感性分析：λ 规则、种子、去除冗余题目、T2→T3 复现\n&quot;,
+&quot;[ ] 软件版本（见上）与代码/数据共享链接（OSF）\n&quot;)
+# sessionInfo() 会列出所有已加载的包（tidyverse 会带进来上百个），全文很长。
+# 日志里只放开头部分：R 版本、平台、语言环境和直接加载（attached）的包，到 &quot;loaded via a namespace&quot; 为止，
+# 通常 20 多行；后面间接载入的几十个包不放进日志。完整内容单独存一份，附在补充材料里。
+# 先加载分析用到的包，sessionInfo() 才会把它们列在 &quot;other attached packages&quot; 下。
+suppressPackageStartupMessages(for (p in pk) library(p, character.only = TRUE))
+si &lt;- capture.output(print(sessionInfo()))
+# 课程仓库里公开的这份输出删去了本机的数值库路径、语言环境和时区（Matrix products … tzcode 这几行）。
+# 你自己的研究不必删：这些信息有助于复现，只是公开前要想好是否愿意公开。
+a &lt;- grep(&quot;^Matrix products&quot;, si)[1]; b &lt;- grep(&quot;^attached base packages&quot;, si)[1]
+if (!is.na(a) &amp;&amp; !is.na(b) &amp;&amp; b &gt; a) si &lt;- c(si[seq_len(a - 1)], &quot;（本机路径、语言环境与时区已略去）&quot;, &quot;&quot;, si[b:length(si)])
+writeLines(si, out(&quot;sessionInfo_full.txt&quot;))
+k &lt;- grep(&quot;^loaded via a namespace&quot;, si)[1]
+n_show &lt;- if (is.na(k)) min(25, length(si)) else k - 1
+cat(&quot;\n== sessionInfo()（前&quot;, n_show, &quot;行；完整的&quot;, length(si), &quot;行见 R/output/sessionInfo_full.txt）==\n&quot;)
+cat(head(si, n_show), sep = &quot;\n&quot;)
+log_close()</code></pre></div></details>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L9-3_reporting_info.txt</code></div><pre class="out"><code>== 软件 Software ==
+ R version 4.6.1 (2026-06-24) 
+  glmnet 5.1
+  qgraph 1.10.1
+  bootnet 1.9.1
+  networktools 1.6.0
+  lavaan 0.7-3
+  psych 2.6.9
+  tidyverse 2.0.0
+
+== CLPN 方法部分必须报告的要素（勾选清单）==
+ [ ] 数据：样本量、波次、间隔、题目内容与计分
+ [ ] 缺失与流失处理（列表删除 / 多重插补 / FIML）
+ [ ] 标准化：所有题目在估计前 z 标准化
+ [ ] 估计：每个 T2 题目对全部 T1 题目做 LASSO（glmnet，alpha = 1）
+ [ ] λ 选择：10 折交叉验证 lambda.min（或 lambda.1se / EBIC，γ = ?）
+ [ ] 随机种子：set.seed(2026)
+ [ ] 协变量及是否惩罚（penalty.factor）
+ [ ] 中心性：out-EI / in-EI（不含自回归边），桥接 EI 的社群定义
+ [ ] 稳定性：非参数 bootstrap（次数）、case-dropping CS 系数
+ [ ] 敏感性分析：λ 规则、种子、去除冗余题目、T2→T3 复现
+ [ ] 软件版本（见上）与代码/数据共享链接（OSF）
+
+== sessionInfo()（前 16 行；完整的 54 行见 R/output/sessionInfo_full.txt）==
+R version 4.6.1 (2026-06-24)
+Platform: aarch64-apple-darwin24.6.0
+Running under: macOS Sequoia 15.8.1
+
+（本机路径、语言环境与时区已略去）
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.5    forcats_1.0.1      stringr_1.6.0      dplyr_1.2.1       
+ [5] purrr_1.2.2        readr_2.2.0        tidyr_1.3.2        tibble_3.3.1      
+ [9] tidyverse_2.0.0    psych_2.6.9        lavaan_0.7-3       networktools_1.6.0
+[13] bootnet_1.9.1      ggplot2_4.0.3      qgraph_1.10.1      glmnet_5.1        
+[17] Matrix_1.7-5      </code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">为什么要报告 R 包版本和随机种子？</p><ul class="opts"><li><button type="button" data-ok="0">A. 这是期刊的格式要求</button><div class="ofb" hidden>不只是格式：不报告这些，别人就无法复现你的结果。</div></li><li><button type="button" data-ok="1">B. 不同版本与种子可能导致结果（尤其是弱边与 λ 选择）不同；报告后他人才能精确复现</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 为了显得专业</button><div class="ofb" hidden>目的不是显得专业，而是让别人能复现。</div></li><li><button type="button" data-ok="0">D. 没有必要：同一份数据总会得到同样的结果</button><div class="ofb" hidden>似是而非：9.2 课已经看到，同一份数据只换种子，就有约 15% 的边时有时无。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">CLPN 方法部分如果只写“采用 LASSO 估计”，缺少哪些关键信息？</p><ul class="opts"><li><button type="button" data-ok="0">A. 只缺软件名</button><div class="ofb" hidden>软件名只是其中一项；不知道 λ 规则和种子，同样无法复现。</div></li><li><button type="button" data-ok="1">B. 估计框架（逐节点回归）、标准化、λ 规则与折数、种子、协变量与惩罚、软件版本等</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 只缺样本量</button><div class="ofb" hidden>样本量通常在样本部分已经写了；缺的是估计的各项设置。</div></li><li><button type="button" data-ok="0">D. 什么都不缺：LASSO 的做法是标准的</button><div class="ofb" hidden>LASSO 有很多可选设置（λ 规则、折数、标准化、协变量是否惩罚），每一项都会改变网络。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">以下哪一项不属于常见的 CLPN 敏感性分析？</p><ul class="opts"><li><button type="button" data-ok="0">A. 换用 lambda.1se</button><div class="ofb" hidden>属于：换一种合理的 λ 规则，看结论是否保持。</div></li><li><button type="button" data-ok="0">B. 加入协变量</button><div class="ofb" hidden>属于：改变“控制哪些变量”这一选择。</div></li><li><button type="button" data-ok="0">C. T2→T3 复现</button><div class="ofb" hidden>属于（复现）：换一个时间段，看网络是否相似。</div></li><li><button type="button" data-ok="1">D. 把 bootstrap 次数从 1000 增加到 5000，让区间端点更稳定</button><div class="ofb" hidden>正确：增加次数只减小蒙特卡罗误差，没有改变任何分析选择，不是敏感性分析。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">预注册的主要作用是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 让论文更容易发表</button><div class="ofb" hidden>有些期刊欢迎预注册，但这不是它的目的。</div></li><li><button type="button" data-ok="1">B. 在看到结果之前固定分析计划，限制研究者自由度</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 替代伦理审批</button><div class="ofb" hidden>预注册与伦理审批是两回事，两者都要有。</div></li><li><button type="button" data-ok="0">D. 提高统计功效</button><div class="ofb" hidden>功效取决于样本量和效应大小，预注册不改变它。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">涉及服务对象的数据不能公开时，可以怎么做？</p><ul class="opts"><li><button type="button" data-ok="0">A. 什么都不共享</button><div class="ofb" hidden>代码、相关矩阵等不涉及个人信息的材料仍然可以共享。</div></li><li><button type="button" data-ok="1">B. 共享代码、相关矩阵或合成数据，在伦理允许范围内共享去标识化数据</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 删去姓名和证件号后直接公开原始数据</button><div class="ofb" hidden>只删直接标识往往不够：年龄、性别、居住街道等组合起来仍可能识别出个人；能否公开要看伦理审批和知情同意的范围。</div></li><li><button type="button" data-ok="0">D. 只在论文中写“数据可向作者索取”</button><div class="ofb" hidden>这句话可以写，但不能代替能直接共享的部分（代码、相关矩阵、合成数据）。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：方法提纲与检查清单<span class="lvl">写作</span></h4><p>为你的毕业项目写一份“方法部分提纲”（用上面的模板生成后改写），并用本页清单逐项勾选，把导出文本和提纲存在一起。写 10.3 的结果部分时，再对照这份清单检查一遍。提纲末尾再加两句：代码打算放在哪里（OSF 或 GitHub），以及是否预注册（不预注册的话，用 10.1 的分析计划代替，并写明计划的日期）。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>检查点：① 每个空都已填写，没有“［……］”占位；② 模板句子已改写为你自己的语言；③ 与 R 脚本的设置完全一致（λ 规则、种子、bootstrap 次数）；④ 清单中没勾选的条目，要么补上，要么在提纲中说明“不适用”的理由；⑤ 写明了代码共享位置和预注册（或分析计划）的安排。</p></details></div>
+<div class="exitem"><h4>练习 2：给一段方法“挑错”<span class="lvl">理解</span></h4><p>“我们用 R 的 glmnet 包估计了 CLPN，并用 bootnet 检验了稳定性，结果稳定。”列出至少 6 处需要补充的信息。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>① 节点与时间段；② 逐节点回归的框架；③ 是否标准化；④ λ 规则与折数；⑤ 种子；⑥ 协变量；⑦ bootstrap 类型与次数；⑧ CS 系数的具体数值及标准；⑨ “稳定”指的是边还是中心性；⑩ 软件版本；⑪ 缺失处理。</p></details></div>
+<div class="exitem"><h4>练习 3：运行 L9-3.R<span class="lvl">动手</span></h4><p>运行 R/L9-3.R，从输出中找到你本机的 R 版本以及 glmnet、bootnet 版本，写成一句可以放进方法部分的话。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>示例：“所有分析在 R（版本 4.x.x）中完成，使用 glmnet（版本 …）、qgraph（版本 …）与 bootnet（版本 …）。”版本号以你的 <code>R/output/L9-3_reporting_info.txt</code> 为准。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>基于报告规范，为自己的毕业项目写一份“方法部分提纲”和一份勾选式“报告检查清单”，逐项核对后存档，写结果部分时再对照一遍。</p></div><h3>自测问题</h3><ol><li>为什么要报告 R 包版本和随机种子？</li><li>CLPN 方法部分如果只写“采用 LASSO 估计”，缺少哪些关键信息？</li><li>敏感性分析可以包括哪些（至少 2 种）？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>报告规范的目标：读者不用问作者就知道每个影响结果的决定。</li><li>以 Burger et al. (2023) 横断面规范为框架，迁移并补充 CLPN 特有要素。</li><li>必须报告：数据与间隔、缺失/流失、标准化、逐节点 LASSO、λ 规则、种子、协变量、中心性定义、bootstrap 与 CS、敏感性、软件版本。</li><li>开放科学：共享代码（OSF/GitHub）、sessionInfo()、预注册或分析计划。</li><li>核对：out-EI 总和 = in-EI 总和；边数 ≤ p(p−1)。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Burger, J., Isvoranu, A.-M., Lunansky, G., Haslbeck, J. M. B., Epskamp, S., Hoekstra, R. H. A., Fried, E. I., Borsboom, D., & Blanken, T. F. (2023). Reporting standards for psychological network analyses in cross-sectional data. <i>Psychological Methods, 28</i>(4), 806–824. <a href="https://doi.org/10.1037/met0000471" target="_blank" rel="noopener">doi.org/10.1037/met0000471</a><div class="muted" style="font-size:.84rem">网络分析报告规范，第 9.3 课。</div></li><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">bootnet 与稳定性检验（CS 系数）的标准教程，模块 6、8。</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li></ul></section><div class="box key"><b class="bt">阶段测验</b><p>本模块的核心课到这里学完了。去做 <a href="../materials/assess_m9.html">M9 阶段测验</a>，一次答对 70% 及以上再进入下一个模块。</p></div><div class="box key"><b class="bt">写作练习</b><p>到<a href="../materials/writing.html">写作工作坊</a>看四个“改写前 → 改写后”的范例（数据与测量、统计分析、结果、局限），并完成改写任务；想看真实论文怎样写，见<a href="../materials/reading.html">论文阅读包</a>。</p></div>
+<nav class="pager"><a href="L9-2.html" class="pv"><small>上一课</small>9.2 批判性评估：CLPN 常见问题清单</a><a href="L10-1.html" class="nx"><small>下一课</small>10.1 项目设计、数据准备与分析计划</a></nav>
+<p class="foot">CLPN 从零开始 · 第 9.3 课 · <a href="../index.html#L9-3">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

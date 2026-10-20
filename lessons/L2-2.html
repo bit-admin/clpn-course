@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.2 R 基本语法：向量、数据类型与函数 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L2-2.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="2.2" style="--c:#f59e0b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L2-2">CLPN 课程大纲</a><span class="crumb">M2 R 与 RStudio：从零开始 / 2.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L2-2.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L2-2.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details open style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html" class="cur" aria-current="page"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 2 · R &amp; RStudio from Zero · 第 2.2 课</div>
+<h1>R 基本语法：向量、数据类型与函数</h1>
+<div class="facts"><span>课文学习 1 小时 30 分钟</span><span>先修：<a href="L2-1.html">2.1 安装 R 与 RStudio，运行第一行代码</a></span><span>配套脚本：<a href="../R/L2-2.R">R/L2-2.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>创建和索引向量，理解 R 的“向量化”运算</li><li>识别数值、字符、逻辑、因子等数据类型</li><li>理解 NA（缺失值）以及 na.rm = TRUE</li><li>会写一个最简单的自定义函数</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>向量</b><span class="en">vector</span></li><li><b>索引</b><span class="en">indexing, [ ]</span></li><li><b>数据类型</b><span class="en">data type</span></li><li><b>因子</b><span class="en">factor</span></li><li><b>逻辑值</b><span class="en">logical, TRUE/FALSE</span></li><li><b>缺失值</b><span class="en">NA</span></li><li><b>自定义函数</b><span class="en">user-defined function</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>一排储物格：向量</h2>
+<div class="box story"><b class="bt">十位服务对象的睡眠记录</b>
+<p>社区睡眠健康小组的 10 位成员报告了昨晚的睡眠时长（小时）：7、5.5、8、（第 4 位没填）、6、4.5、7.5、（第 8 位没填）、9、5。你想知道：平均睡了多久？哪几位不到 6 小时，需要重点跟进？在 Excel 里你会把它们写成一列；在 R 里，你会把它们存进一个<span class="term">向量<span class="en">（vector）</span></span>。</p></div>
+<p>向量是一排<b>同类型</b>的值，按顺序排列，每个位置有编号（从 1 开始）。用 <code>c()</code> 创建：</p>
+<p><code>sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)</code></p>
+<p>这里的 <code>NA</code>（Not Available）是 R 表示<span class="term">缺失值<span class="en">（NA）</span></span>的特殊符号，意思是“这里本该有一个值，但我们不知道它是多少”。它不是 0，也不是空字符串。</p>
+<div class="box analogy"><b class="bt">类比：带编号的一排储物格</b><p>向量就像一排编了号的储物格。<code>sleep[3]</code> 是“打开第 3 格”，得到 8。数据框（下一课）则是很多排储物格并列在一起：每一排是一个变量（一列），同一位置是同一个人。</p></div>
+
+<h3>索引：取出你要的格子</h3>
+<p>方括号 <code>[ ]</code> 叫<span class="term">索引<span class="en">（indexing, [ ]）</span></span>，有三种用法：</p>
+<ul><li><b>按位置</b>：<code>sleep[3]</code> 取第 3 个；<code>sleep[c(1, 3)]</code> 取第 1 和第 3 个；<code>sleep[-1]</code> 取除第 1 个以外的所有值（负号 = 去掉）。R 的编号从 1 开始：<code>sleep[0]</code> 不会报错，而是返回一个空向量，所以这类错误很难发现。</li>
+<li><b>按条件（逻辑索引）</b>：<code>sleep[sleep &lt; 6]</code>。先算 <code>sleep &lt; 6</code>，得到一串 TRUE/FALSE；再把 TRUE 位置上的值取出来。所以 <code>x[x &gt; 5]</code> 的意思是“取出 x 中所有大于 5 的值”。</li>
+<li><b>按名字</b>：如果向量的元素有名字，可以 <code>v["lone1"]</code>（数据框里常用 <code>df$var</code>，下一课）。</li></ul>
+<div class="widget" data-widget="vecidx"></div>
+
+<h3>向量化：一次对所有格子做同样的事</h3>
+<p>R 的运算是<span class="term">向量化<span class="en">（vectorized）</span></span>的：<code>sleep * 60</code> 会把每一个值都乘以 60（换算成分钟），不需要写循环。<code>sleep &lt; 6</code> 也是对每个值分别比较。两个等长向量相加，是对应位置相加。这让 R 代码写起来很短：<code>(x - mean(x)) / sd(x)</code> 一行就把整列变成 z 分数（1.3 课）。</p>
+
+<h3>数据类型：格子里装的是什么</h3>
+<p>每个向量都有一种<span class="term">数据类型<span class="en">（data type）</span></span>，用 <code>class()</code> 查看：</p>
+<div class="tablewrap"><table><thead><tr><th>类型</th><th>例子</th><th>用途</th></tr></thead><tbody>
+<tr><td>数值 numeric（含整数 integer）</td><td><code>7</code>, <code>5.5</code>, <code>3L</code></td><td>量表分、年龄、睡眠时长</td></tr>
+<tr><td>字符 character</td><td><code>"小李"</code>, <code>"P001"</code></td><td>姓名、编号、开放题回答；必须加引号</td></tr>
+<tr><td><span class="term">逻辑值<span class="en">（logical, TRUE/FALSE）</span></span></td><td><code>TRUE</code>, <code>FALSE</code></td><td>比较的结果、筛选条件</td></tr>
+<tr><td><span class="term">因子<span class="en">（factor）</span></span></td><td><code>factor(c(1, 0), levels = c(0, 1), labels = c("男", "女"))</code></td><td>类别变量：性别、教育程度、服务类型</td></tr></tbody></table></div>
+<p>两个关键规则：</p>
+<ol><li><b>一个向量只能有一种类型。</b>如果混合了数字和字符，R 会把所有值都变成字符：<code>c(1, "二", 3)</code> 得到三个字符串。问卷数据里只要有一个格子误填了“五”，整列就会被读成字符，<code>mean()</code> 就会出错。所以导入数据后要先用 <code>class()</code> 或 <code>str()</code> 检查每列的类型。强行转换 <code>as.numeric(c("3", "4", "五"))</code> 得到 <code>3 4 NA</code>，并警告 <code>NAs introduced by coercion</code>（强制转换产生了 NA）。</li>
+<li><b>逻辑值可以当数字用</b>：TRUE = 1，FALSE = 0。所以 <code>sum(sleep &lt; 6, na.rm = TRUE)</code> 就是“少于 6 小时的人数”（3 人），<code>mean(条件)</code> 就是“满足条件的比例”。</li></ol>
+
+<h3>为什么“性别”最好存成因子？</h3>
+<p>课程数据中 <code>gender</code> 存为 0/1。如果把它当数值，R 会认为“女（1）比男（0）多 1 个单位”，可以算平均数（0.534）。对 0/1 变量，平均数恰好等于编码为 1 的那一类所占的比例（这里是女性比例 53.4%），还有意义；但对于有三个及以上类别的变量（如“服务类型：1 个案、2 小组、3 社区”），把类别编码当数字就错了：“社区 = 3 倍的个案”没有意义。存成因子后：</p>
+<ul><li>R 知道这是类别，<code>table()</code>、<code>summary()</code> 会给出各类人数（男 373、女 427）。</li>
+<li>回归中 R 会自动把因子转为虚拟变量，并以第一个水平（level）为参照组。</li>
+<li>画图时自动按类别分组上色，标签显示“男 / 女”而不是 0 / 1。</li>
+<li>对因子求 <code>mean()</code> 会返回 NA 并给出警告，避免了无意义的计算。</li></ul>
+
+<h3>缺失值 NA：会“传染”的未知</h3>
+<p><code>mean(c(1, NA, 3))</code> 返回 <code>NA</code>。逻辑很朴素：有一个值不知道，平均数当然也不知道。要在已知值中计算，加参数 <code>na.rm = TRUE</code>（NA remove，移除 NA）：<code>mean(c(1, NA, 3), na.rm = TRUE)</code> 返回 2。<code>sum()</code>、<code>sd()</code>、<code>min()</code>、<code>max()</code> 都有这个参数。</p>
+<div class="box warnbox"><b class="bt">NA 与比较</b><p><code>NA &lt; 6</code> 的结果仍是 <code>NA</code>（不知道）。所以 <code>sleep[sleep &lt; 6]</code> 会返回 <code>5.5 NA 4.5 NA 5.0</code>，两个 NA 混了进来。正确写法是加上“并且不是缺失”：<code>sleep[sleep &lt; 6 &amp; !is.na(sleep)]</code>。<code>is.na()</code> 判断每个值是否缺失，<code>!</code> 表示“非”，<code>&amp;</code> 表示“并且”，<code>|</code> 表示“或者”。<code>which(sleep &lt; 6)</code> 会自动忽略 NA，返回位置 2、6、10。找缺失值也不能写 <code>x == NA</code>（结果全是 NA），必须用 <code>is.na(x)</code>。</p></div>
+
+
+<h3>矩阵与列表：向量的两个“亲戚”</h3>
+<p>后面的课程还会遇到两种结构，这里先认识一下：</p>
+<ul><li><b>矩阵</b>（matrix）：二维的、所有元素类型相同的表格，有行和列。<code>glmnet</code> 要求预测变量是数值矩阵（3.5 课的 <code>as.matrix()</code>）；CLPN 的结果 B 也是一个 9 × 9 矩阵，第 <i>i</i> 行第 <i>j</i> 列用 <code>B[i, j]</code> 取出，逗号前是行、逗号后是列。数据框（2.3 课）也是二维表，但每列可以是不同类型；要把数据框交给 <code>glmnet</code> 等只接受矩阵的函数，先确认所有列都是数值，再用 <code>as.matrix()</code> 转换。</li>
+<li><b>列表</b>（list）：可以装不同类型、不同长度东西的“大口袋”。很多函数的结果都是列表，例如 <code>lm()</code> 的结果里装着系数、残差、拟合值等，用 <code>$</code> 取出其中一项，如 <code>fit$coefficients</code>。2.1 课的 <code>sessionInfo()$R.version$version.string</code> 就是在列表里一层层往下取。</li></ul>
+<div class="box key"><b class="bt">本课常用函数速查</b>
+<div class="tablewrap"><table><thead><tr><th>函数</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>c()</code></td><td>组合成向量</td></tr><tr><td><code>length()</code></td><td>元素个数</td></tr>
+<tr><td><code>class()</code> / <code>str()</code></td><td>查看类型 / 结构</td></tr>
+<tr><td><code>is.na()</code></td><td>逐个判断是否缺失</td></tr>
+<tr><td><code>which()</code></td><td>返回 TRUE 的位置</td></tr>
+<tr><td><code>table()</code></td><td>计数（频数表）</td></tr>
+<tr><td><code>factor()</code></td><td>创建因子，<code>levels</code> 指定水平顺序，<code>labels</code> 指定标签</td></tr>
+<tr><td><code>as.numeric()</code> / <code>as.character()</code></td><td>类型转换</td></tr>
+<tr><td><code>function(x) …</code></td><td>定义函数</td></tr></tbody></table></div></div>
+<div class="box sw"><b class="bt">社会工作情境：缺失值本身是信息</b><p><code>na.rm = TRUE</code> 只是跳过缺失值，相当于只用有数据的人。在需求评估问卷中，“家庭收入”一题常有很多人不填。直接 <code>na.rm = TRUE</code> 计算平均收入，可能高估社区的经济水平，因为收入最低的家庭往往最不愿意回答。所以在用 <code>na.rm</code> 之前，先用 <code>sum(is.na(x))</code> 看看缺了多少，再想一想是谁没填、为什么没填（4.3 课专门讨论缺失机制）。</p></div>
+<h3>自己写函数</h3>
+<p>当同一个操作要做很多次时，可以把它包装成<span class="term">自定义函数<span class="en">（user-defined function）</span></span>：</p>
+<p><code>zscore &lt;- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)</code></p>
+<p>读法：创建一个名叫 <code>zscore</code> 的函数，它接收一个输入 <code>x</code>，返回“x 减去 x 的均值，再除以 x 的标准差”。函数体较长时用花括号 <code>{ }</code> 包起来，最后一行的值就是返回值。之后 <code>zscore(sleep)</code> 就像用 <code>mean()</code> 一样简单。</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>向量的记号</h2>
+<div class="mathbox">$$\mathbf{x} = (x_1, x_2, \dots, x_n)$$</div>
+<dl class="sym"><dt>\(\mathbf{x}\)</dt><dd>粗体表示一个向量（一整列数）。</dd><dt>\(x_i\)</dt><dd>第 \(i\) 个元素，对应 R 的 <code>x[i]</code>。</dd><dt>\(n\)</dt><dd>元素个数，对应 <code>length(x)</code>。</dd></dl>
+<p>向量化运算就是“逐元素”运算：\(60\mathbf{x} = (60x_1, \dots, 60x_n)\)，\(\mathbf{x}+\mathbf{y} = (x_1+y_1,\dots,x_n+y_n)\)。z 分数函数：</p>
+<div class="mathbox">$$z_i = \frac{x_i-\bar x}{s_x},\quad i = 1,\dots,n$$</div>
+<p>\(\bar x\) 和 \(s_x\) 只用非缺失值计算（这就是 <code>na.rm = TRUE</code>）；缺失的 \(x_i\) 对应的 \(z_i\) 仍是 NA。逻辑值求和：\(\sum_i \mathbb{1}(x_i&lt;6)\)，其中 \(\mathbb{1}(\cdot)\) 在条件成立时为 1、否则为 0，对应 <code>sum(x &lt; 6)</code>。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>向量、类型、NA 与函数</h2>
+<p>对应脚本：<a href="../R/L2-2.R">R/L2-2.R</a>。</p>
+<div class="codeblk"><div class="ctitle">R/L2-2.R（核心部分）</div><pre><code class="language-r">sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)   # NA = 缺失值（missing value）
+class(sleep)                                       # &quot;numeric&quot; 数值型
+mean(sleep)                                        # 有 NA 时结果是 NA！
+mean(sleep, na.rm = TRUE)                          # na.rm = TRUE：先去掉 NA
+which(sleep &lt; 6)                                   # 第几个人睡眠少于 6 小时
+sleep[sleep &lt; 6 &amp; !is.na(sleep)]                   # 逻辑索引（logical indexing）
+gender &lt;- factor(c(1, 0), levels = c(0, 1), labels = c(&quot;男&quot;, &quot;女&quot;))
+gender
+zscore &lt;- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+round(cbind(我的zscore = zscore(sleep), scale函数 = as.numeric(scale(sleep))), 3)</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-2_log.txt）</div><pre class="out"><code>[1] &quot;numeric&quot;
+[1] NA
+[1] 6.5625
+[1]  2  6 10
+[1] 5.5 4.5 5.0
+[1] 女 男
+Levels: 男 女
+      我的zscore scale函数
+ [1,]      0.279     0.279
+ [2,]     -0.677    -0.677
+ [3,]      0.917     0.917
+ [4,]         NA        NA
+ [5,]     -0.359    -0.359
+ [6,]     -1.315    -1.315
+ [7,]      0.598     0.598
+ [8,]         NA        NA
+ [9,]      1.554     1.554
+[10,]     -0.996    -0.996</code></pre></div>
+<p>读输出：8 个有效值的平均睡眠 6.56 小时；第 2、6、10 位不到 6 小时（5.5、4.5、5.0）。因子 <code>gender</code> 显示的是标签，<code>Levels: 男 女</code> 说明水平顺序（男为参照组）。自写的 <code>zscore()</code> 与内置的 <code>scale()</code> 结果完全相同；<code>scale()</code> 返回矩阵，所以用 <code>as.numeric()</code> 转回向量；<code>cbind()</code> 把两列并排放在一起比较。</p>
+<div class="codeblk"><div class="ctitle">更多索引与向量化</div><pre><code class="language-r">length(sleep)          # 元素个数
+sum(is.na(sleep))      # 缺失个数
+sleep * 60             # 向量化：每个值都换成分钟
+sleep[c(1, 3)]         # 第 1、3 个
+sleep &lt; 6              # 逐个比较，NA 的比较结果仍是 NA
+sum(sleep &lt; 6, na.rm = TRUE)   # TRUE 当作 1：少于 6 小时的人数</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-2_log.txt，续）</div><pre class="out"><code>[1] 10
+[1] 2
+ [1] 420 330 480  NA 360 270 450  NA 540 300
+[1] 7 8
+ [1] FALSE  TRUE FALSE    NA FALSE  TRUE FALSE    NA FALSE  TRUE
+[1] 3</code></pre></div>
+<div class="codeblk"><div class="ctitle">类型陷阱</div><pre><code class="language-r">as.numeric(c(&quot;3&quot;, &quot;4&quot;, &quot;五&quot;))       # 字符转数字：转不了的变成 NA
+dat &lt;- read.csv(&quot;data/clpn_sim_wide.csv&quot;)
+g &lt;- factor(dat$gender, levels = c(0, 1), labels = c(&quot;男&quot;, &quot;女&quot;))
+table(g)</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L2-2_log.txt，续）</div><pre class="out"><code>[1]  3  4 NA
+Warning message:
+NAs introduced by coercion
+g
+ 男  女
+373 427</code></pre></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：缺失值、类型转换与“循环补齐”</h3>
+<p>下面每一行先自己预测结果，再到 R 里运行核对。这些都是写 CLPN 脚本时会真实遇到的情况。</p>
+<div class="codeblk"><pre><code class="language-r">x &lt;- c(3, NA, 5, 2)
+mean(x)                    # NA：只要有一个缺失，结果就是 NA
+mean(x, na.rm = TRUE)      # 3.333…：(3 + 5 + 2) / 3，分母是 3 不是 4
+sum(is.na(x))              # 1：TRUE 被当作 1 相加，常用来数缺失个数
+
+c(1, &quot;2&quot;, 3)               # &quot;1&quot; &quot;2&quot; &quot;3&quot;：混入一个字符，整个向量都变成字符
+as.numeric(c(&quot;4&quot;, &quot;五&quot;))    # 4 NA，并给出警告 NAs introduced by coercion
+
+f &lt;- factor(c(&quot;10&quot;, &quot;20&quot;, &quot;10&quot;))
+as.numeric(f)              # 1 2 1 ！得到的是水平编号，不是原来的数
+as.numeric(as.character(f))  # 10 20 10：先转成字符，再转数值
+
+c(1, 2, 3, 4) + c(10, 20)  # 11 22 13 24：短向量被重复使用（循环补齐）
+y &lt;- c(8, 6, 9)
+y[-1]                      # 6 9：负号表示“去掉第 1 个”
+y[y &gt; 7]                   # 8 9：逻辑向量做索引</code></pre></div>
+
+<p>逐条解释：</p>
+<ul><li><b>NA 会“传染”。</b>这是 R 有意的设计：它不会悄悄忽略缺失。CLPN 中计算总分时，如果某题缺失，<code>rowSums()</code> 默认会返回 NA，你需要明确决定怎么处理（4.3 课）。</li>
+<li><b>向量只能有一种类型。</b>从 Excel 导入时，“缺失”“不适用”这样的文字也会把整列变成字符。</li>
+<li><b>因子（factor）的陷阱。</b>因子内部存的是 1、2、3 这样的编号，外面贴着标签。直接 <code>as.numeric()</code> 会拿到编号。SPSS 数据导入后常常带有这样的标签，务必小心。</li>
+<li><b>循环补齐。</b>两个向量长度不同时，R 会重复短的那个。长度刚好是倍数时 R 不会警告，所以长度写错了可能悄无声息地得到错误结果。</li></ul>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li><b>忘记把结果赋值保存。</b><code>sort(x)</code> 只是显示排序结果，<code>x</code> 本身不变；需要写 <code>x &lt;- sort(x)</code>。</li></ul></div>
+
+<h3>函数的参数：按位置，还是按名字？</h3>
+<p>函数调用 <code>round(3.14159, 2)</code> 中，3.14159 和 2 是两个<b>参数</b>。R 允许按位置传参（第 1 个是要舍入的数，第 2 个是保留几位小数），也允许按名字传参：<code>round(x = 3.14159, digits = 2)</code>。按名字写更清楚，顺序也可以任意调换。建议的习惯是：第 1 个参数（通常是数据）按位置写，其余参数一律写名字。例如 <code>mean(x, na.rm = TRUE)</code>、<code>cor(x, y, use = "pairwise.complete.obs")</code>。这样半年后回头看脚本，仍然一眼就知道每个设置是什么意思。</p>
+<h3>读帮助文档的顺序</h3>
+<p>2.1 课介绍了帮助页的 Usage、Arguments 和 Examples。这里补两点。第一，Usage 中等号后面是默认值；默认值是一个向量时，表示默认用第一个，例如 <code>?cor</code> 中的 <code>method = c("pearson", "kendall", "spearman")</code> 表示默认 pearson。第二，<b>Value</b> 一节说明函数返回什么（向量、矩阵还是列表），决定了后面该用 <code>[ ]</code> 还是 <code>$</code> 取结果。</p>
+
+<h3>小练习：预测这四行的结果</h3>
+<p>不运行代码，先写下你的答案：①<code>length(c(1, NA, 3))</code>；②<code>sum(c(2, 4) &gt; 3)</code>；③<code>class(c(TRUE, 2))</code>；④<code>rev(1:4)[2]</code>。答案：①3，NA 也占一个位置；②1，逻辑值 FALSE、TRUE 相加；③"numeric"，TRUE 被转成 1；④3，倒序后为 4 3 2 1，第 2 个是 3。</p>
+
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="mc"><p class="qtext">mean(c(1, NA, 3)) 会返回什么？</p><ul class="opts"><li><button type="button" data-ok="0">2</button><div class="ofb" hidden>需要 na.rm = TRUE 才是 2。</div></li><li><button type="button" data-ok="1">NA</button><div class="ofb" hidden>正确：有一个值未知，均值也未知。</div></li><li><button type="button" data-ok="0">1.33</button><div class="ofb" hidden>那是把 NA 当成 0、再除以 3 的结果；R 不会把 NA 当 0。</div></li><li><button type="button" data-ok="0">报错</button><div class="ofb" hidden>不报错，只是返回 NA；R 用 NA 表示“结果未知”。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>修正：mean(c(1, NA, 3), na.rm = TRUE) 返回 2。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">x <- c(2, 8, 5, 9, 1)。x[x > 5] 返回什么？</p><ul class="opts"><li><button type="button" data-ok="0">2 4</button><div class="ofb" hidden>那是 which(x > 5) 返回的位置。</div></li><li><button type="button" data-ok="1">8 9</button><div class="ofb" hidden>正确：取出所有大于 5 的值。</div></li><li><button type="button" data-ok="0">TRUE TRUE</button><div class="ofb" hidden>x > 5 返回的是 5 个逻辑值，方括号再把 TRUE 位置上的值取出来，所以结果是数值。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>x > 5 先得到 FALSE TRUE FALSE TRUE FALSE，再取出 TRUE 位置的值。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么“性别”最好存成因子？</p><ul class="opts"><li><button type="button" data-ok="1">它是类别而不是数量；因子让 R 正确地计数、作图并在回归中生成虚拟变量</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为存成 0/1 时，mean(gender) 算不出任何有意义的数</button><div class="ofb" hidden>对 0/1 变量，均值恰好是编码为 1 的一类所占的比例（这里是女性比例）；真正出问题的是三个及以上类别的变量。</div></li><li><button type="button" data-ok="0">因为数值型变量不能只有两个取值</button><div class="ofb" hidden>数值型完全可以只有 0 和 1；问题是 R 会把它当成数量。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>对 3 个及以上类别的变量尤其重要。</div></div>
+<div class="quiz" data-kind="txt" data-ans="character || 字符 || 字符型 || chr"><p class="qtext">c(1, "二", 3) 的类型是什么？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>一个向量只能有一种类型，R 会选“最宽容”的那种。</div><div class="fb" role="status"></div><div class="qexp" hidden>所有元素都会变成字符串 "1" "二" "3"。</div></div>
+<div class="quiz" data-kind="num" data-ans="0.3" data-tol="0.001"><p class="qtext">某向量有 10 个值，其中 3 个为 TRUE、7 个为 FALSE。mean() 返回？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>TRUE = 1，FALSE = 0。</div><div class="fb" role="status"></div><div class="qexp" hidden>3/10 = 0.3，即 TRUE 的比例。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">sleep[sleep < 6] 为什么会混进 NA？</p><ul class="opts"><li><button type="button" data-ok="0">因为 sleep 是字符型</button><div class="ofb" hidden>class(sleep) 返回 "numeric"；混进来的 NA 正是原来缺失的两个位置。</div></li><li><button type="button" data-ok="1">因为 NA < 6 的结果是 NA，用 NA 索引会返回 NA</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为 R 把 NA 当作 0，而 0 < 6</button><div class="ofb" hidden>R 不会把 NA 当 0；如果当作 0，结果里出现的应是 0 而不是 NA。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>加上 & !is.na(sleep)，或者用 which()。</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.2-A：睡眠向量</h4>
+<p>用向量存 10 个人的睡眠时长（含 2 个 NA），计算均值、找出少于 6 小时的人；写一个函数 <code>zscore(x)</code> 返回标准化后的向量，与 <code>scale()</code> 结果对比。</p>
+<details class="answer"><summary>参考代码</summary>
+<div class="codeblk"><pre><code class="language-r">sleep &lt;- c(7, 5.5, 8, NA, 6, 4.5, 7.5, NA, 9, 5)
+mean(sleep, na.rm = TRUE)                    # 6.5625
+which(sleep &lt; 6)                             # 2 6 10（第几位）
+sleep[sleep &lt; 6 &amp; !is.na(sleep)]             # 5.5 4.5 5.0（具体时长）
+zscore &lt;- function(x) {
+  m &lt;- mean(x, na.rm = TRUE)
+  s &lt;- sd(x, na.rm = TRUE)
+  (x - m) / s                                # 最后一行就是返回值
+}
+all.equal(zscore(sleep), as.numeric(scale(sleep)))   # TRUE</code></pre></div>
+<p>要点：说明 NA 的处理方式；解释为什么 <code>which()</code> 给位置、方括号给值；<code>all.equal()</code> 比较两个结果是否（在浮点误差内）相等。</p></details></div>
+<div class="exitem"><h4>练习 2.2-B：在课程数据上</h4>
+<p>读入 <code>data/clpn_sim_wide.csv</code>，取出 <code>dep1_t1</code>（情绪低落，0–3 分）这一列存为向量 <code>d1</code>。(1) 有多少人得 3 分？(2) 得 2 分及以上的比例是多少？(3) 用你的 <code>zscore()</code> 标准化 <code>d1</code>，检查结果均值是否为 0、标准差是否为 1。</p>
+<details class="answer"><summary>参考代码</summary>
+<div class="codeblk"><pre><code class="language-r">dat &lt;- read.csv(&quot;data/clpn_sim_wide.csv&quot;)
+d1 &lt;- dat$dep1_t1
+sum(d1 == 3)                 # (1) 54 人
+mean(d1 &gt;= 2)                # (2) 0.194，即 19.4%
+z &lt;- zscore(d1)
+round(c(mean(z), sd(z)), 10) # (3) 0 和 1</code></pre></div>
+<p>提示：课程数据没有缺失值，所以这里不需要 <code>na.rm</code>；但养成在自己的函数里写 <code>na.rm = TRUE</code> 的习惯很有用。</p></details></div>
+<div class="exitem"><h4>练习 2.2-C：多类别因子</h4>
+<p>创建向量 <code>service &lt;- c(1, 3, 2, 2, 1, 3, 3)</code>（1 个案、2 小组、3 社区）。把它转成带中文标签的因子，用 <code>table()</code> 计数，并解释为什么 <code>mean(service)</code>（数值版本）没有意义。</p>
+<details class="answer"><summary>参考答案</summary>
+<div class="codeblk"><pre><code class="language-r">service &lt;- c(1, 3, 2, 2, 1, 3, 3)
+service_f &lt;- factor(service, levels = 1:3, labels = c(&quot;个案&quot;, &quot;小组&quot;, &quot;社区&quot;))
+table(service_f)             # 个案 2，小组 2，社区 3</code></pre></div>
+<p><code>mean(service)</code> = 2.14，“平均服务类型是 2.14”毫无意义：1、2、3 只是标签，换成 10、20、30 也一样。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>向量是一排同类型的值；<code>[ ]</code> 按位置、条件或名字取值；运算自动向量化。</li>
+<li>四种基本类型：数值、字符、逻辑（TRUE = 1）、因子（类别变量）；类型错了，后续分析都会出错。</li>
+<li>NA 会传染：用 <code>na.rm = TRUE</code> 和 <code>is.na()</code>，并想一想缺失的原因。下一课：<a href="L2-3.html">2.3 数据框与 tidyverse 入门</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L2-1.html" class="pv"><small>上一课</small>2.1 安装 R 与 RStudio，运行第一行代码</a><a href="L2-3.html" class="nx"><small>下一课</small>2.3 数据框与 tidyverse 入门</a></nav>
+<p class="foot">CLPN 从零开始 · 第 2.2 课 · <a href="../index.html#L2-2">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

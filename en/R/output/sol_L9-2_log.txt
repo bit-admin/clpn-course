@@ -1,0 +1,7 @@
+  Primary analysis With covariates
+1      dep3 → dep4     dep3 → dep4
+2    lone2 → lone4   lone2 → lone4
+3     lone4 → dep4    lone4 → dep4
+4    lone4 → lone2   lone4 → lone2
+5    lone4 → lone3   lone4 → lone3
+Are the top 5 edges identical: TRUE ; CL edge weight correlation r = 0.997 ; Maximum difference = 0.018 

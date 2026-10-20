@@ -1,0 +1,236 @@
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>工具箱、书架和“找得到的文件”</h2>
+<div class="box story"><b class="bt">“在我电脑上明明能运行！”</b>
+<p>小林把分析脚本发给合作者，对方一运行就报错：<code>cannot open file 'C:/Users/小林/Desktop/论文/数据最终版2.csv': No such file or directory</code>。对方的电脑上当然没有“小林的桌面”。接着又报错：<code>there is no package called 'qgraph'</code>，因为对方没装这个包。本课解决这两件事：包从哪里来、怎么加载；文件放在哪里、怎么让别人的电脑也能找到。</p></div>
+
+<h3>包：给 R 添加新工具</h3>
+<p>R 安装后自带的函数（如 <code>mean()</code>、<code>lm()</code>）只是基础工具。别人编写好的额外工具打包成{{T:包|package}}，放在 {{T:CRAN|Comprehensive R Archive Network}}（R 的官方包仓库）上供免费下载。CLPN 需要的 <code>glmnet</code>（LASSO）、<code>qgraph</code>（画网络）、<code>bootnet</code>（稳定性分析）都是包。</p>
+<div class="box analogy"><b class="bt">类比：买书 vs 把书从书架上拿下来</b><p><code>install.packages("qgraph")</code> 是买书：从 CRAN 下载并装到你的电脑上，每台电脑只需做一次。例外是升级 R：包按 R 的“主版本.次版本”分开存放，所以不只是大版本（4.x → 5.0），次版本升级（如 4.4 → 4.5）后也要重装包；只有补丁版本升级（如 4.5.0 → 4.5.1）可以继续用原来的包。<code>library(qgraph)</code> 是把书从书架上拿到桌面：每次打开 R（每个新会话），想用这本书里的函数，都要先拿下来一次。所以包装好了，下次打开 R 仍要 <code>library()</code>。两种报错也由此区分：<code>there is no package called 'bootnet'</code> 表示还没买（没安装），运行 <code>install.packages("bootnet")</code>；<code>could not find function "cv.glmnet"</code> 往往表示书在书架上却没拿下来（装了但没有 <code>library(glmnet)</code>）。</p></div>
+<ul><li><code>install.packages()</code> 里的包名要加引号；<code>library()</code> 里一般不加。</li>
+<li>不要把 <code>install.packages()</code> 写进每次都要运行的分析脚本（每次都会重新下载）。课程脚本用“只安装缺少的”写法（见 R 代码）。</li>
+<li>只想用一次某个函数而不加载整个包，可以写 <code>包名::函数名</code>，例如 <code>psych::describe(dat)</code>。这也能避免两个包有同名函数时的混淆（例如 <code>dplyr::filter()</code> 与 <code>stats::filter()</code>）。</li>
+<li>加载包时出现的红色文字不一定是报错：很多包会打印启动信息或“某某函数被遮蔽（masked）”的提示。真正的错误以 <code>Error</code> 开头。</li></ul>
+
+<h3>工作目录与路径：R 在哪里找文件？</h3>
+<p>R 读写文件时，从一个“当前所在的文件夹”出发，叫{{T:工作目录|working directory}}，用 <code>getwd()</code> 查看。</p>
+<ul><li><b>绝对路径</b>：从磁盘根部写起，例如 <code>C:/Users/小林/Desktop/论文/data.csv</code>。只在你自己的电脑上有效。</li>
+<li><b>{{T:相对路径|relative path}}</b>：从工作目录写起，例如 <code>data/clpn_sim_wide.csv</code>（“工作目录下的 data 文件夹里的这个文件”）。只要别人的工作目录也是项目文件夹，就能找到。</li></ul>
+<p>Windows 的路径用反斜杠 <code>\</code>，但在 R 字符串里 <code>\</code> 是转义符，所以要写成正斜杠 <code>/</code> 或双反斜杠 <code>\\</code>。</p>
+<div class="box warnbox"><b class="bt">为什么不建议写 setwd("C:/Users/...")？</b><p><code>setwd()</code> 用绝对路径改变工作目录：换一台电脑、换一个用户名、把文件夹挪个位置，脚本就失效了；而且它依赖于你个人电脑的目录结构，别人无法复现。更好的方法是使用 RStudio 项目。</p></div>
+
+<h3>RStudio 项目：一个文件夹 = 一个分析</h3>
+<p>{{T:项目|RStudio Project}}就是一个带有 <code>.Rproj</code> 文件的文件夹。双击 <code>.Rproj</code> 打开 RStudio 时，工作目录会自动设为这个文件夹，于是所有相对路径都能直接使用。本课程文件夹里已经有 <code>clpn-course.Rproj</code>。新建项目：File → New Project → New Directory（或 Existing Directory）。</p>
+<p>推荐的文件夹结构（也就是本课程文件夹 <code>clpn-course/</code> 的结构，只列出与 R 有关的部分；解压 <code>clpn-course.zip</code> 后就是这样）：</p>
+<pre class="out">clpn-course/
+├── clpn-course.Rproj     ← 双击它打开项目
+├── data/                 ← 原始数据（只读，永远不要手动修改）
+└── R/                    ← 分析脚本（本课程：R/L2-4.R 等）
+    ├── solutions/        ← 练习解答
+    └── output/           ← 脚本生成的结果、图、日志</pre>
+<p>原则：<b>原始数据只读</b>；所有清理、计算都在脚本里完成，结果写到 output/。这样任何人拿到整个文件夹，打开 .Rproj，按编号运行脚本，都能从原始数据重现全部结果（9.3 课“可被复核的报告”以此为基础）。你自己做项目时，照这个结构新建一个 RStudio 项目即可。</p>
+<p>每个课程脚本的第一行都是 <code>source("R/_setup.R")</code>。这是一个相对路径，所以它本身要求工作目录已经是 <code>clpn-course</code> 文件夹；通过 <code>clpn-course.Rproj</code> 打开 RStudio 就能保证这一点。<code>_setup.R</code> 载入后会再确认一次：先检查当前工作目录，再逐级往上找（最多往上 3 级，即共检查 4 个文件夹）含有 <code>data/clpn_sim_wide.csv</code> 的文件夹，找到就把它设为工作目录（并在 <code>R/output/</code> 存放结果）；找不到就停下并报错。</p>
+<p>如果看到 <code>cannot open file 'R/_setup.R'</code> 或“找不到课程文件夹”：先在 Console 运行 <code>getwd()</code> 看看当前在哪里；然后关掉 RStudio，双击 <code>clpn-course.Rproj</code> 重新打开（或用菜单 Session → Set Working Directory → Choose Directory… 选中 <code>clpn-course</code> 文件夹）；同时检查打开的是解压后的 <code>clpn-course</code> 文件夹，<code>data/clpn_sim_wide.csv</code> 是否存在。</p>
+
+<h3>导入不同格式的数据</h3>
+<div class="tablewrap"><table><thead><tr><th>格式</th><th>包与函数</th><th>注意</th></tr></thead><tbody>
+<tr><td>CSV（逗号分隔文本）</td><td>readr：<code>read_csv()</code>；基础 R：<code>read.csv()</code></td><td>最通用，推荐；注意文件编码</td></tr>
+<tr><td>Excel（.xlsx / .xls）</td><td>readxl：<code>read_excel("文件", sheet = 1)</code></td><td>合并单元格、多行表头、颜色标注都会造成问题；最好整理成“一行一人、第一行是变量名”</td></tr>
+<tr><td>SPSS（.sav）</td><td>haven：<code>read_sav()</code></td><td>会保留变量标签和值标签（如 1 = 女），用 <code>as_factor()</code> 转为因子</td></tr>
+<tr><td>Stata（.dta）、SAS</td><td>haven：<code>read_dta()</code>、<code>read_sas()</code></td><td></td></tr></tbody></table></div>
+<p>导入后第一件事是检查。<code>glimpse()</code> 或 <code>str()</code> 看行数、列数、每列类型；<code>summary()</code> 看范围是否合理（0–3 分的题出现 9 可能是“缺失”代码，需要改为 NA）；<code>head()</code> 看前几行。</p>
+
+<h3>中文乱码：编码问题</h3>
+<p>计算机用{{T:编码|encoding, UTF-8}}规则把文字存成数字。国际通用的是 UTF-8；而中文 Windows 上的 Excel 另存 CSV 时，常常使用 GBK（也叫 GB2312 / CP936）编码。用 UTF-8 去读 GBK 文件，中文就会变成乱码（例如“鐢锋€�”），有时还会报错 <code>invalid multibyte string</code>。解决办法：</p>
+<ul><li>读入时指明编码：<code>read_csv("文件.csv", locale = locale(encoding = "GBK"))</code>，或 <code>read.csv("文件.csv", fileEncoding = "GBK")</code>。</li>
+<li>在 Excel 中另存为“CSV UTF-8（逗号分隔）”格式。</li>
+<li>RStudio 中脚本本身也要用 UTF-8 保存（File → Save with Encoding → UTF-8），否则脚本里的中文注释和标签会乱码。长期的做法是数据和脚本一律存成 UTF-8。</li></ul>
+<div class="box sw"><b class="bt">社会工作情境：从问卷星到 R</b><p>很多社工研究用问卷星、腾讯问卷等平台收集数据，导出的 Excel / CSV 常有中文列名、选项文字（“非常同意”而不是 4）和合计行。好习惯：(1) 原始导出文件原样放进 data/；(2) 在脚本中重命名列（如 <code>lone1_t1</code>）、把文字选项重编码为数字；(3) 写一份数据字典（课程的 <code>data/data_dictionary.csv</code> 就是例子），记录每个变量的含义和取值。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>本课无新公式</h2>
+<p>本课是“工程”课，没有新的统计公式。只需记住一个“等式”：</p>
+<div class="mathbox">$$\text{可复现的结果} = \text{原始数据} + \text{脚本} + \text{软件版本}$$</div>
+<p>三者都确定，任何人都能得到相同结果。软件版本可以用 <code>sessionInfo()</code> 或 <code>packageVersion("glmnet")</code> 记录；结果涉及随机过程（交叉验证、bootstrap）时，还要用 <code>set.seed()</code> 固定随机种子（3.5 课）。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>安装、加载、导入、检查</h2>
+<p>对应脚本：<a href="../R/L2-4.R">R/L2-4.R</a>。一次安装全部依赖包的最简写法是：</p>
+```r 一次安装全部依赖包（首次配置环境时运行一次）
+install.packages(c("tidyverse", "psych", "lavaan", "qgraph",
+                   "bootnet", "glmnet", "networktools", "mice"))
+```
+<p>课程脚本用更稳妥的“只安装缺少的包”写法，并打印版本号：</p>
+```r R/L2-4.R（核心部分）
+source("R/_setup.R")
+pkgs <- c("tidyverse", "psych", "lavaan", "qgraph", "bootnet", "glmnet",
+          "networktools", "mgm", "igraph", "readxl", "haven", "mice", "knitr", "rmarkdown",
+          "lme4")
+need <- pkgs[!pkgs %in% rownames(installed.packages())]
+if (length(need) > 0) install.packages(need)        # 只安装缺少的
+for (p in pkgs) cat(sprintf("%-13s %s\n", p, utils::packageDescription(p)$Version))
+
+suppressPackageStartupMessages({ library(tidyverse); library(haven) })
+dat  <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)   # 相对路径
+spss <- read_sav("data/clpn_sim_wide.sav")
+glimpse(dat[, 1:8])
+cat("CSV 与 SAV 是否同一份数据？", all.equal(as.numeric(dat$dep1_t1), as.numeric(spss$dep1_t1)), "\n")
+```
+```out 输出（R/output/L2-4_log.txt，节选）
+tidyverse     2.0.0
+psych         2.6.9
+lavaan        0.7-3
+qgraph        1.10.1
+bootnet       1.9.1
+glmnet        5.1
+networktools  1.6.0
+mgm           1.2-15
+igraph        2.3.4
+readxl        1.6.0
+haven         2.5.5
+mice          3.19.0
+knitr         1.52
+rmarkdown     2.32
+lme4          2.0-6
+Rows: 800
+Columns: 8
+$ id       <chr> "P001", "P002", "P003", "P004", "P005", "P006", "P007", "P008…
+$ lone1_t1 <dbl> 3, 1, 2, 2, 3, 4, 2, 2, 3, 1, 3, 3, 1, 2, 2, 2, 2, 3, 2, 1, 2…
+$ lone2_t1 <dbl> 2, 2, 1, 2, 4, 2, 1, 2, 3, 1, 4, 3, 2, 1, 2, 1, 1, 3, 3, 2, 4…
+$ lone3_t1 <dbl> 2, 1, 2, 2, 3, 2, 2, 2, 2, 1, 1, 2, 1, 3, 1, 2, 1, 2, 2, 2, 4…
+$ lone4_t1 <dbl> 2, 2, 2, 2, 3, 4, 1, 3, 2, 1, 2, 2, 1, 1, 3, 2, 1, 3, 1, 1, 4…
+$ dep1_t1  <dbl> 0, 0, 1, 1, 1, 1, 2, 0, 1, 0, 1, 3, 0, 1, 1, 2, 0, 1, 0, 0, 1…
+$ dep2_t1  <dbl> 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0, 3, 1, 1, 1, 1, 0, 3, 0, 0, 0…
+$ dep3_t1  <dbl> 1, 1, 1, 2, 0, 0, 3, 0, 0, 0, 1, 1, 0, 2, 1, 1, 0, 1, 1, 0, 0…
+CSV 与 SAV 是否同一份数据？ TRUE
+```
+<div class="box key"><b class="bt">读这段代码</b><ul>
+<li><code>%in%</code>：判断左边每个元素是否出现在右边；<code>!</code> 取反，得到“没装的包”。</li>
+<li><code>packageVersion()</code>：已安装的版本号。你的电脑上版本可能更新，一般没关系；论文方法部分应报告你实际使用的版本。</li>
+<li><code>glimpse()</code>：横着显示每一列的类型和前几个值，适合列很多的数据。</li>
+<li><code>all.equal()</code>：两份文件的同一列完全相同，说明 CSV 与 SAV 是同一份数据的两种格式。</li></ul></div>
+```r 检查 SPSS 文件的标签，以及常用的导入选项（模板）
+class(spss$gender)                 # 本课程的 .sav 没有附带值标签，所以是普通数值
+# 若 .sav 带有值标签（如 1 = "女"），用 haven::as_factor() 转为因子：
+# spss$gender_f <- as_factor(spss$gender)
+
+# Excel（课程未提供 Excel 文件，这是模板）：
+# library(readxl)
+# xl <- read_excel("data/survey.xlsx", sheet = 1, na = c("", "NA", "999"))
+
+# GBK 编码的中文 CSV：
+# gbk <- read_csv("data/survey_gbk.csv", locale = locale(encoding = "GBK"))
+
+getwd()                            # 确认工作目录是项目文件夹
+```
+```out 输出（示意：getwd() 显示的是你自己电脑上的课程文件夹路径）
+[1] "numeric"
+[1] "/workspace/clpn-course"
+```
+<p><code>na = c("", "NA", "999")</code> 告诉 R：空格子、"NA" 和 999 都当作缺失值。很多问卷平台和 SPSS 文件用 999、99 或 −9 表示“未作答”，不处理的话它们会被当成真实分数，拉高均值，扭曲相关和网络边。</p>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：导入一份新数据后的“五步体检”</h3>
+<p>假设合作机构发给你一份 <code>survey.csv</code>。不要急着跑模型，先做下面五步，每一步都能抓出一类常见问题：</p>
+```r
+d <- read.csv("data/survey.csv")      # 1. 导入（路径相对于项目根目录）
+dim(d)                                  # 2. 行数 = 人数？列数 = 问卷题数 + 人口学变量？
+str(d)                                  # 3. 每列类型对吗？题目分应为 int/num，不应是 chr
+summary(d)                              # 4. 范围对吗？1–4 分的题出现 9、99、-9 吗？
+colSums(is.na(d))                       # 5. 每列缺失多少？
+# 若用 99 / -9 表示缺失，只在题目列里改成 NA（不要对整张表替换：0–100 分的变量里 99 可能是真实分数）
+item_cols <- grep("^(lone|dep)", names(d), value = TRUE)
+for (v in item_cols) d[[v]][d[[v]] %in% c(99, -9)] <- NA
+
+```
+
+<p>替换时只动题目列：像生活满意度这样 0–100 分的变量，99 可能是真实回答，要按问卷的编码手册逐列处理。</p>
+<h3>SPSS 值标签的进一步处理</h3>
+<p>带值标签的 .sav 文件用 <code>read_sav()</code> 读入后，相应的列是 <code>haven_labelled</code> 类型，打印时显示 “1 [从不]” 之类的标签。做统计计算前，通常用 <code>haven::zap_labels()</code> 去掉标签、只保留数值；分类变量用 <code>haven::as_factor()</code> 转为因子。另外要检查 SPSS 中定义的“用户缺失值”（如 99）是否已经转成 NA。</p>
+
+<h3>脚本开头的固定结构</h3>
+<p>本课程每个脚本都以相同的方式开头：先用注释写明脚本的用途和对应的课，再 <code>source("R/_setup.R")</code> 做共用的准备工作（找到课程根目录、建好 R/output 文件夹、设置中文字体、定义 <code>read_course_data()</code> 等共用函数），接着用 <code>library()</code> 加载本脚本要用的包，然后读入数据。你自己的脚本也建议固定这个顺序：用途注释 → 加载包 → 读数据 → 分析 → 保存输出。这样任何人打开脚本，都能在前 10 行内知道它依赖什么、读的是哪份数据。</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+```quiz
+Q: 为什么不建议在脚本里写 setwd("C:/Users/...")？
+- 因为相对路径比绝对路径读得更快 || 读取速度没有区别；问题在于绝对路径只在你自己的电脑上存在。
++ 绝对路径只在你的电脑上有效，换电脑、换用户、挪文件夹都会失效，别人无法复现 || 正确。
+- 因为 setwd() 会永久改掉工作目录，影响以后所有项目 || setwd() 只影响当前会话；真正的问题是这个路径换一台电脑就不存在。
+E: 用 RStudio 项目 + 相对路径代替。
+```
+```quiz
+Q: 包装好后，为什么下次打开 R 还要 library()？
++ install 只是把包装到电脑上（买书）；每个新会话都要用 library() 加载才能使用（从书架上拿下来） || 正确。
+- 因为关闭 R 时包会被卸载，需要重新安装 || 包仍在电脑上，不用重装；新会话只是还没有把它加载进来。
+- 不需要，装好就能直接用 || 装好的包仍要用 library() 加载，或用 包名::函数名 调用其中的函数。
+E: install.packages() 一次；library() 每个会话一次。
+```
+```quiz
+Q: 导入中文数据出现乱码时，可能是什么原因？
+- CSV 文件里有缺失值 || 缺失值会读成 NA 或空字符串，不会让中文变成乱码。
++ 文件编码（如 GBK）与读入时假定的编码（如 UTF-8）不一致 || 正确：用 locale(encoding = "GBK") 或另存为 UTF-8。
+- R 不支持中文 || R 支持中文；同一份文件按正确的编码读入就能正常显示。
+E: 中文 Windows 版 Excel 另存的 CSV 常为 GBK 编码。
+```
+```quiz
+Q: 工作目录是 /home/learner/clpn-course。相对路径 "data/clpn_sim_wide.csv" 指向哪里？
+- /data/clpn_sim_wide.csv || 相对路径从工作目录出发，不是从根目录。
++ /home/learner/clpn-course/data/clpn_sim_wide.csv || 正确。
+- 当前桌面上的文件 || R 不会去桌面找；相对路径总是从工作目录出发。
+E: 相对路径 = 工作目录 + 相对部分。
+```
+```quiz
+Q: 导入后发现 dep1_t1（应为 0–3 分）的最大值是 999。最可能是什么？如何处理？
+- 真实的极端值，保留 || 0–3 分的题不可能得 999。
++ 缺失值代码；读入时用 na = c("999") 或之后把 999 改为 NA || 正确。
+- 软件计算错误 || R 读入时不会改动数值；999 是问卷平台或 SPSS 用来表示“未作答”的编码约定。
+E: 导入后先用 summary() 检查每个变量的范围。
+```
+```quiz
+Q: install.packages(qgraph) 报错 object 'qgraph' not found。怎么改？
+T: install.packages("qgraph") || "qgraph" || 加引号 || 包名加引号
+H: 安装时包名是一个字符串。
+E: 没有引号时，R 以为 qgraph 是一个对象并去找它。
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 2.4-A：搭建项目并导入数据</h4>
+<p>打开或建立 clpn-course 项目文件夹（含 <code>data/</code>、<code>R/</code>、<code>R/output/</code>），安装本课程所需全部包，导入一份 CSV 和一份 .sav 文件并检查变量。</p>
+<details class="answer"><summary>参考步骤</summary>
+<ol><li>File → New Project → Existing Directory，选择课程文件夹（解压 <code>clpn-course.zip</code> 得到的 <code>clpn-course</code>；里面已有 <code>clpn-course.Rproj</code>，直接双击即可）。</li>
+<li>运行 <code>R/L2-4.R</code>，确认所有包都打印出版本号。若某个包安装失败，复制完整报错信息，按 2.1 课的模板提问。</li>
+<li>新建 <code>R/week04.R</code>：</li></ol>
+```r
+library(tidyverse); library(haven)
+dat  <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)
+spss <- read_sav("data/clpn_sim_wide.sav")
+dim(dat); dim(spss)                       # 行数、列数是否一致
+summary(dat[, c("lone1_t1", "dep1_t1", "age", "gender")])   # 范围是否合理
+sum(is.na(dat))                           # 缺失值个数
+identical(names(dat), names(spss))        # 变量名是否一致
+sessionInfo()                             # 记录版本
+```
+<p>检查要点：两份数据都是 800 行；孤独题 1–4、抑郁题 0–3、年龄 18–85；没有缺失值。把检查结果写成 3–4 句话。</p></details></div>
+<div class="exitem"><h4>练习 2.4-B：找出路径问题</h4>
+<p>下面这段代码在合作者的电脑上失败了。指出两个问题并改正：</p>
+```r
+setwd("C:\Users\小林\Desktop\论文")
+install.packages("glmnet")
+dat <- read.csv("数据最终版2.csv")
+fit <- cv.glmnet(X, y)
+```
+<details class="answer"><summary>参考答案</summary><p>(1) <code>setwd()</code> 绝对路径（而且反斜杠没有转义，这一行本身就会报错）→ 删掉，改用 RStudio 项目；数据放进 data/，写 <code>read.csv("data/survey_final.csv")</code>（文件名最好用英文）。(2) 每次都运行 <code>install.packages()</code> 不必要，却漏了 <code>library(glmnet)</code>，<code>cv.glmnet</code> 会报 could not find function → 安装命令移到单独的安装脚本，这里写 <code>library(glmnet)</code>。另外 <code>X</code>、<code>y</code> 没有定义。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li><code>install.packages("包")</code> 每台电脑一次，<code>library(包)</code> 每个会话一次。</li>
+<li>用 RStudio 项目 + 相对路径，不写 <code>setwd("C:/...")</code>；原始数据只读，结果由脚本生成。</li>
+<li>导入后先检查类型、范围和缺失代码；乱码多半是编码（GBK vs UTF-8）问题。下一课：{{L:2.5}}。</li></ul>
+</section>

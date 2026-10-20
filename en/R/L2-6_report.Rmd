@@ -1,0 +1,32 @@
+---
+title: "My First Reproducible Report (L2-6)"
+output:
+  html_document:
+    mathjax: null      # Do not load MathJax from network; opens offline (no math formulas in report)
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+dat <- read_csv("data/clpn_sim_wide.csv")   # Working directory = course root when rendered via R/L2-6.R; before clicking Knit in RStudio, set Knit Directory to Project Directory
+dat <- dat |> mutate(loneliness = rowSums(across(lone1_t1:lone4_t1)),
+                     depression = rowSums(across(dep1_t1:dep5_t1)))
+```
+
+## Descriptive Statistics Table
+
+```{r}
+dat |> summarise(across(c(loneliness, depression), list(mean = mean, sd = sd))) |> knitr::kable(digits = 2)
+```
+
+## Two Plots
+
+```{r}
+ggplot(dat, aes(loneliness, depression)) + geom_jitter(alpha = .3) + geom_smooth(method = "lm")
+ggplot(dat, aes(depression)) + geom_histogram(binwidth = 1)
+```
+
+## Interpretation
+
+The correlation between loneliness and depression total scores is r = `r round(cor(dat$loneliness, dat$depression), 2)`. Numbers come directly from code, and re-knitting after data updates refreshes them automatically—this is what "reproducible" means.

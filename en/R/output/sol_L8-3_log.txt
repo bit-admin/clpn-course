@@ -1,0 +1,22 @@
+             statistic    CS
+1  inExpectedInfluence 0.516
+2 outExpectedInfluence 0.205
+CS for inExpectedInfluence = 0.52: Barely reaches 0.5 (only one grid step above cutoff; varying the random seed may drop it to the next step): marginally stable; interpret rankings with caution; still use "predict" rather than "influence/cause".
+CS for outExpectedInfluence = 0.20 < 0.25: Example of downgraded statement — "Centrality rankings for outExpectedInfluence become unstable after dropping a small proportion of cases; therefore, this study draws no conclusions regarding which node is 'most influential' and provides only exploratory descriptions."
+
+Construct-level sum of edge weights (original sample): Loneliness -> Depression = 0.557 ; Depression -> Loneliness = 0.079 ; Difference = 0.478 
+Bootstrap quantiles of difference ( 1000  replications): 2.5% = 0.121 , 97.5% = 0.832 ; Proportion of difference <= 0 = 0.003 
+Conclusion: Interval excludes 0; one may state that "the sum of edge weights in the Loneliness -> Depression direction is greater than in the reverse direction" (still a predictive relationship, not causal).
+
+bootnet Expected Influence vs. hand calculation (noAR = autoregressions excluded, withAR = autoregressions retained):
+  node bootnet_out hand_out_noAR hand_out_withAR bootnet_in hand_in_noAR hand_in_withAR
+ lone1       0.252         0.252           0.668      0.092        0.092          0.509
+ lone2       0.237         0.237           0.672      0.055        0.055          0.489
+ lone3      -0.027        -0.027           0.314      0.248        0.248          0.588
+ lone4       0.608         0.608           1.054      0.198        0.198          0.643
+  dep1       0.352         0.352           0.667      0.349        0.349          0.664
+  dep2       0.193         0.193           0.503      0.316        0.316          0.625
+  dep3       0.250         0.250           0.581      0.192        0.192          0.522
+  dep4       0.068         0.068           0.349      0.400        0.400          0.682
+  dep5       0.224         0.224           0.585      0.309        0.309          0.670
+bootnet out-EI matches hand calculation with autoregressions excluded: TRUE ; in-EI matches: TRUE 

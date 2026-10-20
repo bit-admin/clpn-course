@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9.2 批判性评估：CLPN 常见问题清单 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L9-2.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="9.2" style="--c:#a855f7">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L9-2">CLPN 课程大纲</a><span class="crumb">M9 阅读、批判与报告规范 / 9.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L9-2.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L9-2.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details open style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html" class="cur" aria-current="page"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 9 · Reading, Critique &amp; Reporting · 第 9.2 课</div>
+<h1>批判性评估：CLPN 常见问题清单</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L9-1.html">9.1 如何读一篇 CLPN 实证论文</a>、<a href="L5-4.html">5.4 从预测到因果：纵向模型能说什么、不能说什么</a></span><span>配套脚本：<a href="../R/L9-2.R">R/L9-2.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>识别过度解读中心性、因果化用词、被试间/被试内混淆等常见问题</li><li>评估节点选择（题目内容重叠、单题测量信度）</li><li>评估样本量、缺失处理、时间间隔是否合理</li><li>了解网络方法学的总体挑战（Fried &amp; Cramer, 2017）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>拓扑重叠</b><span class="en">topological overlap / item redundancy</span></li><li><b>节点选择</b><span class="en">node selection</span></li><li><b>可重复性</b><span class="en">replicability</span></li><li><b>过度解读</b><span class="en">overinterpretation</span></li><li><b>研究者自由度</b><span class="en">researcher degrees of freedom</span></li></ul>
+<p>读懂论文之后，下一步是批判性评估。本课梳理 CLPN 论文的十类常见问题，并演示如何用敏感性分析检验“结论是否依赖于某个分析决定”。这些问题在自己的项目里同样需要提前规避。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>CLPN 论文的十个常见问题</h3>
+<div class="tablewrap"><table><tr><th>#</th><th>问题</th><th>怎么识别</th><th>相关课程</th></tr><tr><td>1</td><td>因果化用词</td><td>“导致”“驱动”“作用于”“因此干预……”</td><td>5.4</td></tr><tr><td>2</td><td>被试间 / 被试内混淆</td><td>没有讨论稳定特质；把边当作被试内过程</td><td>5.3, 7.5</td></tr><tr><td>3</td><td>过度解读中心性</td><td>CS 未报告或 &lt; 0.25 却解释排序；“中心 = 靶点”</td><td>6.5, 8.3</td></tr><tr><td>4</td><td>拓扑重叠（题目内容重叠）</td><td>两个几乎同义的题目之间有极强的边，并抬高彼此的中心性</td><td>本课</td></tr><tr><td>5</td><td>节点选择随意</td><td>为什么是这些题目？是否遗漏了重要变量（如躯体疾病）？</td><td>本课</td></tr><tr><td>6</td><td>单题测量信度低</td><td>单个题目的测量误差大，会削弱自回归、扭曲交叉滞后</td><td>5.4</td></tr><tr><td>7</td><td>样本量不足</td><td>N/p 小；网络极稀疏；区间很宽</td><td>6.3, 8.2</td></tr><tr><td>8</td><td>缺失与流失处理不当</td><td>未报告流失；直接列表删除；流失与基线症状相关</td><td>4.3</td></tr><tr><td>9</td><td>时间间隔未论证</td><td>间隔是否适合研究的过程？</td><td>5.4</td></tr><tr><td>10</td><td>研究者自由度未披露</td><td>λ 规则、γ、种子、协变量等未报告，或像是“试了很多种选最好看的”</td><td>本课</td></tr></table></div>
+<h3>深入两个新概念</h3>
+<h4><span class="term">拓扑重叠<span class="en">（topological overlap / item redundancy）</span></span></h4>
+<p>如果两道题问的几乎是同一件事（例如“我感到孤独”与“我觉得很寂寞”），它们之间的边会非常强，而且它们与其他节点的连接模式也高度相似。这不是“两个症状互相作用”，而是“同一个东西测了两次”。后果：（1）这对节点的边被误读为动态关系；（2）它们的中心性被人为抬高。networktools 包的 <code>goldbricker()</code> 函数可以找出“与其他节点的相关模式高度相似”的题目对，帮助判断是否需要合并或删除。</p>
+<h4><span class="term">研究者自由度<span class="en">（researcher degrees of freedom）</span></span></h4>
+<p>CLPN 有很多“可以这样也可以那样”的决定：lambda.min 还是 1se？γ 取几？种子是多少？是否加协变量？用哪些题目？如果研究者尝试了很多组合，只报告最“好看”的一种，结果就可能是偶然的。解决办法：事先写好分析计划（10.1），并报告 <span class="term">敏感性分析<span class="en">（sensitivity analysis）</span></span>：换一种合理的决定，主要结论是否不变。</p>
+<h3>课程数据的敏感性检查（R/L9-2.R）</h3>
+<div class="tablewrap"><table><tr><th>检查</th><th>结果</th><th>含义</th></tr><tr><td>λ 规则：lambda.min / 1se / EBIC</td><td>CL 边数 52 / 17 / 31；最强边三者都是 dep3 → dep4；out-EI 最高三者都是 lone4；in-EI 最高：dep4 / dep1 / dep4</td><td>边数对规则非常敏感；最强边稳健；in-EI 第一名会变</td></tr><tr><td>随机种子：换 20 个种子</td><td>49 条 CL 边始终非零，12 条始终为 0，11 条“时有时无”</td><td>约 15% 的边取决于交叉验证的随机分折 → 必须报告种子</td></tr><tr><td>题目冗余：goldbricker()</td><td>提示了 9 对题目（如 lone2 &amp; lone1、dep4 &amp; dep3），全部是同一构念内部的题目对</td><td>9 个节点时区分力有限（见下文“goldbricker 参数”后的说明）；需结合题目原文判断。本模拟数据中题目按构念生成，相似性主要来自共同特质，不是内容重复</td></tr></table></div>
+<div class="box warnbox"><b class="bt">对 out-EI 的再提醒：</b><p>三种 λ 规则下 out-EI 最高都是 lone4，看起来很“稳健”，但 8.3 课的 CS 只有 0.20，而且在总体目标值矩阵和被试内真值矩阵中 lone4 都不突出（7.4 课）。敏感性分析中“结论不变”不等于“结论正确”：不同 λ 规则用的是同一份样本，抽样误差是共享的。所以敏感性分析与 bootstrap 稳定性检验要一起看。</p></div>
+<h3>Fried & Cramer（2017）：网络方法的大问题</h3>
+<p>Fried 与 Cramer 系统讨论了心理病理网络理论与方法面临的挑战，包括节点如何定义与选择、网络结果能否在不同样本中复现、统计网络与理论“因果系统”之间的距离等。读这篇文章能帮助你把 CLPN 放在更大的背景下：CLPN 是一个有用的描述和假设生成工具，但它不是“读出因果网络”的机器。（具体论点请以原文为准。）</p>
+<h3>写审稿意见的结构</h3>
+<ol><li><b>总体评价</b>（2–3 句）：研究问题、方法、主要贡献。</li>
+<li><b>优点</b>（2 条）：具体而真诚，例如“报告了 T2→T3 复现”“共享了代码”。</li>
+<li><b>主要问题</b>（3 条）：每条包括“问题是什么 → 为什么重要 → 具体建议”。</li>
+<li><b>次要问题</b>：措辞、图表、引用。</li>
+<li><b>语气</b>：对事不对人；用“作者可以考虑……”而不是“作者错误地……”。</li></ol>
+<h3>交互演示：问题 2 的直观后果</h3><p>清单中的第二个问题是“被试间 / 被试内混淆”。下面的组件用同一份课程数据的两份答案做对比：被试内真值（true_B_within）与标准 CLPN 实际估计的总体目标值（true_B_population），两者的区别见 7.2 课。切换后注意 out-EI 排序如何变化。</p><div class="widget w2" data-widget="clpn" data-title="被试内真值 vs 标准 CLPN 的总体目标值：中心性排序会变吗？" data-mode="ei" data-compare="1" data-which="pop"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div><h3>交互演示：问题 3 与问题 7（中心性稳定性与样本量）</h3><div class="widget w2" data-widget="cs" data-title="回顾：case-dropping 与 CS 系数"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<h4>1. 题目冗余为什么会抬高中心性？</h4>
+<p>设题目 A 与 A′ 几乎相同：\(A' = A + e\)，\(e\) 很小。网络中 A—A′ 的边（偏相关或交叉滞后）会很大，A 与 A′ 的强度/EI 都因此增加约 \(|w_{AA'}|\)。如果把两题合并成一个节点，这条“自己连自己”的边就消失了。</p>
+<h4>2. 种子敏感性的度量</h4>
+<div class="mathbox">\[\pi_{kj}=\frac{1}{S}\sum_{s=1}^{S}\mathbb{1}\big[\hat\beta^{(s)}_{kj}\neq0\big]\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(S\)</td><td>尝试的种子个数（R/L9-2 中 S = 20）</td></tr><tr><td>\(\hat\beta^{(s)}_{kj}\)</td><td>用第 s 个种子估计的边</td></tr><tr><td>\(\pi_{kj}\)</td><td>该边在不同种子下非零的比例：1 = 始终保留，0 = 始终为 0，介于其间 = 时有时无</td></tr></table>
+<h4>3. 敏感性分析的一致性指标</h4>
+<div class="mathbox">\[r=\mathrm{cor}\big(\hat\beta^{\text{主分析}}_{\text{CL}},\ \hat\beta^{\text{替代分析}}_{\text{CL}}\big),\qquad \text{Jaccard}=\frac{|E_1\cap E_2|}{|E_1\cup E_2|}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(E_1, E_2\)</td><td>两种分析中非零边的集合</td></tr><tr><td>\(|E_1\cap E_2|\)</td><td>两者都有的边数</td></tr><tr><td>\(\text{Jaccard}\)</td><td>杰卡德相似系数：0 = 完全不同，1 = 完全相同</td></tr></table>
+<p>报告“主要结论（最强边、中心性排序、构念方向）在替代分析中是否保持”比报告一个抽象的相关更有意义。</p>
+<h4>4. 一个关于“重复 CV”的提示</h4>
+<p>交叉验证误差 \(\mathrm{CV}(\lambda)\) 本身是随机分折的结果。重复 R 次分折并取平均，\(\overline{\mathrm{CV}}(\lambda)=\frac1R\sum_r \mathrm{CV}_r(\lambda)\)，可以降低选 λ 的随机性（代价是计算量 × R）。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L9-2.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages(library(networktools))
+dat &lt;- read_course_data()
+X &lt;- dat[, vars_t(1)]; Y &lt;- dat[, vars_t(2)]
+off &lt;- matrix(TRUE, 9, 9); diag(off) &lt;- FALSE
+# 1) λ 规则敏感性
+rules &lt;- c(&quot;lambda.min&quot;, &quot;lambda.1se&quot;, &quot;ebic&quot;)
+Bs &lt;- lapply(rules, function(r) { set.seed(2026); clpn_estimate(X, Y, rule = r) })
+names(Bs) &lt;- rules
+sapply(Bs, function(B) sum(cl_only(B) != 0))            # 各规则的 CL 边数
+sapply(Bs, function(B) names(which.max(rowSums(cl_only(B)))))   # out-EI 第一名
+# 2) 随机种子敏感性
+arr &lt;- sapply(1:20, function(s) { set.seed(s); clpn_estimate(X, Y)[off] })
+nz  &lt;- rowMeans(arr != 0)
+table(cut(nz, c(-.01, 0, .99, 1), labels = c(&quot;始终为0&quot;, &quot;时有时无&quot;, &quot;始终非零&quot;)))
+# 3) 题目冗余
+gb &lt;- goldbricker(dat[, vars_t(1)], p = 0.05, method = &quot;hittner2003&quot;,
+                  threshold = 0.25, corMin = 0.5)
+gb$suggested_reductions</code></pre></div>
+<p><b>goldbricker 参数：</b><code>corMin = 0.5</code> 只检查相关 ≥ 0.5 的题目对；<code>threshold = 0.25</code> 表示：若两题与其他题目的相关中，显著不同的比例低于 25%，就提示“可能冗余”（数值越小越相似）。这只是一个提示工具，是否合并要看题目内容与理论。</p>
+<div class="box warnbox"><b class="bt">节点少时，goldbricker 的区分力有限</b><p>看一下课程数据的实际输出（<code>R/output/L9-2_log.txt</code>）：goldbricker 一共提示了 9 对题目，5 对孤独题、4 对抑郁题，全是同一构念内部的题目对，没有一对跨构念。这不说明这 9 对题目都“问的是同一件事”，而是方法本身在只有 9 个节点时分辨不出来。</p><p>原因在于它的比较方式：对一对题目，它只拿“这两道题各自与其余题目的相关”来比，9 个节点时其余题目只有 7 道，所以“显著不同的比例”只能取 0、1/7（≈ 0.14）、2/7（≈ 0.29）……这几个值。阈值 0.25 意味着 7 次比较里最多 1 次显著就会被提示。同一构念的题目本来就和其余题目有相似的相关模式（它们共享同一个潜在特质），于是几乎每一对都会过线。节点越少，可比较的“其余题目”越少，每次比较的功效也越低，这个工具就越容易把“同属一个构念”误报成“内容冗余”。</p><p>所以在 9 节点的 CLPN 里，goldbricker 的结果只能作为一个起点：把被提示的题目对拿回去读题目原文，看是不是真的在问同一件事（例如“我感到孤独”与“我觉得很寂寞”），再结合理论决定是否合并。读论文时也一样：节点很少的研究报告“goldbricker 未发现冗余”或“发现大量冗余”，都要先想想这个方法在那么少的节点下能不能分辨。</p></div>
+<h3>完整例题：把一个问题写成一条审稿意见</h3>
+<p>发现问题只是第一步，写成对方能采纳的意见才有用。以“十个常见问题”中的“中心性过度解读”为例，按“问题—原因—建议”三段来写：</p>
+<p><b>问题：</b>“讨论部分将出 EI 最高的‘睡眠问题’称为‘核心症状’，并建议优先干预。”<b>原因：</b>“补充表 S3 显示出 EI 的 CS 系数为 0.21，低于常用的 0.25 标准，说明删去少量被试后排序就可能改变；此外，出 EI 反映的是预测关系，而非干预效果。”<b>建议：</b>“建议删除‘核心症状’的表述，改为描述出 EI 的数值及其不确定性；如作者希望讨论干预含义，请将其表述为有待干预研究检验的假设。”</p>
+<p>这样写，作者知道哪里有问题、为什么有问题、怎样改，审稿意见就不再只是批评。语气上始终针对论文，而不针对作者。例子中的数字是虚构的。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L9-2.R</code>（32 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L9-2.R  批判性评估：结论对分析决策是否敏感？  (Sensitivity / robustness checks)
+# 检查 3 个“研究者自由度”（researcher degrees of freedom）：
+#   λ 规则（lambda.min / lambda.1se / EBIC）、随机种子、题目冗余（topological overlap）
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages(library(networktools))
+log_open(&quot;L9-2_log.txt&quot;)
+dat &lt;- read_course_data()
+X &lt;- dat[, vars_t(1)]; Y &lt;- dat[, vars_t(2)]
+off &lt;- matrix(TRUE, 9, 9); diag(off) &lt;- FALSE
+rules &lt;- c(&quot;lambda.min&quot;, &quot;lambda.1se&quot;, &quot;ebic&quot;)
+Bs &lt;- lapply(rules, function(r) { set.seed(2026); clpn_estimate(X, Y, rule = r) }); names(Bs) &lt;- rules
+summ &lt;- t(sapply(Bs, function(B) {
+  CL &lt;- cl_only(B); el &lt;- edge_list(CL)
+  c(CL边数 = sum(CL != 0), 最强边 = paste(el$from[1], &quot;→&quot;, el$to[1]),
+    outEI最高 = names(which.max(rowSums(CL))), inEI最高 = names(which.max(colSums(CL))))
+}))
+print(summ)
+
+# 随机种子：cv.glmnet 的分折是随机的 —— 换 20 个种子，边会变吗？
+seeds &lt;- 1:20
+arr &lt;- sapply(seeds, function(s) { set.seed(s); clpn_estimate(X, Y)[off] })
+nz &lt;- rowMeans(arr != 0)
+cat(&quot;\n换 20 个种子：始终非零的 CL 边 =&quot;, sum(nz == 1), &quot;；始终为 0 =&quot;, sum(nz == 0),
+    &quot;；时有时无 =&quot;, sum(nz &gt; 0 &amp; nz &lt; 1), &quot;\n&quot;)
+cat(&quot;→ 报告中必须写明种子；也可用 repeated CV（多次分折取平均）减小随机性。\n&quot;)
+
+# 题目冗余：goldbricker() 找出内容/关联模式高度重叠的题目对
+gb &lt;- goldbricker(dat[, vars_t(1)], p = 0.05, method = &quot;hittner2003&quot;, threshold = 0.25, corMin = 0.5, progressbar = FALSE)
+cat(&quot;\n可能冗余的题目对（goldbricker）：\n&quot;); print(gb$suggested_reductions)
+log_close()</code></pre></div></details>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L9-2_log.txt</code></div><pre class="out"><code>           CL边数 最强边        outEI最高 inEI最高
+lambda.min &quot;52&quot;   &quot;dep3 → dep4&quot; &quot;lone4&quot;   &quot;dep4&quot;  
+lambda.1se &quot;17&quot;   &quot;dep3 → dep4&quot; &quot;lone4&quot;   &quot;dep1&quot;  
+ebic       &quot;31&quot;   &quot;dep3 → dep4&quot; &quot;lone4&quot;   &quot;dep4&quot;  
+
+换 20 个种子：始终非零的 CL 边 = 49 ；始终为 0 = 12 ；时有时无 = 11 
+→ 报告中必须写明种子；也可用 repeated CV（多次分折取平均）减小随机性。
+
+可能冗余的题目对（goldbricker）：
+lone2_t1 &amp; lone1_t1   dep4_t1 &amp; dep3_t1 lone3_t1 &amp; lone1_t1 lone4_t1 &amp; lone1_t1 
+          0.0000000           0.0000000           0.1428571           0.1428571 
+lone3_t1 &amp; lone2_t1 lone4_t1 &amp; lone2_t1   dep2_t1 &amp; dep1_t1   dep5_t1 &amp; dep1_t1 
+          0.1428571           0.1428571           0.1428571           0.1428571 
+  dep5_t1 &amp; dep2_t1 
+          0.1428571 </code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">两道题目内容几乎相同时，它们之间的强边意味着什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 两个症状强烈地互相影响</button><div class="ofb" hidden>这是本课点名的常见误读：同一件事测了两次，不是两个症状在互相作用。</div></li><li><button type="button" data-ok="1">B. 很可能只是同一构念被测了两次（拓扑重叠），会抬高中心性</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 网络估计错误</button><div class="ofb" hidden>估计本身可能没错：两题在数据里确实高度相关，问题在于怎样解释这条边。</div></li><li><button type="button" data-ok="0">D. 需要更大的 λ</button><div class="ofb" hidden>λ 只控制惩罚强度；内容重叠造成的强边在合理的 λ 下都会保留。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么说中心性“不等于”干预靶点？</p><ul class="opts"><li><button type="button" data-ok="0">A. 中心性高的节点就是最严重的症状，应优先处理</button><div class="ofb" hidden>把中心性当成严重程度是常见误读：中心性衡量的是与其他节点的关联，不是症状的平均水平，两者可以完全不同。</div></li><li><button type="button" data-ok="1">B. 中心性是统计关联/预测的汇总，可能受方向不明、内容重叠、不稳定等影响，且未考虑可干预性</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 只有介数中心性才能代表靶点</button><div class="ofb" hidden>介数在心理网络中更不稳定（6.5 课），它同样只是统计关联的汇总。</div></li><li><button type="button" data-ok="0">D. 因为 EI 可以为负</button><div class="ofb" hidden>EI 可以为负只是计算上的性质，不是中心性不能当靶点的理由。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">你会如何检验一个 CLPN 结论对 λ 选择是否敏感？</p><ul class="opts"><li><button type="button" data-ok="0">A. 只报告 lambda.min，但把 bootstrap 次数增加到 5000</button><div class="ofb" hidden>bootstrap 回答的是抽样不确定性，不回答“换一种 λ 规则结论是否改变”。</div></li><li><button type="button" data-ok="1">B. 分别用 lambda.min、lambda.1se、EBIC 估计，比较主要结论（最强边、中心性排序、构念方向）是否保持</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 把 λ 设为 0（相当于 OLS），与 LASSO 结果比较</button><div class="ofb" hidden>λ = 0 不是一种合理的替代规则：它保留所有系数，比较的是“要不要正则化”，不是“换一种合理的选择”。</div></li><li><button type="button" data-ok="0">D. 换 20 个随机种子重新估计</button><div class="ofb" hidden>似是而非：换种子检验的是交叉验证分折的随机性，λ 规则本身没有变。它也是一项有用的敏感性分析，但回答的是另一个问题。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在课程数据中换 20 个种子，有 11 条 CL 边“时有时无”。这说明？</p><ul class="opts"><li><button type="button" data-ok="0">A. glmnet 有 bug</button><div class="ofb" hidden>不是 bug：cv.glmnet 随机分折，不同分折选出的 λ 略有不同。</div></li><li><button type="button" data-ok="1">B. 交叉验证分折的随机性会影响弱边是否被选入，必须报告种子，弱边应谨慎解读</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 应该挑一个边最多的种子作为主分析</button><div class="ofb" hidden>这正是研究者自由度的滥用：看了结果再挑种子。</div></li><li><button type="button" data-ok="0">D. 种子只影响弱边，可以不报告</button><div class="ofb" hidden>似是而非：确实主要影响弱边，但正因为如此，不报告种子，别人就无法复现你的边数和弱边。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">三种 λ 规则下 out-EI 第一名都是 lone4，但 CS = 0.20。最恰当的结论是？</p><ul class="opts"><li><button type="button" data-ok="0">A. lone4 稳健地是最重要节点</button><div class="ofb" hidden>规则间一致不等于抽样稳定：三种规则用的是同一份样本。</div></li><li><button type="button" data-ok="1">B. 规则间一致不代表抽样稳定；CS 低时仍不应解释 out-EI 排序</button><div class="ofb" hidden>正确：不同规则共享同一份样本的抽样误差。</div></li><li><button type="button" data-ok="0">C. CS 算错了，应以敏感性分析为准</button><div class="ofb" hidden>两种检查回答不同的问题，结果并不矛盾，没有理由认为 CS 算错了。</div></li><li><button type="button" data-ok="0">D. 应改用 EBIC 作为主分析</button><div class="ofb" hidden>看了结果再换主分析规则违反分析计划；而且 EBIC 下 out-EI 第一名也是 lone4，CS 的问题照旧。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：撰写审稿意见<span class="lvl">写作</span></h4><p>自选一篇已发表的社工/心理领域 CLPN 论文（可从论文阅读包中选），写一份 600–800 字的审稿意见：2 个优点、3 个主要问题、2 条具体修改建议。其中至少一个主要问题要联系 Fried 与 Cramer（2017）讨论的大问题（如节点如何定义与选择、结果能否复现、统计网络与因果系统的距离）。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>结构示例：“本文使用三波数据，采用 CLPN 考察 X 与 Y 症状之间的纵向关系……【优点】1. 报告了 T2→T3 复现；2. 共享了分析代码。【主要问题】1. 讨论部分将 out-EI 最高的节点称为‘驱动因素’并建议作为干预靶点，但 out-EI 的 CS 为 0.21（补充表 S4），低于 0.25 的建议标准；建议删除排序解释或降级表述。2. 未讨论稳定个体差异对交叉滞后边的影响；建议在局限中说明，或补充能区分被试内/间的分析。3. 题目 3 与题目 7 内容高度相似且边权最大，可能反映内容重叠；建议进行 goldbricker 检查或合并题目后的敏感性分析。（这一条正好对应 Fried 与 Cramer 所说的“节点如何定义与选择”。）【修改建议】……”</p></details></div>
+<div class="exitem"><h4>练习 2：找问题<span class="lvl">理解</span></h4><p>下面是一段虚构的结果描述，请找出至少 4 个问题：“我们用 CLPN 分析了 120 名社区居民两次测量（间隔 2 周）的 25 道题。结果显示，‘紧张’是驱动整个网络的核心症状（out-EI 最高）。因此，社区服务中心应优先针对紧张进行干预。”</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>① N = 120、p = 25，N/p ≈ 4.8，样本量严重不足；② 只有两波，无法复现；③ 未报告 λ 规则、种子、稳定性（CS）；④ “驱动”“核心”是因果化用词；⑤ “因此应优先干预”是干预性过度推断；⑥ 25 道题可能有内容重叠；⑦ 未讨论被试间/被试内；⑧ 2 周的间隔是否适合研究的过程未论证。</p></details></div>
+<div class="exitem"><h4>练习 3：动手做敏感性分析<span class="lvl">动手</span></h4><p>运行 R/L9-2.R。另外加入一项：用 <code>clpn_estimate(…, covariates = dat[, c("gender","age")])</code> 估计，比较最强 5 条边是否相同。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考答案 <code>R/solutions/L9-2_solution.R</code>：加入协变量后边权几乎不变（r = 0.997，最大差异 0.018），最强 5 条边完全相同（与 7.5 课一致）。写法：“将性别与年龄作为不受惩罚的协变量后，最强的 5 条交叉滞后边与主分析完全一致（边权相关 r = .997）。”</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>自选一篇已发表的 CLPN 论文（社工/心理领域，可从论文阅读包中选），写一份 600–800 字的“审稿意见”：2 个优点、3 个主要问题、2 条具体修改建议。</p></div><h3>自测问题</h3><ol><li>两道题目内容几乎相同时，它们之间的强边意味着什么？</li><li>为什么说中心性“不等于”干预靶点？</li><li>你会如何检验一个 CLPN 结论对 λ 选择是否敏感？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>十大问题：因果用词、被试间/内、中心性过度解读、拓扑重叠、节点选择、单题信度、样本量、缺失、间隔、研究者自由度。</li><li>goldbricker() 可提示内容/关联模式高度重叠的题目对。</li><li>敏感性分析：λ 规则、种子、协变量、冗余题目；报告主要结论是否保持。</li><li>课程数据：20 个种子中 11 条边时有时无；规则间一致 ≠ 抽样稳定。</li><li>审稿意见：优点 → 主要问题（问题-原因-建议）→ 次要问题；对事不对人。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Fried, E. I., & Cramer, A. O. J. (2017). Moving forward: Challenges and directions for psychopathological network theory and methodology. <i>Perspectives on Psychological Science, 12</i>(6), 999–1020. <a href="https://doi.org/10.1177/1745691617705892" target="_blank" rel="noopener">doi.org/10.1177/1745691617705892</a><div class="muted" style="font-size:.84rem">网络方法学的挑战与批判，第 9.2 课。</div></li><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">bootnet 与稳定性检验（CS 系数）的标准教程，模块 6、8。</div></li><li>Lucas, R. E. (2023). Why the cross-lagged panel model is almost never the right choice. <i>Advances in Methods and Practices in Psychological Science</i>. <a href="https://doi.org/10.1177/25152459231158378" target="_blank" rel="noopener">doi.org/10.1177/25152459231158378</a><div class="muted" style="font-size:.84rem">对 CLPM 的进一步批评，第 5.4 课。</div></li></ul></section>
+<nav class="pager"><a href="L9-1.html" class="pv"><small>上一课</small>9.1 如何读一篇 CLPN 实证论文</a><a href="L9-3.html" class="nx"><small>下一课</small>9.3 报告规范：写出一份可被复核的方法与结果</a></nav>
+<p class="foot">CLPN 从零开始 · 第 9.2 课 · <a href="../index.html#L9-2">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

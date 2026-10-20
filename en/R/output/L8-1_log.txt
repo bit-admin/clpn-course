@@ -1,0 +1,4 @@
+Sample correlation r = 0.296 
+Bootstrap 95% percentile interval = [ 0.234 , 0.36 ]
+cor.test() 95% CI                = [ 0.232, 0.358 ]
+Bootstrap standard error = 0.0328 

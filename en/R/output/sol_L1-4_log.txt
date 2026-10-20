@@ -1,0 +1,30 @@
+               Loneliness Sleep_Duration Depression Social_Support
+Loneliness     1          -              +          -             
+Sleep_Duration -          1              -          +             
+Depression     +          -              1          -             
+Social_Support -          +              -          1             
+               Loneliness Sleep_Duration Depression Social_Support
+Loneliness           1.00          -0.12       0.31          -0.42
+Sleep_Duration      -0.12           1.00      -0.29           0.05
+Depression           0.31          -0.29       1.00          -0.18
+Social_Support      -0.42           0.05      -0.18           1.00
+
+1.4-C: Correlation matrix among the 9 items at T1
+         lone1_t1 lone2_t1 lone3_t1 lone4_t1 dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1
+lone1_t1     1.00     0.46     0.44     0.51    0.20    0.20    0.16    0.13    0.18
+lone2_t1     0.46     1.00     0.45     0.51    0.14    0.15    0.18    0.12    0.18
+lone3_t1     0.44     0.45     1.00     0.47    0.18    0.21    0.21    0.16    0.25
+lone4_t1     0.51     0.51     0.47     1.00    0.19    0.18    0.17    0.15    0.20
+dep1_t1      0.20     0.14     0.18     0.19    1.00    0.43    0.40    0.37    0.44
+dep2_t1      0.20     0.15     0.21     0.18    0.43    1.00    0.39    0.44    0.42
+dep3_t1      0.16     0.18     0.21     0.17    0.40    0.39    1.00    0.44    0.43
+dep4_t1      0.13     0.12     0.16     0.15    0.37    0.44    0.44    1.00    0.38
+dep5_t1      0.18     0.18     0.25     0.20    0.44    0.42    0.43    0.38    1.00
+(1) Strongest correlation:  lone4_t1 — lone1_t1; lone4_t1 — lone2_t1  r = 0.51 
+         dep1_t1 dep2_t1 dep3_t1 dep4_t1 dep5_t1
+lone1_t1    0.20    0.20    0.16    0.13    0.18
+lone2_t1    0.14    0.15    0.18    0.12    0.18
+lone3_t1    0.18    0.21    0.21    0.16    0.25
+lone4_t1    0.19    0.18    0.17    0.15    0.20
+(2) Strongest cross-construct correlation:  lone3_t1 — dep5_t1  r = 0.25 
+(3) Pearson = 0.441  Spearman = 0.425  Polychoric = 0.524 

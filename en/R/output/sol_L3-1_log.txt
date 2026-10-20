@@ -1,0 +1,13 @@
+      (Intercept) social_support_t1 
+        6.3604356        -0.7519451 
+Hand-drawn RSS = 9504 ; OLS RSS = 8943 (OLS is always minimal)
+
+3.1-A: Lecture template line y = 7 - 1x RSS = 9003.4 ; OLS intercept = 6.36  slope = -0.75  RSS = 8942.8 
+SD line slope = -4.3 ; OLS slope = r * sd(y)/sd(x) = -0.75 
+
+3.1-B: b = -0.75  SE = 0.15  p = 6.27e-07  R^2 = 0.031 
+
+3.1-C: b1 = 1  b0 = 1.5 
+Residuals:  -0.5 0.5 0.5 -0.5 ; Sum of residuals = 0 
+(Intercept)           x 
+        1.5         1.0 

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.3 标准化与 z 分数 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L1-3.md" title="阅读文本">
+<script>window.COURSE_MODULES=[{"id": "M0", "title": "课程导论：为什么要学 CLPN", "short": "课程导论", "intro": "建立整门课的地图：CLPN 想回答什么问题、它在社会工作与心理学研究中解决了什么痛点，以及你接下来 16 周会怎样一步步走到能独立完成一次分析。", "color": "#6366f1", "n": 2, "hours": 2.5, "gives": "动机与整体地图：知道终点在哪里、为什么值得走。"}, {"id": "M1", "title": "统计学基础", "short": "统计学基础", "intro": "从零开始建立统计直觉。数学只用到你已经会的基础微积分概念（求和、函数、导数的直觉），重点是“这个数字在说什么”。", "color": "#0ea5e9", "n": 6, "hours": 10.5, "gives": "统计语言：均值、方差、相关、标准误、p 值——读懂 CLPN 输出里每一个数字的前提。"}, {"id": "M2", "title": "R 与 RStudio：从零开始", "short": "R 与 RStudio", "intro": "完全零基础的编程入门。与模块 1（统计）并排学，第 2–5 周交替进行（见“学习节奏”）：学到一个统计概念，立刻在 R 里做一遍。模块 3（回归）在它之后。", "color": "#f59e0b", "n": 6, "hours": 10.5, "gives": "R 技能：从零到能独立写 CLPN 估计代码。"}, {"id": "M3", "title": "回归分析", "short": "回归分析", "intro": "回归是 CLPN 的“发动机”：CLPN 本质上就是为每个时间点 2 的变量各跑一次（正则化）回归。本模块从一条直线讲到 LASSO。在模块 1（统计）和模块 2（R）之后学。", "color": "#10b981", "n": 5, "hours": 8.5, "gives": "回归与 LASSO：CLPN 的“发动机”，每个 T2 节点就是一次正则化回归。"}, {"id": "M4", "title": "纵向与面板数据", "short": "纵向与面板数据", "intro": "CLPN 需要“同一批人、在几个时间点、用同样的题目”测量。本模块讲清这类数据的结构、整理方法，以及最头疼的缺失与流失问题。", "color": "#ec4899", "n": 3, "hours": 5.0, "gives": "纵向数据：知道 T1/T2 数据怎么来、怎么整理、缺失怎么办。"}, {"id": "M5", "title": "传统交叉滞后面板模型（CLPM）与 RI-CLPM", "short": "传统交叉滞后面板模型", "intro": "CLPN 可以看作 CLPM 的“题目层面网络版”。先在构念（总分）层面理解自回归与交叉滞后，再理解 Hamaker 等人对 CLPM 的关键批评，这样你才能正确解读、并诚实地写出 CLPN 的局限。", "color": "#8b5cf6", "n": 4, "hours": 7.5, "gives": "CLPM / RI-CLPM：理解交叉滞后的含义与被试间/被试内的陷阱。"}, {"id": "M6", "title": "网络心理测量学基础", "short": "网络心理测量学基础", "intro": "先在横断面数据上学会“心理网络”的全部基本功：偏相关、GGM、正则化、可视化、中心性。CLPN 的估计、作图和中心性指标都直接建立在这些概念上。", "color": "#14b8a6", "n": 5, "hours": 9.5, "gives": "网络心理测量：节点、边、偏相关、正则化、中心性。"}, {"id": "M7", "title": "交叉滞后面板网络（CLPN）", "short": "交叉滞后面板网络", "intro": "核心模块。CLPN 由 Wysocki, van Bork, Cramer & Rhemtulla 提出（2022 年预印本，2025 年正式发表为 “Cross-lagged panel networks”）。本模块主线教应用研究中最常见的“仅 LASSO”简化版（如 Funkhouser et al., 2021）：对每个 T2 题目，用所有 T1 题目做 LASSO 正则化回归，把系数直接拼成一个有向网络。7.5 课再介绍 Wysocki 等人（2025）推荐的完整流程：LASSO 选边 → lavaan 无惩罚重估（同波残差相关、FIML、跨时间等值检验）→ in-/out-prediction，并附可运行示例。", "color": "#ef4444", "n": 7, "hours": 14.5, "gives": "CLPN 本身：估计、作图、出/入期望影响。"}, {"id": "M8", "title": "稳定性与准确性检验", "short": "稳定性与准确性检验", "intro": "网络很容易“看起来很有意义”但其实不稳定。本模块按 Epskamp, Borsboom & Fried (2018) 的框架，学会用 bootstrap 检查边和中心性能否被信任。", "color": "#64748b", "n": 3, "hours": 6.0, "gives": "稳定性检验：bootstrap 与 CS 系数，判断结果能否被信任。"}, {"id": "M9", "title": "阅读、批判与报告规范", "short": "阅读、批判与报告规范", "intro": "能“跑出来”只是一半；另一半是读懂别人的 CLPN 论文、发现问题，并按规范报告自己的分析。", "color": "#a855f7", "n": 3, "hours": 5.5, "gives": "读论文、批判与报告规范。"}, {"id": "M10", "title": "毕业项目：完整的 CLPN 分析", "short": "毕业项目", "intro": "独立完成一次从数据到结果写作的完整 CLPN。默认使用已知真实结构的三波模拟数据（孤独感 4 题 + 抑郁 5 题，N = 800）；如条件允许，可改用公开的纵向数据集，使用前先读清楚它的使用许可和引用要求。", "color": "#0f766e", "n": 3, "hours": 9.0, "gives": "毕业项目：独立完成一次完整的 CLPN。"}];</script>
+<script defer src="assets/viz.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="1.3" style="--c:#0ea5e9">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L1-3">CLPN 课程大纲</a><span class="crumb">M1 统计学基础 / 1.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L1-3.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L1-3.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details open style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html" class="cur" aria-current="page"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 1 · Statistics Foundations · 第 1.3 课</div>
+<h1>标准化与 z 分数</h1>
+<div class="facts"><span>课文学习 1 小时</span><span>先修：<a href="L1-2.html">1.2 分布与描述统计：均值、方差、标准差</a></span><span>配套脚本：<a href="../R/L1-3.R">R/L1-3.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>把原始分转换为 z 分数并解释其含义</li><li>理解为什么比较不同量尺的变量前需要标准化（为 LASSO 与标准化系数做铺垫）</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>标准化</b><span class="en">standardization</span></li><li><b>z 分数</b><span class="en">z-score</span></li><li><b>量尺</b><span class="en">scale / metric</span></li></ul>
+
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>“1 分”和“55 分”，谁更突出？</h2>
+<div class="box story"><b class="bt">两把不一样的尺子</b>
+<p>李阿姨在“睡眠问题”题上得了 1 分（0–3 分），在“生活满意度”上得了 55 分（0–100 分）。社工小陈想知道：相对于社区里的其他人，李阿姨在哪方面更“突出”？直接比较 1 和 55 没有意义，就像比较“1 米”和“55 斤”谁更大。我们需要一把“共同的尺子”。</p></div>
+<p>这把共同的尺子就是：“比平均高（或低）几个标准差”。上一课你知道了，标准差是“典型的离平均距离”。如果一个人比平均高 1 个标准差，不管原来用什么量尺，他都处在“比较高”的位置；高 2 个标准差就是“很少见的高”。把原始分换算成这种单位的过程叫<span class="term">标准化<span class="en">（standardization）</span></span>，换算结果叫<span class="term">z 分数<span class="en">（z-score）</span></span>。</p>
+<div class="widget" data-widget="zscore"></div>
+<p>用课程数据 T1 的均值和标准差：睡眠问题的均值是 0.79、SD 0.94，所以 1 分的 z = (1 − 0.79) / 0.94 ≈ 0.22，只比平均略高；生活满意度均值 64.32、SD 14.81，55 分的 z ≈ −0.63，比平均低了约三分之二个标准差。结论：李阿姨在生活满意度上相对更“不寻常”（偏低）。拖动上面的滑块试试其他组合。</p>
+<div class="box analogy"><b class="bt">类比：汇率换算</b><p>人民币、美元、日元的“100”代表的价值完全不同。要比较价格，先统一换算成同一种货币。z 分数就像统一换算后的通用基准：不管原来的<span class="term">量尺<span class="en">（scale / metric）</span></span>是什么，都统一以“1 个标准差”为单位，代表同样的相对偏离距离。</p></div>
+<h3>z 分数的三个性质</h3>
+<ol><li>一组 z 分数的均值永远是 0，标准差永远是 1。z = 0 就是“正好平均”。</li>
+<li>标准化不改变分布的形状。原来右偏，z 分数还是右偏：标准化<b>不会</b>把数据变成正态。课程数据中“情绪低落”的偏度在标准化前后都是 1.05。</li>
+<li>标准化不改变两个变量之间的相关。相关本来就“不在乎”量尺（下一课你会看到，相关系数其实就是 z 分数乘积之和除以 \(n-1\)，可以看成 z 乘积的“平均”）。课程数据中睡眠问题与生活满意度的相关，标准化前后都是 −0.20。</li></ol>
+<p>标准化做的事情，只是把每个变量“平移”（减去均值，使中心到 0）再“缩放”（除以 SD，使单位变成 1 个标准差），像把一张照片挪到画布中央再调整到统一尺寸：照片的内容（形状、与其他变量的关系）不变。</p>
+<h3>如果近似正态：z 分数还能换算成百分位</h3>
+<p>结合 68–95–99.7 规则：z = 1 大约超过 84% 的人，z = 2 大约超过 97.7% 的人，z = −1 大约只超过 16% 的人。只有分布接近正态时，这种换算才可靠；对于严重右偏的抑郁题，最好直接看样本中的实际百分比。</p>
+<h3>z 分数是“相对于谁”的：参照群体</h3>
+<p>z 分数总是相对于某一组人的均值和标准差计算的。同一个原始分，放在不同的参照群体里，z 可能完全不同：抑郁总分 8 分，在一般社区居民中可能 z ≈ 1.2（偏高），在门诊患者中可能 z ≈ −0.5（偏低）。心理量表的使用手册里常提供某一大样本（“常模”）的均值和 SD，让你把个人分数换算到常模上去比较。很多量表还会进一步换算成 T 分数：\(T = 50 + 10z\)，这样平均是 50、SD 是 10，避免了负数和小数。它只是 z 分数的线性换算。</p>
+<div class="box sw"><b class="bt">实务例子</b><p>一位社工在两个社区做了同一份孤独感问卷。A 社区的张先生得 12 分，B 社区的刘女士也得 12 分。如果 A 社区整体很孤独（均值 11）、B 社区整体不太孤独（均值 7），那么在各自社区里，刘女士相对更“突出”。但如果要评估“谁更需要服务”，也许应该用统一的参照标准（例如全市样本或量表常模），而不是各社区自己的均值。选哪个参照群体，取决于你想回答什么问题。</p></div>
+<h3>纵向数据中的一个小陷阱</h3>
+<p>在追踪数据中，如果把 T1 和 T2 各自标准化（各用自己那一波的均值和 SD），那么两波的均值都会变成 0，“整个样本从 T1 到 T2 平均变好了还是变差了”这一信息就被抹掉了。对 CLPN 来说这通常没关系：CLPN 关心的是“T1 得分相对高的人，T2 是否也相对高”（人与人之间相对位置的线性关系），而不是平均水平的整体升降。但如果你的研究问题是“干预后大家平均是否改善”，就不能这样做。每做一步数据处理，都要问一句“它抹掉了什么信息”。</p>
+<h3>为什么这对 CLPN 重要？</h3>
+<p>本课程后面会反复先 <code>scale()</code> 再分析，原因有二：</p>
+<ul><li>让系数可比（3.3 课）：孤独题 1–4 分，抑郁题 0–3 分，年龄 18–85 岁。如果不标准化，回归系数的大小取决于量尺单位，无法比较哪条边更强。标准化后，系数统一读作“预测变量高 1 个标准差，结果变量平均变化几个标准差”。</li>
+<li>让惩罚公平（3.5 课预告）：LASSO 会对所有系数的大小“统一征税”。如果一个变量以“元”为单位、另一个以“万元”为单位，同样强的关系在前者对应很小的系数、在后者对应很大的系数，征税就不公平了。先标准化，所有系数就在同一个尺度上受罚。</li></ul>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>一个公式</h2>
+<div class="mathbox">$$z_i = \frac{x_i - \bar{x}}{s}$$</div>
+<dl class="sym"><dt>\(x_i\)</dt><dd>第 \(i\) 个人的原始分。</dd><dt>\(\bar x\)</dt><dd>这个变量的样本均值。</dd><dt>\(s\)</dt><dd>这个变量的样本标准差。</dd><dt>\(z_i\)</dt><dd>第 \(i\) 个人的 z 分数：比均值高（+）或低（−）几个标准差。</dd></dl>
+<p>反过来，已知 z 也能还原原始分：\(x_i = \bar x + z_i \cdot s\)。例：均值 10、SD 3，z = 1.5 对应原始分 \(10 + 1.5\times 3 = 14.5\)。</p>
+<h3>为什么 z 的均值一定是 0、SD 一定是 1？</h3>
+<p>分子 \(x_i-\bar x\) 就是离均差，上一课你验证过离均差之和恒为 0，所以 z 的平均是 0。至于 SD：每个离均差都除以了同一个数 \(s\)，于是新的标准差也被除以 \(s\)，变成 \(s/s=1\)。（一般规律：把所有数乘以正数 \(a\)，标准差也乘以 \(a\)；所有数加上一个常数，标准差不变。）</p>
+<h3>手算</h3>
+<p>还是那 6 个孤独总分：8, 10, 9, 14, 7, 12（均值 10，SD ≈ 2.608）。第 4 个人 14 分：\(z = (14-10)/2.608 \approx 1.53\)；第 5 个人 7 分：\(z=(7-10)/2.608\approx -1.15\)。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>手动标准化 vs <code>scale()</code></h2>
+<p>对应脚本：<a href="../R/L1-3.R">R/L1-3.R</a>。</p>
+<div class="codeblk"><div class="ctitle">R/L1-3.R（节选）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+x &lt;- c(8, 10, 9, 14, 7, 12)
+z &lt;- (x - mean(x)) / sd(x)                       # 手动计算 z 分数
+round(cbind(原始分 = x, z分数 = z, scale函数 = as.numeric(scale(x))), 3)
+cat(&quot;z 分数的均值 =&quot;, round(mean(z), 10), &quot;，标准差 =&quot;, sd(z), &quot;\n&quot;)</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L1-3_log.txt）</div><pre class="out"><code>     原始分  z分数 scale函数
+[1,]      8 -0.767    -0.767
+[2,]     10  0.000     0.000
+[3,]      9 -0.383    -0.383
+[4,]     14  1.534     1.534
+[5,]      7 -1.150    -1.150
+[6,]     12  0.767     0.767
+z 分数的均值 = 0 ，标准差 = 1</code></pre></div>
+<p><code>round(mean(z), 10)</code>：计算机的小数运算有极小的舍入误差，均值可能显示成 <code>1.2e-16</code> 这类“几乎为 0”的数，四舍五入到 10 位小数后就是 0。<code>cbind()</code> 把几列并排拼成一张表。</p>
+<div class="codeblk"><div class="ctitle">不同量尺的两个变量：一次标准化多列</div><pre><code class="language-r">zz &lt;- scale(dat[, c(&quot;dep3_t1&quot;, &quot;life_sat_t1&quot;)])   # scale() 对每一列分别标准化
+round(head(cbind(dat[, c(&quot;dep3_t1&quot;, &quot;life_sat_t1&quot;)], zz)), 2)</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L1-3_log.txt）</div><pre class="out"><code>  dep3_t1 life_sat_t1 dep3_t1 life_sat_t1
+1       1          55    0.22       -0.63
+2       1          49    0.22       -1.03
+3       1          74    0.22        0.65
+4       2          27    1.29       -2.52
+5       0          63   -0.84       -0.09
+6       0          78   -0.84        0.92</code></pre></div>
+<p>第 1 个人就是我们故事里的“李阿姨”。第 4 个人生活满意度 27 分，z = −2.52：比平均低 2.5 个标准差，非常少见，社工可能需要重点关注。</p>
+<div class="codeblk"><div class="ctitle">验证两条性质：相关不变、偏度不变</div><pre><code class="language-r">round(cor(dat$dep3_t1, dat$life_sat_t1), 4)   # 原始分的相关
+round(cor(zz[, 1], zz[, 2]), 4)                 # 标准化后的相关
+round(psych::skew(dat$dep1_t1), 3)              # 偏度：原始分
+round(psych::skew(scale(dat$dep1_t1)[, 1]), 3)  # 偏度：标准化后</code></pre></div>
+<div class="codeblk"><div class="ctitle">输出（R/output/L1-3_log.txt，末尾）</div><pre class="out"><code>[1] -0.2024
+[1] -0.2024
+[1] 1.049
+[1] 1.049</code></pre></div>
+<div class="box warnbox"><b class="bt">常见坑</b><p><code>scale()</code> 返回的是一个矩阵，还带着记录均值和 SD 的“属性”。如果只想要一串普通数字，用 <code>as.numeric(scale(x))</code> 或 <code>scale(x)[, 1]</code>（3.5 课的代码就是这样写的）。</p></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>完整例题：两个量表，谁更突出？</h3>
+<p>假设某位居民抑郁总分 10 分（样本均值 4、SD 3），孤独总分 12 分（样本均值 9、SD 3）。z<sub>抑郁</sub> = (10 − 4)/3 = 2.0，z<sub>孤独</sub> = (12 − 9)/3 = 1.0。原始分“12 比 10 大”，但相对于本样本的其他人，他在抑郁上更突出：高出均值 2 个标准差，孤独只高出 1 个。</p>
+<div class="box warnbox"><b class="bt">常见错误</b>
+<ul><li>把 z 直接换算成百分位。“z = 1 就是超过 84% 的人”只在近似正态时成立；对右偏的抑郁题，这个换算会错得很远。练习 1.3-B 有一个实例。</li>
+<li>用总体公式（除以 n）手算 SD，再拿去和 <code>scale()</code> 的结果比。<code>scale()</code> 用的是 <code>sd()</code>，即除以 n − 1；两种 z 分数在小样本里会有肉眼可见的差别。</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+<div class="quiz" data-kind="num" data-ans="2" data-tol="0.01"><p class="qtext">某变量均值 10、标准差 3。一个人得 16 分，他的 z 分数是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>z = (x − 均值) / 标准差。</div><div class="fb" role="status"></div><div class="qexp" hidden>(16 − 10) / 3 = 2：比平均高 2 个标准差。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">z 分数为 0 意味着什么？</p><ul class="opts"><li><button type="button" data-ok="0">这个人的原始分是 0</button><div class="ofb" hidden>z = 0 与原始分是否为 0 无关；原始分为 0 的人，z 通常是负数。</div></li><li><button type="button" data-ok="1">这个人的得分正好等于平均数</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">这个人没有回答问题</button><div class="ofb" hidden>缺失值在 R 里是 NA，不会被算成 z = 0。</div></li><li><button type="button" data-ok="0">这个人在参照群体中处于第 50 百分位，一半人比他低</button><div class="ofb" hidden>只有分布对称时均值才等于中位数；严重右偏时，z = 0 的人可能已经高于一半以上的人。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>z 的符号告诉你在平均之上还是之下，大小告诉你距离几个标准差。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">把孤独感和抑郁都标准化之后，两者之间的相关会怎样？</p><ul class="opts"><li><button type="button" data-ok="0">变大，因为标准化去掉了量尺差异带来的干扰</button><div class="ofb" hidden>相关本来就不受量尺影响，没有什么“干扰”可以去掉；平移和缩放不改变相关。</div></li><li><button type="button" data-ok="0">变小</button><div class="ofb" hidden>相关不受线性的平移和缩放影响，不会变小。</div></li><li><button type="button" data-ok="1">完全不变</button><div class="ofb" hidden>正确：标准化只是平移和缩放，相关本来就与量尺无关。</div></li><li><button type="button" data-ok="0">变成 1</button><div class="ofb" hidden>标准化不会让两个不同的变量完全一致；只有一个变量和它自己（或它的线性变换）的相关才是 1。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>课程数据中，睡眠问题与生活满意度的相关标准化前后都是 −0.2024。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">一道严重右偏的抑郁题，标准化之后的分布是？</p><ul class="opts"><li><button type="button" data-ok="0">变成正态分布</button><div class="ofb" hidden>这是本课点名的误解：标准化只平移和缩放，不改变形状。</div></li><li><button type="button" data-ok="1">仍然右偏，形状完全不变，只是中心移到 0、单位变成 1 个 SD</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">变成左偏</button><div class="ofb" hidden>减去均值、除以正数都不会翻转分布的方向。</div></li><li><button type="button" data-ok="0">偏度变成 0，因为 z 分数的均值是 0</button><div class="ofb" hidden>均值为 0 和对称是两回事；课程数据中“情绪低落”的偏度标准化前后都是 1.05。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>想改变分布形状需要非线性变换（如取对数），那是另一回事。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">课程数据中第 4 个人的生活满意度 z = −2.52。如果分布近似正态，大约有多少比例的人比他更低？</p><ul class="opts"><li><button type="button" data-ok="0">约 16%</button><div class="ofb" hidden>那是 z = −1 的情况。</div></li><li><button type="button" data-ok="0">约 2.5%</button><div class="ofb" hidden>z = −1.96 时约为 2.5%；−2.52 更极端。</div></li><li><button type="button" data-ok="1">不到 1%</button><div class="ofb" hidden>正确：正态分布下 z &lt; −2.52 的比例约为 0.6%。</div></li><li><button type="button" data-ok="0">约 50%</button><div class="ofb" hidden>那是 z = 0 的情况；−2.52 远在均值以下。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>记住：±2 个 SD 之外约 5%（两边合计），±3 个 SD 之外约 0.3%。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">为什么在做 LASSO（正则化回归）之前通常要先标准化变量？（先猜一猜，3.5 课揭晓）</p><ul class="opts"><li><button type="button" data-ok="0">因为 LASSO 只能处理正态数据</button><div class="ofb" hidden>LASSO 并不要求正态；而且标准化本来也不能让数据变正态。</div></li><li><button type="button" data-ok="1">因为 LASSO 对系数大小统一施加惩罚，而系数大小取决于量尺；标准化让所有变量的系数站在同一起跑线上</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">因为标准化能提高变量之间的相关，让边更容易被保留</button><div class="ofb" hidden>标准化不改变相关。</div></li><li><button type="button" data-ok="0">因为不标准化，LASSO 会把所有系数都压成 0</button><div class="ofb" hidden>不标准化时惩罚对各变量轻重不一，但并不会把所有系数都压成 0；问题在于“公平”，不在于“全部消失”。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>R 的 glmnet 默认会在内部做标准化（standardize = TRUE）并把系数换算回原量尺；本课程的 CLPN 代码仍显式地先 scale()，好让输出的系数直接就是标准化系数。</div></div>
+<div class="quiz" data-kind="num" data-ans="1.5" data-tol="0.01"><p class="qtext">某量表报告 T 分数 = 50 + 10z。一个人的 T 分数是 65，他的 z 分数是多少？</p><div class="numrow"><input type="text" aria-label="你的答案" placeholder="输入答案"><button type="button" class="qbtn">检查</button></div><div class="qhint" hidden>把 65 代入 T = 50 + 10z，解出 z。</div><div class="fb" role="status"></div><div class="qexp" hidden>(65 − 50) / 10 = 1.5：比参照群体平均高 1.5 个标准差。</div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">研究者把 T1 和 T2 的抑郁总分分别标准化后发现两波均值都是 0，于是写道“抑郁水平没有随时间变化”。这个结论？</p><ul class="opts"><li><button type="button" data-ok="0">正确，均值都是 0 说明没有变化</button><div class="ofb" hidden>均值为 0 是分别标准化本身造成的，与抑郁有没有变化无关。</div></li><li><button type="button" data-ok="1">不成立：分别标准化强制让每一波的均值都等于 0，这一步本身就抹掉了平均水平的变化</button><div class="ofb" hidden>正确。要看平均变化，必须用原始分（或用同一个参照的均值和 SD 标准化）。</div></li><li><button type="button" data-ok="0">正确，因为标准化不会改变数据</button><div class="ofb" hidden>标准化不改变形状和相关，但会把均值和 SD 改成 0 和 1。</div></li><li><button type="button" data-ok="0">不成立，因为标准化改变了两波之间的相关</button><div class="ofb" hidden>标准化不改变相关；问题出在均值被强制变成 0。</div></li></ul><div class="fb" role="status"></div><div class="qexp" hidden>每一步数据处理都要问：“它抹掉了什么信息？”</div></div>
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 1.3-A：手算 z 分数</h4>
+<p>用 1.2 练习 A 的 6 个数（2, 4, 1, 3, 4, 4；均值 3，SD ≈ 1.265），计算每个人的 z 分数，并验证它们的和为 0。</p>
+<details class="answer"><summary>参考答案</summary>
+<p>z = (x − 3) / 1.265：2 → −0.79；4 → 0.79；1 → −1.58；3 → 0；4 → 0.79；4 → 0.79。和 = −0.79 + 0.79 − 1.58 + 0 + 0.79 + 0.79 = 0 。R：<code>round(scale(c(2, 4, 1, 3, 4, 4))[, 1], 2)</code>。</p></details></div>
+<div class="exitem"><h4>练习 1.3-B：不同量尺的比较</h4>
+<p>在课程数据中找两个量尺不同的变量（例如 <code>dep3_t1</code> 睡眠问题 0–3 分和 <code>life_sat_t1</code> 生活满意度 0–100），用 R 把它们标准化，找出第 10 个人在哪个变量上更“不寻常”。写 2–3 句话说明：为什么不能直接比较原始分？</p>
+<details class="answer"><summary>参考代码与要点</summary>
+<div class="codeblk"><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+zz &lt;- scale(dat[, c(&quot;dep3_t1&quot;, &quot;life_sat_t1&quot;)])
+round(zz[10, ], 2)          # 第 10 个人的两个 z 分数</code></pre></div>
+<p>结果（<code>R/solutions/L1-3_solution.R</code>）：第 10 个人睡眠问题得 0 分，z = −0.84；生活满意度 75 分，z = 0.72。只看 |z|，似乎睡眠问题上更“不寻常”一些。但这个结论站不住：<code>dep3_t1</code> 严重右偏，0 分是最常见的回答，800 人中有 397 人（49.6%）都是 0 分。第 10 个人在睡眠问题上和一半样本完全一样，一点也不罕见。如果按正态分布去读 z = −0.84，会以为“只有约 20% 的人比他低”，实际上没有人比他低，有一半人和他并列。生活满意度大致对称，75 分以上的约占 27%，与按 z = 0.72 估计的“约 24% 的人比他高”相差不大，这时 z 才能近似读成“有多罕见”。</p>
+<p>所以本题更好的回答是：两个 z 分数告诉我们这个人在两个变量上分别比均值低 0.84 个 SD、高 0.72 个 SD；但在严重偏态的变量上，|z| 的大小不能换算成“有多罕见”，要直接看百分位或频数（<code>mean(dat$dep3_t1 &lt;= 0)</code>、<code>table(dat$dep3_t1)</code>）。这就是本课“z 分数不改变分布形状”在实际数据上的后果。其余要点：原始分的数值大小取决于量尺的单位和范围（0–3 与 0–100），没有共同的参照点；z 分数以“本样本的均值”为参照、以“本样本的标准差”为单位，才能比较相对位置。注意 z 分数是相对于本样本的：换一个样本，同样的原始分可能对应不同的 z。</p></details></div>
+<div class="exitem"><h4>练习 1.3-C：思考题</h4>
+<p>一位同事说：“我把所有题目都标准化了，所以现在它们都是正态分布，可以放心用皮尔逊相关了。”他说得对吗？</p>
+<details class="answer"><summary>参考答案</summary><p>不对。标准化只平移和缩放，不改变分布形状；右偏的题目标准化后仍然右偏，有地板效应的题目仍然有大量人挤在同一个最低值上。是否适合用皮尔逊相关，需要看原始的分布与测量水平（1.4 课）。</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>z = (x − 均值) / SD：“比平均高几个标准差”，是不同量尺之间的共同语言。</li>
+<li>标准化后均值 0、SD 1；但分布形状不变、相关不变。</li>
+<li>CLPN 先标准化再估计，使系数可比、LASSO 惩罚公平。下一课：<a href="L1-4.html">1.4 协方差与相关：两个变量如何一起变化</a>。</li></ul>
+</section>
+
+<nav class="pager"><a href="L1-2.html" class="pv"><small>上一课</small>1.2 分布与描述统计：均值、方差、标准差</a><a href="L1-4.html" class="nx"><small>下一课</small>1.4 协方差与相关：两个变量如何一起变化</a></nav>
+<p class="foot">CLPN 从零开始 · 第 1.3 课 · <a href="../index.html#L1-3">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

@@ -1,0 +1,29 @@
+n = 20  Sampling distribution SD of mean = 0.662 
+n = 100  Sampling distribution SD of mean = 0.299 
+n = 500  Sampling distribution SD of mean = 0.14 
+
+1.5-B: SE = 0.4 ; 95% CI = [ 8.42 , 9.98 ]
+
+1.5-C: set.seed(1)
+n = 20 : Sampling distribution SD = 0.666 ; Theoretical SE = sigma/sqrt(n) = 0.671 
+n = 100 : Sampling distribution SD = 0.305 ; Theoretical SE = sigma/sqrt(n) = 0.3 
+n = 500 : Sampling distribution SD = 0.133 ; Theoretical SE = sigma/sqrt(n) = 0.134 
+One n=100 sample: Mean = 9.75  95% CI = [ 9.16 , 10.34 ]
+
+Running set.seed(1) again: Exactly identical to above
+n = 20 : Sampling distribution SD = 0.666 ; Theoretical SE = sigma/sqrt(n) = 0.671 
+n = 100 : Sampling distribution SD = 0.305 ; Theoretical SE = sigma/sqrt(n) = 0.3 
+n = 500 : Sampling distribution SD = 0.133 ; Theoretical SE = sigma/sqrt(n) = 0.134 
+One n=100 sample: Mean = 9.75  95% CI = [ 9.16 , 10.34 ]
+
+Without fixed seed, Run 1 (Illustration: seed 101)
+n = 20 : Sampling distribution SD = 0.656 ; Theoretical SE = sigma/sqrt(n) = 0.671 
+n = 100 : Sampling distribution SD = 0.301 ; Theoretical SE = sigma/sqrt(n) = 0.3 
+n = 500 : Sampling distribution SD = 0.134 ; Theoretical SE = sigma/sqrt(n) = 0.134 
+One n=100 sample: Mean = 10.47  95% CI = [ 9.91 , 11.02 ]
+
+Without fixed seed, Run 2 (Illustration: seed 202)
+n = 20 : Sampling distribution SD = 0.669 ; Theoretical SE = sigma/sqrt(n) = 0.671 
+n = 100 : Sampling distribution SD = 0.296 ; Theoretical SE = sigma/sqrt(n) = 0.3 
+n = 500 : Sampling distribution SD = 0.137 ; Theoretical SE = sigma/sqrt(n) = 0.134 
+One n=100 sample: Mean = 9.84  95% CI = [ 9.19 , 10.49 ]

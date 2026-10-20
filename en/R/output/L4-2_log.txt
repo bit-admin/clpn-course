@@ -1,0 +1,18 @@
+# A tibble: 6 × 11
+  id    wave  lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5
+  <chr> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+1 P001  1         3     2     2     2     0     0     1     0     0
+2 P001  2         3     4     3     2     1     1     1     0     1
+3 P001  3         4     2     3     1     0     0     0     0     0
+4 P002  1         1     2     1     2     0     0     1     0     1
+5 P002  2         2     1     2     2     0     1     1     2     1
+6 P002  3         2     1     2     1     0     1     3     3     0
+Long format rows = 2400 (= 800 participants * 3 waves)
+Identical to original data after pivoting back to wide? TRUE 
+d1 and d2 row counts and item ordering check passed ✔
+ [1] "lone1_t1"          "lone2_t1"          "lone3_t1"         
+ [4] "lone4_t1"          "dep1_t1"           "dep2_t1"          
+ [7] "dep3_t1"           "dep4_t1"           "dep5_t1"          
+[10] "social_support_t1" "sleep_hours_t1"    "life_sat_t1"      
+[1] 0.008359975
+[1] 0.4322975

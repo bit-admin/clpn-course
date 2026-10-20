@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.3 CLPN 可视化与解读 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L7-3.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="7.3" style="--c:#ef4444">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L7-3">CLPN 课程大纲</a><span class="crumb">M7 交叉滞后面板网络（CLPN） / 7.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L7-3.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L7-3.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details open style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html" class="cur" aria-current="page"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 7 · Cross-Lagged Panel Networks · 第 7.3 课</div>
+<h1>CLPN 可视化与解读</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L7-2.html">7.2 用 glmnet 逐节点估计 CLPN</a></span><span>配套脚本：<a href="../R/L7-3.R">R/L7-3.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>用 qgraph 绘制有向 CLPN（通常不画自回归环，单独以表格报告）</li><li>按构念分组着色、标注节点；如为可读性只显示较强的边，须在图注说明</li><li>以表格报告自回归边与最强的交叉滞后边</li><li>撰写谨慎、非因果化的边的解读</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>有向网络图</b><span class="en">directed network plot</span></li><li><b>自环</b><span class="en">self-loop</span></li><li><b>显示阈值</b><span class="en">display threshold</span></li><li><b>图注</b><span class="en">figure caption</span></li><li><b>边列表</b><span class="en">edge list</span></li></ul>
+<p>估计出矩阵 B 之后，需要把它变成读者看得懂的图和表，并写出不夸大的文字。本课的重点是不夸大：图、表和文字都要能对回矩阵中的数字。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>CLPN 图的常见约定</h3>
+<ol><li><b>不画自回归环。</b>自回归边（0.3–0.45）通常比交叉滞后边（多在 0.15 以下）大得多。如果把对角线也画进去（在 qgraph 中对应 <code>diag = TRUE</code>），qgraph 会把最粗的线留给自环，交叉滞后边就会变得很细、难以分辨；而且自环让图非常拥挤。因此大多数论文单独用表格报告自回归边，图中只画交叉滞后边。</li>
+<li><b>按构念分组着色</b>（孤独 vs 抑郁），并在图例中给出完整题目内容。</li>
+<li><b>有向箭头</b>（<code>directed = TRUE</code>）；双向都有边时用曲线区分（qgraph 自动处理，可用 <code>curveAll</code>、<code>curve</code> 调整）。</li>
+<li><b>显示阈值要说明。</b>为了可读性只显示 |β| ≥ 某值的边是可以的，但这只改变图，不改变模型；必须在图注中写明，并在表格或补充材料中给出全部边。</li></ol>
+<p>在下面的组件中，试着勾选“显示自回归环”，观察交叉滞后边如何“变淡”；再拖动显示阈值，看看图如何变得清爽，同时想一想读者因此看不到了什么。点击节点可以突出显示它的出边与入边。</p>
+<div class="widget w2" data-widget="clpn" data-title="CLPN 可视化：自环、显示阈值与节点突出显示（课程数据的总体目标值）"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>表格：两张必备的表</h3>
+<p>表 1 自回归边：9 个节点各自的 β<sub>kk</sub>。课程数据（lambda.min）结果：lone1 0.416、lone2 0.434、lone3 0.341、lone4 0.445、dep1 0.315、dep2 0.310、dep3 0.331、dep4 0.281、dep5 0.361。</p>
+<p>表 2 最强的交叉滞后边：按 |β| 排序的 <span class="term">边列表<span class="en">（edge list）</span></span>（from、to、β，最好附上 8.2 课的 bootstrap 区间）。课程数据最强的 5 条：</p>
+<div class="tablewrap"><table><tr><th>排名</th><th>T1 → T2</th><th>β（lambda.min）</th><th>总体目标值</th><th>被试内真值</th></tr><tr><td>1</td><td>dep3 睡眠问题 → dep4 疲乏</td><td>0.135</td><td>0.169</td><td>0.160</td></tr><tr><td>2</td><td>lone2 被冷落 → lone4 无人理解</td><td>0.127</td><td>0.142</td><td>0.100</td></tr><tr><td>3</td><td>lone4 无人理解 → dep4 疲乏</td><td>0.108</td><td>0.005</td><td>0.000</td></tr><tr><td>4</td><td>lone4 无人理解 → lone2 被冷落</td><td>0.101</td><td>0.066</td><td>0.000</td></tr><tr><td>5</td><td>lone4 无人理解 → lone3 与人隔绝</td><td>0.096</td><td>0.064</td><td>0.000</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">数据来源：R/output/L7-3_log.txt（课程模拟数据，set.seed(2026)，lambda.min）；两份答案来自 data/ 下的两个 CSV。真实研究中没有后两列。</p>
+<p>对照后两列，“最强的 5 条”可以分成三种情况：</p>
+<ul><li>第 1、2 条在两份答案中都存在，是可信的发现。</li>
+<li>第 4、5 条在总体目标值中存在（约 0.06–0.07），在被试内真值中为 0：它们是同构念的特质边。如果研究问题是“总体中的预测关系”，它们是对的；如果把它们写成“被冷落之后会更觉得无人理解”的个人变化过程，就是错的（7.2 课）。</li>
+<li>第 3 条 lone4 → dep4 在两份答案中都接近 0，是一条假阳性：抽样误差让它在这一份样本里排到了第 3。</li></ul>
+<p>前 5 条中有 3 条从 lone4 出发，这会让 lone4 在 7.4 课的出期望影响中排名第一。排序表看起来很确定，但单次估计的排名会把抽样误差和特质边一起带进来。真实研究中能做的，是用 8.2 课的 bootstrap 区间检查每条边有多不稳定，并在文字中只对稳定的边下结论。</p>
+<h3>如何写出谨慎的解读</h3>
+<div class="tablewrap"><table><tr><th>过度</th><th>准确</th></tr><tr><td>“睡眠问题导致疲乏。”</td><td>“控制所有 T1 题目后，T1 睡眠问题对 T2 疲乏的独特预测最强（β = 0.14）。”</td></tr><tr><td>“无人理解是驱动抑郁的核心症状。”</td><td>“T1‘无人理解’有多条指向 T2 抑郁题目的边，提示它是值得在后续研究中关注的预测因子。”</td></tr><tr><td>“图中没有箭头的地方说明两者无关。”</td><td>“在所选惩罚水平下，这些交叉滞后边被正则化为 0，即没有足够证据支持其独特预测作用。”</td></tr><tr><td>“孤独比抑郁更重要。”</td><td>“孤独→抑郁方向的边权重总和高于抑郁→孤独方向（0.56 vs 0.08；见 7.4）。”</td></tr></table></div>
+<div class="box story"><b class="bt">写作公式：</b><p>“控制 [所有 T1 节点] 后，T1 的 [A] 正/负向预测 T2 的 [B]（β = …[, 95% bootstrap 区间 …]）。” 然后加一句限定：“该关系为时间上的预测关联，可能受稳定个体差异与未测量变量影响。”</p></div>
+<h3>图注模板</h3>
+<p>“图 2. 孤独感（橙色，lone1–lone4）与抑郁症状（青色，dep1–dep5）的交叉滞后面板网络（T1 → T2，N = 800）。箭头表示控制所有 T1 节点后，T1 节点对 T2 节点的标准化 LASSO 回归系数（10 折交叉验证，lambda.min）。蓝色为正、红色为负，边越粗表示 |β| 越大。为便于阅读，图中未显示自回归边（见表 1）[，并仅显示 |β| ≥ 0.05 的边；全部边见补充表 S1]。节点布局采用 Fruchterman–Reingold 算法。”</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>社工连接</summary><p>向机构汇报时，可以只显示最强的 5–8 条边，并标出题目的中文名称，复杂的全图放在附录。但“最强”不等于“可靠”：本课的例子中，最强的 5 条里只有 2 条是被试内真值中的边。汇报时同时给出每条边的 bootstrap 区间（8.2 课），只解释区间稳定的边。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>本课的“数学”是图与矩阵之间的映射规则，以及显示阈值的含义。</p>
+<div class="mathbox">\[\text{画出边 } k\to j \iff |\hat\beta_{kj}|\ \ge\ \text{threshold}\ \ \text{且}\ k\neq j\]</div><div class="mathbox">\[\text{边宽}_{kj}\propto \frac{|\hat\beta_{kj}|}{\text{maximum}},\qquad \text{颜色}=\mathrm{sign}(\hat\beta_{kj})\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\hat\beta_{kj}\)</td><td>估计出的系数（戴“帽子”^ 表示是估计值，不是真值）</td></tr><tr><td>\(\text{threshold}\)</td><td>qgraph 的 <code>threshold</code> 参数：只<b>显示</b> |β| 不小于它的边</td></tr><tr><td>\(\text{maximum}\)</td><td>被画成最粗的 |β|；比较多张图时要固定</td></tr><tr><td>\(\mathrm{sign}(\cdot)\)</td><td>符号函数：正 → 蓝，负 → 红</td></tr><tr><td>\(k\neq j\)</td><td>不画对角线（自回归）</td></tr></table>
+<h4>为什么自环会“稀释”交叉滞后边？</h4>
+<p>这里的前提是自环真的画进了图（<code>diag = TRUE</code>，或者像本页组件那样勾选“显示自回归环”）；本课代码先用 <code>cl_only()</code> 把对角线置 0，就不存在这个问题。若不固定 maximum，qgraph 默认 maximum = 图中最大的 |β|。含自环时 maximum ≈ 0.45（自回归），交叉滞后边 0.1 的相对宽度只有 0.1/0.45 ≈ 0.22；去掉自环后 maximum ≈ 0.14，同一条边的相对宽度变成 0.1/0.14 ≈ 0.71。数值没变，视觉印象却差三倍，所以图注中要写明 maximum 和是否含自环。</p>
+<h4>阈值与“0”的区别</h4>
+<p>LASSO 估计为 0 的边（模型层面的“没有边”）与 |β| 小于显示阈值而未画出的边（展示层面的“没画”）是两回事。前者是估计结果，后者是作图选择。论文中两种情况必须分开说明。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L7-3.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(qgraph)
+dat &lt;- read_course_data()
+set.seed(2026)
+B  &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)], rule = &quot;lambda.min&quot;)
+CL &lt;- cl_only(B); labs &lt;- rownames(B)          # 去掉对角线
+qgraph(CL, directed = TRUE, layout = &quot;spring&quot;,
+       labels = labs, groups = list(孤独 = 1:4, 抑郁 = 5:9),
+       theme = &quot;colorblind&quot;, asize = 4, legend = TRUE,
+       nodeNames = paste(labs, item_zh[labs]))  # 图例中显示中文题目
+# 只显示 |β| ≥ 0.05 的边（须在图注说明！）
+qgraph(CL, directed = TRUE, layout = &quot;spring&quot;, labels = labs, groups = groups_list,
+       theme = &quot;colorblind&quot;, asize = 4, threshold = 0.05, curveAll = TRUE, curve = 0.4)
+round(diag(B), 3)                              # 表 1：自回归边
+el &lt;- edge_list(CL)                            # 表 2：按 |β| 排序的边列表
+head(el, 10)</code></pre></div>
+<p><b>参数说明：</b><code>asize</code> 箭头大小；<code>nodeNames</code> 配合 <code>legend = TRUE</code> 在右侧列出完整题目；<code>threshold</code> 显示阈值；<code>curveAll = TRUE</code> 让所有边弯曲，避免双向边重叠；<code>edge_list()</code> 是课程辅助函数，把矩阵转成 from/to/weight 的长表并按 |β| 排序。</p>
+<h3>完整例题：从一行边表到一句谨慎的解读</h3>
+<p>以课程数据中的一行为例：<code>from = lone3, to = dep1, weight = 0.073</code>（标准化回归系数，lambda.min，set.seed(2026)；见 <code>R/output/L7-2_edgelist.csv</code>，与 7.2 课是同一个估计）。它不在本页“最强的 5 条”里，但在两份答案中它都是最强的孤独 → 抑郁边（总体目标值 0.118，被试内真值 0.180），所以适合用来练习。从数字到文字，分四步：</p>
+<ol><li><b>翻译变量：</b>lone3 = T1“与人隔绝”，dep1 = T2“情绪低落”。</li>
+<li><b>写出控制条件：</b>“在控制了 T1 所有 9 个节点（包括 T1 情绪低落）之后”。</li>
+<li><b>写出大小与单位：</b>“在其余 T1 题目相同的人中，T1 与人隔绝高 1 个标准差，T2 情绪低落平均高约 0.07 个标准差”。系数小，不要用“明显”“强烈”这类词；它被 LASSO 收缩过，总体目标值 0.118 比它大（7.2 课），所以也不要把 0.07 当成精确的效应量。</li>
+<li><b>加上限定：</b>“这是时间上的预测关系，可能包含稳定的个体差异，不能直接解释为因果”。如果已经做了 bootstrap，还要补上区间（8.2 课）。</li></ol>
+<p>合起来就是：“控制 T1 所有症状后，T1‘与人隔绝’正向预测 T2‘情绪低落’（β = 0.07），效应较小；提示孤独中与人隔绝的体验可能先于情绪低落的加重。该关系为时间上的预测，可能部分反映稳定的个体差异。”与之对比，“与人隔绝导致抑郁”这样的写法，同时犯了两个错误：把单题写成了构念，把预测写成了因果。</p>
+<div class="box warnbox"><b class="bt">画 CLPN 图时的常见错误</b><ul>
+<li><b>矩阵忘了转置。</b>qgraph 把输入矩阵读成“行 → 列”。本课程的 B 也是“行 → 列”，可以直接使用；如果你的矩阵约定相反，要先 <code>t(B)</code>。</li>
+<li><b>不同时间段的图不用同一个 maximum。</b>T1 → T2 与 T2 → T3 两张图比较时，<code>maximum</code> 和 <code>layout</code> 都要固定。</li></ul></div>
+<p><b>表格优先于图。</b>审稿人和读者核对结果时，看的是表而不是图。完整的 9 × 9 系数矩阵可以放进补充材料，正文里放一张“非零交叉滞后边”表，按绝对值排序，并标注每条边是跨构念还是构念内。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L7-3.R</code>（36 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-3.R  CLPN 可视化与解读  (Plotting &amp; interpreting a CLPN)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(qgraph)
+log_open(&quot;L7-3_log.txt&quot;)
+dat &lt;- read_course_data()
+set.seed(2026)
+B &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)], rule = &quot;lambda.min&quot;)  # 与 L7-2 相同的估计
+CL &lt;- cl_only(B); labs &lt;- rownames(B)
+
+# ---- 课件代码：有向网络图（不画自回归环 self-loops）----
+png_open(&quot;L7-3_clpn.png&quot;, 1800, 1500)
+qgraph(CL, directed = TRUE, layout = &quot;spring&quot;,
+       labels = labs, groups = list(孤独 = 1:4, 抑郁 = 5:9),
+       theme = &quot;colorblind&quot;, asize = 4, legend = TRUE,
+       nodeNames = paste(labs, item_zh[labs]), legend.cex = 0.45,
+       title = &quot;CLPN（T1 → T2），lambda.min；未显示自回归边&quot;)
+invisible(dev.off())
+# 只显示 |β| ≥ 0.05 的边（显示阈值 display threshold：只改变图，不改变模型，须在图注说明）
+png_open(&quot;L7-3_clpn_threshold.png&quot;, 1800, 1500)
+qgraph(CL, directed = TRUE, layout = &quot;spring&quot;, labels = labs, groups = groups_list,
+       theme = &quot;colorblind&quot;, asize = 4, threshold = 0.05, legend = TRUE, curveAll = TRUE, curve = 0.4,
+       title = &quot;仅显示 |β| ≥ 0.05 的交叉滞后边（图注须说明）&quot;)
+invisible(dev.off())
+
+# 表格：自回归边 + 最强交叉滞后边
+cat(&quot;自回归边（AR）：\n&quot;); print(round(diag(B), 3))
+el &lt;- edge_list(CL)
+el$from_zh &lt;- item_zh[el$from]; el$to_zh &lt;- item_zh[el$to]
+cat(&quot;\n最强的 10 条交叉滞后边：\n&quot;); print(head(el, 10), row.names = FALSE, digits = 3)
+write.csv(el, out(&quot;L7-3_cl_edges.csv&quot;), row.names = FALSE)
+top_x &lt;- el[comm[match(el$from, items)] != comm[match(el$to, items)], ][1, ]   # 最强的跨构念边
+cat(sprintf(&quot;\n谨慎写法示例：“控制所有 T1 题目后，T1 的‘%s’对 T2 的‘%s’有最强的独特（跨构念）预测作用（β = %.2f）”，\n而不是“%s导致%s”。\n&quot;,
+    top_x$from_zh, top_x$to_zh, top_x$weight, top_x$from_zh, top_x$to_zh))
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L7-3_clpn.png" alt="L7-3_clpn.png" loading="lazy"><figcaption>图：<code>R/output/L7-3_clpn.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<figure><img src="../R/output/L7-3_clpn_threshold.png" alt="L7-3_clpn_threshold.png" loading="lazy"><figcaption>图：<code>R/output/L7-3_clpn_threshold.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L7-3_log.txt</code></div><pre class="out"><code>自回归边（AR）：
+lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5 
+0.416 0.434 0.341 0.445 0.315 0.310 0.331 0.281 0.361 
+
+最强的 10 条交叉滞后边：
+  from    to  weight        type  from_zh    to_zh
+  dep3  dep4  0.1353 CL 交叉滞后 睡眠问题     疲乏
+ lone2 lone4  0.1269 CL 交叉滞后   被冷落 无人理解
+ lone4  dep4  0.1084 CL 交叉滞后 无人理解     疲乏
+ lone4 lone2  0.1010 CL 交叉滞后 无人理解   被冷落
+ lone4 lone3  0.0962 CL 交叉滞后 无人理解 与人隔绝
+ lone4  dep5  0.0926 CL 交叉滞后 无人理解 无价值感
+  dep1  dep2  0.0921 CL 交叉滞后 情绪低落 兴趣丧失
+  dep5  dep4  0.0910 CL 交叉滞后 无价值感     疲乏
+  dep4 lone2 -0.0895 CL 交叉滞后     疲乏   被冷落
+  dep1  dep5  0.0855 CL 交叉滞后 情绪低落 无价值感
+
+谨慎写法示例：“控制所有 T1 题目后，T1 的‘无人理解’对 T2 的‘疲乏’有最强的独特（跨构念）预测作用（β = 0.11）”，
+而不是“无人理解导致疲乏”。</code></pre></div>
+<div class="codeblk"><div class="ctitle">表格文件（前几行）：<code>R/output/L7-3_cl_edges.csv</code></div><pre class="out"><code>&quot;from&quot;,&quot;to&quot;,&quot;weight&quot;,&quot;type&quot;,&quot;from_zh&quot;,&quot;to_zh&quot;
+&quot;dep3&quot;,&quot;dep4&quot;,0.135287407696926,&quot;CL 交叉滞后&quot;,&quot;睡眠问题&quot;,&quot;疲乏&quot;
+&quot;lone2&quot;,&quot;lone4&quot;,0.126850718941987,&quot;CL 交叉滞后&quot;,&quot;被冷落&quot;,&quot;无人理解&quot;
+&quot;lone4&quot;,&quot;dep4&quot;,0.108400448113764,&quot;CL 交叉滞后&quot;,&quot;无人理解&quot;,&quot;疲乏&quot;
+&quot;lone4&quot;,&quot;lone2&quot;,0.100957438322429,&quot;CL 交叉滞后&quot;,&quot;无人理解&quot;,&quot;被冷落&quot;
+&quot;lone4&quot;,&quot;lone3&quot;,0.0961831245369471,&quot;CL 交叉滞后&quot;,&quot;无人理解&quot;,&quot;与人隔绝&quot;
+&quot;lone4&quot;,&quot;dep5&quot;,0.0926492337109497,&quot;CL 交叉滞后&quot;,&quot;无人理解&quot;,&quot;无价值感&quot;
+&quot;dep1&quot;,&quot;dep2&quot;,0.0920906023918615,&quot;CL 交叉滞后&quot;,&quot;情绪低落&quot;,&quot;兴趣丧失&quot;
+&quot;dep5&quot;,&quot;dep4&quot;,0.0909795187499619,&quot;CL 交叉滞后&quot;,&quot;无价值感&quot;,&quot;疲乏&quot;
+&quot;dep4&quot;,&quot;lone2&quot;,-0.0895258425789187,&quot;CL 交叉滞后&quot;,&quot;疲乏&quot;,&quot;被冷落&quot;
+&quot;dep1&quot;,&quot;dep5&quot;,0.0855406097115411,&quot;CL 交叉滞后&quot;,&quot;情绪低落&quot;,&quot;无价值感&quot;
+&quot;lone1&quot;,&quot;dep2&quot;,0.0845292414903457,&quot;CL 交叉滞后&quot;,&quot;缺少陪伴&quot;,&quot;兴趣丧失&quot;
+…（共 52 行数据，此处只显示前 11 行）</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">为什么很多 CLPN 论文不在图中显示自回归边？</p><ul class="opts"><li><button type="button" data-ok="0">A. 自回归不重要</button><div class="ofb" hidden>自回归很重要：它代表稳定性，也是估计交叉滞后时的控制条件，只是改用表格报告。</div></li><li><button type="button" data-ok="1">B. 自回归通常远大于交叉滞后，画进去会挤占视觉空间、让交叉滞后边难以分辨；改用表格报告</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. qgraph 不能画自环</button><div class="ofb" hidden>qgraph 可以画自环（矩阵含对角线并设 diag = TRUE）；不画是作图选择。</div></li><li><button type="button" data-ok="0">D. CLPN 只估计交叉滞后边，没有估计自回归</button><div class="ofb" hidden>每个回归都包含结果节点自己的 T1 值，自回归一定会被估计。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">只显示 |β| 大于某阈值的边，是否改变了模型本身？需要在哪里说明？</p><ul class="opts"><li><button type="button" data-ok="0">A. 改变了模型；不需要说明</button><div class="ofb" hidden>阈值只作用于画图，模型和系数都不变；但读者看不到这些边，所以必须说明。</div></li><li><button type="button" data-ok="1">B. 不改变模型，只改变显示；必须在图注中说明并在表/补充材料中给出全部边</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 改变了 λ</button><div class="ofb" hidden>λ 在估计时由交叉验证选定，画图阈值不会改变它。</div></li><li><button type="button" data-ok="0">D. 相当于 LASSO 把这些边压成了 0</button><div class="ofb" hidden>两者不同：LASSO 的 0 是估计结果；阈值以下的边只是没画，在模型中仍是非零系数。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">“T1 失眠 → T2 疲劳的边最强”应该怎么写才准确？</p><ul class="opts"><li><button type="button" data-ok="0">A. 失眠导致疲劳</button><div class="ofb" hidden>“导致”是因果说法；CLPN 的边只是控制 T1 节点后的时间上的预测。</div></li><li><button type="button" data-ok="1">B. 控制所有 T1 节点后，T1 失眠对 T2 疲劳的独特预测最强（β = …）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 疲劳是失眠的结果</button><div class="ofb" hidden>“结果”同样是因果措辞；一条预测关系不能说明疲劳由失眠引起。</div></li><li><button type="button" data-ok="0">D. 失眠是网络中最重要的症状</button><div class="ofb" hidden>一条边最强推不出节点最重要；节点层面要看 out-EI 等指标及其稳定性（7.4、8.3）。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">图中两节点之间没有箭头，可能意味着？</p><ul class="opts"><li><button type="button" data-ok="0">A. 二者毫无关系</button><div class="ofb" hidden>推不出毫无关系：可能被压成 0，也可能只是没画；它们还可能通过其他节点相关。</div></li><li><button type="button" data-ok="1">B. LASSO 估计为 0，或其 |β| 低于显示阈值；两者含义不同</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 总体中这条边的系数一定为 0</button><div class="ofb" hidden>LASSO 的 0 只说明证据不足；课程数据的总体目标值中没有一个格子恰好为 0。</div></li><li><button type="button" data-ok="0">D. 两者的跨时间相关为 0</button><div class="ofb" hidden>边为 0 说明控制所有 T1 节点后没有独特预测，跨时间相关仍可以经由其他节点产生。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">比较 T1→T2 与 T2→T3 两张 CLPN 图时应该？</p><ul class="opts"><li><button type="button" data-ok="0">A. 各自使用默认设置</button><div class="ofb" hidden>默认设置下 maximum 取各自最强的边、布局各自计算，同样粗细代表不同数值。</div></li><li><button type="button" data-ok="1">B. 使用相同布局（averageLayout）和相同 maximum</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 一张画自环一张不画</button><div class="ofb" hidden>含自环的那张 maximum 由自回归决定，交叉滞后边显得更细，两图不可比。</div></li><li><button type="button" data-ok="0">D. 两张图的显示阈值各自取本图边权的中位数</button><div class="ofb" hidden>阈值不同，两张图显示边的标准就不同；阈值要相同并在图注中说明。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：绘图与 150 字解读<span class="lvl">动手 + 写作</span></h4><p>运行 R/L7-3.R，打开 L7-3_clpn.png 与 L7-3_clpn_threshold.png。写一段 150 字的“图示说明 + 最强 3 条交叉滞后边”解读，重点检查用词。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考：“图 2 呈现了 T1 至 T2 的交叉滞后面板网络（自回归边见表 1）。控制所有 T1 题目后，最强的三条交叉滞后边为：T1 睡眠问题 → T2 疲乏（β = 0.14）、T1 被冷落 → T2 无人理解（β = 0.13），以及 T1 无人理解 → T2 疲乏（β = 0.11）。其中第三条为跨构念边：T1‘无人理解’得分较高者，T2 疲乏的预测值略高。该边较弱，其稳定性需结合 bootstrap 结果判断。上述关系均为时间上的预测关联，不代表被试内的因果作用。”</p><p>引号内是论文的写法：真实研究不知道答案，能做的只是用 bootstrap 检查稳定性（8.2 课）。课程数据的答案是已知的：lone4 → dep4 的总体目标值只有 0.005，被试内真值为 0.000。样本中第三强的边在两份答案里都接近 0，所以不能凭“最强”就下结论。</p></details></div>
+<div class="exitem"><h4>练习 2：自环对比<span class="lvl">理解</span></h4><p>在本页组件中勾选/取消“显示自回归环”，描述交叉滞后边的视觉变化，并用“最少数学”中的公式解释。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>含自环时 maximum 由最大的自回归（约 0.39）决定，交叉滞后边相对宽度约为 β/0.39；不含自环时 maximum ≈ 0.17，同一边看起来粗得多。（组件画的是总体目标值矩阵 true_B_population，所以这里是 0.39 / 0.17；前文“最少数学”部分用的是 lambda.min 估计矩阵，对应数字是 0.45 / 0.14。道理相同，只是矩阵不同。）数值不变，视觉印象改变，所以要在图注中写明作图选择。</p></details></div>
+<div class="exitem"><h4>练习 3：改写过度解读<span class="lvl">写作</span></h4><p>改写：“结果显示，无人理解（lone4）是孤独驱动抑郁的关键症状，因此干预应首先针对无人理解。”</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>“在本样本中，T1‘无人理解’具有多条指向 T2 抑郁题目的正向交叉滞后边（如 → 疲乏、→ 无价值感），其桥接出期望影响最高（见 7.4）。这提示‘无人理解’可能是值得在干预研究中检验的目标；但由于 CLPN 的边为观察数据中的预测关系，且混合了稳定个体差异，该结果不足以确定干预靶点。”</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>绘制你的 CLPN，写一段 150 字的“图示说明 + 最强 3 条交叉滞后边”的解读；写完后逐句检查用词是否过度因果化（如“导致”“引起”“驱动”），改成预测性表述。</p></div><h3>自测问题</h3><ol><li>为什么很多 CLPN 论文不在图中显示自回归边？</li><li>只显示大于某阈值的边，是否改变了模型本身？需要在哪里说明？</li><li>“T1 失眠 → T2 疲劳的边最强”应该怎么写才准确？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>CLPN 图：不画自环（单列表格）、分组着色、有向箭头、图例给完整题目。</li><li>显示阈值只改变图，不改变模型；必须在图注说明。</li><li>两张必备表：自回归边表 + 最强交叉滞后边列表（附 bootstrap 区间更好）。</li><li>写作公式：“控制所有 T1 节点后，T1 的 A 预测 T2 的 B（β = …）”。</li><li>模型中的 0（LASSO）≠ 图中没画（阈值）。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li><li>Epskamp, S., Cramer, A. O. J., Waldorp, L. J., Schmittmann, V. D., & Borsboom, D. (2012). qgraph: Network visualizations of relationships in psychometric data. <i>Journal of Statistical Software, 48</i>(4), 1–18. <a href="https://doi.org/10.18637/jss.v048.i04" target="_blank" rel="noopener">doi.org/10.18637/jss.v048.i04</a><div class="muted" style="font-size:.84rem">qgraph 包的说明论文。</div></li><li>Funkhouser, C. J., et al. (2021). Unique longitudinal relationships between symptoms of psychopathology in youth: A cross-lagged panel network analysis in the ABCD study. <i>Journal of Child Psychology and Psychiatry, 62</i>(2), 184–194. <a href="https://doi.org/10.1111/jcpp.13256" target="_blank" rel="noopener">doi.org/10.1111/jcpp.13256</a><div class="muted" style="font-size:.84rem">CLPN 实证应用范例（4,093 名青少年，含 T2→T3 复现），第 9.1 课精读。</div></li></ul></section>
+<nav class="pager"><a href="L7-2.html" class="pv"><small>上一课</small>7.2 用 glmnet 逐节点估计 CLPN</a><a href="L7-4.html" class="nx"><small>下一课</small>7.4 出期望影响、入期望影响与跨构念桥接</a></nav>
+<p class="foot">CLPN 从零开始 · 第 7.3 课 · <a href="../index.html#L7-3">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

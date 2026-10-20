@@ -1,0 +1,4 @@
+/* 本地字体（离线可用）。JetBrains Mono（SIL OFL 1.1），仅拉丁字符子集。
+   中文使用系统字体：苹方 PingFang SC（Mac）/ 微软雅黑 Microsoft YaHei（Windows）/ Noto Sans CJK SC（Linux）。 */
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url(jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:600;font-display:swap;src:url(jetbrains-mono-latin-600-normal.woff2) format("woff2")}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.5 中心性指标：强度、期望影响与桥接中心性 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L6-5.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="6.5" style="--c:#14b8a6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L6-5">CLPN 课程大纲</a><span class="crumb">M6 网络心理测量学基础 / 6.5</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L6-5.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L6-5.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details open style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html" class="cur" aria-current="page"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 6 · Network Psychometrics · 第 6.5 课</div>
+<h1>中心性指标：强度、期望影响与桥接中心性</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L6-4.html">6.4 用 qgraph 与 bootnet 估计并可视化网络</a></span><span>配套脚本：<a href="../R/L6-5.R">R/L6-5.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>计算并解释强度（strength）与期望影响（expected influence）</li><li>理解为何有负边时 EI 比强度更合适（Robinaugh et al., 2016）</li><li>理解桥接中心性（Jones, Ma &amp; McNally, 2021）及其与共病研究的关系</li><li>了解介数 / 接近中心性在心理网络中常常不稳定、需慎用</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>中心性</b><span class="en">centrality</span></li><li><b>强度</b><span class="en">strength</span></li><li><b>期望影响</b><span class="en">expected influence, EI</span></li><li><b>介数中心性</b><span class="en">betweenness</span></li><li><b>接近中心性</b><span class="en">closeness</span></li><li><b>桥接中心性</b><span class="en">bridge centrality</span></li><li><b>桥接期望影响</b><span class="en">bridge expected influence</span></li><li><b>共病</b><span class="en">comorbidity</span></li></ul>
+<p>画好网络之后，人们最想问的是：“哪个症状最重要？”中心性指标试图回答这个问题。本课学会计算和解释它们，也要弄清它们不能告诉我们什么。CLPN 的 out-EI / in-EI（7.4 课）就是本课指标的有向版本。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>“重要”有很多种意思</h3>
+<div class="tablewrap"><table><tr><th>指标</th><th>英文</th><th>问的问题</th><th>心理网络中的稳定性</th></tr><tr><td>强度</td><td>strength</td><td>这个节点所有边的“总连接量”有多大？</td><td>通常较稳定</td></tr><tr><td>期望影响</td><td>expected influence, EI</td><td>保留正负号后，这个节点对邻居的“净”关联有多大？</td><td>通常较稳定</td></tr><tr><td>介数</td><td>betweenness</td><td>这个节点有多常位于其他节点之间的最短路径上？</td><td>常常不稳定</td></tr><tr><td>接近</td><td>closeness</td><td>这个节点到其他所有节点的平均距离有多短？</td><td>常常不稳定</td></tr><tr><td>桥接 EI</td><td>bridge expected influence</td><td>这个节点与其他社群的净连接有多强？</td><td>取决于数据</td></tr></table></div>
+<h3>强度与期望影响：负边带来的区别</h3>
+<p><span class="term">强度<span class="en">（strength）</span></span> 把所有边的绝对值加起来；<span class="term">期望影响<span class="en">（expected influence, EI）</span></span> 保留正负号直接相加（Robinaugh, Millner & McNally, 2016）。如果一个节点只有 +0.3 和 −0.3 两条边：强度 = 0.6，EI = 0。想象“社会支持”与“孤独”有很强的负边：用强度看，社会支持很“中心”；但若从“激活”的角度想（提高某个症状后，网络整体是更活跃还是更平静），负边起的是“抑制”作用，EI 更能反映这一点。当网络中有负边时，EI 通常比强度更合适；全是正边时两者相同。</p>
+<h3>桥接中心性：共病的“连接点”</h3>
+<p>当网络包含两个（或多个）预先定义的社群，例如抑郁和焦虑，<span class="term">桥接中心性<span class="en">（bridge centrality）</span></span>（Jones, Ma & McNally, 2021）只计算一个节点与其他社群节点之间的边。桥接 EI 高的节点可能是一个障碍“传递”到另一个障碍的通道，这与 <span class="term">共病<span class="en">（comorbidity）</span></span> 研究直接相关。在 CLPN 中，我们会用“桥接出 EI”来问：哪道孤独题最能预测之后的抑郁题？</p>
+<p>在下面的计算器中，选中“D3—A1”这条桥边，把它的权重从 0.25 调到 −0.25，观察 D3 的强度、EI 和桥接 EI 怎么变；再找出“桥接强度高但桥接 EI 低”的情况。</p>
+<div class="widget w2" data-widget="cent"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>为什么介数和接近要慎用？</h3>
+<p>介数和接近都基于“最短路径”，而最短路径对单条边的微小变化极其敏感：某条弱边被正则化压成 0 或保留下来，最短路径就可能整个改道。Epskamp 等人（2018）的稳定性分析反复发现：在典型样本量下，介数和接近的 CS 系数往往很低（8.3 课），因此越来越多的论文只报告强度和 EI。</p>
+<h3>“中心 = 干预靶点”？没那么简单</h3>
+<p>“中心性最高的症状就是最好的干预靶点”是网络文献中流行的说法，但有几个问题：</p>
+<ol><li><b>横断面网络的边是无向的关联</b>，不告诉我们方向：一个高强度的节点可能是“被别人影响最多”的结果，而不是原因。</li>
+<li><b>中心性可能反映题目内容重叠</b>：两道措辞相近的题目之间会有很强的边，抬高彼此的中心性（9.2 课的“拓扑重叠”）。</li>
+<li><b>可干预性</b>：统计上中心，不代表实务上可以改变（例如“兴趣丧失”很难直接干预）。</li>
+<li><b>稳定性</b>：如果中心性排序本身不稳定（CS 低），任何“最中心”的说法都没有依据。</li></ol>
+<div class="box story"><b class="bt">合格的写法：</b><p>“在该横断面网络中，A6 的期望影响最高（z = …），提示它与其他症状有较多正向连接；该指标的稳定性为 CS = …。这一结果可为后续纵向或干预研究提供候选目标，但不能单独作为干预靶点的依据。”</p></div><h3>常见问题与误区</h3><details class="ans faq"><summary>中心性图用 z 分数时要注意什么？</summary><p>z 分数让不同指标可以画在同一张图里比较相对排序，但它会放大很小的差异：9 个节点的强度如果都在 0.80–0.90 之间，z 分数仍会从 −1.5 拉到 +1.5 左右，图上看起来差别很大。所以论文中最好同时给出原始值（例如附表），读者才能判断差异在实际尺度上有多大。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<div class="mathbox">\[\text{强度}_i=\sum_{j\neq i}|w_{ij}|,\qquad \mathrm{EI}_i=\sum_{j\neq i}w_{ij}\]</div><div class="mathbox">\[\text{桥接强度}_i=\sum_{j\notin C(i)}|w_{ij}|,\qquad \text{桥接 EI}_i=\sum_{j\notin C(i)}w_{ij}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(w_{ij}\)</td><td>节点 i 与 j 的边权重（GGM 中是偏相关）</td></tr><tr><td>\(\sum_{j\neq i}\)</td><td>对除 i 以外所有节点 j 求和</td></tr><tr><td>\(C(i)\)</td><td>节点 i 所属的社群（如“抑郁”）</td></tr><tr><td>\(j\notin C(i)\)</td><td>只对不在 i 所属社群中的节点求和，即“跨社群”的边</td></tr></table>
+<h4>小例子</h4>
+<p>节点 D3 的边：D3—D1 = 0.2，D3—D2 = 0.3，D3—A1 = 0.25（桥边），D3—A3 = −0.1（桥边）。</p>
+<ul><li>强度 = 0.2 + 0.3 + 0.25 + 0.1 = 0.85</li><li>EI = 0.2 + 0.3 + 0.25 − 0.1 = 0.65</li><li>桥接强度 = 0.25 + 0.1 = 0.35；桥接 EI = 0.25 − 0.1 = 0.15</li></ul>
+<h4>标准化报告</h4>
+<p><code>centralityPlot()</code> 在 qgraph 1.9 及以后默认 <code>scale = "raw0"</code>（原始值，从 0 起）；写成 <code>centralityPlot(…, scale = "z-scores")</code> 才会把每个指标转换成 z 分数：\(z_i=(c_i-\bar c)/s_c\)，方便把不同指标画在同一张图里。z 分数只表示“相对于本网络其他节点”的高低，不同研究之间不能直接比较。</p>
+<h4>两步桥接（了解）</h4>
+<p>networktools 还提供“Bridge Expected Influence (2-step)”，把经由一个中间节点的间接连接也算进来（间接边权重 = 两段权重相乘）。课程统一报告 1-step 版本。</p>
+
+<h3>完整例题：强度、期望影响与桥接强度，一次算完</h3>
+<p>一个 4 节点的小网络：孤独题 L1、L2，抑郁题 D1、D2。边权为 L1–L2 = 0.4，D1–D2 = 0.3，L1–D1 = 0.2，L2–D1 = 0.1，L2–D2 = −0.05。</p>
+<div class="tablewrap"><table><tr><th>节点</th><th>强度（|w| 之和）</th><th>期望影响 EI（w 之和）</th><th>桥接强度（只算跨构念的 |w|）</th><th>桥接 EI（只算跨构念的 w）</th></tr><tr><td>L1</td><td>0.4 + 0.2 = 0.60</td><td>0.60</td><td>0.20</td><td>0.20</td></tr><tr><td>L2</td><td>0.4 + 0.1 + 0.05 = 0.55</td><td>0.4 + 0.1 − 0.05 = 0.45</td><td>0.1 + 0.05 = 0.15</td><td>0.1 − 0.05 = 0.05</td></tr><tr><td>D1</td><td>0.3 + 0.2 + 0.1 = 0.60</td><td>0.60</td><td>0.2 + 0.1 = 0.30</td><td>0.30</td></tr><tr><td>D2</td><td>0.3 + 0.05 = 0.35</td><td>0.3 − 0.05 = 0.25</td><td>0.05</td><td>−0.05</td></tr></table></div>
+<p>几点观察：①没有负边的节点（L1、D1），强度等于 EI；②L2 有一条负边，EI 比强度小 0.1（负边的绝对值被“加了”一次，又被“减了”一次）；③从桥接指标看，D1 是两个构念之间最主要的“连接点”（桥接强度 0.30）。如果问“哪个抑郁症状与孤独联系最紧”，答案是 D1，而不是总强度并列第一的 L1。</p>
+<p>本课脚本中有一个更极端的例子：一个节点只有 +0.3 和 −0.3 两条边，强度 = 0.6，EI = 0。强度说它“连接很多”，EI 说它的“净作用”是零。两者回答的问题不同，所以要根据研究问题来选指标。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L6-5.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(qgraph); library(networktools) })
+items &lt;- read.csv(out(&quot;L6-4_dep_anx_items.csv&quot;))      # 先运行 L6-4.R
+net &lt;- estimateNetwork(items, default = &quot;EBICglasso&quot;, tuning = 0.5, corMethod = &quot;cor_auto&quot;)
+W &lt;- net$graph
+data.frame(strength = colSums(abs(W)),                # 强度 = Σ|w|
+           EI       = colSums(W))                     # EI = Σw
+centralityPlot(net, include = c(&quot;Strength&quot;, &quot;ExpectedInfluence&quot;), scale = &quot;z-scores&quot;)
+# 桥接中心性改用课程数据 T1 的 9 道题：孤独 4 题与抑郁 5 题是事先定义好的两个社群
+dat &lt;- read_course_data()
+t1 &lt;- dat[, vars_t(1)]; colnames(t1) &lt;- items
+net_c &lt;- estimateNetwork(t1, default = &quot;EBICglasso&quot;, tuning = 0.5, corMethod = &quot;cor_auto&quot;)
+b &lt;- bridge(net_c$graph, communities = ifelse(items %in% lone_items, &quot;孤独&quot;, &quot;抑郁&quot;))  # 必须指定社群
+sort(b$`Bridge Expected Influence (1-step)`, decreasing = TRUE)
+plot(b, include = &quot;Bridge Expected Influence (1-step)&quot;)</code></pre></div>
+<p>实际结果摘录（R/output/L6-5_log.txt）：强度最高的是 A6（0.566），EI 最高的也是 A6（0.565）；D1 的强度 0.473 而 EI 只有 0.252，说明 D1 有不小的负边。</p>
+<p>桥接部分用的是课程数据 T1 的 9 道题（孤独、抑郁两个社群）。桥接 EI 前两名是 lone3 与人隔绝（0.163）和 dep5 无价值感（0.133）；最强的一条跨社群边正是 lone3—dep5（0.103）。12 条跨社群边全部为正，所以这里桥接 EI 与桥接强度相同；最低的是 dep4 疲乏（0.016）。</p>
+<div class="box analogy"><b class="bt">数据来源说明：</b><p>6.4–6.5 的“抑郁 9 题 + 焦虑 7 题”数据是脚本用 <code>genGGM()</code> 随机生成的横断面模拟数据，节点名 D1–D9、A1–A7 并不对应真实量表题目。它的真实网络是一个“环形格子”（每个节点只和编号相邻的节点相连），并不存在“抑郁”“焦虑”两个社群；在上面算桥接，排名只反映节点在环上的位置。所以强度和 EI 用这份数据演示，桥接改用有真实社群划分的课程数据。</p></div><div class="box warnbox"><b class="bt">报告中心性时的常见错误</b><ul>
+<li><b>不看 centralityPlot 的 scale 就读横轴。</b>在 qgraph 1.9 及以后的版本（课程环境为 1.9.8）中，<code>centralityPlot()</code> 默认 <code>scale = "raw0"</code>，即原始值，横轴从 0 开始；旧版本以及许多教程和论文用的是 z 分数。本课 <code>R/L6-5.R</code> 显式写了 <code>scale = "z-scores"</code>，R 会提示 “z-scores are shown on x-axis”。z 分数只说明节点之间的相对位置，z = 1.5 不等于“强度 1.5”。画图时显式写出 <code>scale</code>，并在图注中说明；需要具体数值时用 <code>centralityTable()</code>。</li>
+<li><b>只看排名第一。</b>第一名和第二名的强度可能只差 0.01，在抽样误差范围之内。必须结合 bootstrap 差异检验（8.2 课）和 CS 系数（8.3 课）再下结论。</li>
+<li><b>在有负边的网络里只报强度。</b>负边较多时，应同时报告 EI，并说明二者的差异。</li>
+<li><b>按量表分组设定 communities 时写错。</b><code>bridge()</code> 的 <code>communities</code> 参数顺序必须与节点顺序一致，否则桥接指标全部算错。</li>
+<li><b>把横断面网络的中心节点称为“病因”。</b>横断面的无向网络没有方向，不能说明谁影响谁。</li></ul></div>
+<h3>小练习：研究问题与中心性指标配对</h3>
+<p>把研究问题和指标配对：①“哪个症状与其他症状的联系总体上最多？”②“激活哪个症状，最可能让其他症状的总体水平升高？”③“哪个抑郁症状与焦虑症状联系最紧密？”参考答案：①强度；②期望影响（EI），因为它考虑了正负方向；③桥接强度或桥接 EI。如果你的研究问题是关于共病的，桥接指标往往比整体中心性更切题。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L6-5.R</code>（35 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L6-5.R  中心性：强度、期望影响与桥接中心性  (Strength, EI, bridge centrality)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+need_output(&quot;L6-4_dep_anx_items.csv&quot;, &quot;R/L6-4.R&quot;)   # 前置结果检查
+suppressPackageStartupMessages({ library(bootnet); library(qgraph); library(networktools) })
+log_open(&quot;L6-5_log.txt&quot;)
+d16 &lt;- read.csv(out(&quot;L6-4_dep_anx_items.csv&quot;))     # 需先运行 L6-4.R
+net &lt;- estimateNetwork(d16, default = &quot;EBICglasso&quot;, tuning = 0.5, corMethod = &quot;cor_auto&quot;, verbose = FALSE)
+W &lt;- net$graph
+strength &lt;- colSums(abs(W))                         # 强度 = Σ|w|
+EI       &lt;- colSums(W)                              # 期望影响 = Σw（保留正负号）
+print(round(data.frame(strength, EI), 3))
+cat(&quot;例：只有 +0.3 和 −0.3 两条边的节点：强度 = 0.6，EI = 0\n&quot;)
+png_open(&quot;L6-5_centrality.png&quot;, 1400, 1400)
+suppressWarnings(print(centralityPlot(net, include = c(&quot;Strength&quot;, &quot;ExpectedInfluence&quot;), scale = &quot;z-scores&quot;, print = FALSE)))
+invisible(dev.off())
+# 桥接中心性（bridge centrality）：需要事先指定社群（communities）。
+# 上面的 16 题数据由 genGGM() 生成，真实网络是一个“环形格子”（每个节点只和编号相邻的节点相连），
+# 并没有“抑郁”“焦虑”两个社群；在它上面算桥接，排名只反映编号在环上的位置。所以桥接改用课程数据：
+# T1 的孤独 4 题 + 抑郁 5 题，社群按量表指定。
+dat &lt;- read_course_data()
+t1 &lt;- dat[, vars_t(1)]; colnames(t1) &lt;- items        # items = 9 道题的名字（_setup.R）
+net_c &lt;- estimateNetwork(t1, default = &quot;EBICglasso&quot;, tuning = 0.5, corMethod = &quot;cor_auto&quot;, verbose = FALSE)
+comm &lt;- ifelse(items %in% lone_items, &quot;孤独&quot;, &quot;抑郁&quot;)
+b &lt;- bridge(net_c$graph, communities = comm)
+bei &lt;- sort(b$`Bridge Expected Influence (1-step)`, decreasing = TRUE)
+cat(&quot;\n课程数据 T1（9 题，EBICglasso）的桥接 EI：\n&quot;)
+print(round(bei, 3)); cat(&quot;桥接 EI 前 2 名：&quot;, names(bei)[1:2], &quot;（&quot;, item_zh[names(bei)[1:2]], &quot;）\n&quot;)
+cat(&quot;跨社群的边（|w| &gt; 0）：\n&quot;)
+Wc &lt;- net_c$graph
+for (k in lone_items) for (j in dep_items) if (abs(Wc[k, j]) &gt; 0)
+  cat(sprintf(&quot;  %s（%s）— %s（%s）：%.3f\n&quot;, k, item_zh[k], j, item_zh[j], Wc[k, j]))
+png_open(&quot;L6-5_bridge.png&quot;, 1400, 1400); suppressWarnings(print(plot(b, include = &quot;Bridge Expected Influence (1-step)&quot;))); invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L6-5_bridge.png" alt="L6-5_bridge.png" loading="lazy"><figcaption>图：<code>R/output/L6-5_bridge.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<figure><img src="../R/output/L6-5_centrality.png" alt="L6-5_centrality.png" loading="lazy"><figcaption>图：<code>R/output/L6-5_centrality.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L6-5_log.txt</code></div><pre class="out"><code>   strength    EI
+D1    0.473 0.252
+D2    0.350 0.350
+D3    0.283 0.062
+D4    0.209 0.078
+D5    0.331 0.201
+D6    0.320 0.122
+D7    0.442 0.442
+D8    0.251 0.055
+D9    0.323 0.139
+A1    0.472 0.472
+A2    0.404 0.220
+A3    0.473 0.196
+A4    0.373 0.096
+A5    0.426 0.426
+A6    0.566 0.565
+A7    0.444 0.444
+例：只有 +0.3 和 −0.3 两条边的节点：强度 = 0.6，EI = 0
+
+课程数据 T1（9 题，EBICglasso）的桥接 EI：
+lone3  dep5  dep3 lone1  dep1 lone4  dep2 lone2  dep4 
+0.163 0.133 0.089 0.086 0.086 0.075 0.055 0.054 0.016 
+桥接 EI 前 2 名： lone3 dep5 （ 与人隔绝 无价值感 ）
+跨社群的边（|w| &gt; 0）：
+  lone1（缺少陪伴）— dep1（情绪低落）：0.059
+  lone1（缺少陪伴）— dep2（兴趣丧失）：0.028
+  lone2（被冷落）— dep2（兴趣丧失）：0.004
+  lone2（被冷落）— dep3（睡眠问题）：0.045
+  lone2（被冷落）— dep5（无价值感）：0.005
+  lone3（与人隔绝）— dep2（兴趣丧失）：0.016
+  lone3（与人隔绝）— dep3（睡眠问题）：0.044
+  lone3（与人隔绝）— dep5（无价值感）：0.103
+  lone4（无人理解）— dep1（情绪低落）：0.027
+  lone4（无人理解）— dep2（兴趣丧失）：0.007
+  lone4（无人理解）— dep4（疲乏）：0.016
+  lone4（无人理解）— dep5（无价值感）：0.025</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">一个节点只有 +0.3 和 −0.3 两条边，它的强度和 EI 分别是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 0.6 和 0.6</button><div class="ofb" hidden>EI 保留符号，+0.3 与 −0.3 相互抵消为 0；0.6 是强度。</div></li><li><button type="button" data-ok="1">B. 0.6 和 0</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 0 和 0.6</button><div class="ofb" hidden>反了：强度取绝对值之和（0.6），EI 带符号相加（0）。</div></li><li><button type="button" data-ok="0">D. 0.3 和 0</button><div class="ofb" hidden>0.3 只算了一条边；强度要把两条边的绝对值都加上。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">网络中存在负边时，为什么 EI 通常比强度更合适？</p><ul class="opts"><li><button type="button" data-ok="0">A. 强度会把负边算成负数，使节点得分偏低</button><div class="ofb" hidden>反了：强度取绝对值，负边也被当作正的“连接量”加进去。</div></li><li><button type="button" data-ok="1">B. 强度把抑制性的负边也算作“连接”，EI 能反映净的激活方向</button><div class="ofb" hidden>正确（Robinaugh et al., 2016）。</div></li><li><button type="button" data-ok="0">C. EI 永远大于强度</button><div class="ofb" hidden>EI ≤ 强度：带符号的和不会大于绝对值之和。</div></li><li><button type="button" data-ok="0">D. 强度不能用于有向网络</button><div class="ofb" hidden>有向网络也有出强度、入强度（7.4）；这不是选 EI 的理由。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">桥接中心性为什么需要事先指定社群？</p><ul class="opts"><li><button type="button" data-ok="1">A. 因为它只累加连接到其他社群节点的边，必须知道谁属于哪个社群</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">B. 社群只用来给节点着色，不影响桥接指标的数值</button><div class="ofb" hidden>社群划分直接决定哪些边算“跨社群”；换一种划分，桥接指标的数值就变了。</div></li><li><button type="button" data-ok="0">C. bridge() 会按边权自动划分社群，指定只是为了加快计算</button><div class="ofb" hidden>划分要由研究者给出（也可以事先用社群检测算法得到再传入）；本课 R 代码的注释写的就是“必须指定社群”。</div></li><li><button type="button" data-ok="0">D. 为了计算介数</button><div class="ofb" hidden>介数基于最短路径，不需要社群；需要社群的是桥接指标。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">“中心性最高的症状就是最好的干预靶点”主要问题是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 横断面网络的中心性只描述关联，所以没有任何参考价值</button><div class="ofb" hidden>说过头了：中心性可以提供候选目标，只是不能单独作为干预依据。</div></li><li><button type="button" data-ok="1">B. 横断面边无方向、可能反映内容重叠、可干预性未知、中心性可能不稳定</button><div class="ofb" hidden>正确：这些都是需要额外证据的地方。</div></li><li><button type="button" data-ok="0">C. 只要样本足够大，中心性最高的节点就是靶点</button><div class="ofb" hidden>大样本只能让估计更稳定，解决不了方向、内容重叠和可干预性的问题。</div></li><li><button type="button" data-ok="0">D. 干预靶点只能用 RCT 找</button><div class="ofb" hidden>RCT 是最终的检验方式；这句话的问题在于从中心性直接推到靶点，推论跨度过大。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在心理网络文献中，哪类中心性指标通常最不稳定？</p><ul class="opts"><li><button type="button" data-ok="0">A. 强度</button><div class="ofb" hidden>强度把所有边加总，单条边的小变化影响不大，通常较稳定。</div></li><li><button type="button" data-ok="0">B. 期望影响</button><div class="ofb" hidden>EI 与强度一样是边的加总，通常较稳定。</div></li><li><button type="button" data-ok="1">C. 介数与接近</button><div class="ofb" hidden>正确：基于最短路径，一条弱边的去留就可能让路径改道。</div></li><li><button type="button" data-ok="0">D. 桥接 EI</button><div class="ofb" hidden>取决于数据，但它也是边的加总，一般好于介数和接近。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：中心性与桥接<span class="lvl">动手</span></h4><p>运行 R/L6-5.R，打开 L6-5_centrality.png 与 L6-5_bridge.png。指出桥接 EI 排名前 2 的节点，并写一段谨慎的解释（3–4 句）。附加：把 <code>include</code> 改为 <code>c("Betweenness", "Closeness")</code> 再画一次 centralityPlot，用一两句话说明为什么本课不把这两个指标写进结论。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>前两名：lone3 与人隔绝（0.163）与 dep5 无价值感（0.133）。参考解释：“在 T1 的横断面网络中，‘与人隔绝’和‘无价值感’与另一构念的条件关联最强，二者之间也是最强的一条跨构念边，可能是孤独与抑郁共同出现的‘连接点’候选。由于网络为横断面、无向，我们不能判断方向；且这些估计的稳定性需通过 case-dropping bootstrap 检验（见 8.3）。这些节点可作为后续纵向研究中值得关注的候选。”附加题要点：介数和接近都基于“最短路径”，某条弱边被压成 0 或保留下来，最短路径就会改道，所以排序很容易变；在心理网络中“路径”的实际含义也不清楚。它们的 CS 系数通常很低（8.3），因此只作参考，不写进结论。</p></details></div>
+<div class="exitem"><h4>练习 2：手算中心性<span class="lvl">基础</span></h4><p>节点 X 的边：与同社群的 Y（0.4）、Z（−0.2），与另一社群的 U（0.1）、V（0.15）。求强度、EI、桥接强度、桥接 EI。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>强度 = 0.4 + 0.2 + 0.1 + 0.15 = 0.85；EI = 0.4 − 0.2 + 0.1 + 0.15 = 0.45；桥接强度 = 0.25；桥接 EI = 0.25。</p></details></div>
+<div class="exitem"><h4>练习 3：用计算器体会负边<span class="lvl">理解</span></h4><p>在本页计算器中，让 D1—D2 = 0.4、D1—D3 = −0.4，比较 D1 的强度与 EI。再说明：如果你只报告强度，读者会对 D1 产生什么误解？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>D1 的强度会很高（≥ 0.8），EI 接近 0。只报告强度，读者会以为 D1 “与很多症状紧密相连、激活它会带动网络”，但实际上它的正、负连接互相抵消；“激活 D1”在网络中的净作用可能很小。这就是 Robinaugh 等人提出 EI 的动机。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>用 qgraph::centralityPlot() 画出强度与 EI，用 networktools::bridge() 计算“抑郁—焦虑”的桥接 EI，指出排名前 2 的桥接节点并写一段谨慎的解释。</p></div><h3>自测问题</h3><ol><li>一个节点只有 +0.3 和 −0.3 两条边，它的强度和 EI 分别是多少？</li><li>“中心性最高的症状就是最好的干预靶点”这一说法有什么问题？</li><li>桥接中心性为什么需要事先指定社群？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>强度 = Σ|w|；EI = Σw；有负边时优先 EI。</li><li>桥接强度 / 桥接 EI 只算跨社群的边，必须事先指定社群。</li><li>介数与接近基于最短路径，常常不稳定，慎用。</li><li>中心性 ≠ 干预靶点：方向、内容重叠、可干预性、稳定性都需额外证据。</li><li>CLPN 中的 out-EI / in-EI 是 EI 的有向版本（7.4）。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Robinaugh, D. J., Millner, A. J., & McNally, R. J. (2016). Identifying highly influential nodes in the complicated grief network. <i>Journal of Abnormal Psychology, 125</i>(6), 747–757. <a href="https://doi.org/10.1037/abn0000181" target="_blank" rel="noopener">doi.org/10.1037/abn0000181</a><div class="muted" style="font-size:.84rem">提出期望影响（EI）指标，第 6.5 课。</div></li><li>Jones, P. J., Ma, R., & McNally, R. J. (2021). Bridge centrality: A network approach to understanding comorbidity. <i>Multivariate Behavioral Research, 56</i>(2), 353–367. <a href="https://doi.org/10.1080/00273171.2019.1614898" target="_blank" rel="noopener">doi.org/10.1080/00273171.2019.1614898</a><div class="muted" style="font-size:.84rem">桥接中心性与 networktools 包，第 6.5 / 7.4 课。</div></li><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">bootnet 与稳定性检验（CS 系数）的标准教程，模块 6、8。</div></li></ul></section><div class="box key"><b class="bt">阶段测验</b><p>本模块的核心课到这里学完了。去做 <a href="../materials/assess_m6.html">M6 阶段测验</a>，一次答对 70% 及以上再进入下一个模块。</p></div>
+<nav class="pager"><a href="L6-4.html" class="pv"><small>上一课</small>6.4 用 qgraph 与 bootnet 估计并可视化网络</a><a href="L7-1.html" class="nx"><small>下一课</small>7.1 CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></nav>
+<p class="foot">CLPN 从零开始 · 第 6.5 课 · <a href="../index.html#L6-5">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

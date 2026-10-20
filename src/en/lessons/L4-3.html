@@ -1,0 +1,219 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>Who didn't come back?</h2>
+<div class="box story"><b class="bt">The truth behind the "good news"</b>
+<p>A community mental health support project surveyed 800 residents at the start (T1) and got 640 questionnaires back six months later (T2). The agency reported: "The average depression score of T2 participants fell from 3.84 to 3.06. The project worked!" The supervisor asked one question: who are the 160 people who didn't come back? A look at the T1 data showed that those who dropped out had an average T1 depression score of 8.78, while those who returned averaged only 2.60. The people in the most distress had left the study, so those who remained naturally "looked better." (The numbers in this story come from this lesson's simulation: the true T2 mean of the depression total score is 3.78, almost unchanged.)</p></div>
+<p>{{T:missing data|}} occur in almost every real study. In longitudinal research the main source of missing data is {{T:attrition|}}: participants stop taking part in later waves. The problem is not that "some people are missing," but that the people who leave are often different from the people who stay.</p>
+
+<h3>Three missingness mechanisms (Rubin's classification)</h3>
+<p>To judge whether missing data will cause bias, the key question is: what is "being missing" related to?</p>
+<div class="tablewrap"><table><thead><tr><th>Mechanism</th><th>Meaning</th><th>Social work example</th><th>What happens if you analyze only complete cases</th></tr></thead><tbody>
+<tr><td>{{T:missing completely at random|MCAR}}</td><td>Missingness is unrelated to any variable (measured, unmeasured, or the missing value itself)</td><td>Questionnaires lost at random in the mail; a system failure that randomly loses a batch of records</td><td>Unbiased (but the sample is smaller and precision drops)</td></tr>
+<tr><td>{{T:missing at random|MAR}}</td><td>Missingness is related to observed variables; once these are taken into account, it is unrelated to the missing value itself</td><td>People with high T1 depression are more likely to drop out by T2 (T1 depression is known)</td><td>Means, variances and correlations are usually biased; regression coefficients stay unbiased when missingness depends only on the predictors (see below). FIML or multiple imputation that includes the relevant variables can correct the bias</td></tr>
+<tr><td>{{T:missing not at random|MNAR}}</td><td>Missingness is related to the missing value itself (or to unmeasured variables), even after the observed variables are taken into account</td><td>The people who are most depressed at T2 are the ones who don't fill in the T2 questionnaire (and this worsening could not be foreseen at T1)</td><td>Biased; no standard method can fully correct it, so all you can do is a sensitivity analysis</td></tr></tbody></table></div>
+<div class="box analogy"><b class="bt">Analogy: a satisfaction survey at a community service center</b><p>MCAR: a few activity rooms were skipped at random when the questionnaires were handed out. MAR: younger residents are less willing to fill it in (you know everyone's age, so you can adjust for age). MNAR: the least satisfied people stop coming to the center altogether, so they can't fill in the questionnaire (the dissatisfaction itself causes the missingness).</p></div>
+<div class="widget" data-widget="missing"></div>
+<p>"People with severe depression are more likely to drop out": which mechanism this is depends on when "severe" was measured. If dropout can be predicted from depression already measured at T1, it is MAR; if depression at T2 (the measurement we never got) causes dropout and T1 information cannot predict it, it is MNAR. In practice the two often occur together. In both cases, analyzing only the people who stayed underestimates T2 depression and usually weakens (or distorts) the correlations between variables, because people at the high end have been removed systematically (similar to range restriction in Lesson 1.4).</p>
+<p>Note: <b>the data themselves cannot prove that missingness is MAR rather than MNAR</b>, because that judgment would require knowing the missing values. All you can do is run an attrition analysis with the information you have, argue from theory, and do sensitivity analyses.</p>
+
+<h3>Comparing the methods</h3>
+<div class="tablewrap"><table><thead><tr><th>Method</th><th>What it does</th><th>Strengths</th><th>Weaknesses</th></tr></thead><tbody>
+<tr><td>{{T:listwise deletion|}}</td><td>Drops every case with a missing value on any variable (what <code>lm()</code> does by default)</td><td>Simple; unbiased under MCAR; when missingness depends only on the regression's predictors, the regression coefficients are unbiased too</td><td>Biased in other MAR / MNAR situations (means and correlations are almost always affected); loses sample size and power</td></tr>
+<tr><td>Pairwise deletion</td><td>Each statistic uses everyone who has data on the variables it needs (Lesson 2.5)</td><td>Uses more of the data</td><td>Different statistics rest on different people; the correlation matrix may be internally inconsistent; also requires MCAR</td></tr>
+<tr><td>Mean imputation</td><td>Replaces missing values with the mean</td><td>Simple</td><td>Not recommended: underestimates variance, weakens correlations, gives standard errors that are too small</td></tr>
+<tr><td>{{T:full information maximum likelihood|FIML}}</td><td>Fills nothing in; estimates the model parameters directly from all the data each person has</td><td>Unbiased under MAR; in lavaan you only need <code>missing = "ml"</code></td><td>Variables related to missingness (auxiliary variables) must be in the model; still biased under MNAR</td></tr>
+<tr><td>{{T:multiple imputation|}}</td><td>From the observed data, generates several plausible "candidate values" for each missing value, giving m complete datasets; analyzes each one and combines the results with Rubin's rules</td><td>Unbiased under MAR; works with almost any analysis (including glmnet in CLPN)</td><td>More steps; the imputation model must include the analysis variables and the variables related to missingness; still biased under MNAR</td></tr></tbody></table></div>
+<p>"Analyze only the complete cases" is common because it is simple, it is the software default, and it needs no extra explanation of assumptions. But for means, variances and correlations it requires MCAR, the strongest assumption of all. Attrition in longitudinal studies is almost never completely random, so the results may be systematically biased, and the smaller sample also lowers statistical power.</p>
+<div class="box key"><b class="bt">An important exception: regression coefficients when missingness depends only on the predictors</b><p>"Listwise deletion is biased under MAR" does not hold for every estimate. Take the regression \(Y = \beta_0 + \beta_1 X + \varepsilon\). If whether a person is missing depends only on \(X\) (plus random factors unrelated to \(Y\)), and not on \(Y\) itself, then among the people who remain the conditional relationship of \(Y\) with \(X\) is unchanged: all you have removed is part of the range of \(X\), as if an experimenter had deliberately chosen people with certain \(X\) values. The unstandardized regression coefficients from the complete cases are then still unbiased; the only cost is a smaller sample and larger standard errors. But in the same data, the mean of \(Y\), the variance of \(Y\), the correlation of \(X\) with \(Y\), and the standardized coefficients are all biased, because they depend on the distribution of \(X\).</p>
+<p>This lesson's simulation is exactly that case: dropout depends only on T1 depression. So the T2 depression mean (3.78 → 3.06) and r(T1 loneliness, T2 depression) (0.296 → 0.225) are both distorted; but if you run the regression <code>lm(dep_t2 ~ dep_t1 + lone_t1)</code>, the two coefficients are almost the same in the complete cases and in the full data (the end of <code>R/L4-3.R</code> prints this comparison). Conversely, if missingness depends on a variable that is not in the model, or on T2 depression itself, the regression coefficients are biased as well. What this means for CLPN: the predictors in each nodewise regression are all T1 items. If T2 dropout depends only on those T1 items, the unstandardized cross-lagged coefficients estimated from complete cases are in principle not systematically affected. But dropout is often also related to covariates and to unmeasured T2 status, and with a smaller sample LASSO tends to drop weak edges, so you still need an attrition analysis and a report of how missing data were handled.</p></div>
+<div class="box key"><b class="bt">Why does multiple imputation have to be "multiple"?</b><p>Filling in the values once (single imputation) treats guessed values as real observations and underestimates uncertainty. If you impute m times (e.g., 5–20 times; more missing data need more imputations), the filled-in values differ a little each time. The differences in results between the datasets reflect exactly the "extra uncertainty caused by missing data," and pooling adds it to the standard errors.</p></div>
+
+<h3>Common practice in network analysis</h3>
+<p>The course's main "LASSO-only" CLPN is built on <code>glmnet</code> regressions, and <code>glmnet</code> does not accept missing values. The course function <code>clpn_estimate()</code> (defined in <code>R/_setup.R</code>) checks before estimating: if X, Y or the covariates contain any NA, it stops, reports how many values are missing and how many people are affected, and tells you to handle them first with the methods in this lesson. (In the full procedure of Wysocki et al., 2025, covered in Lesson 7.5, the SEM re-estimation step runs in lavaan and can handle missing data with FIML (<code>missing = "ml"</code>), but the LASSO edge selection in step 1 still needs complete or imputed data.) Applied studies commonly do one of the following. (1) Use only the cases with complete data (attrition must then be reported and discussed). (2) Run multiple imputation first, estimate a network on each imputed dataset, and combine them. When combining, don't simply average the coefficients of the m networks: if an edge is selected by LASSO in just one imputed dataset, its average is a small but nonzero value, so the combined network loses its sparsity and many edges that were selected only occasionally "exist" too. The usual approach is to count selection frequency first: the share of the m imputed datasets in which the edge is selected (nonzero). Keep only edges whose frequency reaches a threshold set in advance (commonly at least half, the "majority vote" rule; stricter versions require ≥ 80% or all of them), then average the kept edges to get the point estimate. The paper should report the threshold and each edge's selection frequency. This is the same problem as variable selection after imputation (Wood, White, &amp; Royston, 2008, discuss several rules), and the same idea as using the bootstrap in {{L:8.2}} to count how often an edge is "shrunk to 0" (prop0, i.e., 1 − selection frequency). (3) For cross-sectional networks, some SEM-based network software (such as the psychonetrics package) supports FIML estimation. Which option fits depends on how much is missing and on the mechanism; whichever you use, describe it in the paper and report the attrition analysis. (The "analysis decision log" in Module 7 and the capstone template in Module 10 both ask you to state how missing data were handled and what the attrition analysis found.)</p>
+
+<h3>Attrition analysis: comparing those who stayed with those who left</h3>
+<p>An {{T:attrition analysis|}} compares dropouts and stayers on baseline (T1) variables: t-tests (or the effect size Cohen's d) for continuous variables, chi-square tests for categorical ones. If the two groups differ significantly on important variables, the data are not MCAR; use FIML or multiple imputation and include those variables as auxiliary variables. An attrition analysis can only test relationships with observed variables; it cannot rule out MNAR.</p>
+<div class="box sw"><b class="bt">Social work perspective: attrition is itself a finding</b><p>In service research, "who dropped out" is itself important practice information: if the clients with the greatest difficulties are the most likely to drop out, the service may be failing to keep the people who need it most. Reporting attrition is a statistical requirement, and it also keeps the hardest-hit groups from disappearing from the results. Collecting several ways to contact people, offering reasonable incentives for follow-up, and keeping the questionnaire short all reduce attrition.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Missingness mechanisms in symbols, and Rubin's pooling rules</h2>
+<p>Let \(Y_{obs}\) be the observed data, \(Y_{mis}\) the missing data, and \(R\) an indicator of "missing or not" (missing = 1). The three mechanisms are:</p>
+<div class="mathbox">$$\text{MCAR}: P(R\mid Y_{obs},Y_{mis}) = P(R)$$
+$$\text{MAR}: P(R\mid Y_{obs},Y_{mis}) = P(R\mid Y_{obs})$$
+$$\text{MNAR}: P(R\mid Y_{obs},Y_{mis}) \text{ depends on } Y_{mis}$$</div>
+<dl class="sym"><dt>\(P(R\mid\cdot)\)</dt><dd>The probability of being missing, given the information to the right of the bar.</dd><dt>\(Y_{obs}\)</dt><dd>For example, each person's T1 depression and gender.</dd><dt>\(Y_{mis}\)</dt><dd>For example, the T2 depression of the dropouts (which we cannot see).</dd></dl>
+<p>This lesson's simulation: dropout probability \(=\text{logistic}(-2.0 + 0.25\times(\text{T1 depression}-\overline{\text{T1 depression}}))\) plus random noise. It depends only on T1 depression (observed), so it is MAR.</p>
+<h3>Pooling multiple imputations (Rubin's rules)</h3>
+<div class="mathbox">$$\bar Q = \frac{1}{m}\sum_{k=1}^{m}\hat Q_k,\qquad T = \bar U + \Big(1+\frac{1}{m}\Big)B$$</div>
+<dl class="sym"><dt>\(\hat Q_k\)</dt><dd>The estimate from imputed dataset \(k\) (e.g., a mean or a regression coefficient).</dd><dt>\(\bar Q\)</dt><dd>The pooled estimate: the average of the m estimates.</dd><dt>\(\bar U\)</dt><dd>The average within-dataset variance (SE²): ordinary sampling uncertainty.</dd><dt>\(B\)</dt><dd>The variance between the m estimates: the extra uncertainty caused by missing data.</dd><dt>\(T\)</dt><dd>Total variance; \(\sqrt{T}\) is the pooled standard error.</dd></dl>
+<p><code>mice::pool()</code> does these calculations for you.</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Creating attrition, attrition analysis, multiple imputation, FIML</h2>
+<p>Script: <a href="../R/L4-3.R">R/L4-3.R</a>. The script also saves the data with attrition as <code>R/output/L4-3_data_with_attrition.csv</code> for the exercises.</p>
+```r R/L4-3.R (core part)
+source("R/_setup.R")
+dat <- read_course_data()
+dat$dep_t1  <- rowSums(dat[, paste0(dep_items, "_t1")])
+dat$dep_t2  <- rowSums(dat[, paste0(dep_items, "_t2")])
+dat$lone_t1 <- rowSums(dat[, paste0(lone_items, "_t1")])
+
+set.seed(43)
+p_drop <- plogis(-2.0 + 0.25 * (dat$dep_t1 - mean(dat$dep_t1)))   # Higher T1 depression -> higher dropout probability
+drop <- rank(-(p_drop + runif(nrow(dat), 0, .3))) <= 0.2 * nrow(dat)  # Exactly 20% drop out
+dat$dropout <- as.integer(drop)
+obs <- dat; obs[drop, grep("_t2$|_t3$", names(obs))] <- NA       # Dropouts' T2/T3 data are missing
+obs$dep_t2[drop] <- NA
+cat("Attrition rate =", mean(drop), "\n")
+cat("T2 depression mean: full data", round(mean(dat$dep_t2), 2),
+    "; after listwise deletion", round(mean(obs$dep_t2, na.rm = TRUE), 2), "\n")
+cat("r(T1 loneliness, T2 depression): full", round(cor(dat$lone_t1, dat$dep_t2), 3),
+    "; listwise deletion", round(cor(obs$lone_t1, obs$dep_t2, use = "complete.obs"), 3), "\n")
+# Attrition analysis: compare the T1 characteristics of dropouts and stayers
+t.test(dep_t1 ~ dropout, data = dat)
+chisq.test(table(dat$gender, dat$dropout))
+# Multiple imputation (mice)
+imp <- mice::mice(obs[, c("dep_t1", "lone_t1", "gender", "dep_t2")], m = 5, printFlag = FALSE, seed = 1)
+est <- mice::pool(with(imp, lm(dep_t2 ~ 1)))
+cat("T2 depression mean after multiple imputation ≈", round(summary(est)$estimate, 2), "\n")
+```
+```out Output (R/output/L4-3_log.txt, excerpt)
+Attrition rate = 0.2 
+T2 depression mean: full data 3.78 ; after listwise deletion 3.06 (underestimated)
+r(T1 loneliness, T2 depression): full 0.296 ; listwise deletion 0.225 
+
+	Welch Two Sample t-test
+data:  dep_t1 by dropout
+t = -28.119, df = 227.17, p-value < 2.2e-16
+95 percent confidence interval:
+ -6.614408 -5.748092
+sample estimates:
+mean in group 0 mean in group 1 
+        2.60000         8.78125 
+
+	Pearson's Chi-squared test with Yates' continuity correction
+data:  table(dat$gender, dat$dropout)
+X-squared = 2.0597, df = 1, p-value = 0.1512
+
+T2 depression mean after multiple imputation ≈ 3.73 (closer to truth)
+```
+<div class="box key"><b class="bt">Reading the results</b><ul>
+<li><b>Bias</b>: listwise deletion lowers the T2 depression mean from 3.78 to 3.06 (an underestimate of about 0.7 points, roughly 0.2 standard deviations) and the loneliness–depression correlation from 0.296 to 0.225 (range restriction).</li>
+<li><b>Attrition analysis</b>: dropouts had a mean T1 depression of 8.78, stayers 2.60, t = −28.1, p &lt; .001, a huge difference (deliberately extreme in the simulation); gender is not significantly related to dropout (χ² = 2.06, p = .151). Conclusion: the data are not MCAR; missingness is related at least to T1 depression.</li>
+<li><b>Multiple imputation</b>: imputing T2 depression from T1 depression, T1 loneliness and gender gives a pooled mean of 3.73, close to the true value of 3.78. Imputation can "correct" the bias because the simulated dropout depends only on the observed T1 depression (MAR), and that variable is in the imputation model.</li>
+<li><code>rank(-(...)) &lt;= 0.2 * nrow(dat)</code>: marks the 20% with the highest "dropout propensity + random noise" as dropouts, so the attrition rate is exactly 20%.</li></ul></div>
+```r FIML: in lavaan you only need missing = "ml", but bring the auxiliary variables along (included at the end of R/L4-3.R)
+library(lavaan)
+o <- read.csv("R/output/L4-3_data_with_attrition.csv")
+o$dep_t1  <- rowSums(o[, paste0(dep_items, "_t1")])
+o$dep_t2  <- rowSums(o[, paste0(dep_items, "_t2")])
+o$lone_t1 <- rowSums(o[, paste0(lone_items, "_t1")])
+# (a) dep_t2 alone: the dropouts contribute no information at all
+f0 <- sem("dep_t2 ~~ dep_t2", data = o, missing = "ml", meanstructure = TRUE)
+parameterEstimates(f0)[2, c("lhs", "op", "est")]
+# (b) Include T1 depression and T1 loneliness as correlated variables
+m  <- "dep_t2 ~~ dep_t1 + lone_t1
+       dep_t1 ~~ lone_t1"
+f1 <- sem(m, data = o[, c("dep_t1", "dep_t2", "lone_t1")], missing = "ml", meanstructure = TRUE)
+pe <- parameterEstimates(f1); pe[pe$op == "~1", c("lhs", "est", "se")]
+```
+```out Output (R/output/L4-3_log.txt, excerpt)
+     lhs op   est
+2 dep_t2 ~1 3.061
+      lhs   est    se
+7  dep_t2 3.780 0.134
+8  dep_t1 3.836 0.120
+9 lone_t1 8.804 0.109
+```
+<p>(a) With T2 depression alone, the FIML mean is 3.06, the same as listwise deletion, because the dropouts have no information to use (lavaan warns that these "empty cases" are ignored). (b) Once T1 depression, which is related to missingness, is included, the FIML estimate of the T2 mean is 3.780, almost exactly the true value; the standardized correlation of T1 loneliness with T2 depression is then 0.302 (true value 0.296). Both FIML and multiple imputation correct the bias through "observed variables in the model that explain the missingness"; without those variables, they can't correct anything.</p>
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: If people with more severe depression measured at T1 are more likely to drop out by T2, which kind of missingness is this, and what bias does it cause?
+- MCAR; no bias || Missingness is related to T1 depression, so it is not completely random.
++ MAR (missingness can be predicted from the observed T1 depression); analyzing only those who stayed underestimates T2 depression and weakens correlations || Correct.
+- MNAR; nothing can be done || If it can be predicted from T1, it is MAR and can be corrected with FIML / multiple imputation.
+E: If an unmeasured worsening at T2 caused the dropout, it would be MNAR.
+```
+```quiz
+Q: Why is "analyze only complete cases" common but risky?
++ It is simple and the software default, but for means and correlations it implicitly assumes MCAR; longitudinal attrition is usually not completely random, so results may be biased, and sample size and power drop || Correct.
+- Because complete-case analysis is always biased || It is unbiased under MCAR, and regression coefficients are also unbiased when missingness depends only on the predictors.
+- Because it increases the sample size || Deleting cases only makes the sample smaller and lowers power; it never increases the sample.
+E: At a minimum, do an attrition analysis and consider FIML or multiple imputation.
+```
+```quiz
+Q: Why is filling in missing values with the variable's mean not recommended?
+- Because it always biases the estimate of the variable's mean || Under MCAR, mean imputation leaves the variable's mean unchanged; the problem is that variance and correlations shrink and standard errors are too small.
++ Because every filled-in value is the same, it underestimates variance, weakens correlations and makes standard errors too small || Correct.
+- Because the sample gets smaller after filling in || Mean imputation keeps every case, so the sample size is unchanged; the problem is treating guesses as real observations.
+E: Multiple imputation keeps the uncertainty by using several "plausible candidate values."
+```
+```quiz
+Q: In this lesson's FIML demonstration, what T2 mean is estimated when dep_t2 is the only variable?
+N: 3.06 | 0.01
+H: The dropouts provide no information at all about dep_t2.
+E: 3.061, the same as listwise deletion; with T1 depression included it becomes 3.780.
+```
+```quiz
+Q: An attrition analysis finds no significant differences between dropouts and stayers on T1 characteristics. Does this prove the data are MCAR?
+- Yes || No: an attrition analysis can only compare observed variables; it cannot test whether missingness is related to the missing values themselves or to unmeasured variables.
++ No: it only shows that missingness is not clearly related to the variables compared; it may still be related to unmeasured variables or to the missing values themselves (MNAR) || Correct.
+E: No test on the observed data can rule out MNAR.
+```
+```quiz
+Q: When you report how missing data were handled in a paper, which of these is NOT required?
+- The sample size and attrition rate at each wave || Required: readers need it to judge how much is missing.
+- The results of the attrition analysis || Should be reported: it shows which observed variables missingness is related to.
+- The method used and its assumption (e.g., FIML, which assumes MAR) || Required: whether the conclusions hold depends on this assumption.
++ The ID and reason for leaving of every single dropout || Correct: a summary of attrition rates and the group comparison is enough; listing individuals is unnecessary and may breach privacy.
+E: Also report the number of imputations, the variables in the imputation model, and any sensitivity analyses.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-on practice</h2>
+<div class="exitem"><h4>Exercise 4.3-A: Create attrition and write an attrition analysis report</h4>
+<p>Create 20% attrition in the simulated data (people with high depression should be more likely to drop out) and compare means and correlations before and after listwise deletion. Then compare the T1 characteristics of dropouts and stayers (t-tests / chi-square) and write a short attrition analysis report.</p>
+<details class="answer"><summary>Reference code and sample report</summary>
+<p>Run <code>R/L4-3.R</code> as it is, then add comparisons of T1 loneliness and age:</p>
+```r
+t.test(lone_t1 ~ dropout, data = dat)
+t.test(age ~ dropout, data = dat)
+# Effect size (simplified d: the denominator is the full-sample SD, not the pooled within-group SD)
+with(dat, (mean(dep_t1[dropout == 1]) - mean(dep_t1[dropout == 0])) / sd(dep_t1))
+```
+<p>Results from the solution script <code>R/solutions/L4-3_solution.R</code>: T1 loneliness, dropouts M = 10.36, stayers 8.42, Welch t(242.1) = −7.29, p &lt; .001; age 46.98 vs. 45.00, t(241.6) = −1.51, p = .133 (not significant); standardized difference in T1 depression d ≈ 1.82 (very large; the denominator here is the full-sample SD. When the groups differ a lot, the full-sample SD is inflated by the difference between groups, so this d is on the conservative side; with the standard pooled within-group SD it is about 2.65). Sample report:</p>
+<p>"Of the 800 participants at T1, 160 (20.0%) did not take part in the T2 survey. The attrition analysis showed that dropouts had significantly higher T1 depression scores than stayers (<i>M</i> = 8.78 vs. 2.60, Welch <i>t</i>(227.2) = −28.12, <i>p</i> &lt; .001) and also higher T1 loneliness (<i>M</i> = 10.36 vs. 8.42, <i>t</i>(242.1) = −7.29, <i>p</i> &lt; .001); the two groups did not differ significantly in age (<i>t</i>(241.6) = −1.51, <i>p</i> = .133) or gender composition (χ²(1) = 2.06, <i>p</i> = .151). Because attrition was related to baseline depression, the data are not missing completely at random (MCAR). An analysis of complete cases only would underestimate the T2 depression mean (3.06 vs. 3.78 in the full data). We therefore used multiple imputation (m = 5; imputation model with T1 depression, T1 loneliness and gender) to estimate parameters under the missing-at-random (MAR) assumption; the pooled T2 depression mean after imputation was 3.73. If attrition was also related to unmeasured T2 status (MNAR), these methods may still be biased; this is a limitation of the study."</p></details></div>
+<div class="exitem"><h4>Exercise 4.3-B: An MCAR comparison</h4>
+<p>Make the dropout completely random: <code>drop &lt;- sample(c(rep(TRUE, 160), rep(FALSE, 640)))</code>, and recompute the T2 depression mean and the correlation after listwise deletion. What do you see compared with the MAR case?</p>
+<details class="answer"><summary>Reference code and key points</summary>
+```r
+set.seed(1)
+drop_mcar <- sample(c(rep(TRUE, 160), rep(FALSE, 640)))
+mean(dat$dep_t2[!drop_mcar])                          # Close to 3.78
+cor(dat$lone_t1[!drop_mcar], dat$dep_t2[!drop_mcar])  # Close to 0.296
+t.test(dat$dep_t1 ~ drop_mcar)                        # Usually not significant
+```
+<p>Results from the solution script (seed 1): under MCAR, listwise deletion gives a T2 depression mean of 3.82 (full data 3.78) and r = 0.31 (full data 0.296); the attrition analysis on T1 depression gives p = 0.841. Compared with 3.06 in the MAR case, the bias has almost disappeared.</p><p>Key point: under MCAR, the means and correlations from listwise deletion show only random fluctuation, no systematic bias, and the attrition analysis is usually not significant; the only cost is a smaller sample and larger standard errors. The comparison shows that the problem is not "how much is missing" but "what the missingness is related to."</p></details></div>
+<div class="exitem"><h4>Exercise 4.3-C: What if the imputation model leaves out a key variable?</h4>
+<p>Read <code>R/output/L4-3_data_with_attrition.csv</code> and compute the three totals dep_t1, dep_t2 and lone_t1 (as in this lesson's FIML part). Impute twice with <code>mice</code> (m = 5, seed = 1): (a) with dep_t1, lone_t1, gender and dep_t2 in the imputation model; (b) without dep_t1, using only lone_t1, gender and dep_t2. Get the T2 depression mean from each with <code>pool(with(imp, lm(dep_t2 ~ 1)))</code>. Which one is closer to the true value of 3.78, and why?</p>
+<details class="answer"><summary>Reference code and key points</summary>
+```r
+library(mice)
+o <- read.csv("R/output/L4-3_data_with_attrition.csv")
+o$dep_t1  <- rowSums(o[, paste0(dep_items, "_t1")])
+o$dep_t2  <- rowSums(o[, paste0(dep_items, "_t2")])
+o$lone_t1 <- rowSums(o[, paste0(lone_items, "_t1")])
+imp_a <- mice(o[, c("dep_t1", "lone_t1", "gender", "dep_t2")], m = 5, printFlag = FALSE, seed = 1)
+imp_b <- mice(o[, c("lone_t1", "gender", "dep_t2")], m = 5, printFlag = FALSE, seed = 1)
+summary(pool(with(imp_a, lm(dep_t2 ~ 1))))$estimate   # About 3.73
+summary(pool(with(imp_b, lm(dep_t2 ~ 1))))$estimate   # About 3.12
+```
+<p>(a) gives about 3.73, close to the true value; (b) gives about 3.12, almost as low as listwise deletion (3.06). The reason: dropout was driven by T1 depression (the "observed variable" in MAR is dep_t1). Leaving dep_t1 out of the imputation model throws away the variable that explains the missingness, so from the imputation model's point of view the missingness is effectively MNAR, and multiple imputation can't correct it. T1 loneliness is only moderately correlated with depression and makes up only a small part of the difference. The conclusion is the same as in the FIML demonstration: the imputation model must include the variables related to missingness. (The solution script <code>R/solutions/L4-3_solution.R</code> prints both numbers at the end; the exact values may differ slightly between mice versions.)</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three things to take away</h2>
+<ul><li>MCAR is related to nothing; MAR can be explained by observed variables; MNAR is related to the missing values themselves. The data alone cannot tell MAR from MNAR.</li>
+<li>Longitudinal attrition is usually not random: with complete cases only, means and correlations are often biased (regression coefficients are the exception, but only when missingness depends solely on the predictors). FIML and multiple imputation work under MAR, but they must include the variables that explain the missingness.</li>
+<li>Do an attrition analysis and report it in the paper: attrition rate, group comparison, the method used and its assumption, limitations. Next module: {{L:5.1}}.</li></ul>
+</section>

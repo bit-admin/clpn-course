@@ -1,0 +1,219 @@
+<section class="sec s-intu"><h2><span class="stag">① 直觉</span>谁没有回来？</h2>
+<div class="box story"><b class="bt">“好消息”的真相</b>
+<p>一个社区心理支持项目在开始时（T1）调查了 800 名居民，六个月后（T2）回收了 640 份。机构报告说：“T2 参与者的平均抑郁分从 3.84 降到了 3.06，项目效果显著！”督导问了一个问题：那 160 个没回来的人是谁？查了 T1 数据才发现，没回来的人在 T1 时抑郁分平均高达 8.78，而回来的人只有 2.60。最痛苦的人退出了研究，剩下的自然“看起来更好”。（这个故事的数字来自本课的模拟实验：抑郁总分的真实 T2 均值是 3.78，几乎没变。）</p></div>
+<p>{{T:缺失数据|missing data}}几乎存在于所有真实研究中；在纵向研究里，最主要的缺失来源是{{T:样本流失|attrition}}：参与者在后续波次中不再参加。问题不在于“少了一些人”，而在于少掉的人往往和留下的人不一样。</p>
+
+<h3>三种缺失机制（Rubin 的分类）</h3>
+<p>判断缺失会不会造成偏差，关键是问：“是否缺失”与什么有关？</p>
+<div class="tablewrap"><table><thead><tr><th>机制</th><th>含义</th><th>社工例子</th><th>只分析完整个案会怎样</th></tr></thead><tbody>
+<tr><td>{{T:完全随机缺失|missing completely at random, MCAR}}</td><td>缺失与任何变量（已测的、未测的、缺失值本身）都无关</td><td>问卷在邮寄中随机丢失；系统故障随机丢了一批数据</td><td>无偏（但样本变小、精度下降）</td></tr>
+<tr><td>{{T:随机缺失|missing at random, MAR}}</td><td>缺失与已观测到的变量有关；在控制这些变量后，与缺失值本身无关</td><td>T1 抑郁高的人更容易在 T2 流失（T1 抑郁是已知的）</td><td>均值、方差、相关通常有偏；回归系数在缺失只取决于预测变量时仍无偏（见下文）。用 FIML / 多重插补并纳入相关变量可以纠正</td></tr>
+<tr><td>{{T:非随机缺失|missing not at random, MNAR}}</td><td>缺失与缺失值本身（或未测量的变量）有关，即使控制了已观测变量</td><td>T2 时恰好最抑郁的人没有填 T2 问卷（而这种恶化在 T1 无法预见）</td><td>有偏；标准方法都无法完全纠正，只能做敏感性分析</td></tr></tbody></table></div>
+<div class="box analogy"><b class="bt">类比：社区服务中心的满意度调查</b><p>MCAR：发问卷时随机漏发了几个活动室。MAR：年轻居民不太愿意填（你知道每个人的年龄，可以按年龄调整）。MNAR：最不满意的人干脆不再来中心，也就不可能填问卷（不满意本身导致缺失）。</p></div>
+<div class="widget" data-widget="missing"></div>
+<p>抑郁严重的人更容易退出研究，属于哪种缺失，取决于“严重”是在什么时候测到的：如果流失可以由 T1 已经测到的抑郁预测，就是 MAR；如果是 T2 时（我们没测到的那次）的抑郁导致退出，而 T1 信息无法预测，就是 MNAR。现实中常常两者兼有。两种情况下，只分析留下来的人都会低估 T2 的抑郁水平，也往往会削弱（或扭曲）变量之间的相关，因为高分端的人被系统性地剔除了（类似 1.4 课的范围限制）。</p>
+<p>需要注意：<b>无法用数据本身证明缺失是 MAR 而不是 MNAR</b>，因为判断需要知道缺失值本身。只能用已知信息做流失分析、用理论判断，并做敏感性分析。</p>
+
+<h3>处理方法对比</h3>
+<div class="tablewrap"><table><thead><tr><th>方法</th><th>做法</th><th>优点</th><th>缺点</th></tr></thead><tbody>
+<tr><td>{{T:列表删除|listwise deletion}}</td><td>任何变量有缺失的个案整个删除（<code>lm()</code> 的默认做法）</td><td>简单；MCAR 时无偏；缺失只取决于回归的预测变量时，回归系数也无偏</td><td>其他 MAR / MNAR 情形下有偏（均值、相关几乎总是受影响）；损失样本和统计效力</td></tr>
+<tr><td>成对删除</td><td>每个统计量用该统计量所需变量都有数据的人（2.5 课）</td><td>用到更多数据</td><td>不同统计量基于不同的人；相关矩阵可能不一致；同样要求 MCAR</td></tr>
+<tr><td>均值填补</td><td>用均值替代缺失值</td><td>简单</td><td>不推荐：低估方差，削弱相关，标准误过小</td></tr>
+<tr><td>{{T:全信息最大似然|full information maximum likelihood, FIML}}</td><td>不填补，直接用每个人所有已观测的数据估计模型参数</td><td>MAR 下无偏；lavaan 中只需 <code>missing = "ml"</code></td><td>要把与缺失有关的变量（辅助变量）纳入模型；MNAR 下仍有偏</td></tr>
+<tr><td>{{T:多重插补|multiple imputation}}</td><td>根据已观测数据，为每个缺失值生成多个合理的“候选值”，形成 m 个完整数据集，分别分析后按 Rubin 规则合并</td><td>MAR 下无偏；适用于几乎任何分析（包括 CLPN 中的 glmnet）</td><td>步骤多；插补模型要包含分析中的变量和与缺失相关的变量；MNAR 下仍有偏</td></tr></tbody></table></div>
+<p>“只分析完整个案”简单、是软件默认、不需要额外假设说明，所以很常见；但对均值、方差和相关来说，它要求 MCAR 这个最强的假设。纵向研究中流失几乎从来不是完全随机的，所以结果可能有系统性偏差，而且样本量减少会降低统计效力。</p>
+<div class="box key"><b class="bt">一个重要的例外：缺失只取决于预测变量时的回归系数</b><p>“MAR 时列表删除有偏”不是对所有估计量都成立。设回归模型是 \(Y = \beta_0 + \beta_1 X + \varepsilon\)，如果某人是否缺失只取决于 \(X\)（以及与 \(Y\) 无关的随机因素），而不取决于 \(Y\) 本身，那么在留下来的人里，\(Y\) 与 \(X\) 的条件关系没有改变：删掉的只是 \(X\) 的某一段，就像实验者有意只选某些 \(X\) 值的人一样。此时完整个案得到的未标准化回归系数仍然无偏，代价只是样本变小、标准误变大。但同一份数据里，\(Y\) 的均值、\(Y\) 的方差、\(X\) 与 \(Y\) 的相关和标准化系数都会偏，因为它们依赖 \(X\) 的分布。</p>
+<p>本课的模拟正是这种情形：流失只取决于 T1 抑郁。所以 T2 抑郁的均值（3.78 → 3.06）和 r(T1 孤独, T2 抑郁)（0.296 → 0.225）都被扭曲了；但如果做回归 <code>lm(dep_t2 ~ dep_t1 + lone_t1)</code>，完整个案和完整数据的两个系数几乎一样（<code>R/L4-3.R</code> 末尾打印了这一对比）。反过来，如果缺失取决于没放进模型的变量，或者取决于 T2 抑郁本身，回归系数也会偏。对 CLPN 的含义：每条节点回归的预测变量是全部 T1 题目，如果 T2 流失只取决于这些 T1 题目，完整个案估计的未标准化交叉滞后系数原则上不受系统影响；但流失常常还与协变量、未测量的 T2 状态有关，而且 LASSO 的选边会因为样本变小而丢掉弱边，所以仍要做流失分析、报告缺失处理。</p></div>
+<div class="box key"><b class="bt">多重插补为什么要“多重”？</b><p>只填一次（单一插补）会把猜出来的值当成真实观测，低估不确定性。插补 m 次（例如 5–20 次，缺失越多需要越多），每次的填补值略有不同；不同数据集之间结果的差异恰好反映了“因为缺失而带来的额外不确定性”，合并时被加进标准误。</p></div>
+
+<h3>网络分析中的常见做法</h3>
+<p>本课程主线的“仅 LASSO”CLPN 基于 <code>glmnet</code> 回归，而 <code>glmnet</code> 本身不接受缺失值。课程函数 <code>clpn_estimate()</code>（定义在 <code>R/_setup.R</code>）在估计前会检查：X、Y 或协变量中只要有 NA，就停下并报告缺失值个数和涉及的人数，提示你先按本课的方法处理。（Wysocki 等人 2025 年的完整流程见 7.5 课：其中 SEM 重估一步在 lavaan 中完成，可用 FIML（<code>missing = "ml"</code>）处理缺失，但第 1 步 LASSO 选边仍需要完整数据或插补。）在应用研究中，常见的处理有：(1) 只使用有完整数据的个案（需要报告并讨论流失）；(2) 先做多重插补，在每个插补数据集上估计网络，再汇总。汇总时不宜只对 m 个网络的系数直接取平均：某条边只要在一个插补数据集里被 LASSO 选中，平均后就是一个很小但非零的值，汇总网络会失去稀疏性，很多只是偶尔被选中的边也都“存在”了。常用的做法是先数选中频率：这条边在 m 个插补数据集中被选中（非零）的比例；只保留频率达到预先设定阈值的边（常见的是至少一半，即“多数票”规则；更严格的可以要求 ≥ 80% 或全部），再对保留下来的边取平均作为点估计。论文里应报告阈值和每条边的选中频率。这和插补后的变量选择是同一个问题（Wood, White, &amp; Royston, 2008 讨论了几种规则），也和 {{L:8.2}} 用 bootstrap 统计一条边“被压为 0 的比例”（prop0，即 1 − 选中频率）是同一个思路；(3) 对横断面网络，一些基于 SEM 的网络估计软件（如 psychonetrics 包）支持 FIML 估计。哪种合适取决于缺失比例与机制；无论采用哪一种，都要在论文中说明并报告流失分析。（第 7 模块的“分析决策记录”和第 10 模块的毕业项目模板都要求写明缺失处理方式与流失分析结果。）</p>
+
+<h3>流失分析：比较留下的人和离开的人</h3>
+<p>{{T:流失分析|attrition analysis}}比较流失者与留存者在基线（T1）变量上的差异：连续变量用 t 检验（或效应量 Cohen's d），类别变量用卡方检验。如果两组在重要变量上有显著差异，说明缺失不是 MCAR，应采用 FIML 或多重插补，并把这些变量作为辅助变量纳入。流失分析只能检验“与已观测变量的关系”，不能排除 MNAR。</p>
+<div class="box sw"><b class="bt">社会工作视角：流失本身是发现</b><p>在服务研究中，“谁流失了”本身就是重要的实务信息：如果最困难的服务对象最容易流失，说明服务可能没能留住最需要的人。报告流失既是统计上的要求，也避免了最困难的群体在结果中被遗漏。在研究设计中留多种联系方式、设置合理的回访激励、简化问卷，都能降低流失。</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② 最少数学</span>缺失机制的符号化与 Rubin 合并规则</h2>
+<p>令 \(Y_{obs}\) 为观测到的数据，\(Y_{mis}\) 为缺失的数据，\(R\) 为“是否缺失”的指示变量（缺失 = 1）。三种机制可以写成：</p>
+<div class="mathbox">$$\text{MCAR}: P(R\mid Y_{obs},Y_{mis}) = P(R)$$
+$$\text{MAR}: P(R\mid Y_{obs},Y_{mis}) = P(R\mid Y_{obs})$$
+$$\text{MNAR}: P(R\mid Y_{obs},Y_{mis}) \text{ 依赖于 } Y_{mis}$$</div>
+<dl class="sym"><dt>\(P(R\mid\cdot)\)</dt><dd>在已知竖线右边信息的条件下，缺失发生的概率。</dd><dt>\(Y_{obs}\)</dt><dd>如每个人的 T1 抑郁、性别。</dd><dt>\(Y_{mis}\)</dt><dd>如流失者的 T2 抑郁（我们看不到）。</dd></dl>
+<p>本课的模拟：流失概率 \(=\text{logistic}(-2.0 + 0.25\times(\text{T1 抑郁}-\overline{\text{T1 抑郁}}))\) 再加随机扰动，只依赖 T1 抑郁（已观测），所以是 MAR。</p>
+<h3>多重插补的合并（Rubin 规则）</h3>
+<div class="mathbox">$$\bar Q = \frac{1}{m}\sum_{k=1}^{m}\hat Q_k,\qquad T = \bar U + \Big(1+\frac{1}{m}\Big)B$$</div>
+<dl class="sym"><dt>\(\hat Q_k\)</dt><dd>第 \(k\) 个插补数据集上的估计值（如均值、回归系数）。</dd><dt>\(\bar Q\)</dt><dd>合并估计：m 个估计的平均。</dd><dt>\(\bar U\)</dt><dd>各数据集内部方差（SE²）的平均：普通的抽样不确定性。</dd><dt>\(B\)</dt><dd>m 个估计值之间的方差：由缺失带来的额外不确定性。</dd><dt>\(T\)</dt><dd>总方差，\(\sqrt{T}\) 是合并后的标准误。</dd></dl>
+<p><code>mice::pool()</code> 自动完成这些计算。</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R 代码</span>制造流失、流失分析、多重插补、FIML</h2>
+<p>对应脚本：<a href="../R/L4-3.R">R/L4-3.R</a>。脚本还会把带流失的数据保存为 <code>R/output/L4-3_data_with_attrition.csv</code>，供练习使用。</p>
+```r R/L4-3.R（核心部分）
+source("R/_setup.R")
+dat <- read_course_data()
+dat$dep_t1  <- rowSums(dat[, paste0(dep_items, "_t1")])
+dat$dep_t2  <- rowSums(dat[, paste0(dep_items, "_t2")])
+dat$lone_t1 <- rowSums(dat[, paste0(lone_items, "_t1")])
+
+set.seed(43)
+p_drop <- plogis(-2.0 + 0.25 * (dat$dep_t1 - mean(dat$dep_t1)))   # T1 越抑郁，流失概率越高
+drop <- rank(-(p_drop + runif(nrow(dat), 0, .3))) <= 0.2 * nrow(dat)  # 恰好 20% 流失
+dat$dropout <- as.integer(drop)
+obs <- dat; obs[drop, grep("_t2$|_t3$", names(obs))] <- NA       # 流失者 T2/T3 数据缺失
+obs$dep_t2[drop] <- NA
+cat("流失率 =", mean(drop), "\n")
+cat("T2 抑郁均值：完整数据", round(mean(dat$dep_t2), 2),
+    "；列表删除后", round(mean(obs$dep_t2, na.rm = TRUE), 2), "\n")
+cat("r(T1孤独, T2抑郁)：完整", round(cor(dat$lone_t1, dat$dep_t2), 3),
+    "；列表删除", round(cor(obs$lone_t1, obs$dep_t2, use = "complete.obs"), 3), "\n")
+# 流失分析：比较流失者与留存者的 T1 特征
+t.test(dep_t1 ~ dropout, data = dat)
+chisq.test(table(dat$gender, dat$dropout))
+# 多重插补（multiple imputation, mice）
+imp <- mice::mice(obs[, c("dep_t1", "lone_t1", "gender", "dep_t2")], m = 5, printFlag = FALSE, seed = 1)
+est <- mice::pool(with(imp, lm(dep_t2 ~ 1)))
+cat("多重插补后 T2 抑郁均值 ≈", round(summary(est)$estimate, 2), "\n")
+```
+```out 输出（R/output/L4-3_log.txt，节选）
+流失率 = 0.2 
+T2 抑郁均值：完整数据 3.78 ；列表删除（listwise deletion）后 3.06 （被低估）
+r(T1孤独, T2抑郁)：完整 0.296 ；列表删除 0.225 
+
+	Welch Two Sample t-test
+data:  dep_t1 by dropout
+t = -28.119, df = 227.17, p-value < 2.2e-16
+95 percent confidence interval:
+ -6.614408 -5.748092
+sample estimates:
+mean in group 0 mean in group 1 
+        2.60000         8.78125 
+
+	Pearson's Chi-squared test with Yates' continuity correction
+data:  table(dat$gender, dat$dropout)
+X-squared = 2.0597, df = 1, p-value = 0.1512
+
+多重插补后 T2 抑郁均值 ≈ 3.73 （更接近真实值）
+```
+<div class="box key"><b class="bt">读这些结果</b><ul>
+<li><b>偏差</b>：列表删除使 T2 抑郁均值从 3.78 降到 3.06（低估约 0.7 分，约 0.2 个标准差），孤独–抑郁相关从 0.296 降到 0.225（范围限制效应）。</li>
+<li><b>流失分析</b>：流失者 T1 抑郁均值 8.78，留存者 2.60，t = −28.1，p &lt; .001，差异巨大（模拟中刻意设得很极端）；性别与流失无显著关联（χ² = 2.06，p = .151）。结论：缺失不是 MCAR，至少与 T1 抑郁有关。</li>
+<li><b>多重插补</b>：利用 T1 抑郁、T1 孤独、性别来插补 T2 抑郁，合并后的均值 3.73，接近真实值 3.78。插补能“纠正”，是因为模拟的流失只依赖于已观测的 T1 抑郁（MAR），而它被放进了插补模型。</li>
+<li><code>rank(-(...)) &lt;= 0.2 * nrow(dat)</code>：把“流失倾向 + 随机扰动”最高的 20% 设为流失，以得到恰好 20% 的流失率。</li></ul></div>
+```r FIML：lavaan 中只需 missing = "ml"，但要带上辅助变量（已并入 R/L4-3.R 末尾）
+library(lavaan)
+o <- read.csv("R/output/L4-3_data_with_attrition.csv")
+o$dep_t1  <- rowSums(o[, paste0(dep_items, "_t1")])
+o$dep_t2  <- rowSums(o[, paste0(dep_items, "_t2")])
+o$lone_t1 <- rowSums(o[, paste0(lone_items, "_t1")])
+# (a) 只有 dep_t2 一个变量：流失者没有任何信息可用
+f0 <- sem("dep_t2 ~~ dep_t2", data = o, missing = "ml", meanstructure = TRUE)
+parameterEstimates(f0)[2, c("lhs", "op", "est")]
+# (b) 把 T1 抑郁、T1 孤独作为相关变量一起纳入
+m  <- "dep_t2 ~~ dep_t1 + lone_t1
+       dep_t1 ~~ lone_t1"
+f1 <- sem(m, data = o[, c("dep_t1", "dep_t2", "lone_t1")], missing = "ml", meanstructure = TRUE)
+pe <- parameterEstimates(f1); pe[pe$op == "~1", c("lhs", "est", "se")]
+```
+```out 输出（R/output/L4-3_log.txt 节选）
+     lhs op   est
+2 dep_t2 ~1 3.061
+      lhs   est    se
+7  dep_t2 3.780 0.134
+8  dep_t1 3.836 0.120
+9 lone_t1 8.804 0.109
+```
+<p>(a) 只用 T2 抑郁本身时，FIML 估计的均值是 3.06，与列表删除相同，因为流失者没有任何可以利用的信息（lavaan 会警告这些“空个案”被忽略）。(b) 纳入与缺失有关的 T1 抑郁后，FIML 估计的 T2 均值是 3.780，几乎正好等于真实值；此时 T1 孤独与 T2 抑郁的标准化相关为 0.302（真实值 0.296）。FIML 和多重插补都依靠模型中“能解释缺失的已观测变量”来纠偏；模型里没有这些变量，它们也纠正不了。</p>
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ 理解检查</span>即时测验</h2>
+<p class="quizscore"></p>
+```quiz
+Q: 如果 T1 测到的抑郁越严重的人越容易在 T2 退出研究，这属于哪种缺失？会造成什么偏差？
+- MCAR；不会有偏差 || 缺失与 T1 抑郁有关，不是完全随机。
++ MAR（缺失可由已观测的 T1 抑郁预测）；只分析留下的人会低估 T2 抑郁、削弱相关 || 正确。
+- MNAR；无法做任何处理 || 若可由 T1 预测，是 MAR，可用 FIML / 多重插补纠正。
+E: 如果是没被测到的 T2 恶化导致退出，则属于 MNAR。
+```
+```quiz
+Q: 为什么“只分析完整个案”很常见但有风险？
++ 它简单、是软件默认，但对均值和相关来说隐含 MCAR 假设；纵向流失通常不是完全随机，结果可能有偏，且样本量和效力下降 || 正确。
+- 因为完整个案分析总是有偏 || MCAR 时无偏；缺失只取决于回归的预测变量时，回归系数也无偏。
+- 因为它会增加样本量 || 删除个案只会让样本变小、效力下降，不会增加样本量。
+E: 至少要做流失分析，并考虑 FIML 或多重插补。
+```
+```quiz
+Q: 为什么不推荐用变量均值填补缺失值？
+- 因为它总会让变量的均值估计有偏 || MCAR 时用均值填补，变量均值本身不变；问题在于方差和相关被削弱、标准误过小。
++ 因为所有填补值都相同，会低估方差、削弱相关、让标准误过小 || 正确。
+- 因为填补后样本量变小 || 均值填补保留了所有个案，样本量不变；问题是把猜测值当成真实观测。
+E: 多重插补用多个“合理的候选值”保留不确定性。
+```
+```quiz
+Q: 本课的 FIML 演示中，只放 dep_t2 一个变量时，估计的 T2 均值是多少？
+N: 3.06 | 0.01
+H: 流失者没有提供任何关于 dep_t2 的信息。
+E: 3.061，与列表删除相同；纳入 T1 抑郁后变为 3.780。
+```
+```quiz
+Q: 流失分析发现流失者与留存者 T1 特征没有显著差异。这能证明缺失是 MCAR 吗？
+- 能 || 不能：流失分析只能比较已观测的变量，无法检验缺失与缺失值本身或未测变量的关系。
++ 不能：只说明缺失与已比较的变量无明显关联，仍可能与未测量变量或缺失值本身有关（MNAR） || 正确。
+E: 没有任何检验能用观测数据排除 MNAR。
+```
+```quiz
+Q: 论文中报告缺失数据处理时，以下哪项不是必须的？
+- 每一波的样本量和流失率 || 必须报告：读者需要它判断缺失的规模。
+- 流失分析的结果 || 应该报告：它说明缺失与哪些已观测变量有关。
+- 采用的处理方法及其假设（如 FIML，假设 MAR） || 必须报告：结论成立与否取决于这个缺失假设。
++ 逐一列出每位流失者的编号和退出原因 || 正确：汇总报告流失率和两组比较即可；逐人列出既不必要，也可能泄露隐私。
+E: 还应报告插补次数、插补模型包含的变量以及敏感性分析（如有）。
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2>
+<div class="exitem"><h4>练习 4.3-A：制造流失并写流失分析报告</h4>
+<p>在模拟数据中人为制造 20% 的流失（让抑郁高的人更容易流失），比较列表删除前后的均值和相关；再比较流失者与留存者的 T1 特征（t 检验 / 卡方），写一段流失分析报告。</p>
+<details class="answer"><summary>参考代码与示例报告</summary>
+<p>直接运行 <code>R/L4-3.R</code>；再补充 T1 孤独和年龄的比较：</p>
+```r
+t.test(lone_t1 ~ dropout, data = dat)
+t.test(age ~ dropout, data = dat)
+# 效应量（简化版 d：分母用全样本 SD，不是合并的组内 SD）
+with(dat, (mean(dep_t1[dropout == 1]) - mean(dep_t1[dropout == 0])) / sd(dep_t1))
+```
+<p>参考答案脚本 <code>R/solutions/L4-3_solution.R</code> 的结果：T1 孤独，流失者 M = 10.36、留存者 8.42，Welch t(242.1) = −7.29，p &lt; .001；年龄 46.98 vs 45.00，t(241.6) = −1.51，p = .133（不显著）；T1 抑郁的标准化差异 d ≈ 1.82（非常大；这里分母是全样本 SD。两组差异很大时，全样本 SD 被组间差异撑大，所以这个 d 偏保守；用标准的合并组内 SD 计算约为 2.65）。示例报告：</p>
+<p>“T1 共 800 名参与者，其中 160 人（20.0%）未参加 T2 调查。流失分析显示，流失者的 T1 抑郁得分显著高于留存者（<i>M</i> = 8.78 vs. 2.60，Welch <i>t</i>(227.2) = −28.12，<i>p</i> &lt; .001）；T1 孤独也较高（<i>M</i> = 10.36 vs. 8.42，<i>t</i>(242.1) = −7.29，<i>p</i> &lt; .001）；两组的年龄（<i>t</i>(241.6) = −1.51，<i>p</i> = .133）和性别构成（χ²(1) = 2.06，<i>p</i> = .151）无显著差异。由于流失与基线抑郁有关，数据不满足完全随机缺失（MCAR）。若仅分析完整个案，T2 抑郁均值将被低估（3.06 vs. 完整数据 3.78）。因此，后续分析采用多重插补（m = 5，插补模型包含 T1 抑郁、T1 孤独与性别），在随机缺失（MAR）假设下估计参数；插补后 T2 抑郁的合并均值为 3.73。若流失还与未测量的 T2 状态有关（MNAR），上述方法仍可能存在偏差，这是本研究的局限之一。”</p></details></div>
+<div class="exitem"><h4>练习 4.3-B：MCAR 对照组</h4>
+<p>把流失改为完全随机：<code>drop &lt;- sample(c(rep(TRUE, 160), rep(FALSE, 640)))</code>，重复计算列表删除后的 T2 抑郁均值和相关。与 MAR 情形比较，你观察到了什么？</p>
+<details class="answer"><summary>参考代码与要点</summary>
+```r
+set.seed(1)
+drop_mcar <- sample(c(rep(TRUE, 160), rep(FALSE, 640)))
+mean(dat$dep_t2[!drop_mcar])                          # 接近 3.78
+cor(dat$lone_t1[!drop_mcar], dat$dep_t2[!drop_mcar])  # 接近 0.296
+t.test(dat$dep_t1 ~ drop_mcar)                        # 多半不显著
+```
+<p>参考答案脚本的结果（种子 1）：MCAR 列表删除后 T2 抑郁均值 3.82（完整数据 3.78），相关 r = 0.31（完整数据 0.296）；对 T1 抑郁的流失分析 p = 0.841。对比 MAR 情形的 3.06，偏差几乎消失。</p><p>要点：MCAR 下列表删除的均值和相关只有随机波动、没有系统偏差，流失分析也多半不显著；代价只是样本变小、标准误变大。对比说明：问题不在于“缺了多少”，而在于“缺失和什么有关”。</p></details></div>
+<div class="exitem"><h4>练习 4.3-C：插补模型漏掉关键变量会怎样？</h4>
+<p>读入 <code>R/output/L4-3_data_with_attrition.csv</code>，算出 dep_t1、dep_t2、lone_t1 三个总分（同本课 FIML 部分）。用 <code>mice</code>（m = 5，seed = 1）插补两次：(a) 插补模型包含 dep_t1、lone_t1、gender、dep_t2；(b) 去掉 dep_t1，只用 lone_t1、gender、dep_t2。分别用 <code>pool(with(imp, lm(dep_t2 ~ 1)))</code> 得到 T2 抑郁均值。哪一次更接近真实值 3.78？为什么？</p>
+<details class="answer"><summary>参考代码与要点</summary>
+```r
+library(mice)
+o <- read.csv("R/output/L4-3_data_with_attrition.csv")
+o$dep_t1  <- rowSums(o[, paste0(dep_items, "_t1")])
+o$dep_t2  <- rowSums(o[, paste0(dep_items, "_t2")])
+o$lone_t1 <- rowSums(o[, paste0(lone_items, "_t1")])
+imp_a <- mice(o[, c("dep_t1", "lone_t1", "gender", "dep_t2")], m = 5, printFlag = FALSE, seed = 1)
+imp_b <- mice(o[, c("lone_t1", "gender", "dep_t2")], m = 5, printFlag = FALSE, seed = 1)
+summary(pool(with(imp_a, lm(dep_t2 ~ 1))))$estimate   # 约 3.73
+summary(pool(with(imp_b, lm(dep_t2 ~ 1))))$estimate   # 约 3.12
+```
+<p>(a) 约 3.73，接近真实值；(b) 约 3.12，几乎和列表删除（3.06）一样偏低。原因：流失是由 T1 抑郁决定的（MAR 的“已观测变量”就是 dep_t1）。插补模型里没有 dep_t1，就等于把“能解释缺失的变量”丢掉了，此时对插补模型来说缺失相当于 MNAR，多重插补也纠正不了。T1 孤独与抑郁只有中等相关，只能弥补一小部分。结论与本课 FIML 演示相同：插补模型必须包含与缺失有关的变量。（参考答案脚本 <code>R/solutions/L4-3_solution.R</code> 末尾打印这两个数；具体数字可能因 mice 版本略有出入。）</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">小结</span>带走三句话</h2>
+<ul><li>MCAR 与一切无关；MAR 可由已观测变量解释；MNAR 与缺失值本身有关。数据本身无法区分 MAR 和 MNAR。</li>
+<li>纵向流失通常不是随机的：只分析完整个案时，均值和相关往往有偏（回归系数只在缺失仅取决于预测变量时例外）；FIML 与多重插补在 MAR 下有效，但必须纳入能解释缺失的变量。</li>
+<li>做流失分析并在论文中报告：流失率、两组比较、处理方法与假设、局限。下一模块：{{L:5.1}}。</li></ul>
+</section>

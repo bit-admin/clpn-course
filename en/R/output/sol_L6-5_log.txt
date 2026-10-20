@@ -1,0 +1,4 @@
+lone3  dep5 
+0.163 0.133 
+Cautious interpretation: lone3 (" Feeling isolated ") and dep5 (" Worthlessness ") exhibit the strongest contemporaneous connections to the other construct (cross-sectional, associational). They serve as candidate "bridge points" connecting loneliness and depression,
+ but this does not constitute causal evidence, nor does it indicate temporal directionality; stability must also be assessed (bootnet).

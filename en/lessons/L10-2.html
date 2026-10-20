@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10.2 Complete Analysis: Estimation, Visualization, Centrality, and Stability · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L10-2.md" title="Plain text">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="10.2" style="--c:#0f766e">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L10-2">CLPN Syllabus</a><span class="crumb">M10 Capstone Project: A Complete CLPN Analysis / 10.2</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L10-2.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L10-2.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details open style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html" class="cur" aria-current="page"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 10 · Capstone Mini-Project · Lesson 10.2</div>
+<h1>Complete Analysis: Estimation, Visualization, Centrality, and Stability</h1>
+<div class="facts"><span>Study time 4 hr (in 2 sessions)</span><span>Prerequisites: <a href="L10-1.html">10.1 Project Design, Data Preparation, and Analysis Plan</a></span><span>R script: <a href="../R/L10-2.R">R/L10-2.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>In one Quarto project: descriptive statistics → CLPN estimation → plot → out/in-EI and bridge EI → bootstrap edge accuracy → CS-coefficients → at least one sensitivity analysis</li><li>With simulated data: compare the results with the true structure to judge how well the method works</li><li>Produce figures and tables ready for submission</li><li>Do the required sensitivity analysis: the Wysocki et al. (2025) full procedure (LASSO edge selection → unpenalized SEM re-estimation → tests of equality across time → pruning at p &lt; .01 → in/out-prediction), and compare it edge by edge with the main analysis</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>analysis pipeline</b></li><li><b>sensitivity analysis</b></li><li><b>figure &amp; table formatting conventions</b></li></ul>
+<p>This lesson strings all the steps of M7–M9 into one <span class="term">analysis pipeline</span> that runs in a single step. Your goal is to hand in a folder that lets anyone, at the press of one button, regenerate every figure and every number in your report.</p>
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① Intuition</span>Build the Mental Picture</h2>
+<h3>Overview of the pipeline</h3>
+<div class="tablewrap"><table><tr><th>Step</th><th>What it does</th><th>Lesson</th><th>L10-2 output</th></tr><tr><td>1 Descriptives</td><td>Mean, SD, skewness, kurtosis</td><td>M2</td><td>table1_descriptives.csv</td></tr><tr><td>2 Estimation</td><td>Nodewise LASSO, lambda.min, seed 2026</td><td>7.2</td><td>table2_B_matrix.csv, table2_edges_AR_CL.csv</td></tr><tr><td>3 Plot</td><td>qgraph directed network (autoregression not shown)</td><td>7.3</td><td>fig1_clpn.png</td></tr><tr><td>4 Centrality</td><td>out-EI, in-EI, bridge EI</td><td>7.4</td><td>table3_centrality.csv, fig2_centrality.png</td></tr><tr><td>5 Edge accuracy</td><td>Nonparametric bootstrap, 1,000 replicates</td><td>8.2</td><td>table4_bootstrap_edges.csv, fig3</td></tr><tr><td>6 Stability</td><td>Case-dropping, CS-coefficient</td><td>8.3</td><td>table5_CS.csv, fig4_casedrop.png</td></tr><tr><td>7 Sensitivity</td><td>lambda.1se; covariates; T2→T3</td><td>9.2</td><td>table6_sensitivity.csv</td></tr><tr><td>7b Required sensitivity: full procedure</td><td>LASSO edge selection → unpenalized SEM re-estimation → equality test → pruning at p &lt; .01 → in/out-prediction; edge-by-edge comparison with the main analysis (R/L10-2b.R)</td><td>7.5</td><td>L10-2b_edges.csv, L10-2b_summary.csv, L10-2b_in_out_prediction.csv</td></tr><tr><td>8 Compare with truth</td><td>Correlation with true_B (simulated data only)</td><td>7.2</td><td>log</td></tr></table></div>
+<p>You can use <code>R/L10-2.R</code> as a template: every step is already written. On a single core it takes about 15–40 minutes (depending on the computer; most of the time goes into the two 1,000-replicate bootstraps; it does not run in parallel by default, so that results are reproducible). Your task is to understand every line, adapt it to your own analysis plan (for example a different λ rule or different nodes), and interpret the results.</p>
+<h3>Interactive checklist: pipeline and deliverables</h3>
+<div class="widget w2" data-widget="checklist" data-title="Full analysis pipeline checklist (saved automatically)" data-key="pipe102"><script type="application/json">["#Project structure", "One folder: data/, R/ (or analysis.qmd), output/, README.md", "All paths relative; the first line sources the setup file; SEED and N_BOOTS set together at the top", "Run once from scratch on a \"clean\" computer (or after restarting R) to confirm it reproduces in one step", "#Analysis steps", "① Descriptive statistics: mean, SD, skewness, kurtosis (Table 1)", "② CLPN estimation: nodewise LASSO with the λ rule and seed from the plan", "③ Edge table: autoregressive edges + cross-lagged edges (Table 2)", "④ Network plot: autoregression hidden or explained separately; the caption states colors and threshold (Figure 1)", "⑤ Centrality: out-EI / in-EI / bridge EI (Table 3 + Figure 2)", "⑥ Nonparametric bootstrap: CIs for edge weights (Figure 3)", "⑦ Case-dropping: CS-coefficients (Table / Figure 4)", "⑧ Other sensitivity analyses: at least one (Table 6)", "⑨ Required sensitivity analysis: full procedure (R/L10-2b.R), compared edge by edge with the main analysis (Table 7)", "⑩ (Simulated data) comparison with the true structure", "#Minimum deliverables", "1 CLPN plot", "1 table of autoregressive and cross-lagged edges", "1 centrality plot", "1 bootstrap plot", "1 table of CS-coefficients", "1 edge-by-edge table comparing the main analysis and the full procedure (Table 7)"]</script></div>
+<h3>Actual results on the course data (main analysis)</h3>
+<p>The numbers below come from <code>R/output/L10-2_log.txt</code> and agree with Lessons 7.2–8.3 (same data, same seed):</p>
+<ul><li>Nonzero cross-lagged edges: 52 (of 72 possible); autoregressive edges between 0.28 and 0.45.</li>
+<li>Strongest cross-lagged edges: Sleep problems → Fatigue (dep3→dep4, 0.135), Feeling left out → No one understands me (lone2→lone4, 0.127), No one understands me → Fatigue (lone4→dep4, 0.108).</li>
+<li>Highest out-EI: No one understands me (lone4, 0.61); highest in-EI: Fatigue (dep4, 0.40).</li>
+<li>CS-coefficients (this run of R/L10-2.R): in-EI 0.52 (just at 0.5, marginally stable), out-EI 0.20 (unstable, < 0.25). So the out-EI ranking should not be interpreted; the in-EI ranking can be reported, but it is at the edge of 0.5 (Lesson 8.3 got 0.52 with the same seed; with other random seeds it is roughly between 0.44 and 0.52), so word it cautiously.</li>
+<li>Sensitivity: lambda.1se keeps only 17 edges, with a correlation of 0.665 with the main analysis; adding gender and age gives a correlation of 0.997; the T2→T3 replication correlation is 0.64.</li>
+<li>Correlation with the population target: 0.654 for cross-lagged edges, 0.779 for autoregressive edges (the correlation of the cross-lagged edges with the within-person truth is 0.569; see Lesson 7.2).</li></ul>
+<h3>Edge-by-edge comparison with the true structure (simulated data only)</h3>
+<p>"A correlation of 0.654 with the population target" is only an overall impression; the problems show up only when you compare edge by edge. The table below lists the 10 strongest cross-lagged edges in this estimate, with their two kinds of truth (Lessons 7.1, 7.5): the <b>population target</b> (<code>data/true_B_population.csv</code>, the value a standard CLPN converges to as the sample grows without bound, including the part due to stable traits) and the <b>within-person truth</b> (<code>data/true_B_within.csv</code>, the lagged coefficients used to generate the data).</p>
+<div class="tablewrap"><table><tr><th>Edge (T1 → T2)</th><th>This estimate</th><th>Population target</th><th>Within-person truth</th><th>Share = 0 in bootstrap</th></tr><tr><td>Sleep problems → Fatigue (dep3 → dep4)</td><td>0.135</td><td>0.169</td><td>0.160</td><td>0.000</td></tr><tr><td>Feeling left out → No one understands me (lone2 → lone4)</td><td>0.127</td><td>0.142</td><td>0.100</td><td>0.000</td></tr><tr><td>No one understands me → Fatigue (lone4 → dep4)</td><td>0.108</td><td>0.005</td><td>0.000</td><td>0.018</td></tr><tr><td>No one understands me → Feeling left out (lone4 → lone2)</td><td>0.101</td><td>0.066</td><td>0.000</td><td>0.008</td></tr><tr><td>No one understands me → Feeling isolated (lone4 → lone3)</td><td>0.096</td><td>0.064</td><td>0.000</td><td>0.013</td></tr><tr><td>No one understands me → Worthlessness (lone4 → dep5)</td><td>0.093</td><td>0.083</td><td>0.120</td><td>0.011</td></tr><tr><td>Depressed mood → Loss of interest (dep1 → dep2)</td><td>0.092</td><td>0.059</td><td>0.000</td><td>0.016</td></tr><tr><td>Worthlessness → Fatigue (dep5 → dep4)</td><td>0.091</td><td>0.048</td><td>0.000</td><td>0.022</td></tr><tr><td>Fatigue → Feeling left out (dep4 → lone2)</td><td>−0.090</td><td>−0.083</td><td>−0.150</td><td>0.023</td></tr><tr><td>Depressed mood → Worthlessness (dep1 → dep5)</td><td>0.086</td><td>0.126</td><td>0.100</td><td>0.019</td></tr></table></div><div class="box story"><b class="bt">Three things to read from this table</b><ol><li>"No one understands me → Fatigue", third in the sample (0.108), is only 0.005 in the population, and its within-person truth is 0.000. Yet it is quite stable in the bootstrap: only 0.018 of the resamples set it to 0, and the interval [0.011, 0.180] does not include the population value. The bootstrap resamples from the same sample, so it can only tell you how much the estimate fluctuates around this sample; if the sample itself departs from the population, the bootstrap cannot see it.</li><li>The strongest loneliness → depression edge under both kinds of truth is "Feeling isolated → Depressed mood" (population 0.118, within-person 0.180), but this run estimates it at only 0.073.</li><li>The real cross-construct edge of "No one understands me" points to "Worthlessness" (population 0.083, within-person 0.120); this run estimates it at 0.093. The edges from "No one understands me" to other loneliness items (→ Feeling left out, → Feeling isolated) are about 0.06 in the population, but their within-person truth is 0: they come from confounding by the stable trait (Lesson 7.5), not from a within-person dynamic process.</li></ol><p>With your own data there is no truth to compare with, and you cannot see biases like these. So base your conclusions on the overall pattern (for example the difference between the edge weights of the two directions, with this difference tested by bootstrap), not on the single most eye-catching edge; and state in the limitations that "estimates of single edges may have considerable error".</p></div>
+<div class="box warnbox"><b class="bt">An important "contradiction"</b><p>lone4 (No one understands me) has the highest out-EI, which looks like a "key intervention target". But the CS of out-EI is only 0.20, below the minimum of 0.25: after dropping some participants, the ranking may change. The correct wording: "lone4 had the highest out-EI in this sample, but the stability of out-EI was insufficient (CS = 0.20), so this study does not interpret this ranking."</p></div>
+<h3 id="full-procedure">Required sensitivity analysis: the full procedure (R/L10-2b.R)</h3>
+<p>After the main analysis, run <code>R/L10-2b.R</code>. It applies the full procedure recommended by Wysocki et al. (2025) (<a href="L7-5.html">7.5 Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a>) to the same cleaned data (<code>R/output/L10-1_clean_data.csv</code>), then reads in the main analysis results saved in <code>R/output/L10-2_results.rds</code> and compares the edges of the two analyses one by one. So it must run after L10-2.R; there is no bootstrap, and it usually finishes in under a minute. With the course data, the numbers of steps 2–4 should be exactly the same as the output of <code>R/L7-5b.R</code> in Lesson 7.5 (same data, same seeds), so you can use it as a reproduction check: if they do not match, check the data and seeds first.</p>
+<div class="tablewrap"><table><tr><th>Step</th><th>What it does</th><th>Result on the course data (R/output/L10-2b_log.txt)</th></tr><tr><td>Step 1 Merge redundant items</td><td>Merge items with nearly identical wording first</td><td>None of the 9 items repeat each other's wording, so nothing is merged (goldbricker check of Lesson 9.2)</td></tr><tr><td>Step 2 LASSO edge selection</td><td>One nodewise LASSO each for T1→T2 and T2→T3 (lambda.min, seed 2026); a path is fixed to 0 only if it is 0 in both intervals</td><td>T1→T2 nonzero: 52; T2→T3 nonzero: 55; cross-lagged paths entering the SEM: 67 per interval (of 72 positions)</td></tr><tr><td>Step 3 Unpenalized re-estimation</td><td>lavaan path model: retained paths without penalty; same-wave residuals all correlated; FIML</td><td>Unconstrained model χ²(91) = 164.70, p < 0.001; CFI = 0.988, TLI = 0.959, RMSEA = 0.032 [0.024, 0.040], SRMR = 0.023</td></tr><tr><td>Equality test across time</td><td>Constrained model (every path equal in the two intervals) vs unconstrained model: nested χ², AIC, BIC</td><td>Δχ²(76) = 84.69, p = 0.232; AIC constrained 53607.9 vs unconstrained 53675.2; BIC constrained 54722.9 vs unconstrained 55146.2</td></tr><tr><td>Final model</td><td>Use the constrained model when none of the three criteria argues against equality</td><td>constrained model (each T1→T2 path set equal to T2→T3); χ²(167) = 249.39, CFI = 0.987, TLI = 0.975, RMSEA = 0.025, SRMR = 0.027</td></tr><tr><td>Pruning</td><td>Keep only cross-lagged paths with p &lt; .01</td><td>16 (loneliness → depression 3, depression → loneliness 2, within construct 11); with p &lt; .05 it would be 22</td></tr><tr><td>Step 4 In-/out-prediction</td><td>Use the final model to compute the proportion of variance each node has explained, or explains in others</td><td>See the log below and <code>L10-2b_in_out_prediction.csv</code></td></tr></table></div>
+<p><b>How to read the fit indices.</b> With N = 800 the χ² test is almost always significant, so look mainly at CFI and TLI (≥ .95 is good), RMSEA (≤ .05 is good) and SRMR (≤ .08 is good). The misfit here has two sources: the paths LASSO fixed to 0, and the fact that the model allows lagged paths only between adjacent waves (T1 does not predict T3 directly). Good fit only means these restrictions do not contradict the data; it does not mean every retained edge is real.</p>
+<p><b>Why choose the constrained model (if it is chosen).</b> When the paths are equal, both intervals estimate the same set of coefficients, so each path has roughly twice the information and smaller standard errors. That is why the constrained model often keeps more edges than the unconstrained one (Lesson 7.5: with the same p &lt; .01, the unconstrained model kept only a handful). If the equality test is rejected, the T1→T2 and T2→T3 processes differ, which is itself a finding to report; in that case report the T1→T2 interval and put the T2→T3 interval in the supplement.</p>
+<h4>Edge by edge: the 10 strongest cross-lagged edges of the main analysis</h4>
+<div class="tablewrap"><table><tr><th>Edge (T1 → T2)</th><th>Main analysis LASSO</th><th>Main analysis bootstrap interval</th><th>Full procedure SEM re-estimate</th><th>p</th><th>In the full procedure</th><th>Population target</th></tr><tr><td>Sleep problems → Fatigue (dep3 → dep4)</td><td>0.135</td><td>[0.050, 0.214]</td><td>0.150</td><td>< 0.001</td><td>retained</td><td>0.169</td></tr><tr><td>Feeling left out → No one understands me (lone2 → lone4)</td><td>0.127</td><td>[0.059, 0.200]</td><td>0.143</td><td>< 0.001</td><td>retained</td><td>0.142</td></tr><tr><td>No one understands me → Fatigue (lone4 → dep4)</td><td>0.108</td><td>[0.011, 0.180]</td><td>0.031</td><td>0.264</td><td>pruned</td><td>0.005</td></tr><tr><td>No one understands me → Feeling left out (lone4 → lone2)</td><td>0.101</td><td>[0.023, 0.178]</td><td>0.107</td><td>< 0.001</td><td>retained</td><td>0.066</td></tr><tr><td>No one understands me → Feeling isolated (lone4 → lone3)</td><td>0.096</td><td>[0.016, 0.176]</td><td>0.108</td><td>< 0.001</td><td>retained</td><td>0.064</td></tr><tr><td>No one understands me → Worthlessness (lone4 → dep5)</td><td>0.093</td><td>[0.014, 0.161]</td><td>0.094</td><td>< 0.001</td><td>retained</td><td>0.083</td></tr><tr><td>Depressed mood → Loss of interest (dep1 → dep2)</td><td>0.092</td><td>[0.007, 0.169]</td><td>0.110</td><td>< 0.001</td><td>retained</td><td>0.059</td></tr><tr><td>Worthlessness → Fatigue (dep5 → dep4)</td><td>0.091</td><td>[0.002, 0.165]</td><td>0.039</td><td>0.131</td><td>pruned</td><td>0.048</td></tr><tr><td>Fatigue → Feeling left out (dep4 → lone2)</td><td>−0.090</td><td>[−0.161, −0.001]</td><td>−0.117</td><td>< 0.001</td><td>retained</td><td>−0.083</td></tr><tr><td>Depressed mood → Worthlessness (dep1 → dep5)</td><td>0.086</td><td>[0.003, 0.165]</td><td>0.126</td><td>< 0.001</td><td>retained</td><td>0.126</td></tr></table></div>
+<p>Of the 10 strongest edges of the main analysis, the full procedure keeps 8. The population target in the last column exists only for simulated data; with your own data this column does not exist.</p>
+<div class="box story"><b class="bt">How to read agreement and disagreement between the two analyses</b><p>Divide the 72 cross-lagged positions into four groups; each means something different:</p>
+<ol><li><b>Kept by both analyses: 16.</b> This is the strongest evidence: with shrinkage or without a penalty, with cross-validation or a significance test, these edges are not 0. The main findings should rest on this group.</li>
+<li><b>Nonzero only in the main analysis: 36.</b> LASSO kept them, but after unpenalized re-estimation their difference from 0 is not significant at α = .01. They may be false positives, or real but very weak edges; with your own data you cannot tell which. Following the analysis plan, describe them as "sensitive to the estimation method" and interpret them only as exploratory.</li>
+<li><b>Kept only in the full procedure: 0.</b> Such an edge is 0 in the main analysis (the T1→T2 LASSO) but entered the SEM because it was nonzero in the T2→T3 LASSO, and then became significant once the information of the two intervals was pooled. The course data have no such edges; if your data do, report them only as exploratory too.</li>
+<li><b>0 in both, or kept by neither:</b> the remaining positions.</li></ol>
+<p>Besides "kept or not", look at <b>size</b>. The correlation between the coefficients of the two analyses is 0.842 (72 positions, with paths that did not enter the SEM counted as 0). For edges kept by both, the SEM re-estimate is usually larger in absolute value than the LASSO value: first, the LASSO penalty pulled the coefficient toward 0; second, the constrained model pools the information of both intervals. For example, "Feeling isolated → Depressed mood" (lone3 → dep1): main analysis 0.073, SEM re-estimate 0.095, population target 0.118. So when you report effect sizes, the unpenalized estimates are more appropriate; LASSO coefficients can only be taken as "too small" estimates.</p>
+<p>Then look at the <b>construct level</b>. Sum of edge weights in the loneliness → depression direction: main analysis 0.56, full procedure after pruning 0.30; depression → loneliness: main analysis 0.08, full procedure −0.04. In the course data the two analyses agree in direction: the loneliness → depression sum is clearly larger than the reverse in both. In the full procedure the depression → loneliness sum is close to 0 or even negative, because one of the retained depression → loneliness edges is negative (Fatigue → Feeling left out, SEM re-estimate −0.117), and it is negative under both kinds of truth too (population −0.083, within-person −0.150). The pruned sums contain only a few edges and are less stable than the sums of the main analysis, so for construct-level conclusions look at whether the direction agrees, not at the exact values of the two sums.</p>
+<p>Finally, of the 12 edges whose bootstrap interval in the main analysis excludes 0, the full procedure keeps 9. The two are related but not the same thing: the bootstrap interval answers "how much does this edge's estimate fluctuate under resampling?", while the test in the full procedure answers "estimated without a penalty, does it differ significantly from 0?".</p></div>
+<div class="box warnbox"><b class="bt">An example: the full procedure finds a problem the bootstrap missed</b><p>"No one understands me → Fatigue" (lone4 → dep4, 0.108), third in the main analysis, is quite stable in the bootstrap: only 0.018 of the resamples set it to 0. In the full procedure its SEM re-estimate is 0.031, p = 0.264, and the result is "pruned". From the truth table above, its population target is only 0.005, and its within-person truth is 0.000. How was it caught? Looking only at the T1→T2 interval, it is not weak: in the unconstrained model the unpenalized T1→T2 estimate is 0.109 (p = 0.006). But in the T2→T3 interval, LASSO estimates it at 0.000. The equality test did not reject "the paths are equal in both intervals", so the final model uses a coefficient shared by both intervals, and on the combined evidence of the two intervals this edge is weak. In other words, what caught it was not "removing the penalty" but the two intervals checking each other: an edge that shows up in only one interval of data is not enough for a main finding. Of the 10 strongest edges in the main analysis, those not kept are: "No one understands me → Fatigue" (lone4 → dep4; LASSO 0.108, SEM re-estimate 0.031, p = 0.264), "Worthlessness → Fatigue" (dep5 → dep4; LASSO 0.091, SEM re-estimate 0.039, p = 0.131).</p><p>With only the main analysis, this edge might well have been written up as "the main bridge from loneliness to depression". That is the direct reason this course makes the full procedure a required sensitivity analysis: it catches some of LASSO's false positives, while the bootstrap can only tell you how much the estimate fluctuates around this sample (point 1 under "Edge-by-edge comparison with the true structure" above).</p></div>
+<div class="box warnbox"><b class="bt">Agreement between the two analyses does not make it a within-person process</b><p>"No one understands me → Feeling left out" (lone4 → lone2) is kept by both analyses (main analysis 0.101, SEM re-estimate 0.107, "retained" in the full procedure), and its population target is 0.066, but its within-person truth is 0.000. It comes from confounding by the stable trait (Lessons 7.1, 7.5): both analyses are based on observed scores, and both mix stable between-person differences into the cross-lagged edges. The full procedure reduces false positives caused by the "estimation method"; it cannot fix bias caused by the "model specification". So even when the two analyses agree, the limitations must still discuss the between-person / within-person issue (Lesson 10.3).</p></div>
+<h4>Comparison with the true structure (simulated data only)</h4>
+<div class="tablewrap"><table><tr><th>Approach</th><th>Cross-lagged edges estimated</th><th>Recovered: population target |B| ≥ 0.05</th><th>False positives: population target |B| &lt; 0.05</th><th>Recovered: within-person truth ≠ 0</th><th>Others (within-person truth = 0)</th></tr><tr><td>Main analysis: LASSO only (lambda.min)</td><td>52</td><td>33 / 36</td><td>19</td><td>8 / 8</td><td>44</td></tr><tr><td>Full procedure: SEM re-estimation + pruning at p &lt; .01</td><td>16</td><td>16 / 36</td><td>0</td><td>8 / 8</td><td>8</td></tr></table></div>
+<p>The last two columns use the within-person truth instead (the lagged coefficients actually used to generate the data; only 8 cross-lagged edges are nonzero). By this standard, 8 of the edges kept by the full procedure are still 0 within persons: they really exist in the population target, but they come from the stable trait, so no estimation method based on observed scores can remove them. This is the same point as "Agreement between the two analyses does not make it a within-person process" above.</p>
+<p>The trade-off between the two approaches is clear: the main analysis recovers almost all real edges but brings in many false positives; the full procedure has almost no false positives but misses more than half of the real edges, all of them weak edges of only 0.05–0.08 in the population. Neither is "the truth". That is why the interpretation rule treats "kept by both analyses" as main findings and edges found in only one analysis as exploratory: with your own data, you cannot know whether an edge "only in LASSO" is a false positive or a missed weak edge, and can only say honestly that it is sensitive to the estimation method.</p>
+<p><b>How to use in-/out-prediction.</b> The last part of the log gives each node's in-prediction (the proportion of its variance at this wave explained by the previous wave) and out-prediction (the average proportion of variance it explains in the nodes of the next wave), each in three versions: "with autoregression", "cross-lagged only" and "cross-construct only". They are in units of explained variance and usually small (a coefficient of 0.10 corresponds to only about 1% of the variance). They suit the question "how well can a node be predicted overall?"; do not put them in the same ranking table as expected influence (Lesson 7.5). When reporting, choose one version (e.g., cross-construct only) and state it in the Methods.</p>
+<h3>Reviewing network and centrality with the interactive plot</h3>
+<p>The widget below uses the population target matrix of the course data to help you review what out/in-EI mean. The network you estimate yourself will be somewhat "noisier" than this one and have more edges (LASSO's false positives).</p>
+<div class="widget w2" data-widget="clpn" data-title="Review: out-/in-expected influence in the target network of the course data" data-mode="ei"><noscript>Interactive widget (requires JavaScript).</noscript></div>
+<h3><span class="term">Figure and table conventions</span></h3>
+<ul><li><b>Figure 1 (network plot):</b> the caption says "nodes = items; arrows = T1→T2 cross-lagged edges (predictive relationships); edge colors as in your actual plot (the plots in L10-2.R and Lesson 7.3 use theme = "colorblind": blue = positive, red = negative; in qgraph's default theme, green = positive); edge width proportional to absolute value; autoregressive edges not shown; display threshold = …; maximum = …". If you want to compare with other networks, set maximum to the same value.</li>
+<li><b>Table 2 (edge table):</b> list the autoregressive edges separately; sort cross-lagged edges by absolute value, give at least the top 10, and put the full table in the supplement.</li>
+<li><b>Figure 2 (centrality):</b> state whether the values are raw or z-scores, and that autoregressive edges are excluded.</li>
+<li><b>Figure 3 (bootstrap):</b> state the number of bootstrap replicates, and that "percentile intervals of regularized estimates are not confidence intervals in the strict sense".</li>
+<li><b>Table / Figure 4 (CS):</b> report the CS values and the standard used (0.25 / 0.5, cor = 0.7).</li></ul>
+<h3><span class="term">Reproducibility</span>: running in one step</h3>
+<p>How to test "runs in one step": close RStudio, reopen it, choose <code>Session → Restart R</code>, then run only your main script (or render the Quarto file). If you get an "object not found" error, your code depends on variables left over from earlier manual runs. <b>Quarto</b> is a tool for writing code, output and text in one <code>.qmd</code> file; it always renders from an empty environment, so it tests reproducibility by design.</p>
+<div class="box key"><b class="bt">A social work perspective: a "one-page results" sheet for the agency</b><p>Besides the academic report, you can write a one-page non-technical summary for your partner agency: a simplified network plot (only the 5–8 strongest edges), with predictive wording such as "we observed that … was more likely to appear half a year later …", and a clear statement that "this does not show causation and needs to be tested in intervention research".</p></div>
+<h3>Common mistakes</h3>
+<ul><li><b>Handing in plots but no code:</b> without code, the results cannot be checked.</li>
+<li><b>Running only lambda.min:</b> the full procedure is required; beyond that, do at least one more sensitivity analysis (lambda.1se, covariates or T2→T3 replication).</li>
+<li><b>Picking results between the two analyses:</b> reporting only the one with the nicer conclusions, or writing up an edge found in only one analysis as a main finding. Follow the interpretation rule in the analysis plan.</li>
+<li><b>Treating LASSO coefficients as effect sizes:</b> LASSO coefficients are pulled toward 0. When you report "how strong" an edge is, use the unpenalized estimate from the full procedure and say which analysis it comes from.</li>
+<li><b>Too few bootstrap replicates:</b> running only 100 for speed makes the CI endpoints very unstable. Use 100 while debugging, but always 1,000 in the end.</li></ul>
+<h3>Common questions and pitfalls</h3><details class="ans faq"><summary>My results on the simulated data don't match the answer. Did I do something wrong?</summary><p>Not necessarily. First check which answer you are comparing with. In the course data, the <code>lambda.min</code> estimate correlates 0.654 with the population target (true_B_population.csv) and 0.569 with the within-person truth (true_B_within.csv). The first gap comes from finite-sample noise, false positives and LASSO shrinkage; it appears even when the method is applied perfectly, and it shows what the method can achieve at N = 800. The second gap has one more layer: the population target of a standard CLPN is not a within-person process to begin with, and no sample size removes that (Lesson 7.2).</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② Essential Math</span>Write the Intuition as Equations</h2>
+<p>This lesson first reviews the core quantities used in the pipeline (all explained in earlier lessons), then adds the formulas for testing and pruning in the full procedure.</p>
+<div class="mathbox">\[\hat\beta_{\cdot j}=\arg\min_{\beta}\ \frac{1}{2N}\sum_{i=1}^{N}\Big(y_{ij}-\beta_{0j}-\sum_{k=1}^{p}x_{ik}\beta_{kj}\Big)^2+\lambda_j\sum_{k=1}^{p}|\beta_{kj}|\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(y_{ij}\)</td><td>(Standardized) score of participant \(i\) on T2 node \(j\)</td></tr><tr><td>\(x_{ik}\)</td><td>(Standardized) score of participant \(i\) on T1 node \(k\)</td></tr><tr><td>\(\beta_{kj}\)</td><td>Edge weight T1 node \(k\) → T2 node \(j\); autoregressive when \(k=j\)</td></tr><tr><td>\(\lambda_j\)</td><td>Penalty strength of the \(j\)-th regression, chosen by 10-fold cross-validation</td></tr><tr><td>\(N,\ p\)</td><td>Sample size (800) and number of nodes (9)</td></tr></table>
+<div class="mathbox">\[\text{out-EI}_k=\sum_{j\neq k}\hat\beta_{kj},\qquad \text{in-EI}_j=\sum_{k\neq j}\hat\beta_{kj}\]</div>
+<p>CS-coefficient: the largest proportion of participants that can be dropped while, in 95% of the case-dropping samples, the correlation of centrality with the full-sample centrality is \(\ge 0.7\).</p>
+<div class="mathbox">\[\mathrm{CS}(\text{cor}=0.7)=\max\Big\{d:\ P\big(r(\theta_{\text{full}},\theta_{\text{drop }d})\ge 0.7\big)\ge 0.95\Big\}\]</div>
+<p>Here \(\theta\) is the centrality vector, \(d\) the proportion of participants dropped, and \(r\) the correlation coefficient.</p>
+<h4>Testing and pruning in the full procedure</h4>
+<p>The full procedure runs a z-test on each path entering the SEM: \(z = \hat\beta / \mathrm{SE}(\hat\beta)\), and keeps the path if the two-sided p-value is below α.</p>
+<div class="mathbox">\[z_{kj}=\frac{\hat\beta_{kj}}{\mathrm{SE}(\hat\beta_{kj})},\qquad \text{keep}\iff p_{kj}=2\big(1-\Phi(|z_{kj}|)\big)<\alpha\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(\hat\beta_{kj}\)</td><td>Unpenalized SEM estimate of T1 node k → T2 node j</td></tr><tr><td>\(\mathrm{SE}\)</td><td>Its standard error (given by lavaan)</td></tr><tr><td>\(\Phi\)</td><td>Cumulative distribution function of the standard normal distribution</td></tr><tr><td>\(\alpha\)</td><td>Pruning criterion, .01 in this course</td></tr></table>
+<p>Why .01 rather than .05? \(K\) = 67 cross-lagged paths enter the SEM, and each is tested once. Even if all of them were 0 in the population, with α = .05 on average \(K\times .05\) = 3.35 would be wrongly judged significant; with α = .01, about 0.67 on average. The stricter criterion is a rough control for multiple testing, at the cost of missing more weak edges.</p>
+<h4>Comparison with the true structure (simulated data only)</h4>
+<p>Judge the method by the correlation between the off-diagonal elements of the estimated matrix and of the population target matrix, \(r(\hat B_{\text{off}}, B_{\text{off}})\). For the course data it is 0.654: the direction is broadly right, but there is a fair amount of noise and false-positive edges.</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R Code</span>Implement in R</h2><div class="codeblk"><div class="ctitle">Skeleton of R/L10-2.R (full script below)</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+SEED &lt;- 2026; N_BOOTS &lt;- 1000
+dat &lt;- read.csv(out(&quot;L10-1_clean_data.csv&quot;))
+X &lt;- dat[, vars_t(1)]; Y &lt;- dat[, vars_t(2)]
+set.seed(SEED); B &lt;- clpn_estimate(X, Y, rule = &quot;lambda.min&quot;)   # estimation
+CL &lt;- cl_only(B)                                                # drop autoregression
+cen &lt;- data.frame(node = items, outEI = rowSums(CL), inEI = colSums(CL))
+# bootstrap and case-dropping: bootnet(..., default = &quot;none&quot;, fun = clpn_fun,
+#   directed = TRUE, statistics = c(&quot;edge&quot;,&quot;outExpectedInfluence&quot;,&quot;inExpectedInfluence&quot;))
+set.seed(SEED); B_1se &lt;- clpn_estimate(X, Y, rule = &quot;lambda.1se&quot;)  # sensitivity</code></pre></div><div class="codeblk"><div class="ctitle">Optional: a minimal Quarto file analysis.qmd in the course root folder (next to clpn-course.Rproj); click Render in RStudio</div><pre><code class="language-r">---
+title: &quot;Cross-Lagged Panel Network of Loneliness and Depression&quot;
+format: html
+execute:
+  echo: true
+  warning: false
+---
+
+```{r}
+#| label: load
+# Do not rerun the analysis here: L10-2.R takes 15–40 minutes on one core, and the script&#x27;s sink() competes with knitr for the output.
+# Run R/L10-2.R once on its own first, then let the report just read the results it saved.
+res &lt;- readRDS(&quot;R/output/L10-2_results.rds&quot;)
+B   &lt;- res$B                        # 9 × 9 coefficient matrix (rows = T1, columns = T2)
+CL  &lt;- B; diag(CL) &lt;- 0             # drop autoregression
+cen &lt;- res$cen                      # centrality table: node, label, outEI, inEI, bridgeOutEI, bridgeInEI
+cs  &lt;- res$cs                       # CS-coefficients (named vector)
+f2  &lt;- function(x) sprintf(&quot;%.2f&quot;, x)
+```
+
+The cross-lagged network has `r sum(CL != 0)` nonzero cross-lagged edges (of 72 possible),
+with autoregressive edges between `r f2(min(diag(B)))` and `r f2(max(diag(B)))`.
+The CS-coefficient of in-expected influence was `r f2(cs[&quot;inExpectedInfluence&quot;])`,
+and that of out-expected influence `r f2(cs[&quot;outExpectedInfluence&quot;])`.
+
+```{r}
+#| label: fig-clpn
+#| fig-cap: &quot;T1→T2 cross-lagged panel network (autoregressive edges not shown)&quot;
+knitr::include_graphics(&quot;R/output/L10-2_fig1_clpn.png&quot;)
+```
+
+```{r}
+#| label: tbl-cen
+knitr::kable(cen[, c(&quot;node&quot;, &quot;outEI&quot;, &quot;inEI&quot;)], digits = 3,
+             col.names = c(&quot;Item&quot;, &quot;out-EI&quot;, &quot;in-EI&quot;))
+```</code></pre></div>
+<p><b>Why the report only reads results and does not rerun the analysis:</b> analysis and writing are split into two steps. <code>R/L10-2.R</code> does the computing and at the end uses <code>saveRDS()</code> to store the coefficient matrix, centrality table, CS-coefficients, sensitivity analyses and bootstrap tables in <code>R/output/L10-2_results.rds</code>; the report reads them with <code>readRDS()</code>, and the numbers in the text are pulled in on the spot with inline code <code>`r ...`</code>. Rendering then takes only seconds; whenever the analysis is rerun, the numbers in the report update with it, and the text and tables cannot disagree. If you ran <code>source("R/L10-2.R")</code> directly inside Quarto, every render would rerun the 15–40-minute bootstrap; and because the script uses <code>sink()</code> to write its output to a log file, it clashes with the way knitr collects chunk output, and nothing may show up under the chunk. <code>R/L10-3.R</code> uses the same approach to generate the draft results automatically.</p>
+<h3>Worked example: a number-to-file map</h3>
+<p>A full analysis produces a dozen or more output files. Before writing the results, make a map of which file each kind of number in the paper comes from; when you change the analysis later, you will know what to update:</p>
+<div class="tablewrap"><table><tr><th>Content in the paper</th><th>Source file</th><th>Value in this run (example)</th></tr><tr><td>Descriptive statistics (Table 1)</td><td>L10-2_table1_descriptives.csv</td><td>e.g. skewness of dep1_t1 = 1.05</td></tr><tr><td>Autoregressive and cross-lagged edges (Table 2)</td><td>L10-2_table2_edges_AR_CL.csv</td><td>Strongest cross-lagged edge dep3 → dep4 = 0.135</td></tr><tr><td>Centrality (Table 3)</td><td>L10-2_table3_centrality.csv</td><td>lone4 out-EI = 0.608</td></tr><tr><td>Edge-weight bootstrap (Figure 3)</td><td>L10-2_table4_bootstrap_edges.csv</td><td>e.g. interval for dep3 → dep4 [0.050, 0.214]</td></tr><tr><td>CS-coefficients (Table 5)</td><td>L10-2_table5_CS.csv</td><td>in-EI 0.52; out-EI 0.20</td></tr><tr><td>Sensitivity analyses (Table 6)</td><td>L10-2_table6_sensitivity.csv</td><td><code>lambda.1se</code> vs. main analysis r = 0.665</td></tr></table></div>
+<p>With this map you never copy numbers from memory. In the last column, the first three rows and the last row are the same in every run with a fixed seed. The bootstrap and CS in the course scripts also use a fixed seed and a single core, so they reproduce too; if you switch to parallel processing, they will differ slightly each run, and the output of your final run is the one that counts.</p>
+<h3>Results should agree with each other</h3>
+<p>Check whether some groups of numbers are consistent: ① in the sensitivity analysis, edge weights with covariates correlate 0.997 with the main analysis, almost no change, in line with Lesson 7.5; ② the <code>lambda.1se</code> network has only 17 cross-lagged edges against 52 in the main analysis, in line with "1se is sparser"; ③ lone4 has the highest out-EI, so the edge table should show several fairly strong edges starting from it (lone4 → dep4, lone4 → lone2, lone4 → lone3). If one result contradicts the others, check the code before you write an explanation.</p>
+<div class="box warnbox"><b class="bt">Common mistakes in a full analysis</b><ul>
+<li><b>Scripts that only run on your own computer.</b> As a last step, run all scripts from the start in a fresh R session (the course's <code>R/run_all.R</code> exists for exactly this).</li>
+<li><b>Changing one setting and forgetting to rerun the later steps.</b> For example, changing the λ rule without rerunning the bootstrap leaves figures and tables that no longer match.</li>
+<li><b>Treating intermediate results from exploring as final results.</b> Name output files after their scripts, and treat the last complete run as final.</li></ul></div><p>Keep this map in your project folder (for example as <code>results_map.md</code>), so you or anyone reviewing your work can look things up at any time.</p><p>The map has one more benefit: when a reader or reviewer asks "where does this 0.135 come from?", you can open the right file, and the code that produced it, within a minute.</p><h3>Companion Script &amp; Output</h3><details class="more rsrc"><summary>Complete companion script <code>R/L10-2.R</code> (95 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L10-2.R  Capstone Project ②: Complete CLPN Analysis Pipeline (One-Click Run)
+#          (Full CLPN pipeline)
+# Descriptive statistics -&gt; CLPN estimation -&gt; Network plotting -&gt; out/in-EI and bridge EI
+# -&gt; Bootstrap edge accuracy -&gt; CS-coefficients -&gt; Sensitivity analyses -&gt; Comparison with true structure
+# All output saved to R/output/ with prefix L10-2_. Single-core takes ~15–40 min
+# (depending on hardware; includes two 1,000-replication bootstraps; single-core ensures reproducibility).
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+need_output(&quot;L10-1_clean_data.csv&quot;, &quot;R/L10-1.R&quot;, chain = &quot;R/L4-3.R → R/L10-1.R → R/L10-2.R → R/L10-3.R&quot;)   # Prerequisite check
+suppressPackageStartupMessages({ library(glmnet); library(qgraph); library(bootnet) })
+log_open(&quot;L10-2_log.txt&quot;)
+SEED &lt;- 2026; N_BOOTS &lt;- 1000; N_CORES &lt;- 1   # Single-core = reproducible (parallel bootnet resampling drifts, see L8-2.R)
+dat &lt;- read.csv(out(&quot;L10-1_clean_data.csv&quot;))          # From L10-1.R
+X &lt;- dat[, vars_t(1)]; Y &lt;- dat[, vars_t(2)]
+
+## 1. Descriptive Statistics --------------------------------------------
+desc &lt;- round(psych::describe(cbind(X, Y))[, c(&quot;mean&quot;, &quot;sd&quot;, &quot;skew&quot;, &quot;kurtosis&quot;)], 2)
+print(desc); write.csv(desc, out(&quot;L10-2_table1_descriptives.csv&quot;))
+
+## 2. CLPN Estimation ---------------------------------------------------
+set.seed(SEED); B &lt;- clpn_estimate(X, Y, rule = &quot;lambda.min&quot;)
+CL &lt;- cl_only(B)
+write.csv(round(B, 3), out(&quot;L10-2_table2_B_matrix.csv&quot;))
+el &lt;- edge_list(B); el$from_en &lt;- item_en[el$from]; el$to_en &lt;- item_en[el$to]
+write.csv(el, out(&quot;L10-2_table2_edges_AR_CL.csv&quot;), row.names = FALSE)
+cat(&quot;\nAutoregressive edges:\n&quot;); print(round(diag(B), 3))
+cat(&quot;\nStrongest 5 cross-lagged edges:\n&quot;); print(head(el[el$from != el$to, ], 5), row.names = FALSE, digits = 3)
+
+## 3. Network Plot ------------------------------------------------------
+png_open(&quot;L10-2_fig1_clpn.png&quot;, 1800, 1500)
+qgraph(CL, directed = TRUE, layout = &quot;spring&quot;, groups = groups_list, palette = &quot;colorblind&quot;, theme = &quot;colorblind&quot;,
+       asize = 4, legend = TRUE, nodeNames = paste(items, item_en[items]), legend.cex = .45,
+       title = &quot;Figure 1  T1→T2 Cross-Lagged Panel Network (Autoregressive edges not shown)&quot;)
+invisible(dev.off())
+
+## 4. Centrality --------------------------------------------------------
+cen &lt;- data.frame(node = items, label = item_en[items], community = comm,
+                  outEI = rowSums(CL), inEI = colSums(CL),
+                  bridgeOutEI = sapply(1:9, function(k) sum(CL[k, comm != comm[k]])),
+                  bridgeInEI  = sapply(1:9, function(j) sum(CL[comm != comm[j], j])), row.names = NULL)
+print(cen, digits = 3); write.csv(cen, out(&quot;L10-2_table3_centrality.csv&quot;), row.names = FALSE)
+g &lt;- qgraph(CL, directed = TRUE, DoNotPlot = TRUE)
+png_open(&quot;L10-2_fig2_centrality.png&quot;, 1400, 1400)
+suppressWarnings(print(centralityPlot(g, include = c(&quot;OutExpectedInfluence&quot;, &quot;InExpectedInfluence&quot;),
+                                      scale = &quot;z-scores&quot;, print = FALSE)))
+invisible(dev.off())
+
+## 5. Bootstrap Edge Accuracy + 6. Case-Dropping CS ---------------------
+clpn_fun &lt;- function(data) {
+  p &lt;- ncol(data) / 2
+  X &lt;- scale(as.matrix(data[, 1:p])); Y &lt;- scale(as.matrix(data[, (p + 1):(2 * p)]))
+  B &lt;- matrix(0, p, p)
+  for (j in seq_len(p)) {
+    cvfit &lt;- glmnet::cv.glmnet(X, Y[, j], alpha = 1, nfolds = 10)
+    B[, j] &lt;- as.numeric(coef(cvfit, s = &quot;lambda.min&quot;))[-1]
+  }
+  B
+}
+set.seed(SEED)
+net &lt;- estimateNetwork(cbind(X, Y), default = &quot;none&quot;, fun = clpn_fun, directed = TRUE, labels = items)
+set.seed(SEED)
+boot &lt;- bootnet(net, nBoots = N_BOOTS, type = &quot;nonparametric&quot;, nCores = N_CORES, verbose = FALSE,
+                statistics = c(&quot;edge&quot;, &quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;))
+png_open(&quot;L10-2_fig3_bootstrap_edges.png&quot;, 1600, 3200)
+suppressWarnings(print(plot(boot, statistics = &quot;edge&quot;, order = &quot;sample&quot;, labels = TRUE, CIstyle = &quot;quantiles&quot;)))
+invisible(dev.off())
+bs &lt;- as.data.frame(summary(boot, statistics = &quot;edge&quot;))
+bs &lt;- bs[order(-abs(bs$sample)), c(&quot;node1&quot;, &quot;node2&quot;, &quot;sample&quot;, &quot;q2.5&quot;, &quot;q97.5&quot;, &quot;prop0&quot;)]
+write.csv(bs, out(&quot;L10-2_table4_bootstrap_edges.csv&quot;), row.names = FALSE)
+set.seed(SEED)
+cd &lt;- bootnet(net, nBoots = N_BOOTS, type = &quot;case&quot;, nCores = N_CORES, verbose = FALSE,
+              statistics = c(&quot;outExpectedInfluence&quot;, &quot;inExpectedInfluence&quot;))
+cs &lt;- corStability(cd, verbose = FALSE)
+write.csv(data.frame(statistic = names(cs), CS = round(cs, 3)), out(&quot;L10-2_table5_CS.csv&quot;), row.names = FALSE)
+cat(&quot;\nCS-coefficients:\n&quot;); print(round(cs, 2))
+png_open(&quot;L10-2_fig4_casedrop.png&quot;, 1600, 1200); suppressWarnings(print(plot(cd, statistics = names(cs)))); invisible(dev.off())
+
+## 7. Sensitivity Analyses ----------------------------------------------
+off &lt;- row(B) != col(B)
+set.seed(SEED); B_1se &lt;- clpn_estimate(X, Y, rule = &quot;lambda.1se&quot;)
+set.seed(SEED); B_cov &lt;- clpn_estimate(X, Y, covariates = dat[, c(&quot;gender&quot;, &quot;age&quot;)])
+set.seed(SEED); B_23  &lt;- clpn_estimate(dat[, vars_t(2)], dat[, vars_t(3)])
+sens &lt;- data.frame(analysis = c(&quot;lambda.1se&quot;, &quot;covariates gender+age&quot;, &quot;T2→T3 replication&quot;),
+  r_with_main = round(c(cor(B[off], B_1se[off]), cor(B[off], B_cov[off]), cor(B[off], B_23[off])), 3),
+  n_CL_edges = c(sum(B_1se[off] != 0), sum(B_cov[off] != 0), sum(B_23[off] != 0)))
+cat(&quot;\nSensitivity analyses (primary analysis CL edges =&quot;, sum(B[off] != 0), &quot;):\n&quot;); print(sens)
+write.csv(sens, out(&quot;L10-2_table6_sensitivity.csv&quot;), row.names = FALSE)
+
+## 8. Comparison with True Structure (Simulated Data Only) ---------------
+Bt &lt;- true_B()
+cat(&quot;\nCorrelation with true population coefficients (CL edges) =&quot;, round(cor(B[off], Bt[off]), 3),
+    &quot;; AR edges =&quot;, round(cor(diag(B), diag(Bt)), 3), &quot;\n&quot;)
+saveRDS(list(B = B, cen = cen, cs = cs, sens = sens, bs = bs), out(&quot;L10-2_results.rds&quot;))
+log_close()</code></pre></div></details>
+<details class="more rsrc"><summary>Supplementary script <code>R/L10-2b.R</code> (192 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L10-2b.R  Capstone Project ② Supplement: Required Sensitivity Analysis —
+#           Full CLPN Pipeline of Wysocki et al. (2025)
+#   (Required sensitivity analysis: full CLPN pipeline of Wysocki et al., 2025)
+# The primary analysis (R/L10-2.R) is the simplified &quot;LASSO-only&quot; CLPN: edges selected
+# and already shrunk by LASSO are directly treated as network edge weights.
+# The full procedure recommended by methodological literature adds a crucial step:
+# use LASSO only to select which paths to constrain to 0, then re-estimate the remaining
+# paths unpenalized within SEM.
+# This script applies the full procedure to the Capstone Project data (R/output/L10-1_clean_data.csv)
+# and evaluates concordance against primary analysis edges item by item:
+#   Step 1 Redundancy merging: All 9 items exhibit distinct wording; no merging (goldbricker check in R/L9-2.R)
+#   Step 2 Nodewise LASSO (10-fold CV, rule matching primary analysis), run separately for T1→T2 and T2→T3;
+#          conservative rule: constrain to 0 only if 0 in both lags
+#   Step 3 lavaan path model: Retained paths re-estimated unpenalized; cross-sectional residual covariances
+#          within wave; FIML (missing = &quot;ml&quot;); nested chi-square test and AIC/BIC for cross-time invariance
+#          (T1→T2 paths = T2→T3 paths) to select final model; prune at p &lt; .01
+#   Step 4 in-/out-prediction (proportion of variance explained) using the final model
+#   Step 5 Concordance check with primary analysis: How many of the strongest edges survive in the full procedure?
+#          Does the construct-level asymmetry between the two directions hold?
+# Syntax matches R/L7-5b.R (Lesson 7.5), substituting the cleaned Capstone data and adding Step 5.
+# Dependencies: R/L10-1.R (cleaned data) and R/L10-2.R (primary analysis results for Step 5 comparison).
+# Runtime: Two lavaan model fits plus 18 cross-validated LASSO runs, typically &lt; 1 minute.
+# Output: R/output/L10-2b_log.txt, L10-2b_edges.csv, L10-2b_summary.csv, L10-2b_in_out_prediction.csv, L10-2b_results.rds
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+need_output(&quot;L10-1_clean_data.csv&quot;, &quot;R/L10-1.R&quot;, chain = &quot;R/L4-3.R → R/L10-1.R → R/L10-2.R → R/L10-2b.R → R/L10-3.R&quot;)   # Prerequisite check
+need_output(&quot;L10-2_results.rds&quot;, &quot;R/L10-2.R&quot;, chain = &quot;R/L4-3.R → R/L10-1.R → R/L10-2.R → R/L10-2b.R → R/L10-3.R&quot;)
+suppressPackageStartupMessages(library(lavaan))
+log_open(&quot;L10-2b_log.txt&quot;)
+SEED &lt;- 2026; RULE &lt;- &quot;lambda.min&quot;; ALPHA &lt;- .01      # Consistent with analysis plan and R/L10-2.R; ALPHA = pruning significance level
+dat &lt;- read.csv(out(&quot;L10-1_clean_data.csv&quot;))          # From L10-1.R
+for (v in c(vars_t(1), vars_t(2), vars_t(3))) dat[[v]] &lt;- as.numeric(scale(dat[[v]]))   # z-standardization ensures comparability with primary analysis
+p &lt;- length(items)
+res &lt;- readRDS(out(&quot;L10-2_results.rds&quot;))              # Primary analysis: res$B (LASSO coefficient matrix), res$bs (bootstrap edge table)
+B_main &lt;- res$B
+off &lt;- row(B_main) != col(B_main)
+
+## ---- Step 2: LASSO Edge Selection (Both Lags) + Conservative Rule ----
+set.seed(SEED); B12 &lt;- clpn_estimate(dat[, vars_t(1)], dat[, vars_t(2)], rule = RULE)
+set.seed(SEED); B23 &lt;- clpn_estimate(dat[, vars_t(2)], dat[, vars_t(3)], rule = RULE)
+cat(&quot;Check: Is the T1→T2 LASSO coefficient matrix in this script identical to the L10-2.R primary analysis? &quot;,
+    isTRUE(all.equal(B12, B_main, check.attributes = FALSE)), &quot;\n&quot;)
+keep &lt;- (B12 != 0) | (B23 != 0); diag(keep) &lt;- TRUE        # Retain autoregressive paths by default
+cat(&quot;Step 2 LASSO (&quot;, RULE, &quot;): T1→T2 non-zero cross-lagged edges: &quot;, sum(B12[off] != 0),
+    &quot;; T2→T3: &quot;, sum(B23[off] != 0),
+    &quot;; cross-lagged paths entering SEM under conservative rule: &quot;, sum(keep[off]),
+    &quot; (per lag, out of &quot;, sum(off), &quot; possible positions)\n&quot;, sep = &quot;&quot;)
+
+## ---- Step 3: lavaan Unpenalized Re-estimation ----
+build &lt;- function(equal = FALSE) {
+  lines &lt;- c()
+  for (t in 2:3) for (j in seq_len(p)) {
+    preds &lt;- which(keep[, j])
+    lab &lt;- if (equal) paste0(&quot;b&quot;, preds, &quot;_&quot;, j, &quot;*&quot;) else &quot;&quot;
+    lines &lt;- c(lines, paste0(items[j], &quot;_t&quot;, t, &quot; ~ &quot;, paste0(lab, items[preds], &quot;_t&quot;, t - 1, collapse = &quot; + &quot;)))
+  }
+  for (t in 2:3) { cmb &lt;- combn(items, 2)                   # Residual covariances among all pairs within each wave
+    lines &lt;- c(lines, paste0(cmb[1, ], &quot;_t&quot;, t, &quot; ~~ &quot;, cmb[2, ], &quot;_t&quot;, t)) }
+  paste(lines, collapse = &quot;\n&quot;)
+}
+fit_free  &lt;- sem(build(FALSE), data = dat, missing = &quot;ml&quot;, fixed.x = FALSE)
+fit_equal &lt;- sem(build(TRUE),  data = dat, missing = &quot;ml&quot;, fixed.x = FALSE)
+fm &lt;- fitMeasures(fit_free, c(&quot;chisq&quot;, &quot;df&quot;, &quot;pvalue&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;rmsea.ci.lower&quot;, &quot;rmsea.ci.upper&quot;, &quot;srmr&quot;))
+cat(sprintf(&quot;\nStep 3 SEM (unconstrained): χ²(%d) = %.2f, p %s; CFI = %.3f; TLI = %.3f; RMSEA = %.3f [%.3f, %.3f]; SRMR = %.3f\n&quot;,
+            fm[&quot;df&quot;], fm[&quot;chisq&quot;], ifelse(fm[&quot;pvalue&quot;] &lt; .001, &quot;&lt; .001&quot;, sprintf(&quot;= %.3f&quot;, fm[&quot;pvalue&quot;])),
+            fm[&quot;cfi&quot;], fm[&quot;tli&quot;], fm[&quot;rmsea&quot;], fm[&quot;rmsea.ci.lower&quot;], fm[&quot;rmsea.ci.upper&quot;], fm[&quot;srmr&quot;]))
+cat(&quot;\nStep 3 Nested χ² test for cross-time invariance (each T1→T2 path = corresponding T2→T3 path):\n&quot;)
+av &lt;- anova(fit_equal, fit_free)
+ic &lt;- c(AIC_equal = AIC(fit_equal), AIC_free = AIC(fit_free), BIC_equal = BIC(fit_equal), BIC_free = BIC(fit_free))
+cat(sprintf(&quot;Δχ²(%d) = %.2f, p = %.3f; AIC: constrained %.1f vs unconstrained %.1f; BIC: constrained %.1f vs unconstrained %.1f\n&quot;,
+            av$`Df diff`[2], av$`Chisq diff`[2], av$`Pr(&gt;Chisq)`[2], ic[&quot;AIC_equal&quot;], ic[&quot;AIC_free&quot;], ic[&quot;BIC_equal&quot;], ic[&quot;BIC_free&quot;]))
+# Select final model: if chi-square test does not reject invariance and neither AIC nor BIC favors unconstrained, retain constrained
+use_equal &lt;- av$`Pr(&gt;Chisq)`[2] &gt;= .05 &amp;&amp; ic[&quot;AIC_equal&quot;] &lt;= ic[&quot;AIC_free&quot;] &amp;&amp; ic[&quot;BIC_equal&quot;] &lt;= ic[&quot;BIC_free&quot;]
+fit_final &lt;- if (use_equal) fit_equal else fit_free
+cat(&quot;Final model: &quot;, if (use_equal) &quot;Constrained model (invariance holds; used for subsequent pruning and prediction)&quot; else &quot;Unconstrained model (invariance rejected; reporting T1→T2 lag below)&quot;, &quot;\n&quot;)
+fmf &lt;- fitMeasures(fit_final, c(&quot;chisq&quot;, &quot;df&quot;, &quot;cfi&quot;, &quot;tli&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))
+cat(sprintf(&quot;Final model fit: χ²(%d) = %.2f; CFI = %.3f; TLI = %.3f; RMSEA = %.3f; SRMR = %.3f\n&quot;,
+            fmf[&quot;df&quot;], fmf[&quot;chisq&quot;], fmf[&quot;cfi&quot;], fmf[&quot;tli&quot;], fmf[&quot;rmsea&quot;], fmf[&quot;srmr&quot;]))
+
+# Extract unpenalized coefficients, SEs, and p-values for T1→T2 (rows = T1 predictors, cols = T2 outcomes)
+# Paths not entering SEM: coefficient 0, p-value NA
+coef12 &lt;- function(fit) {
+  pe &lt;- parameterEstimates(fit)
+  reg &lt;- pe[pe$op == &quot;~&quot; &amp; grepl(&quot;_t2$&quot;, pe$lhs), ]
+  S &lt;- SE &lt;- matrix(0, p, p, dimnames = list(items, items)); P &lt;- matrix(NA_real_, p, p, dimnames = list(items, items))
+  for (r in seq_len(nrow(reg))) { k &lt;- sub(&quot;_t1$&quot;, &quot;&quot;, reg$rhs[r]); j &lt;- sub(&quot;_t2$&quot;, &quot;&quot;, reg$lhs[r])
+    S[k, j] &lt;- reg$est[r]; SE[k, j] &lt;- reg$se[r]; P[k, j] &lt;- reg$pvalue[r] }
+  list(S = S, SE = SE, P = P)
+}
+cf &lt;- coef12(fit_final); S12 &lt;- cf$S; P12 &lt;- cf$P
+sig &lt;- !is.na(P12) &amp; P12 &lt; ALPHA                           # Retained paths after pruning
+S_pruned &lt;- S12 * sig                                      # Pruned coefficient matrix (non-significant set to 0)
+lone &lt;- 1:4; dep &lt;- 5:9
+n_sig &lt;- c(total = sum(sig[off]), lone_to_dep = sum(sig[lone, dep]), dep_to_lone = sum(sig[dep, lone]),
+           within_construct = sum(sig[off]) - sum(sig[lone, dep]) - sum(sig[dep, lone]))
+cat(sprintf(&quot;\nCross-lagged edges retained after pruning at p &lt; %.2f: %d edges (Loneliness→Depression: %d, Depression→Loneliness: %d, within-construct: %d); at p &lt; .05: %d edges\n&quot;,
+            ALPHA, n_sig[1], n_sig[2], n_sig[3], n_sig[4], sum(!is.na(P12[off]) &amp; P12[off] &lt; .05)))
+
+## ---- Step 4: in-prediction &amp; out-prediction (T1→T2, Final Model) ----
+Sig &lt;- lavInspect(fit_final, &quot;cov.ov&quot;)                     # Model-implied covariance matrix
+S1 &lt;- Sig[vars_t(1), vars_t(1)]; v2 &lt;- diag(Sig)[vars_t(2)]
+cons &lt;- ifelse(grepl(&quot;^lone&quot;, items), &quot;Loneliness&quot;, &quot;Depression&quot;)
+inpred &lt;- function(j, use) { b &lt;- S12[, j] * use; as.numeric(t(b) %*% S1 %*% b) / unname(v2[j]) }
+pred &lt;- t(sapply(seq_len(p), function(j) {
+  others &lt;- seq_len(p) != j; xc &lt;- cons != cons[j]
+  outk &lt;- sapply(seq_len(p), function(k) S12[j, k]^2 * S1[j, j] / unname(v2[k]))
+  c(inPred = inpred(j, rep(1, p)), inPred_CL = inpred(j, others), inPred_xconstruct = inpred(j, xc),
+    outPred = mean(outk), outPred_CL = mean(outk[others]), outPred_xconstruct = mean(outk[xc]))
+}))
+rownames(pred) &lt;- items
+cat(&quot;\nStep 4 in-/out-prediction (proportion of explained variance; CL = excluding autoregression):\n&quot;); print(round(pred, 3))
+cat(&quot;Highest cross-construct out-prediction: &quot;, items[which.max(pred[, &quot;outPred_xconstruct&quot;])],
+    &quot;; highest cross-construct in-prediction: &quot;, items[which.max(pred[, &quot;inPred_xconstruct&quot;])], &quot;\n&quot;)
+write.csv(round(pred, 4), out(&quot;L10-2b_in_out_prediction.csv&quot;))
+
+## ---- Step 5: Item-by-Item Concordance Check with Primary Analysis (LASSO-Only) ----
+bs &lt;- res$bs                                               # Bootstrap edge table from primary analysis (node1 → node2)
+e &lt;- data.frame(from = rep(items, times = p), to = rep(items, each = p), stringsAsFactors = FALSE)
+e &lt;- e[e$from != e$to, ]
+ix &lt;- cbind(e$from, e$to)
+e$from_en &lt;- item_en[e$from]; e$to_en &lt;- item_en[e$to]
+e$lasso &lt;- B_main[ix]; e$lasso_t23 &lt;- B23[ix]                 # LASSO coefficients for T1→T2 and T2→T3 lags
+bkey &lt;- paste(bs$node1, bs$node2)
+e$boot_q2.5 &lt;- bs$q2.5[match(paste(e$from, e$to), bkey)]; e$boot_q97.5 &lt;- bs$q97.5[match(paste(e$from, e$to), bkey)]
+e$in_sem &lt;- keep[ix]; e$sem_est &lt;- S12[ix]; e$sem_se &lt;- cf$SE[ix]; e$sem_p &lt;- P12[ix]
+e$kept_p01 &lt;- sig[ix]
+cff &lt;- coef12(fit_free); e$free_est &lt;- cff$S[ix]; e$free_p &lt;- cff$P[ix]   # Comparison: unconstrained model T1→T2 lag
+Bt &lt;- true_B(); Bw &lt;- as.matrix(read.csv(&quot;data/true_B_within.csv&quot;, row.names = 1))   # Two truths available only in simulated data (Lessons 7.1, 7.5)
+e$true_pop &lt;- Bt[ix]; e$true_within &lt;- Bw[ix]
+e &lt;- e[order(-abs(e$lasso), -abs(e$sem_est)), ]
+rownames(e) &lt;- NULL
+write.csv(e, out(&quot;L10-2b_edges.csv&quot;), row.names = FALSE, fileEncoding = &quot;UTF-8&quot;)
+
+TOP &lt;- 10
+top &lt;- head(e[e$lasso != 0, ], TOP)
+excl0 &lt;- !is.na(e$boot_q2.5) &amp; (e$boot_q2.5 &gt; 0 | e$boot_q97.5 &lt; 0)   # Primary analysis bootstrap interval excludes 0
+cat(&quot;\nStep 5 Concordance check: Results for top &quot;, TOP, &quot; primary analysis cross-lagged edges in full procedure:\n&quot;, sep = &quot;&quot;)
+tab &lt;- data.frame(Edge = paste0(top$from, &quot; → &quot;, top$to), Items = paste0(top$from_en, &quot; → &quot;, top$to_en),
+                  LASSO = round(top$lasso, 3), Bootstrap_CI = sprintf(&quot;[%.3f, %.3f]&quot;, top$boot_q2.5, top$boot_q97.5),
+                  SEM_refit = round(top$sem_est, 3), p = signif(top$sem_p, 2), Retained = ifelse(top$kept_p01, &quot;Yes&quot;, &quot;No&quot;))
+print(tab, row.names = FALSE)
+cat(sprintf(&quot;Retained %d out of top %d edges; retained %d out of top 3 edges\n&quot;, TOP, sum(top$kept_p01), sum(head(top$kept_p01, 3))))
+if (use_equal &amp;&amp; any(!top$kept_p01)) {                     # In constrained model, coefficients represent common values across both lags
+  dr &lt;- top[!top$kept_p01, ]
+  cat(&quot;Breakdown of un-retained edges across lags (constrained model estimates common value across lags):\n&quot;)
+  print(data.frame(Edge = paste0(dr$from, &quot; → &quot;, dr$to), LASSO_T1T2 = round(dr$lasso, 3), LASSO_T2T3 = round(dr$lasso_t23, 3),
+                   Free_T1T2 = round(dr$free_est, 3), Free_p = signif(dr$free_p, 2), Constrained = round(dr$sem_est, 3)),
+        row.names = FALSE)
+}
+both &lt;- sum(e$lasso != 0 &amp; e$kept_p01); lasso_only &lt;- sum(e$lasso != 0 &amp; !e$kept_p01); sem_only &lt;- sum(e$lasso == 0 &amp; e$kept_p01)
+cat(sprintf(&quot;Of the %d non-zero edges in primary analysis, %d were retained in full procedure and %d were dropped; %d edges were retained in full procedure but 0 in primary analysis\n&quot;,
+            sum(e$lasso != 0), both, lasso_only, sem_only))
+cat(sprintf(&quot;Of the %d edges whose primary analysis bootstrap CI excludes 0, %d were retained in full procedure\n&quot;, sum(excl0), sum(excl0 &amp; e$kept_p01)))
+r_ls &lt;- cor(B_main[off], S12[off])
+cat(&quot;Correlation between primary analysis LASSO coefficients and SEM re-estimated coefficients (all &quot;, sum(off), &quot; cross-lagged positions; unentered set to 0) = &quot;, round(r_ls, 3), &quot;\n&quot;, sep = &quot;&quot;)
+sums &lt;- c(ld_lasso = sum(B_main[lone, dep]), dl_lasso = sum(B_main[dep, lone]),
+          ld_full = sum(S_pruned[lone, dep]), dl_full = sum(S_pruned[dep, lone]))
+cat(sprintf(&quot;Construct-level sum of edge weights: Loneliness→Depression primary %.2f, full procedure (pruned) %.2f; Depression→Loneliness primary %.2f, full procedure %.2f\n&quot;,
+            sums[&quot;ld_lasso&quot;], sums[&quot;ld_full&quot;], sums[&quot;dl_lasso&quot;], sums[&quot;dl_full&quot;]))
+
+# Comparison with true structure (simulated data only): Two truths (Lessons 7.1, 7.5). Definition of population target &quot;true edges&quot; matches R/L7-2.R and R/L7-5b.R: |β| ≥ 0.05
+te &lt;- abs(Bt) &gt;= 0.05
+perf2 &lt;- function(nz, tr) c(Recovered = sum(nz[off] &amp; tr[off]), False_Positives = sum(nz[off] &amp; !tr[off]), Missed = sum(!nz[off] &amp; tr[off]), Estimated_Edges = sum(nz[off]))
+perf &lt;- function(nz) perf2(nz, te)
+cmp &lt;- rbind(`Primary analysis: LASSO-only` = perf(B_main != 0), `Full procedure: SEM re-fit + p &lt; .01 pruning` = perf(sig))
+cat(&quot;\nComparison with population target (data/true_B_population.csv cross-lagged edges with |β| ≥ 0.05, n = &quot;, sum(te[off]), &quot;):\n&quot;, sep = &quot;&quot;); print(cmp)
+tw &lt;- Bw[items, items] != 0                                # Within-person truth: actual lagged coefficients used in data simulation
+cmp_w &lt;- rbind(`Primary analysis: LASSO-only` = perf2(B_main != 0, tw), `Full procedure: SEM re-fit + p &lt; .01 pruning` = perf2(sig, tw))
+cat(&quot;Comparison with within-person truth (data/true_B_within.csv non-zero cross-lagged edges, n = &quot;, sum(tw[off]), &quot;; remaining &#x27;false positives&#x27; largely stem from stable traits):\n&quot;, sep = &quot;&quot;); print(cmp_w)
+
+summ &lt;- c(n_lasso_main = sum(B_main[off] != 0), n_cl12 = sum(B12[off] != 0), n_cl23 = sum(B23[off] != 0), n_keep = sum(keep[off]),
+          free_chisq = unname(fm[&quot;chisq&quot;]), free_df = unname(fm[&quot;df&quot;]), free_p = unname(fm[&quot;pvalue&quot;]),
+          free_cfi = unname(fm[&quot;cfi&quot;]), free_tli = unname(fm[&quot;tli&quot;]), free_rmsea = unname(fm[&quot;rmsea&quot;]),
+          free_rmsea_lo = unname(fm[&quot;rmsea.ci.lower&quot;]), free_rmsea_hi = unname(fm[&quot;rmsea.ci.upper&quot;]), free_srmr = unname(fm[&quot;srmr&quot;]),
+          eq_dchisq = av$`Chisq diff`[2], eq_ddf = av$`Df diff`[2], eq_p = av$`Pr(&gt;Chisq)`[2],
+          aic_equal = unname(ic[&quot;AIC_equal&quot;]), aic_free = unname(ic[&quot;AIC_free&quot;]), bic_equal = unname(ic[&quot;BIC_equal&quot;]), bic_free = unname(ic[&quot;BIC_free&quot;]),
+          use_equal = as.numeric(use_equal),
+          fin_chisq = unname(fmf[&quot;chisq&quot;]), fin_df = unname(fmf[&quot;df&quot;]), fin_cfi = unname(fmf[&quot;cfi&quot;]), fin_tli = unname(fmf[&quot;tli&quot;]),
+          fin_rmsea = unname(fmf[&quot;rmsea&quot;]), fin_srmr = unname(fmf[&quot;srmr&quot;]),
+          n_sig01 = n_sig[[1]], n_sig01_ld = n_sig[[2]], n_sig01_dl = n_sig[[3]], n_sig01_within = n_sig[[4]],
+          n_sig05 = sum(!is.na(P12[off]) &amp; P12[off] &lt; .05),
+          n_both = both, n_lasso_only = lasso_only, n_sem_only = sem_only,
+          top_n = TOP, top_kept = sum(top$kept_p01), top3_kept = sum(head(top$kept_p01, 3)),
+          n_boot_excl0 = sum(excl0), n_boot_excl0_kept = sum(excl0 &amp; e$kept_p01),
+          r_lasso_sem = r_ls, sums,
+          n_true = sum(te[off]), found_lasso = cmp[1, 1], fp_lasso = cmp[1, 2], found_full = cmp[2, 1], fp_full = cmp[2, 2],
+          n_true_w = sum(tw[off]), found_lasso_w = cmp_w[1, 1], fp_lasso_w = cmp_w[1, 2], found_full_w = cmp_w[2, 1], fp_full_w = cmp_w[2, 2])
+write.csv(data.frame(statistic = names(summ), value = unname(summ)), out(&quot;L10-2b_summary.csv&quot;), row.names = FALSE)
+saveRDS(list(edges = e, summary = summ, S12 = S12, P12 = P12, keep = keep, use_equal = use_equal, pred = pred),
+        out(&quot;L10-2b_results.rds&quot;))
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L10-2_fig1_clpn.png" alt="L10-2_fig1_clpn.png" loading="lazy"><figcaption>Figure: <code>R/output/L10-2_fig1_clpn.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<figure><img src="../R/output/L10-2_fig2_centrality.png" alt="L10-2_fig2_centrality.png" loading="lazy"><figcaption>Figure: <code>R/output/L10-2_fig2_centrality.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<figure><img src="../R/output/L10-2_fig3_bootstrap_edges.png" alt="L10-2_fig3_bootstrap_edges.png" loading="lazy"><figcaption>Figure: <code>R/output/L10-2_fig3_bootstrap_edges.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<figure><img src="../R/output/L10-2_fig4_casedrop.png" alt="L10-2_fig4_casedrop.png" loading="lazy"><figcaption>Figure: <code>R/output/L10-2_fig4_casedrop.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L10-2_log.txt</code></div><pre class="out"><code>         mean   sd skew kurtosis
+lone1_t1 2.19 0.99 0.39    -0.90
+lone2_t1 2.19 1.00 0.40    -0.91
+lone3_t1 2.24 0.99 0.30    -0.97
+lone4_t1 2.18 0.98 0.39    -0.88
+dep1_t1  0.74 0.92 1.05     0.09
+dep2_t1  0.77 0.92 0.99     0.00
+dep3_t1  0.79 0.94 0.92    -0.22
+dep4_t1  0.77 0.95 1.00    -0.08
+dep5_t1  0.76 0.93 0.98    -0.10
+lone1_t2 2.20 0.98 0.36    -0.89
+lone2_t2 2.21 0.98 0.37    -0.88
+lone3_t2 2.23 0.96 0.30    -0.87
+lone4_t2 2.23 0.97 0.34    -0.86
+dep1_t2  0.78 0.93 0.97    -0.07
+dep2_t2  0.74 0.90 1.00     0.02
+dep3_t2  0.78 0.94 0.96    -0.17
+dep4_t2  0.74 0.93 1.03     0.01
+dep5_t2  0.74 0.92 1.06     0.14
+
+Autoregressive edges:
+lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5 
+0.416 0.434 0.341 0.445 0.315 0.310 0.331 0.281 0.361 
+
+Strongest 5 cross-lagged edges:
+  from    to weight              type               from_en                 to_en
+  dep3  dep4 0.1353 CL (cross-lagged)        Sleep problems               Fatigue
+ lone2 lone4 0.1269 CL (cross-lagged)      Feeling left out No one understands me
+ lone4  dep4 0.1084 CL (cross-lagged) No one understands me               Fatigue
+ lone4 lone2 0.1010 CL (cross-lagged) No one understands me      Feeling left out
+ lone4 lone3 0.0962 CL (cross-lagged) No one understands me      Feeling isolated
+   node                 label  community   outEI   inEI bridgeOutEI bridgeInEI
+1 lone1 Lack of companionship Loneliness  0.2520 0.0924     0.21723     0.0000
+2 lone2      Feeling left out Loneliness  0.2374 0.0550     0.03900    -0.0501
+3 lone3      Feeling isolated Loneliness -0.0266 0.2475    -0.04647     0.0813
+4 lone4 No one understands me Loneliness  0.6083 0.1980     0.34718     0.0478
+5  dep1        Depressed mood Depression  0.3521 0.3491     0.04478     0.1767
+6  dep2      Loss of interest Depression  0.1931 0.3157     0.05482     0.1160
+7  dep3        Sleep problems Depression  0.2503 0.1918     0.00000     0.0256
+8  dep4               Fatigue Depression  0.0679 0.4005    -0.02779     0.0973
+9  dep5         Worthlessness Depression  0.2242 0.3087     0.00706     0.1414
+
+CS-coefficients:
+ inExpectedInfluence outExpectedInfluence 
+                0.52                 0.20 
+
+Sensitivity analyses (primary analysis CL edges = 52 ):
+               analysis r_with_main n_CL_edges
+1            lambda.1se       0.665         17
+2 covariates gender+age       0.997         54
+3     T2→T3 replication       0.640         55
+
+Correlation with true population coefficients (CL edges) = 0.654 ; AR edges = 0.779 </code></pre></div>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L10-2b_log.txt</code></div><pre class="out"><code>Check: Is the T1→T2 LASSO coefficient matrix in this script identical to the L10-2.R primary analysis?  TRUE 
+Step 2 LASSO (lambda.min): T1→T2 non-zero cross-lagged edges: 52; T2→T3: 55; cross-lagged paths entering SEM under conservative rule: 67 (per lag, out of 72 possible positions)
+
+Step 3 SEM (unconstrained): χ²(91) = 164.70, p &lt; .001; CFI = 0.988; TLI = 0.959; RMSEA = 0.032 [0.024, 0.040]; SRMR = 0.023
+
+Step 3 Nested χ² test for cross-time invariance (each T1→T2 path = corresponding T2→T3 path):
+Δχ²(76) = 84.69, p = 0.232; AIC: constrained 53607.9 vs unconstrained 53675.2; BIC: constrained 54722.9 vs unconstrained 55146.2
+Final model:  Constrained model (invariance holds; used for subsequent pruning and prediction) 
+Final model fit: χ²(167) = 249.39; CFI = 0.987; TLI = 0.975; RMSEA = 0.025; SRMR = 0.027
+
+Cross-lagged edges retained after pruning at p &lt; 0.01: 16 edges (Loneliness→Depression: 3, Depression→Loneliness: 2, within-construct: 11); at p &lt; .05: 22 edges
+
+Step 4 in-/out-prediction (proportion of explained variance; CL = excluding autoregression):
+      inPred inPred_CL inPred_xconstruct outPred outPred_CL outPred_xconstruct
+lone1  0.264     0.024             0.003   0.021      0.003              0.003
+lone2  0.249     0.032             0.012   0.020      0.004              0.001
+lone3  0.256     0.049             0.010   0.015      0.002              0.002
+lone4  0.318     0.039             0.004   0.025      0.005              0.002
+dep1   0.233     0.039             0.014   0.019      0.006              0.001
+dep2   0.203     0.059             0.018   0.010      0.002              0.002
+dep3   0.196     0.017             0.001   0.018      0.004              0.000
+dep4   0.231     0.070             0.003   0.012      0.004              0.005
+dep5   0.257     0.062             0.013   0.013      0.001              0.000
+Highest cross-construct out-prediction:  dep4 ; highest cross-construct in-prediction:  dep2 
+
+Step 5 Concordance check: Results for top 10 primary analysis cross-lagged edges in full procedure:
+          Edge                                    Items  LASSO     Bootstrap_CI SEM_refit       p Retained
+   dep3 → dep4                 Sleep problems → Fatigue  0.135   [0.050, 0.214]     0.150 9.8e-09      Yes
+ lone2 → lone4 Feeling left out → No one understands me  0.127   [0.059, 0.200]     0.143 1.1e-08      Yes
+  lone4 → dep4          No one understands me → Fatigue  0.108   [0.011, 0.180]     0.031 2.6e-01       No
+ lone4 → lone2 No one understands me → Feeling left out  0.101   [0.023, 0.178]     0.107 7.3e-05      Yes
+ lone4 → lone3 No one understands me → Feeling isolated  0.096   [0.016, 0.176]     0.108 8.0e-05      Yes
+  lone4 → dep5    No one understands me → Worthlessness  0.093   [0.014, 0.161]     0.094 5.5e-04      Yes
+   dep1 → dep2        Depressed mood → Loss of interest  0.092   [0.007, 0.169]     0.110 4.6e-05      Yes
+   dep5 → dep4                  Worthlessness → Fatigue  0.091   [0.002, 0.165]     0.039 1.3e-01       No
+  dep4 → lone2               Fatigue → Feeling left out -0.090 [-0.161, -0.001]    -0.117 7.3e-06      Yes
+   dep1 → dep5           Depressed mood → Worthlessness  0.086   [0.003, 0.165]     0.126 1.3e-06      Yes
+Retained 10 out of top 8 edges; retained 2 out of top 3 edges
+Breakdown of un-retained edges across lags (constrained model estimates common value across lags):
+         Edge LASSO_T1T2 LASSO_T2T3 Free_T1T2 Free_p Constrained
+ lone4 → dep4      0.108          0     0.109 0.0056       0.031
+  dep5 → dep4      0.091          0     0.095 0.0100       0.039
+Of the 52 non-zero edges in primary analysis, 16 were retained in full procedure and 36 were dropped; 0 edges were retained in full procedure but 0 in primary analysis
+Of the 12 edges whose primary analysis bootstrap CI excludes 0, 9 were retained in full procedure
+Correlation between primary analysis LASSO coefficients and SEM re-estimated coefficients (all 72 cross-lagged positions; unentered set to 0) = 0.842
+Construct-level sum of edge weights: Loneliness→Depression primary 0.56, full procedure (pruned) 0.30; Depression→Loneliness primary 0.08, full procedure -0.04
+
+Comparison with population target (data/true_B_population.csv cross-lagged edges with |β| ≥ 0.05, n = 36):
+                                             Recovered False_Positives Missed Estimated_Edges
+Primary analysis: LASSO-only                        33              19      3              52
+Full procedure: SEM re-fit + p &lt; .01 pruning        16               0     20              16
+Comparison with within-person truth (data/true_B_within.csv non-zero cross-lagged edges, n = 8; remaining &#x27;false positives&#x27; largely stem from stable traits):
+                                             Recovered False_Positives Missed Estimated_Edges
+Primary analysis: LASSO-only                         8              44      0              52
+Full procedure: SEM re-fit + p &lt; .01 pruning         8               8      0              16</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L10-2_table1_descriptives.csv</code></div><pre class="out"><code>&quot;&quot;,&quot;mean&quot;,&quot;sd&quot;,&quot;skew&quot;,&quot;kurtosis&quot;
+&quot;lone1_t1&quot;,2.19,0.99,0.39,-0.9
+&quot;lone2_t1&quot;,2.19,1,0.4,-0.91
+&quot;lone3_t1&quot;,2.24,0.99,0.3,-0.97
+&quot;lone4_t1&quot;,2.18,0.98,0.39,-0.88
+&quot;dep1_t1&quot;,0.74,0.92,1.05,0.09
+&quot;dep2_t1&quot;,0.77,0.92,0.99,0
+&quot;dep3_t1&quot;,0.79,0.94,0.92,-0.22
+&quot;dep4_t1&quot;,0.77,0.95,1,-0.08
+&quot;dep5_t1&quot;,0.76,0.93,0.98,-0.1
+&quot;lone1_t2&quot;,2.2,0.98,0.36,-0.89
+&quot;lone2_t2&quot;,2.21,0.98,0.37,-0.88
+… (18 rows total; showing first 11 rows)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L10-2_table2_B_matrix.csv</code></div><pre class="out"><code>&quot;&quot;,&quot;lone1&quot;,&quot;lone2&quot;,&quot;lone3&quot;,&quot;lone4&quot;,&quot;dep1&quot;,&quot;dep2&quot;,&quot;dep3&quot;,&quot;dep4&quot;,&quot;dep5&quot;
+&quot;lone1&quot;,0.416,0.004,0.025,0.006,0.022,0.085,0,0.064,0.047
+&quot;lone2&quot;,0.026,0.434,0.046,0.127,0,0.061,0,-0.022,0
+&quot;lone3&quot;,0.002,0,0.341,0.017,0.073,-0.069,0,-0.053,0.001
+&quot;lone4&quot;,0.064,0.101,0.096,0.445,0.082,0.039,0.026,0.108,0.093
+&quot;dep1&quot;,0,0.043,0,0.002,0.315,0.092,0.075,0.055,0.086
+&quot;dep2&quot;,0,-0.003,0.058,0,0.075,0.31,0.02,0.022,0.021
+&quot;dep3&quot;,0,0,0,0,0,0.054,0.331,0.135,0.061
+&quot;dep4&quot;,0,-0.09,0.023,0.038,0.032,0.022,0.042,0.281,0
+&quot;dep5&quot;,0,0,0,0.007,0.065,0.032,0.029,0.091,0.361</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L10-2_table2_edges_AR_CL.csv</code></div><pre class="out"><code>&quot;from&quot;,&quot;to&quot;,&quot;weight&quot;,&quot;type&quot;,&quot;from_en&quot;,&quot;to_en&quot;
+&quot;lone4&quot;,&quot;lone4&quot;,0.445319063048127,&quot;AR (autoregressive)&quot;,&quot;No one understands me&quot;,&quot;No one understands me&quot;
+&quot;lone2&quot;,&quot;lone2&quot;,0.434108545941859,&quot;AR (autoregressive)&quot;,&quot;Feeling left out&quot;,&quot;Feeling left out&quot;
+&quot;lone1&quot;,&quot;lone1&quot;,0.416188923585322,&quot;AR (autoregressive)&quot;,&quot;Lack of companionship&quot;,&quot;Lack of companionship&quot;
+&quot;dep5&quot;,&quot;dep5&quot;,0.361036910748107,&quot;AR (autoregressive)&quot;,&quot;Worthlessness&quot;,&quot;Worthlessness&quot;
+&quot;lone3&quot;,&quot;lone3&quot;,0.340520987733651,&quot;AR (autoregressive)&quot;,&quot;Feeling isolated&quot;,&quot;Feeling isolated&quot;
+&quot;dep3&quot;,&quot;dep3&quot;,0.330670962687377,&quot;AR (autoregressive)&quot;,&quot;Sleep problems&quot;,&quot;Sleep problems&quot;
+&quot;dep1&quot;,&quot;dep1&quot;,0.314978868530226,&quot;AR (autoregressive)&quot;,&quot;Depressed mood&quot;,&quot;Depressed mood&quot;
+&quot;dep2&quot;,&quot;dep2&quot;,0.30970223929101,&quot;AR (autoregressive)&quot;,&quot;Loss of interest&quot;,&quot;Loss of interest&quot;
+&quot;dep4&quot;,&quot;dep4&quot;,0.281114391670197,&quot;AR (autoregressive)&quot;,&quot;Fatigue&quot;,&quot;Fatigue&quot;
+&quot;dep3&quot;,&quot;dep4&quot;,0.135287407696926,&quot;CL (cross-lagged)&quot;,&quot;Sleep problems&quot;,&quot;Fatigue&quot;
+&quot;lone2&quot;,&quot;lone4&quot;,0.126850718941987,&quot;CL (cross-lagged)&quot;,&quot;Feeling left out&quot;,&quot;No one understands me&quot;
+… (61 rows total; showing first 11 rows)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L10-2_table3_centrality.csv</code></div><pre class="out"><code>&quot;node&quot;,&quot;label&quot;,&quot;community&quot;,&quot;outEI&quot;,&quot;inEI&quot;,&quot;bridgeOutEI&quot;,&quot;bridgeInEI&quot;
+&quot;lone1&quot;,&quot;Lack of companionship&quot;,&quot;Loneliness&quot;,0.252018541221287,0.0924124180328372,0.217228794209573,0
+&quot;lone2&quot;,&quot;Feeling left out&quot;,&quot;Loneliness&quot;,0.237401964330907,0.0550449324472284,0.0389965868193749,-0.0501450688070183
+&quot;lone3&quot;,&quot;Feeling isolated&quot;,&quot;Loneliness&quot;,-0.026619366109592,0.247523423718511,-0.0464668020416347,0.0812598583322024
+&quot;lone4&quot;,&quot;No one understands me&quot;,&quot;Loneliness&quot;,0.608272530840878,0.1980184450163,0.347184846010372,0.0477541844038989
+&quot;dep1&quot;,&quot;Depressed mood&quot;,&quot;Depression&quot;,0.352093982913651,0.349096123123199,0.0447787189896995,0.176650016289936
+&quot;dep2&quot;,&quot;Loss of interest&quot;,&quot;Depression&quot;,0.193092704604265,0.315697747467757,0.0548223080776954,0.116034477640364
+&quot;dep3&quot;,&quot;Sleep problems&quot;,&quot;Depression&quot;,0.250336258646136,0.191758218824389,0,0.0256089286947938
+&quot;dep4&quot;,&quot;Fatigue&quot;,&quot;Depression&quot;,0.0679054886382101,0.400462778127651,-0.0277912965172067,0.0972599919076043
+&quot;dep5&quot;,&quot;Worthlessness&quot;,&quot;Depression&quot;,0.224233308331918,0.308721326659787,0.00705924337889484,0.141390010464987</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L10-2_table4_bootstrap_edges.csv</code></div><pre class="out"><code>&quot;node1&quot;,&quot;node2&quot;,&quot;sample&quot;,&quot;q2.5&quot;,&quot;q97.5&quot;,&quot;prop0&quot;
+&quot;dep3&quot;,&quot;dep4&quot;,0.135287407696926,0.0503173527150596,0.21409737034934,0
+&quot;lone2&quot;,&quot;lone4&quot;,0.126850718941987,0.0586523108597283,0.199945530130673,0
+&quot;lone4&quot;,&quot;dep4&quot;,0.108400448113764,0.0107720932496399,0.180232984845688,0.018
+&quot;lone4&quot;,&quot;lone2&quot;,0.100957438322429,0.0225535348511834,0.177592405480133,0.008
+&quot;lone4&quot;,&quot;lone3&quot;,0.0961831245369471,0.0156157989386838,0.176186280322462,0.013
+&quot;lone4&quot;,&quot;dep5&quot;,0.0926492337109497,0.0138360850857382,0.161171815548667,0.011
+&quot;dep1&quot;,&quot;dep2&quot;,0.0920906023918615,0.00693920895198241,0.168617940569401,0.016
+&quot;dep5&quot;,&quot;dep4&quot;,0.0909795187499619,0.00215048679516385,0.16516873853952,0.022
+&quot;dep4&quot;,&quot;lone2&quot;,-0.0895258425789187,-0.161449829527099,-0.00112336283138925,0.023
+&quot;dep1&quot;,&quot;dep5&quot;,0.0855406097115411,0.00295267129950941,0.164541874942913,0.019
+&quot;lone1&quot;,&quot;dep2&quot;,0.0845292414903457,6.03505249692495e-06,0.149292175715633,0.025
+… (72 rows total; showing first 11 rows)</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L10-2_table5_CS.csv</code></div><pre class="out"><code>&quot;statistic&quot;,&quot;CS&quot;
+&quot;inExpectedInfluence&quot;,0.516
+&quot;outExpectedInfluence&quot;,0.205</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ Concept Check</span>Instant Check</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">The CS of out-EI is 0.20 and that of in-EI is 0.52. Which index's ranking can be interpreted (cautiously)?</p><ul class="opts"><li><button type="button" data-ok="0">A. Both</button><div class="ofb" hidden>out-EI is below 0.25, so its ranking cannot be interpreted.</div></li><li><button type="button" data-ok="1">B. Only in-EI</button><div class="ofb" hidden>Correct; in-EI is at the edge of 0.5, so word it cautiously.</div></li><li><button type="button" data-ok="0">C. Only out-EI</button><div class="ofb" hidden>The other way round: out-EI is the one below 0.25.</div></li><li><button type="button" data-ok="0">D. Neither</button><div class="ofb" hidden>in-EI is above 0.25 and can be interpreted cautiously; only out-EI cannot.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">What is a good way to check whether a project "runs in one step"?</p><ul class="opts"><li><button type="button" data-ok="0">A. Check that all figure and table files are in R/output/</button><div class="ofb" hidden>Complete files only show that they exist, not that they can be regenerated from the code.</div></li><li><button type="button" data-ok="1">B. Restart R, run only the main script (or render the Quarto file), and see whether you get all the results</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. Run the main script again in the current R session</button><div class="ofb" hidden>Plausible but wrong: the current session still holds variables from earlier manual runs, so a script that depends on them still runs, and the check misses the problem.</div></li><li><button type="button" data-ok="0">D. Run it several times in the current session and see whether the results are the same</button><div class="ofb" hidden>With a fixed seed the results are of course the same; the problem of leftover variables still goes unseen.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">lambda.1se keeps only 17 edges, with a correlation of 0.665 with the main analysis. This shows…</p><ul class="opts"><li><button type="button" data-ok="0">A. The main analysis is wrong</button><div class="ofb" hidden>The two rules just make different trade-offs (Lesson 7.2); neither one is "wrong".</div></li><li><button type="button" data-ok="1">B. Weak edges are sensitive to the λ rule; interpret only the strong edges kept under both rules</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. You should switch to lambda.1se for the main analysis</button><div class="ofb" hidden>Switching rules after seeing the results breaks the analysis plan.</div></li><li><button type="button" data-ok="0">D. The results are completely stable</button><div class="ofb" hidden>Going from 52 to 17 edges with a correlation of only 0.665 shows the weak edges are not stable.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">At a minimum, what must the caption of a network plot state?</p><ul class="opts"><li><button type="button" data-ok="0">A. Authors' names and affiliations</button><div class="ofb" hidden>Author information is on the first page of the paper, not in a caption.</div></li><li><button type="button" data-ok="1">B. Meaning of nodes and arrows, meaning of colors, whether autoregression is shown, threshold and maximum</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. Versions of R and qgraph</button><div class="ofb" hidden>Versions go in the Methods (Lesson 9.3); a caption states the conventions needed to read the figure.</div></li><li><button type="button" data-ok="0">D. How the sample was recruited</button><div class="ofb" hidden>Recruitment goes in the Methods; the caption can give N, but need not repeat recruitment details.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">An edge ranked high in the main analysis has p = .26 in the full procedure and is not kept. Under this course's interpretation rule, how do you report it?</p><ul class="opts"><li><button type="button" data-ok="0">A. Delete the edge from the results and report only the full procedure</button><div class="ofb" hidden>Deleting it amounts to picking results after the fact; the main analysis results must be reported in full.</div></li><li><button type="button" data-ok="0">B. Still report it as a main finding, because the main analysis is LASSO</button><div class="ofb" hidden>Plausible but wrong: its status as the main analysis cannot turn a non-robust edge into a main finding.</div></li><li><button type="button" data-ok="1">C. Report both results, describe the edge as "sensitive to the estimation method", and interpret it only as exploratory</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">D. Switch to the full procedure for the main analysis</button><div class="ofb" hidden>Switching the main analysis after seeing the results breaks the analysis plan.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">"No one understands me → Feeling left out" is kept by both analyses. Does that show it reflects a dynamic process within the person?</p><ul class="opts"><li><button type="button" data-ok="0">A. Yes, agreement between the two analyses is enough</button><div class="ofb" hidden>Agreement only shows that the result does not depend on the estimation method, not that it is a within-person process.</div></li><li><button type="button" data-ok="1">B. No. Both analyses are based on observed scores, and both mix stable between-person differences into the cross-lagged edges</button><div class="ofb" hidden>Correct: in the course data this edge's within-person truth is 0; it comes from confounding by the stable trait.</div></li><li><button type="button" data-ok="0">C. Yes, because its p < .001</button><div class="ofb" hidden>Significance answers "is it different from 0?", not "what kind of effect is it?".</div></li><li><button type="button" data-ok="0">D. No, because the CS of out-EI is too low</button><div class="ofb" hidden>CS has nothing to do with this question.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">The full procedure keeps far fewer cross-lagged edges than the main analysis. What is the best way to understand this?</p><ul class="opts"><li><button type="button" data-ok="0">A. The full procedure is wrong</button><div class="ofb" hidden>It is the approach recommended by the methods paper.</div></li><li><button type="button" data-ok="1">B. The two approaches make different trade-offs: the full procedure has few false positives but misses weak edges; LASSO the reverse</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. All the edges in the main analysis are false positives</button><div class="ofb" hidden>No: in the course data the main analysis recovers most of the real edges.</div></li><li><button type="button" data-ok="0">D. It shows the sample is too small</button><div class="ofb" hidden>N = 800 is not small; the two approaches simply use different criteria.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">In the simulated data, the estimated edges correlate 0.654 with the population target. This shows…</p><ul class="opts"><li><button type="button" data-ok="0">A. The method failed completely</button><div class="ofb" hidden>0.654 means the direction is broadly right, not a failure.</div></li><li><button type="button" data-ok="1">B. The direction is broadly right, but there is a fair amount of noise and false positives</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. The correlation with the within-person truth is also about 0.65</button><div class="ofb" hidden>Plausible but wrong: this compares with the population target; the correlation with the within-person truth is lower (0.569, Lesson 7.2), because the population target of a standard CLPN is itself not the within-person process.</div></li><li><button type="button" data-ok="0">D. The data contain errors</button><div class="ofb" hidden>There is no evidence of that; finite samples, false positives and shrinkage are enough to explain the gap.</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2><div class="exitem"><h4>Exercise 1: Run the full pipeline<span class="lvl">Hands-on</span></h4><p>Run R/L10-2.R (about 15–40 minutes on one core; you can set N_BOOTS to 200 for a trial run first) and check that 4 figures and 6 tables appear in <code>R/output/</code>. Record the number of edges in the main analysis, the 3 strongest edges, the two CS-coefficients, and the last line of the log, "Correlation with true population coefficients" (one for cross-lagged edges, one for autoregressive edges), and assess the method's performance in one sentence.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Your results should agree with "Actual results" on this page: 52 edges; dep3→dep4, lone2→lone4, lone4→dep4; CS in-EI = 0.52, out-EI = 0.20. The number of edges and the edge weights should be exactly the same (fixed seed); the bootstrap intervals and CS should also be exactly the same with the default single core; if you switch to parallel processing there will be small differences (the CS of in-EI swinging between the 0.44 and 0.52 steps is normal). Correlation with the true structure: 0.654 for cross-lagged edges, 0.779 for autoregressive edges. You could write: "The relative sizes of the autoregressive edges are largely recovered; the cross-lagged edges are broadly right in direction, but with considerable noise and false positives (lambda.min keeps 52 edges, while the population has only 36 cross-lagged edges with |B| ≥ 0.05)."</p></details></div>
+<div class="exitem"><h4>Exercise 2: Run the full procedure and classify<span class="lvl">Hands-on</span></h4><p>Run <code>R/L10-2b.R</code> after L10-2.R. (1) Record the Δχ², degrees of freedom and p-value of the equality test, plus AIC and BIC, and write down why you choose the final model; (2) use <code>L10-2b_edges.csv</code> to sort the 72 cross-lagged positions into the four groups on this page and count each; (3) find the edges among the 10 strongest of the main analysis that were not kept, and use the columns <code>lasso_t23</code> and <code>free_est</code> to explain why; (4) check whether the sums of edge weights in the two directions agree in direction across the two analyses.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>(1) Δχ²(76) = 84.69, p = 0.232; AIC constrained 53607.9 / unconstrained 53675.2, BIC constrained 54722.9 / unconstrained 55146.2; by the rule in the plan, the final model is the constrained model (each T1→T2 path set equal to T2→T3). (2) Kept by both: 16; only in the main analysis: 36; only in the full procedure: 0; the rest are in neither. (3) Not kept: "No one understands me → Fatigue" (lone4 → dep4; LASSO 0.108, SEM re-estimate 0.031, p = 0.264), "Worthlessness → Fatigue" (dep5 → dep4; LASSO 0.091, SEM re-estimate 0.039, p = 0.131). Take "No one understands me → Fatigue": the T2→T3 LASSO gives 0.000, while the unconstrained model's T1→T2 estimate is 0.109, so it appears in only one interval of data, and once the constrained model uses a coefficient shared by both intervals it is no longer significant. (4) Loneliness → depression: 0.56 and 0.30; depression → loneliness: 0.08 and −0.04; same direction. With the course data, the numbers in (1) should be the same as in the log of R/L7-5b.R in Lesson 7.5.</p></details></div>
+<div class="exitem"><h4>Exercise 3: Modify and extend<span class="lvl">Challenge</span></h4><p>Add one more item to the sensitivity part of L10-2.R: drop one item you consider to overlap in content, re-estimate, and compare the out-EI rankings.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Approach: <code>keep &lt;- setdiff(items, "dep2")</code>; rerun <code>clpn_estimate</code> with <code>X[, paste0(keep, "_t1")]</code> and <code>Y[, paste0(keep, "_t2")]</code>, then compute rowSums/colSums. Report: the number of edges before and after, and the correlation of out-EI for the nodes in both. Note: this analysis should be written into the analysis plan, or labeled "exploratory" in the report.</p></details></div>
+<div class="exitem"><h4>Exercise 4: Put the results in submission format<span class="lvl">Writing</span></h4><p>Following the "Figure and table conventions" on this page, write a complete caption for Figure 1.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Example: "Figure 1. T1→T2 cross-lagged panel network (N = 800). Nodes are items (orange = loneliness, blue = depression; change to match your legend); arrows show the predictive effect of T1 items on T2 items, controlling for all T1 items; blue edges are positive, red edges negative (L10-2.R uses theme = "colorblind", as in Lesson 7.3; in qgraph's default theme positive edges are green), and thicker edges have larger absolute values; autoregressive edges are not shown; spring layout."</p></details></div><h3>Integrative Exercise</h3><div class="box sw"><p>Hand in a Quarto project (code + output + figures and tables) that renders in one click. Minimum: 1 CLPN plot, 1 table of autoregressive and cross-lagged edges, 1 centrality plot, 1 bootstrap plot, 1 table of CS-coefficients, and 1 table comparing the main analysis with the full procedure edge by edge (R/L10-2b.R).</p></div><h3>Self-Check Questions</h3><ol><li>Could someone given your folder reproduce all the results in one click?</li><li>Do your conclusions depend on unstable indices?</li><li>Did the sensitivity analyses change your main conclusions?</li><li>Are the strongest edges of the main analysis still kept in the full procedure? How will you write about the edges that are not?</li></ol><p class='muted' style='font-size:.88rem'>Tip: Before starting the next lesson, answer each question above in one or two sentences without looking at the text.</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">Summary</span>Key Takeaways &amp; Further Reading</h2><ul><li>Pipeline: descriptives → estimation → edge table → network plot → centrality → bootstrap → CS → sensitivity → (comparison with truth).</li><li>Minimum deliverables: CLPN plot, AR+CL edge table, centrality plot, bootstrap plot, CS table.</li><li>Course data: 52 cross-lagged edges; CS in-EI 0.52, out-EI 0.20, so the out-EI ranking is not interpreted and the in-EI ranking is reported cautiously.</li><li>Required sensitivity analysis: the full procedure (R/L10-2b.R). Edges kept by both analyses are the main findings; edges found in only one analysis are described as "sensitive to the estimation method"; report effect sizes with unpenalized estimates.</li><li>Agreement between the two analyses does not make it a within-person process: both are based on observed scores.</li><li>Runs in one step: restart R and run only the main script; Quarto tests reproducibility by design.</li></ul><h3>Further Reading</h3><ul class="refs"><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">The published version of the CLPN method paper (June 2025), revised from the 2022 PsyArXiv preprint &#x27;Cross-lagged network models&#x27;, with McCarthy added as a co-author. The main reference for Module 7; cite this version where you can.</div></li><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">The standard tutorial on bootnet and stability checks (CS-coefficient); Modules 6 and 8.</div></li></ul></section>
+<nav class="pager"><a href="L10-1.html" class="pv"><small>Previous</small>10.1 Project Design, Data Preparation, and Analysis Plan</a><a href="L10-3.html" class="nx"><small>Next</small>10.3 Writing the Results and Presenting Them</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 10.2 · <a href="../index.html#L10-2">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

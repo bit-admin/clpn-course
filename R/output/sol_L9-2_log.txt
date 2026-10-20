@@ -1,0 +1,7 @@
+         主分析      加协变量
+1   dep3 → dep4   dep3 → dep4
+2 lone2 → lone4 lone2 → lone4
+3  lone4 → dep4  lone4 → dep4
+4 lone4 → lone2 lone4 → lone2
+5 lone4 → lone3 lone4 → lone3
+最强 5 条边是否完全相同： TRUE ；CL 边权相关 r = 0.997 ；最大差异 = 0.018 

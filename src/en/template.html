@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLPN From Scratch: Cross-Lagged Panel Network Analysis · Syllabus</title>
+<link rel="stylesheet" href="lessons/assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="lessons/assets/course.css">
+<style>
+__CSS__
+</style>
+</head>
+<body>
+<header class="sitebar">
+ <div class="sitebar-in">
+  <button id="menuBtn" type="button" aria-label="Open contents">Contents</button>
+  <label class="qwrap"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 10.2L13.2 13.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="Search lessons or terms, e.g. LASSO, partial correlation…" aria-label="Search lessons"></label>
+  <div class="tools"><button id="expand" type="button">Expand all</button><button id="collapse" type="button">Collapse all</button><a class="act langSwitch" href="../index.html">中文</a><button id="theme" type="button">Dark</button><button id="reset" type="button">Reset progress</button></div>
+ </div>
+</header>
+<div class="layout">
+<aside id="side">
+ <div class="brand">CLPN From Scratch<small>Cross-Lagged Panel Network Analysis · Syllabus</small></div>
+ <div class="overall">Progress: <b id="pText">0 / __NLES__</b> lessons<div class="bar"><i id="pBar"></i></div></div>
+ <nav>
+  <ul class="navtop"><li><a href="#materials">Materials</a></li><li><a href="#overview">Overview</a></li><li><a href="#method">Teaching Approach</a></li><li><a href="#pacing">Pacing</a></li><li><a href="#assessment">Assessment</a></li><li><a href="downloads/index.html">Download</a></li></ul>
+  <ul>__NAV__</ul>
+  <ul class="navtop" style="margin-top:10px"><li><a href="#readings">Readings</a></li><li><a href="#glossary">Glossary</a></li><li><a href="#setup">Software &amp; R Packages</a></li></ul>
+ </nav>
+</aside>
+<main>
+<div class="hero">
+ <h1>CLPN From Scratch</h1>
+ <p>Cross-Lagged Panel Network Analysis: From Zero to Your First Analysis</p>
+ <p>A self-paced course. Assumed starting point: you have taken introductory calculus and have not used R before. The course data are simulated and contain no real personal information.</p>
+ <div class="facts"><span>__NMOD__ modules</span><span>{{C:size}}</span><span>__SESS__ sessions · {{C:weeks}} weeks</span><span>about __HOURS__ hours of lessons + exercises</span></div>
+</div>
+
+<section class="card" id="materials">
+ <h2>Study Materials</h2>
+ <p>Start with the <a href="START_HERE.html">Study Guide</a>: how to use this site, in what order to study, and what to study each week. Then go to the <a href="downloads/index.html">Download page</a> for the course archive <code>clpn-course-en.zip</code>: extract it (you get a folder <code>clpn-course-en/</code>), double-click <code>index.html</code> to study offline, and double-click <code>clpn-course.Rproj</code> to run R.</p>
+ <div class="llm">
+  <h3>Study with an LLM</h3>
+  <div class="llmrow"><code id="llmPrompt">Read llm.md</code><button type="button" id="llmCopy">Copy prompt</button></div>
+ </div>
+ <div class="matgrid">
+  <a class="mat" href="START_HERE.html"><b>Study Guide</b><span>What is on the site, the order to study in, the {{C:weeks}}-week plan, how to study each lesson</span></a>
+  <a class="mat" href="materials/glossary.html"><b>Glossary</b><span>All core concepts by module, each with its Chinese term and the lesson that introduces it</span></a>
+  <a class="mat" href="materials/cheatsheets.html#r"><b>Cheat Sheet 1: R Basics</b><span>Objects, data frames, reading data, common errors</span></a>
+  <a class="mat" href="materials/cheatsheets.html#reg"><b>Cheat Sheet 2: Reading Regression Results</b><span>Coefficients, SE, p-values, R², standardization, LASSO</span></a>
+  <a class="mat" href="materials/cheatsheets.html#pipe"><b>Cheat Sheet 3: CLPN Workflow</b><span>10 steps from raw data to the network plot, centrality and stability</span></a>
+  <a class="mat" href="materials/cheatsheets.html#report"><b>Cheat Sheet 4: Reporting Checklist</b><span>What the Methods and Results sections must state</span></a>
+  <a class="mat" href="materials/formulas.html"><b>Formula Reference</b><span>Every formula in the course, explained symbol by symbol</span></a>
+  <a class="mat" href="materials/faq.html"><b>FAQ</b><span>Common questions about installing, running code, statistical concepts, interpretation and writing</span></a>
+  <a class="mat" href="materials/study_log.html"><b>Study Log</b><span>Fill in a record of each session and each week on the page; download as Markdown or print</span></a>
+  <a class="mat" href="materials/writing.html"><b>Writing Workshop</b><span>How to write Methods, Results and Limitations: four before/after examples, with rewriting tasks and rubrics</span></a>
+  <a class="mat" href="materials/reading.html"><b>Paper Reading Pack</b><span>Selected papers (DOI links only), each with reading questions and the matching lessons</span></a>
+  <a class="mat" href="materials/case_elsoc.html"><b>Real-Data Case</b><span>A CLPN of depressive symptoms in ELSOC. The analysis file comes with the course; run case_elsoc.R to reproduce it</span></a>
+  <a class="mat" href="materials/assessment.html"><b>Assessments</b><span>Pre-test, a quiz for each module, final exam, with rubrics</span></a>
+  <a class="mat" href="downloads/index.html"><b>Download</b><span>The whole course in one zip file: offline site, data, R scripts, exercise solutions</span></a>
+  <a class="mat" href="R/README.html"><b>Using the R Code</b><span>Installing R/RStudio, opening the project, running scripts, the order they depend on</span></a>
+  <a class="mat" href="data/data_dictionary.html"><b>Data Dictionary</b><span>What each variable in the simulated course data (N = 800, three waves) means</span></a>
+ </div>
+</section>
+
+<section class="card" id="overview">
+ <h2>Course Overview</h2>
+ <p><b>Course objectives.</b> When you finish this course, you will be able to:</p>
+ <ol>
+  <li>Explain in plain language what a cross-lagged panel network (CLPN) is, which questions it can answer and which it cannot;</li>
+  <li>Carry out a complete CLPN analysis in R on your own: data cleaning, regularized estimation, visualization, centrality analysis and stability checks;</li>
+  <li>Read published CLPN papers critically and spot common over-interpretations;</li>
+  <li>Write Methods and Results sections to academic standards.</li>
+ </ol>
+ <p><b>Why does social work need it?</b> Social work and psychology research often describes a person with a scale's "total score" (a total depression score, a total loneliness score). But in practice we deal with specific problems: not sleeping well, having no energy, feeling there is no one to talk to... A CLPN lets us look at the <b>item/symptom level</b> and across <b>time</b>: which early problem best predicts later change in the other problems? This gives clues for designing more targeted interventions, but what it gives is <b>predictive relationships</b>; testing causation still takes intervention or experimental studies.</p>
+ <h3>Learning Path</h3>
+ <div class="flow">__FLOW__</div>
+ <p class="muted" style="font-size:.88rem;margin-top:8px">The module numbers give the order of study: M1 Statistics and M2 R are studied side by side (alternating in Weeks 2–5), and M3 Regression comes after them; see "Recommended Pacing." Each lesson lists its prerequisite lessons as links.</p>
+ <h3>Modules at a Glance</h3>
+ <div class="tablewrap"><table><thead><tr><th>Module</th><th>Topic</th><th>Lessons</th><th>Study Hours</th></tr></thead><tbody>__MODSUM__</tbody></table></div>
+</section>
+
+<section class="card" id="method">
+ <h2>Teaching Approach</h2>
+ <p>Every lesson is an <b>interactive HTML page</b> (in the <code>lessons/</code> folder; click a lesson's "Open" button below to go in). All {{C:all}} lessons share the same layout and navigation and the same five-part structure:</p>
+ <div class="grid">
+  <div class="step"><b>① Intuition</b><p>First, social work scenarios, diagrams and small simulations you can drag give you a feel for "what this is doing"; no formulas yet.</p></div>
+  <div class="step"><b>② Essential Math</b><p>Only the 1–2 formulas you need to understand the idea, each symbol explained; any use of calculus is pointed out.</p></div>
+  <div class="step"><b>③ R Code</b><p>Copyable code with a comment on every line: run it on small data first, then on the course data; common errors are explained.</p></div>
+  <div class="step"><b>④ Concept Check</b><p>Multiple-choice, true/false and "predict the output" questions throughout the lesson, with instant feedback; a wrong answer gets a hint first rather than the answer.</p></div>
+  <div class="step"><b>⑤ Exercises &amp; Self-Assessment</b><p>Do each lesson's exercises as an R script, a Quarto report or a short piece of writing, then check yourself against the reference answers (code solutions in <code>R/solutions/</code>) and the scoring points; you can revise and redo them. Before starting the next lesson, answer the previous lesson's self-test questions without looking at the answers.</p></div>
+ </div>
+ <h3>Principles</h3>
+ <ul>
+  <li><b>Spiral:</b> the same idea (such as "controlling for other variables") comes back in multiple regression, partial correlation and the CLPN, one level deeper each time.</li>
+  <li><b>One running case:</b> the whole course uses simulated "loneliness ↔ depression" data whose true structure is known, and ends with your own analysis in the capstone project.</li>
+  <li><b>Say it before you compute it:</b> explain every result in one sentence you could say to a social work colleague, and avoid over-causal wording.</li>
+  <li><b>Getting stuck is allowed:</b> when you ask for help, include your code, the error message and your own guess (a minimal reproducible example); doing this is itself a skill to practice.</li>
+ </ul>
+ <p class="note">The checkbox to the left of each lesson on this page records your progress. It is saved in this browser's localStorage (this computer and this browser only; clearing browser data erases it).</p>
+</section>
+
+<section class="card" id="pacing">
+ <h2>Recommended Pacing</h2>
+ <p><b>Standard pace: {{C:weeks}} weeks, 3 sessions a week (4 in Weeks 14 and 15), 60–150 minutes per session</b>; plus about 2–3 hours of exercises a week, about 5–7 hours a week in total.</p>
+ <div class="tablewrap"><table><thead><tr><th>Week</th><th>Lessons</th><th>Focus</th></tr></thead><tbody>__PACE__</tbody></table></div>
+ <h3>Other Paces</h3>
+ <ul>
+  <li><b>Compressed (about 12 weeks):</b> 4 sessions a week, suited to concentrated study during a vacation; the module reviews are folded into the exercises; the optional advanced lessons are left out.</li>
+  <li><b>Relaxed (about 19 weeks):</b> 2–3 sessions a week, with a 1-week buffer/review week added after Weeks 5, 8 and 13; suited to studying alongside a semester of other courses. The buffer week after Week 13 can go to the optional advanced lessons {{C:optlist}}.</li>
+ </ul>
+ <p><b>Optional advanced lessons</b> ({{C:optlist}}, at the end of Module 7, marked "optional" in the syllabus and navigation) are not part of the standard pace above and do not count toward the sessions or hours: study them after Week 13 if you have time.</p>
+</section>
+
+<section class="card" id="assessment">
+ <h2>Assessment and Feedback</h2>
+ <div class="tablewrap"><table><thead><tr><th>Component</th><th>Weight</th><th>Description</th></tr></thead><tbody>
+  <tr><td>Lesson Exercises</td><td>30%</td><td>R scripts / Quarto reports / short writing, checked yourself against reference answers and scoring points; can be revised and redone</td></tr>
+  <tr><td>Concept Checks &amp; Self-Tests</td><td>10%</td><td>Quizzes in the lessons + reviewing the previous lesson's self-test questions before starting the next</td></tr>
+  <tr><td><a href="materials/assessment.html">Module Quizzes</a></td><td>10%</td><td>One after each module; scored as the average proportion correct on the first try; M1 + M2 in Week 5, M3 + M4 in Week 8</td></tr>
+  <tr><td>Peer Review of a Paper (9.2)</td><td>10%</td><td>A critical evaluation of a published CLPN paper</td></tr>
+  <tr><td><a href="materials/assessment.html">Final Exam</a></td><td>10%</td><td>After Lesson 10.3: auto-graded questions, short interpretation questions, small R tasks</td></tr>
+  <tr><td>Capstone Project (M10)</td><td>30%</td><td>Reproducibility 25% · Correct analysis 30% · Writing up the results 25% · Limitations and honest interpretation 10% · Presentation 10%</td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.88rem">These weights are only for tracking your own progress and feedback, not formal credit. The <a href="materials/assess_pre.html">pre-test</a> is ungraded; taking it once before you start is recommended but optional.</p>
+ <!-- Maintenance note: Assessment weights are defined exclusively in this table; to adjust weights, modify only this section (#assessment in src/en/template.html). -->
+</section>
+
+__MODULES__
+
+<section class="card" id="readings">
+ <h2>Readings</h2>
+ <p class="note"><b>About the Wysocki et al. CLPN papers:</b> the 2022 version is a PsyArXiv preprint titled <i>Cross-Lagged Network Models</i>, by Wysocki, van Bork, Cramer and Rhemtulla; the published version is the 2025 paper <i>Cross-lagged panel networks</i> (<i>advances.in/psychology</i>, with McCarthy added as a co-author). Cite the published version where you can. Note that the full procedure the published paper recommends is "merge redundant items → select edges with LASSO → re-estimate without a penalty in lavaan → in-/out-prediction"; the main line of this course (Lessons 7.1–7.4, M8, M10) is the simplified "LASSO-only" version common in applied papers. The full procedure is in Lesson 7.5 (<code>R/L7-5b.R</code>). In your own paper, state honestly which one you used.</p>
+ __REFS__
+</section>
+
+<section class="card" id="glossary">
+ <h2>Glossary</h2>
+ <p class="muted">Collected automatically from the "Core Concepts" of every lesson, each linked to the lesson that teaches it (it may have appeared earlier as a preview). You can also use the search box at the top of the page.</p>
+ <div class="tablewrap"><table><thead><tr><th>Term</th><th>Taught in</th></tr></thead><tbody>__GLOSS__</tbody></table></div>
+</section>
+
+<section class="card" id="setup">
+ <h2>Software and R Packages</h2>
+ <div class="tablewrap"><table><thead><tr><th>Tool / package</th><th>Used for</th><th>First used</th></tr></thead><tbody>
+  <tr><td>R + RStudio (Posit)</td><td>Statistical computing environment and editor (both free)</td><td>2.1</td></tr>
+  <tr><td>tidyverse (dplyr, tidyr, ggplot2, readr)</td><td>Data manipulation, reshaping, plotting</td><td>2.3</td></tr>
+  <tr><td>readxl, haven</td><td>Reading Excel and SPSS files</td><td>2.4</td></tr>
+  <tr><td>psych</td><td>Descriptive statistics, correlations</td><td>2.5</td></tr>
+  <tr><td>Quarto / rmarkdown</td><td>Reproducible reports</td><td>2.6</td></tr>
+  <tr><td>mice</td><td>Multiple imputation</td><td>4.3</td></tr>
+  <tr><td>lavaan</td><td>CLPM / RI-CLPM (structural equation modeling)</td><td>5.2</td></tr>
+  <tr><td>glmnet</td><td>LASSO regression (the core of CLPN estimation)</td><td>3.5 / 7.2</td></tr>
+  <tr><td>qgraph</td><td>Network visualization and centrality</td><td>6.1</td></tr>
+  <tr><td>bootnet</td><td>Network estimation and bootstrap stability checks</td><td>6.4 / 8.2</td></tr>
+  <tr><td>networktools</td><td>Bridge centrality, expected influence</td><td>6.5</td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.88rem">The "R Code Preview" for each lesson is only a few lines for illustration; the complete, runnable code is in the <code>R/</code> folder (one script per lesson, all actually run on R 4.5, with output in <code>R/output/</code>).</p>
+</section>
+<p class="copy" style="text-align:center;margin-top:28px">__COPYRIGHT__</p>
+</main>
+</div>
+<script>
+__JS__
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+流失率 = 0.2 
+T2 抑郁均值：完整数据 3.78 ；列表删除（listwise deletion）后 3.06 （被低估）
+r(T1孤独, T2抑郁)：完整 0.296 ；列表删除 0.225 
+
+
+	Welch Two Sample t-test
+
+data:  dep_t1 by dropout
+t = -28.119, df = 227.17, p-value < 2.2e-16
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -6.614408 -5.748092
+sample estimates:
+mean in group 0 mean in group 1 
+        2.60000         8.78125 
+
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  table(dat$gender, dat$dropout)
+X-squared = 2.0597, df = 1, p-value = 0.1512
+
+
+多重插补后 T2 抑郁均值 ≈ 3.73 （更接近真实值）
+
+FIML (a) 只有 dep_t2：
+     lhs op   est
+2 dep_t2 ~1 3.061
+FIML (b) 纳入 T1 抑郁、T1 孤独：
+      lhs   est    se
+7  dep_t2 3.780 0.134
+8  dep_t1 3.836 0.120
+9 lone_t1 8.804 0.109
+FIML 估计的 r(T1 孤独, T2 抑郁) = 0.302 
+
+回归 dep_t2 ~ dep_t1 + lone_t1 的系数（完整数据 vs 列表删除）：
+         (Intercept) dep_t1 lone_t1
+完整数据       0.505  0.534   0.140
+列表删除       0.566  0.541   0.129

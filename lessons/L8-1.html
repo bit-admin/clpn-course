@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.1 Bootstrap 的思想：用样本模拟“再做一次研究” · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L8-1.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="8.1" style="--c:#64748b">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L8-1">CLPN 课程大纲</a><span class="crumb">M8 稳定性与准确性检验 / 8.1</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L8-1.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L8-1.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details open style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html" class="cur" aria-current="page"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 8 · Stability &amp; Accuracy · 第 8.1 课</div>
+<h1>Bootstrap 的思想：用样本模拟“再做一次研究”</h1>
+<div class="facts"><span>课文学习 1 小时 30 分钟</span><span>先修：<a href="L1-5.html">1.5 抽样、标准误与置信区间</a>、<a href="L2-5.html">2.5 用 R 做描述统计、相关与回归</a></span><span>配套脚本：<a href="../R/L8-1.R">R/L8-1.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>理解非参数 bootstrap：有放回地重抽个案</li><li>用 bootstrap 为均值或相关系数构建区间</li><li>理解为什么网络分析特别需要准确性检验</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>自助法</b><span class="en">bootstrap</span></li><li><b>有放回抽样</b><span class="en">resampling with replacement</span></li><li><b>非参数 bootstrap</b><span class="en">nonparametric bootstrap</span></li><li><b>百分位区间</b><span class="en">percentile interval</span></li><li><b>抽样变异</b><span class="en">sampling variability</span></li></ul>
+<p>到目前为止，每个结论都基于手头这一份样本的一次估计。如果再招募 800 个类似的人重做一次研究，结果会变多少？现实中很难真的重做上千次调查，但可以用 bootstrap 在电脑上基于现有样本“模拟重做”。本课先在相关系数上理解它的原理，为 8.2–8.3 打基础。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>问题：一个数字有多可靠？</h3>
+<p>课程数据中，T1 孤独总分与 T2 抑郁总分的相关 r = 0.296。如果换一批人，可能是 0.25，也可能是 0.34。这种“换一批人就会变”的程度叫 <span class="term">抽样变异<span class="en">（sampling variability）</span></span>。M1 中我们用“标准误”和“置信区间”描述它（复习 <a href="L1-5.html">1.5 抽样、标准误与置信区间</a>），但那需要公式，而网络的边、中心性没有现成的简单公式。</p>
+<h3>Bootstrap 的思路：把样本当作总体</h3>
+<p><span class="term">自助法<span class="en">（bootstrap）</span></span>（名字来自“拽着自己的鞋带把自己提起来”）的想法是：</p>
+<ol><li>我们手头的 800 人样本，是对总体最好的“缩影”。</li>
+<li>从这 800 人中<b>有放回地</b>随机抽 800 次，得到一个“新样本”（<span class="term">有放回抽样<span class="en">（resampling with replacement）</span></span>）。有的人被抽到两三次，有的人一次也没抽到（平均约 37% 的人没被抽到）。</li>
+<li>在新样本上重新计算我们关心的统计量（相关、边权重、中心性……）。</li>
+<li>重复 1000 次，得到 1000 个值。它们的分布就近似于“如果真的重做 1000 次研究”会看到的分布。</li></ol>
+<p>取这 1000 个值的第 2.5 和第 97.5 百分位数，就是 95% <span class="term">百分位区间<span class="en">（percentile interval）</span></span>；它们的标准差就是 bootstrap 标准误。因为不需要假设数据服从某种分布，这叫 <span class="term">非参数 bootstrap<span class="en">（nonparametric bootstrap）</span></span>。</p>
+<p>动手体验：先点“抽 1 次”看看有放回抽样长什么样，再“运行 1000 次”。然后把 N 调到 20 或 400 重新生成样本，比较区间宽度。</p>
+<div class="widget w2" data-widget="boot"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>为什么要“有放回”？</h3>
+<p>如果不放回地抽 800 次，你只会得到原来那 800 个人，顺序不同而已，统计量完全一样，没有任何变异。有放回抽样让每个新样本在“谁被重复、谁被漏掉”上不同，从而模拟了“换一批人”的效果。</p>
+<h3>Bootstrap 区间宽说明什么？</h3>
+<p>区间宽 = 统计量对样本很敏感 = 估计不精确。原因可能是样本量小、效应本身弱、或者统计量本身不稳定（如介数中心性）。区间窄并不代表“正确”，只代表“精确”（重复研究会得到相近的数字）。</p>
+<h3>Bootstrap 不能做什么？</h3>
+<div class="box warnbox"><b class="bt">Bootstrap 无法修复有偏的样本。</b><p>如果你的样本全部来自一家社区服务中心的服务对象，bootstrap 只是在这批人的范围里反复抽样。它告诉你“在这类人中估计有多精确”，不能告诉你“推广到全区居民是否成立”。它同样无法修复测量误差、混杂或模型设定错误。</p></div>
+<h3>为什么网络分析特别需要准确性检验？</h3>
+<p>先数一数要估计多少个参数。一个 9 节点 CLPN 有 9 × 9 = 81 个滞后系数（9 条自回归加 72 条交叉滞后边）；一个 16 节点 GGM 有 16 × 15 / 2 = 120 条可能的边；而样本量通常只有几百。Epskamp、Borsboom 与 Fried（2018）讨论的是横断面网络（GGM），他们的论点是：参数这么多、样本这么少，每个参数都有不小的抽样变异，而网络图并不显示这种不确定性。CLPN 的参数更多，这个论点同样适用。每个参数都有抽样变异，再加上 LASSO 的“选或不选”，网络图看起来“很有结构”，但其中许多细节可能是偶然的。读者看图时会自然地关注最粗的边和“最中心”的节点；如果它们换一批人就变了，结论就站不住。因此，现在的网络论文几乎都要求报告：边权重的 bootstrap 区间（8.2）和中心性的稳定性（8.3）。</p>
+
+<h3>一个社工研究中的例子</h3>
+<p>假设你在社区评估一个减少孤独的项目，样本 120 人，项目前后孤独得分的平均改善为 1.2 分。这个 1.2 有多可靠？如果手边没有现成的公式（比如你关心的是改善量的<b>中位数</b>，或者两个改善量的比值），bootstrap 给了一个通用的做法：从这 120 人中有放回地抽 120 人，算一次改善量，重复 1000 次，看这 1000 个改善量分布在什么范围。如果 95% 都落在 0.6 到 1.8 之间，你就可以向资助方报告：“平均改善约 1.2 分（95% bootstrap 区间 0.6–1.8）。”这里的数字只是示意。不过要记住，这个区间回答的是“换一批同类参与者，结果会差多少”，回答不了“改善是不是项目带来的”。后者需要对照组。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>bootstrap 次数（B）越多，区间就越窄吗？</summary><p>不会。B 决定的是蒙特卡罗误差：只做 200 次时，换一个种子，区间端点可能在第二位小数上变动；做 1000 次以上，端点就稳定了。区间本身有多宽，由样本量 N 和统计量的抽样变异决定，B 再大也不会让它变窄。所以 B 太小的问题是“端点不可靠”，不是“区间太宽”；B 够大以后再加，只是多花时间。估计标准误时几百次通常够用；估计 2.5% 和 97.5% 分位数时用 1000 次或更多。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>设原始样本 \(\{z_1,\dots,z_N\}\)（每个 \(z_i\) 是一个人的全部数据），统计量 \(\hat\theta = s(z_1,\dots,z_N)\)。</p>
+<div class="mathbox">\[\text{第 } b \text{ 次：}\ z^{*(b)}_1,\dots,z^{*(b)}_N \overset{\text{有放回}}{\sim} \{z_1,\dots,z_N\},\qquad \hat\theta^{*(b)}=s\big(z^{*(b)}_1,\dots,z^{*(b)}_N\big)\]</div><div class="mathbox">\[\widehat{\mathrm{SE}}_{\text{boot}}=\sqrt{\frac{1}{B-1}\sum_{b=1}^{B}\big(\hat\theta^{*(b)}-\bar\theta^{*}\big)^2},\qquad \mathrm{CI}_{95\%}=\big[\hat\theta^{*}_{(2.5\%)},\ \hat\theta^{*}_{(97.5\%)}\big]\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(\hat\theta\)</td><td>在原始样本上算出的统计量（例如 r = 0.296）</td></tr><tr><td>\(z^{*(b)}_i\)</td><td>第 b 个 bootstrap 样本中的第 i 个人（星号 * 表示“重抽来的”）</td></tr><tr><td>\(B\)</td><td>bootstrap 次数（常用 1000；注意与 CLPN 矩阵 B 区分）</td></tr><tr><td>\(\bar\theta^{*}\)</td><td>B 个 bootstrap 统计量的平均</td></tr><tr><td>\(\hat\theta^{*}_{(2.5\%)}\)</td><td>B 个 bootstrap 统计量的第 2.5 百分位数</td></tr></table>
+<h4>“约 37% 的人没被抽到”从哪来？</h4>
+<p>某个人在一次抽取中没被抽到的概率是 \(1-1/N\)，N 次都没被抽到的概率是 \((1-1/N)^N\)。当 N 很大时，它趋近于 \(e^{-1}\approx 0.368\)，即微积分中的极限 \(\lim_{N\to\infty}(1-1/N)^N=1/e\)。</p>
+<h4>与公式法比较</h4>
+<p>相关系数有一个经典的公式区间（Fisher z 变换）：\(z=\tanh^{-1}(r)\)，\(\mathrm{SE}=1/\sqrt{N-3}\)，区间 \(\tanh(z\pm1.96\,\mathrm{SE})\)。课程数据（R/L8-1.R）：bootstrap 区间 [0.234, 0.360]，<code>cor.test()</code> 区间 [0.232, 0.358]，几乎一样；bootstrap 标准误 0.033。当公式存在时两者通常一致；bootstrap 的价值在于没有公式的地方（例如 LASSO 网络的边和中心性）。</p>
+
+<h3>完整例题：用 5 个数手工做一次 bootstrap</h3>
+<p>样本只有 5 个孤独总分：6、8、9、11、16，样本均值 = 50/5 = 10。我们想知道“均值 10”有多可靠。</p>
+<ol><li><b>有放回地抽 5 个，组成一个 bootstrap 样本。</b>例如抽到 8、8、11、16、6（8 被抽中两次，9 一次也没抽到），均值 = 49/5 = 9.8。</li>
+<li><b>再抽一次：</b>9、16、16、11、9，均值 = 61/5 = 12.2。</li>
+<li><b>再抽一次：</b>6、6、8、9、11，均值 = 40/5 = 8.0。</li>
+<li><b>重复 1000 次，</b>得到 1000 个 bootstrap 均值。它们的标准差就是均值的 bootstrap 标准误，第 2.5 和第 97.5 百分位就是 95% 的百分位区间。</li></ol>
+<p>注意第 2 次抽样中 16 出现了两次，均值被拉到 12.2。样本中有极端值时，bootstrap 分布会变宽、变得不对称，区间也就反映出这个估计受少数个案影响有多大。在 R 中，这只需要一行：<code>replicate(1000, mean(sample(x, replace = TRUE)))</code>。</p>
+<p>样本只有 5 个人时，bootstrap 的结果并不可靠，因为样本本身太不像总体了。bootstrap 的前提是“样本能较好地代表总体”，样本越大越成立。课程数据的 N = 800，这个前提基本满足。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L8-1.R 的核心部分（不依赖任何包，约 15 行）</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+dat &lt;- read_course_data()
+x &lt;- rowSums(dat[, paste0(lone_items, &quot;_t1&quot;)])     # T1 孤独总分
+y &lt;- rowSums(dat[, paste0(dep_items,  &quot;_t2&quot;)])     # T2 抑郁总分
+n &lt;- length(x)
+set.seed(81)
+B &lt;- 1000
+r_boot &lt;- numeric(B)                       # 先准备装 1000 个结果的空向量
+for (b in 1:B) {
+  idx &lt;- sample(1:n, n, replace = TRUE)    # 有放回地抽 n 个个案编号
+  r_boot[b] &lt;- cor(x[idx], y[idx])         # 在“新样本”上重新计算相关
+}
+quantile(r_boot, c(.025, .975))            # 百分位区间
+sd(r_boot)                                 # bootstrap 标准误
+cor.test(x, y)$conf.int                    # 与公式法比较
+hist(r_boot, breaks = 40); abline(v = cor(x, y), lwd = 3)</code></pre></div>
+<p><b>关键：</b><code>sample(1:n, n, replace = TRUE)</code> 就是“有放回抽 n 个编号”；<code>x[idx]</code> 和 <code>y[idx]</code> 用同一组编号取值，保证每个人的 x、y 一起被抽中（重抽的是“人”，不是单个数字）。</p>
+<div class="codeblk"><div class="ctitle">实际输出：R/output/L8-1_log.txt</div><pre class="out"><code>样本相关 r = 0.296
+bootstrap 95% 百分位区间 = [ 0.234 , 0.36 ]
+cor.test() 的 95% CI       = [ 0.232, 0.358 ]
+bootstrap 标准误 = 0.0328</code></pre></div><div class="box warnbox"><b class="bt">自己写 bootstrap 时的常见错误</b><ul>
+<li><b>忘了 <code>replace = TRUE</code>。</b><code>sample(n, n)</code> 默认不放回，只会把顺序打乱，每次都得到完全相同的估计，区间宽度为 0。</li>
+<li><b>对 x 和 y 分别抽样。</b>算相关时，必须抽“人”（行号），再用同一组行号取 x 和 y：<code>idx &lt;- sample(n, n, replace = TRUE); cor(x[idx], y[idx])</code>。分别抽样会破坏配对，相关会接近 0。</li>
+<li><b>循环里没有预先分配向量。</b>写 <code>r_boot &lt;- c(r_boot, 新值)</code> 能运行，但很慢。先写 <code>r_boot &lt;- numeric(1000)</code>，再逐个填入。</li>
+<li><b>B 太小。</b>算标准误时 B = 200 也许够用，但要估计 2.5% 和 97.5% 分位数，B 至少应为 1000。bootnet 的边权 bootstrap 一般也用 1000 次以上。</li>
+<li><b>不设种子。</b>不设种子，每次运行的区间都略有不同。设置种子并报告 B，读者才能重现你的结果。</li>
+<li><b>把 bootstrap 区间当作“抽样以外误差”的保护。</b>bootstrap 只模拟“换一批同样来源的人”，解决不了样本偏差、测量误差和混杂。</li></ul></div><p><b>小结一下顺序：</b>先问“我想知道哪个数字的可靠性”，再确定“重抽的单位是人”，然后决定 B 和种子，最后报告区间并说明它能回答和不能回答的问题。</p><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L8-1.R</code>（27 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L8-1.R  Bootstrap 的思想：用样本模拟“再做一次研究”  (The nonparametric bootstrap)
+# 不用任何包，约 15 行代码对一个相关系数做 1000 次 bootstrap
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+log_open(&quot;L8-1_log.txt&quot;)
+dat &lt;- read_course_data()
+x &lt;- rowSums(dat[, paste0(lone_items, &quot;_t1&quot;)]); y &lt;- rowSums(dat[, paste0(dep_items, &quot;_t2&quot;)])
+n &lt;- length(x)
+set.seed(81)
+B &lt;- 1000
+r_boot &lt;- numeric(B)                        # 先准备一个装 1000 个结果的空向量
+for (b in 1:B) {
+  idx &lt;- sample(1:n, n, replace = TRUE)     # 有放回地（with replacement）抽 n 个个案编号
+  r_boot[b] &lt;- cor(x[idx], y[idx])          # 在“新样本”上重新计算相关
+}
+ci &lt;- quantile(r_boot, c(.025, .975))       # 百分位区间（percentile interval）
+cat(&quot;样本相关 r =&quot;, round(cor(x, y), 3), &quot;\n&quot;)
+cat(&quot;bootstrap 95% 百分位区间 = [&quot;, round(ci[1], 3), &quot;,&quot;, round(ci[2], 3), &quot;]\n&quot;)
+cat(&quot;cor.test() 的 95% CI       = [&quot;, paste(round(cor.test(x, y)$conf.int, 3), collapse = &quot;, &quot;), &quot;]\n&quot;)
+cat(&quot;bootstrap 标准误 =&quot;, round(sd(r_boot), 4), &quot;\n&quot;)
+png_open(&quot;L8-1_boot_r.png&quot;, 1500, 1100)
+hist(r_boot, breaks = 40, col = &quot;lightblue&quot;, main = &quot;相关系数的 1000 次 bootstrap 分布&quot;,
+     xlab = &quot;r（T1 孤独总分, T2 抑郁总分）&quot;)
+abline(v = ci, col = &quot;red&quot;, lwd = 2, lty = 2); abline(v = cor(x, y), lwd = 3)
+invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L8-1_boot_r.png" alt="L8-1_boot_r.png" loading="lazy"><figcaption>图：<code>R/output/L8-1_boot_r.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L8-1_log.txt</code></div><pre class="out"><code>样本相关 r = 0.296 
+bootstrap 95% 百分位区间 = [ 0.234 , 0.36 ]
+cor.test() 的 95% CI       = [ 0.232, 0.358 ]
+bootstrap 标准误 = 0.0328 </code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">为什么 bootstrap 要“有放回”地抽样？</p><ul class="opts"><li><button type="button" data-ok="0">A. 为了让 bootstrap 样本比原样本大，提高估计精度</button><div class="ofb" hidden>每个 bootstrap 样本仍是 N 人；bootstrap 不会让估计更精确，只描述它有多精确。</div></li><li><button type="button" data-ok="1">B. 不放回只会得到原样本的重排，统计量不变；有放回才能模拟“换一批人”</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 为了保证每个人至少被抽到一次</button><div class="ofb" hidden>恰恰相反：有放回时平均约 37% 的人一次也没被抽到，样本之间的差异正来自这里。</div></li><li><button type="button" data-ok="0">D. 为了让 bootstrap 分布服从正态分布</button><div class="ofb" hidden>bootstrap 不假设、也不强加任何分布形状；百分位区间直接取分位数，分布偏斜时照样可用。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">bootstrap 区间很宽说明什么？</p><ul class="opts"><li><button type="button" data-ok="0">A. 估计更可靠：区间覆盖的范围大，更可能包含总体值</button><div class="ofb" hidden>把“覆盖”与“精确”混为一谈：区间宽说明换一批人估计会变很多，精确度低。</div></li><li><button type="button" data-ok="1">B. 估计对样本很敏感、不精确</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 效应一定为 0</button><div class="ofb" hidden>区间宽只说明不精确；即使区间包含 0，也只是不能排除 0，不等于效应为 0。</div></li><li><button type="button" data-ok="0">D. bootstrap 次数太少；增加到 5000 次，区间就会明显变窄</button><div class="ofb" hidden>似是而非：增加次数只减小蒙特卡罗误差，让端点更稳定；区间宽度由样本量和统计量本身的变异决定，不会因此变窄。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">bootstrap 能解决样本本身有偏的问题吗？</p><ul class="opts"><li><button type="button" data-ok="0">A. 能：bootstrap 不依赖分布假设</button><div class="ofb" hidden>“不依赖分布假设”指的是抽样分布的形状，与样本能否代表总体无关。</div></li><li><button type="button" data-ok="1">B. 不能：它只在已有样本范围内重抽</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 能，只要 bootstrap 次数够多</button><div class="ofb" hidden>次数多只减小蒙特卡罗误差，重抽的仍是同一批有偏的人。</div></li><li><button type="button" data-ok="0">D. 能，只要样本量够大</button><div class="ofb" hidden>样本大只让区间变窄，区间围绕的仍是有偏样本的估计；这种偏差不随 N 消失。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在 bootstrap 中，x[idx] 与 y[idx] 必须用同一组 idx，是因为？</p><ul class="opts"><li><button type="button" data-ok="0">A. 节省内存：只需生成一组随机编号</button><div class="ofb" hidden>内存不是原因；多生成一组编号只多一个向量，真正的问题是配对被拆散。</div></li><li><button type="button" data-ok="1">B. 要重抽的是“人”，必须保持每个人的 x 与 y 配对</button><div class="ofb" hidden>正确：分开抽会破坏两者的关系，相关会趋近 0。</div></li><li><button type="button" data-ok="0">C. 这样得到的区间更窄</button><div class="ofb" hidden>区间宽窄不是目的；分开抽样得到的是 0 附近的分布，回答的已经不是同一个问题。</div></li><li><button type="button" data-ok="0">D. cor() 要求两个向量的下标相同</button><div class="ofb" hidden>cor() 只要求两个向量长度相同，下标不同也能算，只是结果没有意义。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">N 很大时，一个人在 bootstrap 样本中一次都没被抽到的概率约为？</p><ul class="opts"><li><button type="button" data-ok="0">A. 0</button><div class="ofb" hidden>不放回地抽 N 次才会人人都在；有放回时总有一部分人缺席。</div></li><li><button type="button" data-ok="1">B. 0.368</button><div class="ofb" hidden>正确：(1 − 1/N)^N → 1/e。</div></li><li><button type="button" data-ok="0">C. 0.5</button><div class="ofb" hidden>没有依据：每次抽中某人的概率是 1/N，N 次都没抽中的概率是 (1 − 1/N)^N，不是一半。</div></li><li><button type="button" data-ok="0">D. 0.632</button><div class="ofb" hidden>0.632 是“至少被抽到一次”的概率，即 1 − 0.368。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：15 行 bootstrap<span class="lvl">动手</span></h4><p>不看上面的代码，自己写出对相关系数做 1000 次 bootstrap 的 R 代码，画出分布并求 95% 区间，与 <code>cor.test()</code> 比较。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>核心四步：<code>r_boot &lt;- numeric(1000)</code> → <code>for</code> 循环中 <code>idx &lt;- sample(n, n, replace = TRUE)</code> → <code>r_boot[b] &lt;- cor(x[idx], y[idx])</code> → <code>quantile(r_boot, c(.025, .975))</code>。课程数据用 <code>R/L8-1.R</code> 的种子得到 [0.234, 0.360]；参考答案 <code>R/solutions/L8-1_solution.R</code> 用种子 2024 得到 [0.232, 0.359]，与 cor.test 的 [0.232, 0.358] 几乎一致。换种子结果会在第三位小数上略有不同。这种随种子而变的差异叫蒙特卡罗误差（Monte Carlo error）：它来自只做了有限次（B 次）重抽，B 越大越小；它与样本量决定的抽样变异是两回事。</p></details></div>
+<div class="exitem"><h4>练习 2：错误示范<span class="lvl">理解</span></h4><p>如果写成 <code>cor(sample(x, replace = TRUE), sample(y, replace = TRUE))</code>，bootstrap 分布会是什么样？为什么？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>x 与 y 被分别打乱，配对关系被破坏，bootstrap 相关会集中在 0 附近（大约在 ±0.07 之间）。这实际上接近“置换检验”中的零分布（严格的置换检验是把其中一列不放回地打乱），而不是对 r 的抽样分布的估计。</p></details></div>
+<div class="exitem"><h4>练习 3：样本量与区间宽度<span class="lvl">理解</span></h4><p>在本页演示中，固定 ρ = 0.3，分别用 N = 50、200、400 运行 1000 次 bootstrap，记录区间宽度。宽度与 N 的关系大致如何？再用一两句话说明：这和“网络分析特别需要准确性检验”有什么关系？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>宽度大约与 \(1/\sqrt{N}\) 成正比：N 从 50 到 200（4 倍），宽度约减半；参考答案脚本 <code>R/solutions/L8-1_solution.R</code>（每种 N 重复 20 个样本取平均）得到：N = 50 时 0.466，N = 200 时 0.248，N = 400 时 0.171；宽度 × √N 都在 3.3–3.5 左右，几乎不变（具体因随机样本而异）。这就是为什么网络研究需要较大样本。联系网络：一个 9 节点 CLPN 要同时估计 81 个系数，每个系数的区间宽度都服从同样的 1/√N 规律，而交叉滞后边往往只有 0.05–0.15，区间稍宽就会跨过 0；再加上 LASSO 每次重抽都可能“选或不选”某条边，单次估计出的图很容易显得比实际更确定。所以要用 8.2 的区间和 8.3 的 CS 系数检查。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>不用任何包，自己写约 15 行 R 代码对一个相关系数做 1000 次 bootstrap，画出分布并求 95% 区间，与 cor.test() 的结果比较。</p></div><h3>自测问题</h3><ol><li>为什么要“有放回”地抽样？</li><li>bootstrap 区间很宽说明什么？</li><li>bootstrap 能解决样本本身有偏的问题吗？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>Bootstrap = 从样本中有放回重抽 N 个“人”，重复计算统计量，用分布描述抽样变异。</li><li>百分位区间 = 第 2.5 与 97.5 百分位；bootstrap SE = 分布的标准差。</li><li>约 37%（1/e）的人在每个 bootstrap 样本中缺席。</li><li>Bootstrap 不能修复样本偏差、测量误差或混杂。</li><li>网络参数多、样本有限 → 必须做准确性与稳定性检验。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">bootnet 与稳定性检验（CS 系数）的标准教程，模块 6、8。</div></li></ul></section>
+<nav class="pager"><a href="L7-7.html" class="pv"><small>上一课</small>7.7 组间比较：两组的 CLPN 一样吗？</a><a href="L8-2.html" class="nx"><small>下一课</small>8.2 边权重准确性：bootnet 与自定义 CLPN 估计函数</a></nav>
+<p class="foot">CLPN 从零开始 · 第 8.1 课 · <a href="../index.html#L8-1">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

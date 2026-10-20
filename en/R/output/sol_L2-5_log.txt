@@ -1,0 +1,49 @@
+mean = 10  var = 6.8  sd = 2.608 
+
+                 n  mean    sd  min   max  skew
+loneliness     800  8.80  3.08  4.0  16.0  0.36
+depression     800  3.84  3.40  0.0  15.0  0.85
+social_support 800  3.36  0.79  1.0   5.0 -0.14
+sleep          800  6.81  1.02  3.1   9.9 -0.12
+life_sat       800 64.32 14.81 22.0 100.0 -0.09
+               loneliness depression social_support sleep life_sat
+loneliness           1.00       0.31          -0.42 -0.12    -0.33
+depression           0.31       1.00          -0.18 -0.29    -0.25
+social_support      -0.42      -0.18           1.00  0.05     0.35
+sleep               -0.12      -0.29           0.05  1.00     0.06
+life_sat            -0.33      -0.25           0.35  0.06     1.00
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)   0.8067     0.3459  2.3323   0.0199
+loneliness    0.3441     0.0371  9.2799   0.0000
+
+Within loneliness items:  0.44 0.51 
+Within depression items:  0.37 0.44 
+Between loneliness and depression:  0.12 0.25 
+Strongest cross-construct correlation:  lone3 — dep5 = 0.25 
+skew Loneliness items:  0.3 0.4 ; Depression items:  0.92 1.05 
+
+use = everything 
+               loneliness depression social_support
+loneliness              1         NA             NA
+depression             NA     1.0000        -0.1751
+social_support         NA    -0.1751         1.0000
+
+use = complete.obs 
+               loneliness depression social_support
+loneliness         1.0000     0.3103        -0.4168
+depression         0.3103     1.0000        -0.1729
+social_support    -0.4168    -0.1729         1.0000
+
+use = pairwise.complete.obs 
+               loneliness depression social_support
+loneliness         1.0000     0.3103        -0.4168
+depression         0.3103     1.0000        -0.1751
+social_support    -0.4168    -0.1751         1.0000
+
+            Estimate Std. Error  z value Pr(>|z|)
+(Intercept)  -2.1544     0.1760 -12.2406    0e+00
+dep_sum_t2    0.1338     0.0246   5.4343    0e+00
+gender        0.6351     0.1809   3.5105    4e-04
+OR = exp(b):
+(Intercept)  dep_sum_t2      gender 
+      0.116       1.143       1.887 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学习指南：怎样使用这门课 · CLPN 从零开始</title>
+<link rel="stylesheet" href="lessons/assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="lessons/assets/course.css">
+<script defer src="lessons/assets/lesson.js"></script>
+<script>addEventListener("beforeprint",function(){document.querySelectorAll("details.faq").forEach(function(d){d.open=true})});</script>
+</head>
+<body class="matpage" style="--c:#003262">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="index.html#materials">CLPN 课程大纲</a><span class="crumb">学习资料 / 学习指南：怎样使用这门课</span><span class="sp"></span>
+<a class="act langSwitch" href="en/START_HERE.html">English</a><button id="printBtn" type="button" onclick="window.print()">打印</button><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="lessons/L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="lessons/L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="lessons/L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="lessons/L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="lessons/L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="lessons/L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="lessons/L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="lessons/L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="lessons/L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="lessons/L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="lessons/L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="lessons/L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="lessons/L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="lessons/L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="lessons/L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="lessons/L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="lessons/L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="lessons/L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="lessons/L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="lessons/L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="lessons/L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="lessons/L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="lessons/L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="lessons/L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="lessons/L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="lessons/L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="lessons/L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="lessons/L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="lessons/L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="lessons/L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="lessons/L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="lessons/L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="lessons/L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="lessons/L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="lessons/L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="lessons/L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="lessons/L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="lessons/L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="lessons/L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="lessons/L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="lessons/L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="lessons/L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="lessons/L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="lessons/L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="lessons/L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="lessons/L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="lessons/L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details></div><div class="allnav"><b>学习资料</b><ul class="matnav"><li><a href="START_HERE.html" class="cur" aria-current="page">学习指南</a></li><li><a href="materials/glossary.html">术语表</a></li><li><a href="materials/cheatsheets.html">速查卡</a></li><li><a href="materials/formulas.html">公式表</a></li><li><a href="materials/faq.html">常见问题 FAQ</a></li><li><a href="materials/study_log.html">学习日志</a></li><li><a href="materials/writing.html">写作工作坊</a></li><li><a href="materials/reading.html">论文阅读包</a></li><li><a href="materials/case_elsoc.html">真实数据案例</a></li><li><a href="materials/assessment.html">测评</a></li><li><a href="downloads/index.html">下载</a></li></ul></div></nav>
+<main>
+<header class="lhero"><div class="mnum">学习资料 · Study materials</div><h1>学习指南：怎样使用这门课</h1><div class="lead"><p>这一页说明怎样在网站上学习：站上有什么、按什么顺序学、每节课怎么学、16 周怎么安排。Markdown 版：<a href="START_HERE.md" download><code>START_HERE.md</code></a>（内容相同）。</p></div></header>
+<section class="sec " id="site"><h2>一、这个网站上有什么</h2>
+<p>课程在浏览器里学。下表是站上的页面。整个网站连同数据、R 脚本和练习解答可以打包下载：从 <a href="downloads/index.html">下载页</a>取得 <code>clpn-course.zip</code>，解压后双击 <code>index.html</code> 就能离线学习，运行 R 见下面第五节。</p>
+<div class="tablewrap"><table><tr><th>页面</th><th>是什么</th><th>什么时候用</th></tr>
+<tr><td><a href="index.html">课程大纲</a></td><td>11 个模块、全部课程的目标、概念、练习，带进度勾选</td><td>每次学习的起点</td></tr>
+<tr><td>课件</td><td>45 节核心课 + 2 节选学，都是交互课件（直觉 → 数学 → R 代码 → 测验 → 练习 → 小结）。从大纲点「学习 1.1」这类链接进入</td><td>每节课的主体</td></tr>
+<tr><td>学习资料</td><td>本指南、<a href="materials/glossary.html">术语表</a>、<a href="materials/cheatsheets.html">速查卡</a>、<a href="materials/formulas.html">公式表</a>、<a href="materials/faq.html">常见问题</a>、<a href="materials/study_log.html">学习日志</a></td><td>随时查阅</td></tr>
+<tr><td><a href="downloads/index.html">下载</a></td><td>整门课的压缩包：离线网站、数据、R 脚本、练习解答</td><td>要离线学习或在自己的电脑上运行 R 时</td></tr>
+<tr><td><a href="materials/writing.html">写作工作坊</a>、<a href="materials/reading.html">论文阅读包</a></td><td>方法、结果、局限的改写范例；精选论文与阅读问题</td><td>学 9.3 和 10.3 时；写毕业项目论文时</td></tr>
+<tr><td><a href="materials/case_elsoc.html">真实数据案例</a></td><td>ELSOC 抑郁症状（PHQ-8）的 CLPN。分析文件随课程提供</td><td>学完 7.4 和 8.2 之后；写毕业项目时对照</td></tr>
+<tr><td><a href="materials/assessment.html">测评</a></td><td>前测、每个模块的阶段测验、期末考试，附评分标准</td><td>开学前、每学完一个模块、学完 10.3 后</td></tr>
+<tr><td><a href="R/README.html">R 代码使用说明</a></td><td>安装 R 和 RStudio、打开项目、运行脚本</td><td>学到 R 代码时</td></tr>
+<tr><td><a href="data/data_dictionary.html">数据字典</a></td><td>模拟的 N = 800、三波“孤独—抑郁”数据，每个变量的含义</td><td>做练习时对照</td></tr>
+</table></div>
+<p>进度（“标记本课为已完成”）保存在浏览器里，换浏览器或清除缓存会丢失，重要的学习记录请写进学习日志。</p></section><section class="sec " id="order"><h2>二、按什么顺序学</h2>
+<p>模块编号代表知识的逻辑顺序：M0 总览 → M1 统计基础 → M2 R 编程 → M3 回归与正则化 → M4 纵向数据 → M5 CLPM → M6 网络心理测量 → M7 CLPN → M8 稳定性 → M9 批判阅读与报告 → M10 毕业项目。实际学习时，<b>M1 统计和 M2 R 并排学（第 2–5 周交替进行），M3 回归在它们之后</b>：学完一个统计概念，马上在 R 里做一遍。每节课页面顶部都列出了先修课，可以点击跳转。</p>
+<div class="tablewrap"><table><tr><th>模块</th><th>主题</th><th>课数</th><th>课程</th></tr><tr><td><b>M0</b></td><td>课程导论：为什么要学 CLPN<br><span class="muted">Course Overview</span></td><td>2</td><td><a href="lessons/L0-1.html">0.1</a> <a href="lessons/L0-2.html">0.2</a></td></tr><tr><td><b>M1</b></td><td>统计学基础<br><span class="muted">Statistics Foundations</span></td><td>6</td><td><a href="lessons/L1-1.html">1.1</a> <a href="lessons/L1-2.html">1.2</a> <a href="lessons/L1-3.html">1.3</a> <a href="lessons/L1-4.html">1.4</a> <a href="lessons/L1-5.html">1.5</a> <a href="lessons/L1-6.html">1.6</a></td></tr><tr><td><b>M2</b></td><td>R 与 RStudio：从零开始<br><span class="muted">R &amp; RStudio from Zero</span></td><td>6</td><td><a href="lessons/L2-1.html">2.1</a> <a href="lessons/L2-2.html">2.2</a> <a href="lessons/L2-3.html">2.3</a> <a href="lessons/L2-4.html">2.4</a> <a href="lessons/L2-5.html">2.5</a> <a href="lessons/L2-6.html">2.6</a></td></tr><tr><td><b>M3</b></td><td>回归分析<br><span class="muted">Regression</span></td><td>5</td><td><a href="lessons/L3-1.html">3.1</a> <a href="lessons/L3-2.html">3.2</a> <a href="lessons/L3-3.html">3.3</a> <a href="lessons/L3-4.html">3.4</a> <a href="lessons/L3-5.html">3.5</a></td></tr><tr><td><b>M4</b></td><td>纵向与面板数据<br><span class="muted">Longitudinal / Panel Data</span></td><td>3</td><td><a href="lessons/L4-1.html">4.1</a> <a href="lessons/L4-2.html">4.2</a> <a href="lessons/L4-3.html">4.3</a></td></tr><tr><td><b>M5</b></td><td>传统交叉滞后面板模型（CLPM）与 RI-CLPM<br><span class="muted">Cross-Lagged Panel Models</span></td><td>4</td><td><a href="lessons/L5-1.html">5.1</a> <a href="lessons/L5-2.html">5.2</a> <a href="lessons/L5-3.html">5.3</a> <a href="lessons/L5-4.html">5.4</a></td></tr><tr><td><b>M6</b></td><td>网络心理测量学基础<br><span class="muted">Network Psychometrics</span></td><td>5</td><td><a href="lessons/L6-1.html">6.1</a> <a href="lessons/L6-2.html">6.2</a> <a href="lessons/L6-3.html">6.3</a> <a href="lessons/L6-4.html">6.4</a> <a href="lessons/L6-5.html">6.5</a></td></tr><tr><td><b>M7</b></td><td>交叉滞后面板网络（CLPN）<br><span class="muted">Cross-Lagged Panel Networks</span></td><td>7</td><td><a href="lessons/L7-1.html">7.1</a> <a href="lessons/L7-2.html">7.2</a> <a href="lessons/L7-3.html">7.3</a> <a href="lessons/L7-4.html">7.4</a> <a href="lessons/L7-5.html">7.5</a> <a href="lessons/L7-6.html">7.6</a> <a href="lessons/L7-7.html">7.7</a></td></tr><tr><td><b>M8</b></td><td>稳定性与准确性检验<br><span class="muted">Stability &amp; Accuracy</span></td><td>3</td><td><a href="lessons/L8-1.html">8.1</a> <a href="lessons/L8-2.html">8.2</a> <a href="lessons/L8-3.html">8.3</a></td></tr><tr><td><b>M9</b></td><td>阅读、批判与报告规范<br><span class="muted">Reading, Critique &amp; Reporting</span></td><td>3</td><td><a href="lessons/L9-1.html">9.1</a> <a href="lessons/L9-2.html">9.2</a> <a href="lessons/L9-3.html">9.3</a></td></tr><tr><td><b>M10</b></td><td>毕业项目：完整的 CLPN 分析<br><span class="muted">Capstone Mini-Project</span></td><td>3</td><td><a href="lessons/L10-1.html">10.1</a> <a href="lessons/L10-2.html">10.2</a> <a href="lessons/L10-3.html">10.3</a></td></tr></table></div></section><section class="sec " id="lesson"><h2>三、每节课怎么学（约 2–3 小时）</h2>
+<ol><li><b>读目标（2 分钟）：</b>看“本课学习目标”和“核心概念”。不认识的词先查<a href="materials/glossary.html">术语表</a>。</li>
+<li><b>① 直觉（20–30 分钟）：</b>不要跳过。先在脑子里形成画面，再看公式。交互组件一定要动手拖一拖。</li>
+<li><b>② 最少数学（15–30 分钟）：</b>拿纸笔跟着算一遍“完整例题”。公式汇总在<a href="materials/formulas.html">公式表</a>。</li>
+<li><b>③ R 代码（30–60 分钟）：</b>双击 <code>clpn-course.Rproj</code> 打开 RStudio 项目，打开对应的 <code>R/Lx-y.R</code>，<b>逐行运行</b>（Ctrl/Cmd + Enter），把输出和网页上的输出对照。页面底部可以展开完整脚本。</li>
+<li><b>④ 即时测验（10 分钟）：</b>答错会先给提示，答错两次才显示答案。</li>
+<li><b>⑤ 练习（1–2 小时）：</b>自己先做，再看参考答案；需要写代码的练习，答案在 <code>R/solutions/</code>。写作类练习对照课文给出的评分要点逐条自评，改一遍再存档。每课的练习脚本和输出建议整理在同一个文件夹里，毕业项目时还会用到。</li>
+<li><b>小结与日志（10 分钟）：</b>点“标记本课为已完成”，在<a href="materials/study_log.html">学习日志</a>里写下三句话：学到了什么、哪里还不懂、下一步想弄清什么。</li></ol>
+<div class="box key"><b class="bt">卡住了怎么办？</b><p>①先看本课的“常见错误”和“常见问题与误区”；②查 <a href="materials/faq.html">FAQ</a>；③R 报错时，把报错的最后一行复制到搜索引擎；④仍然不行，按 <a href="lessons/L2-1.html">2.1 课</a> 的“最小可复现例子”格式整理好，到同学、同事或 R 社区论坛（如 Posit Community、Stack Overflow）提问。卡住超过 30 分钟就该换个办法，不要硬耗。整理最小例子的过程中，常常就已经找到了原因。</p></div></section><section class="sec " id="plan"><h2>四、16 周周计划</h2>
+<p><b>标准节奏：16 周，每周学 3 次</b>（第 14、15 周各 4 次），每次 60–150 分钟，另加每周 2–3 小时练习，合计每周约 5–7 小时；核心课的课文学习共约 85 小时（不含选学课和练习）。假期集中学习可压缩到约 12 周（每周学 4 次）；与学期课程同时进行可放宽到约 19 周（在第 5、8、13 周后各加一个缓冲周）。进阶选学课 7.6、7.7 不在标准节奏里：学有余力时在第 13 周之后自学，宽松版放在第 13 周后的缓冲周，压缩版不含。</p>
+<div class="tablewrap"><table><tr><th>周次</th><th>课程</th><th>重点</th></tr><tr><td>第 1 周</td><td>0.1 · 0.2 · 1.1</td><td>启动：课程地图、为什么学 CLPN、变量与测量</td></tr><tr><td>第 2 周</td><td>1.2 · 1.3 · 2.1 · 0.2 先跑一遍</td><td>描述统计、z 分数；安装 R（第 2–5 周 M1 统计与 M2 R 并排学）；装好 R 后做 0.2 课的“先跑一遍”（约 30 分钟）：复制现成代码，跑出第一张 CLPN 图</td></tr><tr><td>第 3 周</td><td>2.2 · 1.4 · 2.3</td><td>R 语法；协方差与相关；数据框</td></tr><tr><td>第 4 周</td><td>1.5 · 1.6 · 2.4</td><td>标准误、置信区间、p 值；包与导入数据</td></tr><tr><td>第 5 周</td><td>2.5 · 2.6 · 阶段测验</td><td>用 R 复现统计基础；绘图与报告；M1、M2 阶段测验</td></tr><tr><td>第 6 周</td><td>3.1 · 3.2 · 3.3</td><td>M1、M2 之后进入 M3 回归：简单回归、多元回归、标准化系数</td></tr><tr><td>第 7 周</td><td>3.4 · 3.5 · 4.1</td><td>逻辑回归、正则化与 LASSO；纵向设计</td></tr><tr><td>第 8 周</td><td>4.2 · 4.3 · 阶段测验</td><td>数据整形、缺失与流失；M3、M4 阶段测验（期中）</td></tr><tr><td>第 9 周</td><td>5.1 · 5.2 · 5.3</td><td>CLPM 直觉、lavaan 实操、RI-CLPM</td></tr><tr><td>第 10 周</td><td>5.4 · 6.1 · 6.2</td><td>因果推断边界；网络语言；偏相关与 GGM</td></tr><tr><td>第 11 周</td><td>6.3 · 6.4 · 6.5</td><td>正则化网络、qgraph / bootnet、中心性</td></tr><tr><td>第 12 周</td><td>7.1 · 7.2（2 次）</td><td>CLPN 模型逻辑；glmnet 逐节点估计</td></tr><tr><td>第 13 周</td><td>7.3 · 7.4 · 7.5</td><td>CLPN 可视化、出/入 EI、多波与设计选择；进阶选学 7.6、7.7 不占标准课时，可在本周之后自学</td></tr><tr><td>第 14 周</td><td>8.1 · 8.2（2 次）· 8.3</td><td>bootstrap、边准确性、CS 系数（本周学 4 次）</td></tr><tr><td>第 15 周</td><td>9.1 · 9.2 · 9.3 · 10.1</td><td>读论文、批判、报告规范；项目设计（本周学 4 次）</td></tr><tr><td>第 16 周</td><td>10.2（2 次）· 10.3</td><td>毕业项目分析、写作与汇报</td></tr></table></div>
+<p class="muted">每周结束时：在学习日志中写周小结；把本周的练习脚本和输出归档；用大纲页的进度条检查是否跟上计划。</p></section><section class="sec " id="r"><h2>五、在自己的电脑上运行 R</h2>
+<h3>1. 下载并解压</h3>
+<p>从<a href="downloads/index.html">下载页</a>取得 <code>clpn-course.zip</code>，解压（Windows：右键 →“全部解压缩”；Mac：双击）。得到一个文件夹 <code>clpn-course/</code>，学习和运行 R 需要的东西都在里面：</p>
+<div class="codeblk"><pre class="out"><code>clpn-course/
+├── index.html             ← 课程网站的离线版：双击用浏览器打开，不需要联网
+├── README.md              ← 文件夹说明（先看这个）
+├── START_HERE.html        ← 学习指南
+├── lessons/、materials/   ← 课件与学习资料
+├── clpn-course.Rproj      ← 双击它，用 RStudio 打开课程项目
+├── LICENSE、THIRD_PARTY_NOTICES.md
+├── data/                  ← 模拟数据、数据字典、simulate_data.R、true_B_*.csv；7.6 练习用的真实数据 coaches_mhc_raw.csv
+└── R/
+    ├── README.md / .html  ← R 代码使用说明
+    ├── _setup.R、run_all.R
+    ├── L0-2.R、L1-1.R … L10-3.R、L2-6_report.Rmd、assess_answers.R
+    ├── data_elsoc.R、case_elsoc.R   ← 真实数据案例（预处理、CLPN）
+    ├── solutions/         ← 练习解答
+    └── output/            ← 参考结果（网页上的图、日志）；运行脚本会用你的结果覆盖</code></pre></div>
+<p>请先解压再使用，不要在压缩包的预览窗口里直接打开文件。路径里最好不要有中文和空格（例如放在 <code>D:\clpn-course</code>）。从 GitHub 获取整个仓库的，仓库根目录就是同样的课程文件夹。</p>
+<h3>2. 打开项目</h3>
+<ol>
+<li>按 <a href="R/README.html">R 代码使用说明</a> 安装 R 和 RStudio（先装 R，再装 RStudio）。</li>
+<li>双击 <code>clpn-course/clpn-course.Rproj</code>。RStudio 以“项目”方式打开，工作目录就是 <code>clpn-course</code> 文件夹。每个脚本第一行的 <code>source("R/_setup.R")</code> 都依赖这一点：不要直接双击 <code>.R</code> 文件打开。</li>
+<li>打开 <code>R/L2-4.R</code> 点 Source，安装课程需要的包（只需一次）。</li>
+<li>打开 <code>R/L1-1.R</code>，逐行运行（Ctrl/Cmd + Enter），确认能看到输出。之后每节课打开对应的 <code>R/Lx-y.R</code>（0.1 课和 9.1 课没有脚本）。</li>
+</ol>
+<h3>3. 运行顺序与依赖</h3>
+<p>按课号顺序运行即可。下面这些脚本要读取前面脚本在 <code>R/output/</code> 生成的文件。压缩包里的 <code>R/output/</code> 已带有参考结果，所以直接运行也能读到；但如果你修改并重新运行了前置脚本，后面的脚本就会用你的新结果。如果需要的文件不存在（例如删掉了 <code>R/output/</code>），脚本会在开头停下，并告诉你先运行哪个脚本。</p>
+<div class="tablewrap"><table><tr><th>脚本</th><th>需要先运行</th></tr>
+<tr><td><code>L6-5.R</code>、<code>solutions/L6-4_solution.R</code>、<code>solutions/L6-5_solution.R</code></td><td><code>L6-4.R</code></td></tr>
+<tr><td><code>L10-1.R</code> → <code>L10-2.R</code> → <code>L10-3.R</code></td><td>依次：<code>L4-3.R</code> → <code>L10-1.R</code> → <code>L10-2.R</code> → <code>L10-3.R</code>（每一步都需要上一步的结果）</td></tr>
+<tr><td><code>solutions/L8-3_solution.R</code></td><td><code>L8-2.R</code>（读 <code>L8-2_boot.rds</code>）和 <code>L8-3.R</code></td></tr>
+<tr><td><code>case_elsoc.R</code></td><td>随课程提供的 <code>data/elsoc_phq8_wide.csv</code>（由 <code>data_elsoc.R</code> 从随课程提供的原始文件写出）</td></tr>
+<tr><td>其余脚本</td><td>无</td></tr>
+</table></div>
+<p><b>一次运行全部</b>：<code>source("R/run_all.R")</code>。它按课号运行全部课文脚本和期末答案脚本，再运行全部答案脚本（<code>R/solutions/</code>）。约 40–95 分钟（视电脑而定），大部分时间是 L8-2、L8-3、L10-2 的 bootstrap；结果汇总在 <code>R/output/run_all_status.csv</code>。其中也包括真实数据案例的 <code>data_elsoc.R</code> 和 <code>case_elsoc.R</code>。</p>
+<p>bootstrap 默认<b>单核</b>运行（<code>nCores = 1</code>）、固定种子，在同一 R / 包版本下结果逐位可重复，与网页上的数字一致。改成并行会快几倍，但结果不再可重复：区间端点一般只在小数点后两三位上变化，CS 系数却可能整档跳动（课程数据的 in-EI 会在 0.44 和 0.52 之间变化，正好跨过 0.5 的参考线）。</p></section><section class="sec " id="progress"><h2>六、进度与自查</h2>
+<ul><li>每周固定留出 30 分钟回顾：重读学习日志里“还不懂的地方”一栏，能自己解决的划掉，解决不了的写清楚卡在哪一步，带进下一周。</li>
+<li>练习的结果保存为脚本加输出（或一份 Quarto 报告），不要只留截图。几周后回头核对，或者在毕业项目里复用代码，都要靠它。</li>
+<li>写作类练习（解读段落、审稿意见、方法与结果）先写，再对照课文和<a href="materials/writing.html">写作工作坊</a>的评分要点逐条打分，改一遍。能找到同学或同事互相读一遍更好：请对方指出哪一句读起来像因果结论。</li>
+<li>第 5 周和第 8 周做阶段测验（M1 + M2、M3 + M4），第 15–16 周是毕业项目（<a href="lessons/L10-1.html">10.1</a>、<a href="lessons/L10-2.html">10.2</a>、<a href="lessons/L10-3.html">10.3</a>）。项目开始前，先写好一页分析计划并存档（带日期）；正式分析之后如有改动，在报告里逐条说明改了什么、为什么改。</li></ul></section><section class="sec " id="assess"><h2>七、测评：前测、阶段测验与期末</h2>
+<ul><li><b>开始之前</b>：做一次<a href="materials/assess_pre.html">前测</a>（约 20 分钟，不计分）。它会建议你走 16 周标准节奏，还是在第 5、8、13 周后各加一个缓冲周的 19 周节奏。</li>
+<li><b>每学完一个模块</b>：做这个模块的阶段测验（15–25 分钟）。一次答对 70% 及以上就继续；不到 70% 的，按错题解释里的链接回去复习。</li>
+<li><b>学完 10.3</b>：做期末考试（约 90 分钟），和前测对照，看看自己进步了多少。</li>
+<li>每次的“一次答对”题数记进<a href="materials/study_log.html">学习日志</a>。评分标准见<a href="materials/assessment.html">测评总页</a>。</li></ul></section>
+<p class="foot">CLPN 从零开始 · <a href="index.html#materials">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

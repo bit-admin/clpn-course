@@ -1,0 +1,42 @@
+---
+title: "T1 Loneliness and Depression: Descriptive Analysis"
+author: "(Fill in)"
+format: html
+---
+
+```{r}
+#| include: false
+# Quarto sets working directory to the folder containing .qmd: this file is in R/solutions/, so data is at ../../data/
+library(tidyverse)
+f <- if (file.exists("data/clpn_sim_wide.csv")) "data/clpn_sim_wide.csv" else "../../data/clpn_sim_wide.csv"
+dat <- read_csv(f, show_col_types = FALSE) |>
+  mutate(loneliness = rowSums(across(lone1_t1:lone4_t1)),
+         depression = rowSums(across(dep1_t1:dep5_t1)),
+         sex = factor(gender, levels = c(0, 1), labels = c("Male", "Female")))
+```
+
+## Descriptive Statistics
+
+```{r}
+dat |> group_by(sex) |>
+  summarise(n = n(), mean_loneliness = mean(loneliness), mean_depression = mean(depression), sd_depression = sd(depression)) |>
+  knitr::kable(digits = 2, caption = "Table 1 Descriptive statistics at T1 grouped by sex")
+```
+
+## Figures
+
+```{r}
+#| echo: false
+#| fig-cap: "Figure 1 Distribution of T1 depression total scores"
+ggplot(dat, aes(depression)) + geom_histogram(binwidth = 1)
+```
+
+```{r}
+#| echo: false
+#| fig-cap: "Figure 2 Boxplot of T1 depression total scores by sex"
+ggplot(dat, aes(sex, depression)) + geom_boxplot()
+```
+
+## Interpretation
+
+The sample includes `r nrow(dat)` participants. The mean of T1 depression total score is `r round(mean(dat$depression), 2)`, displaying a right-skewed distribution... (write 3–5 sentences, avoiding causal language such as "led to" or "caused")

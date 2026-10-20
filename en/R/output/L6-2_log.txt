@@ -1,0 +1,14 @@
+Correlation:
+          insomnia fatigue poor_conc
+insomnia      1.00    0.62      0.39
+fatigue       0.62    1.00      0.63
+poor_conc     0.39    0.63      1.00
+
+Partial correlation:
+          insomnia fatigue poor_conc
+insomnia      1.00    0.53      0.00
+fatigue       0.53    1.00      0.53
+poor_conc     0.00    0.53      1.00
+Insomnia-poor_conc: correlation = 0.39 , partial correlation ≈ 0 -> controlling for fatigue, the two are conditionally independent; no edge in the GGM.
+(Intercept)    insomnia     fatigue 
+      0.030      -0.004       0.625 

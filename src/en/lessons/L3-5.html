@@ -1,0 +1,199 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>A Model That Memorizes the Answers</h2>
+<div class="box story"><b class="bt">The candidate who memorized past exams</b>
+<p>Xiao Li was preparing for the social worker licensing exam. He memorized every question and answer from the last three years of past papers and scored 100% on practice tests built from those papers. The real exam had new questions, and he scored 55. What he had learned was not the pattern but the accidental details of those particular papers. Statistical models make the same mistake, called {{T:overfitting|}}: when there are many predictors and few cases, the model "memorizes" random noise in the sample as if it were a pattern. It fits the data at hand very well (low training error) and predicts a new batch of data poorly.</p></div>
+<div class="widget" data-widget="overfit"></div>
+<p>In the widget above, as model complexity (the polynomial degree) goes up, training error keeps falling, while error on new data first falls and then rises. The best model is not the most complex one but one in the middle. This is the {{T:bias–variance trade-off|}}:</p>
+<ul><li>Bias: the model is too simple and systematically misses the real pattern (for example, fitting an S-shaped curve with a straight line).</li>
+<li>Variance: the model is too flexible, so the estimates change a lot from one sample to the next (it chases noise).</li></ul>
+<p>Simple models have high bias and low variance; complex models have low bias and high variance. You want the balance point that gives the smallest total error on new data.</p>
+
+<h3>Why does CLPN need to worry about overfitting?</h3>
+<p>In a CLPN, every T2 node is predicted from all T1 nodes. With 9 nodes you estimate 9 × 9 = 81 directed edges; with 20 nodes, 400. Many of the real edges may be 0 or close to it, but ordinary regression (OLS) gives every edge a nonzero estimate, and many of those are just noise. You saw this in the Lesson 3.2 exercises: the population target for <code>lone4 → dep1</code> is almost 0, yet OLS gave it 0.09. Drawn as a network, the plot fills up with small spurious edges and suggests that everything is connected to everything.</p>
+
+<h3>Regularization: a tax on coefficients</h3>
+<p>The idea of {{T:regularization|}}: besides the fit error, add a penalty on the size of the coefficients. For the model to give a variable a large coefficient, the improvement in fit from that variable has to outweigh the penalty.</p>
+<div class="box analogy"><b class="bt">Analogy: a tax on coefficient size</b><p>Imagine that every coefficient pays a tax, and larger coefficients pay more. Variables that really help (they improve the fit a lot) can afford the tax and stay in. Variables that improve the fit only a little (mostly noise) are not worth the tax, so their coefficients are shrunk, or pushed all the way to 0. The tax rate is the {{T:tuning parameter λ|}}: λ = 0 means no tax, which is ordinary regression; a very large λ pushes every coefficient to 0.</p></div>
+<p>Two common tax systems:</p>
+<ul><li>{{T:ridge regression|}}: the tax is based on the squared coefficient. All coefficients shrink proportionally, but none becomes exactly 0.</li>
+<li>{{T:LASSO|least absolute shrinkage and selection operator}} (Tibshirani, 1996): the tax is based on the absolute value of the coefficient. Small coefficients are pushed to <b>exactly 0</b>, which amounts to automatic variable selection. Keeping only a few nonzero coefficients is called {{T:sparsity|}}, and it makes the network plot easier to read.</li>
+<li>{{T:elastic net|}}: a mix of the two taxes, controlled in R by the argument <code>alpha</code> (alpha = 1 is LASSO, alpha = 0 is ridge regression, values in between mix them).</li></ul>
+<div class="widget" data-widget="lassopath"></div>
+<p><small>(This widget uses the simplified case of uncorrelated predictors to show LASSO's soft thresholding and ridge regression's proportional shrinkage. The numbers are illustrative; for the paths on real data, see the R output plots below.)</small></p>
+
+<h3>How large should λ be? Cross-validation</h3>
+<p>If λ is too small, there is effectively no penalty and the model overfits; if λ is too large, real edges get pushed out as well. How do you choose? Not by the smallest training error (that is always λ = 0). You need to simulate "new data": {{T:cross-validation (CV)|}}.</p>
+<div class="box key"><b class="bt">Steps of 10-fold cross-validation</b><ol><li>Randomly split the 800 people into 10 parts (80 people each).</li><li>Set part 1 aside as "new data". Fit LASSO for every candidate λ on the other 9 parts, then compute the prediction error on part 1.</li><li>Let each part take a turn as the "new data", repeating this 10 times.</li><li>For each λ, average the 10 errors. The λ with the smallest average error is called <code>lambda.min</code>.</li></ol></div>
+<p>There is also a more conservative choice, <code>lambda.1se</code>: the largest λ whose error is no more than 1 standard error above the minimum. The reasoning: differences in error near λ.min are often just random fluctuation, and if two models predict about equally well, you may as well take the simpler (sparser) one. So lambda.1se penalizes more heavily and keeps fewer or smaller coefficients; it is more "conservative".</p>
+<div class="box warnbox"><b class="bt">Two details you need to know</b><ol><li>Standardize first. The penalty acts on coefficient size, and coefficient size depends on the units (Lesson 3.3). Without standardization, a variable measured in large units gets a small coefficient and pays less tax, so the penalty is unfair. <code>glmnet</code> standardizes internally by default (<code>standardize = TRUE</code>) and then converts the coefficients back to the original units; in this course we standardize every variable with <code>scale()</code> first, so the coefficients can be compared directly.</li>
+<li>Cross-validation is random. The split into parts is random, so different seeds can pick slightly different λ values. Use <code>set.seed()</code> so the result can be reproduced, and keep in mind that edges sitting right at the boundary are unstable by nature (Module 8 deals with this using the bootstrap).</li></ol></div>
+<div class="box sw"><b class="bt">Pushed to 0 ≠ "no relationship"</b><p>When LASSO pushes an edge to 0, it means: with this sample size and this penalty strength, the edge did not improve prediction enough to "pay the tax". The real edge may exist but be weak, the sample may be too small to tell it apart from noise, or its effect may have been "taken over" by another node it is highly correlated with (collinearity, Lesson 3.2). So in a report, say the edge was "not estimated as nonzero", not that "the two are unrelated". LASSO also shrinks the coefficients it keeps toward 0 (they come out too small); that is the price of accepting a little bias in exchange for less variance.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Penalized Least Squares</h2>
+<p>Ordinary regression minimizes the sum of squared residuals. LASSO minimizes:</p>
+<div class="mathbox">$$\underbrace{\sum_{i=1}^{n}(y_i-\hat y_i)^2}_{\text{fit error}} \;+\; \underbrace{\lambda\sum_{j=1}^{p}|\beta_j|}_{\text{penalty (tax)}}$$</div>
+<dl class="sym"><dt>\(y_i-\hat y_i\)</dt><dd>Residual of person \(i\).</dd><dt>\(\beta_j\)</dt><dd>Coefficient of predictor \(j\) (after standardization); the intercept is not penalized.</dd><dt>\(|\beta_j|\)</dt><dd>Absolute value.</dd><dt>\(\lambda\ge0\)</dt><dd>Penalty strength; λ = 0 gives OLS.</dd><dt>\(p\)</dt><dd>Number of predictors.</dd></dl>
+<p>Ridge regression replaces \(|\beta_j|\) with \(\beta_j^2\):</p>
+<div class="mathbox">$$\sum_{i}(y_i-\hat y_i)^2 + \lambda\sum_j \beta_j^2$$</div>
+<p>Why can the absolute value push a coefficient to exactly 0 when the square cannot? Think in terms of margins, as in calculus. The derivative of the squared penalty \(\lambda\beta^2\) is \(2\lambda\beta\); as \(\beta\) gets close to 0, the marginal gain from shrinking it "a little more" also goes to 0, so there is no reason to push it all the way to 0. The slope of the absolute-value penalty \(\lambda|\beta|\) is always \(\lambda\) (it does not shrink as \(\beta\) gets smaller): as long as the marginal improvement in fit from the variable is less than \(\lambda\), the optimum stays at 0. In the simplified case of uncorrelated predictors, the LASSO solution is a "soft threshold": \(\hat\beta_j^{\text{LASSO}} = \operatorname{sign}(\hat\beta_j^{\text{OLS}})\max(|\hat\beta_j^{\text{OLS}}| - c\lambda,\,0)\), where \(c\) is a constant that depends on the scaling. Coefficients below the threshold become 0, and coefficients above it are reduced by a fixed amount.</p>
+<p><small>Note: the objective that <code>glmnet</code> actually uses writes the fit error as \(\frac{1}{2n}\sum(y_i-\hat y_i)^2\) and the penalty as \(\lambda[\frac{1-\alpha}{2}\sum\beta_j^2+\alpha\sum|\beta_j|]\) (Friedman et al., 2010). Only the scale of λ differs; the idea is the same.</small></p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Your First cv.glmnet Run</h2>
+<p>Script: <a href="../R/L3-5.R">R/L3-5.R</a>. It predicts the T2 depression total score from the 9 T1 items. This has the same structure as one equation in a CLPN, except that the outcome is a total score.</p>
+```r R/L3-5.R (core part)
+source("R/_setup.R")
+library(glmnet)
+dat <- read_course_data()
+predictors <- vars_t(1)                          # column names of the 9 T1 items
+dat$depress_t2 <- rowSums(dat[, paste0(dep_items, "_t2")])
+X <- scale(as.matrix(dat[, predictors]))         # glmnet needs a matrix; standardize first
+y <- scale(dat$depress_t2)[, 1]
+set.seed(2026)                                   # cross-validation splits at random, so set a seed
+cvfit <- cv.glmnet(X, y, alpha = 1, nfolds = 10) # alpha = 1 is LASSO; alpha = 0 is ridge
+plot(cvfit)                                      # cross-validation error against log(lambda)
+cat("lambda.min =", signif(cvfit$lambda.min, 3), "; lambda.1se =", signif(cvfit$lambda.1se, 3), "\n")
+print(round(cbind(lambda.min = coef(cvfit, s = "lambda.min")[, 1],
+                  lambda.1se = coef(cvfit, s = "lambda.1se")[, 1],
+                  OLS        = coef(lm(y ~ X))), 3))
+```
+```out Output (R/output/L3-5_log.txt)
+lambda.min = 0.0128 ; lambda.1se = 0.0906 
+            lambda.min lambda.1se    OLS
+(Intercept)      0.000      0.000  0.000
+lone1_t1         0.048      0.010  0.058
+lone2_t1         0.000      0.000  0.009
+lone3_t1         0.000      0.000 -0.021
+lone4_t1         0.102      0.066  0.111
+dep1_t1          0.173      0.150  0.177
+dep2_t1          0.122      0.101  0.127
+dep3_t1          0.160      0.135  0.165
+dep4_t1          0.105      0.075  0.110
+dep5_t1          0.159      0.137  0.164
+```
+<div class="box key"><b class="bt">Reading this table</b><ul>
+<li>OLS gives every item a nonzero coefficient, including −0.021 for <code>lone3_t1</code> (Feeling isolated predicts depression "negatively"? Most likely just noise).</li>
+<li>λ.min pushes <code>lone2</code> and <code>lone3</code> to 0, and every other coefficient is a little smaller than in OLS (shrinkage).</li>
+<li>λ.1se (the larger λ = 0.0906) shrinks further: <code>lone1</code> is down to 0.010, and the other coefficients are smaller too. In this example both λ values happen to keep the same number of variables (7), but the λ.1se coefficients are smaller across the board. "More conservative" can mean dropping more variables or shrinking more.</li>
+<li>The outcome is the depression total score, so the depression items' own predictive effect (similar to an autoregressive effect) is the strongest, as expected.</li></ul></div>
+<figure><img src="../R/output/L3-5_cvplot.png" alt="cv.glmnet cross-validation error plot" style="max-width:100%"><figcaption>Figure: <code>plot(cvfit)</code>. The x-axis is log(λ); the y-axis is the cross-validated mean squared error (red dots) with error bars. The two vertical dashed lines mark lambda.min and lambda.1se; the numbers along the top give the number of nonzero coefficients at each λ.</figcaption></figure>
+```r Coefficient paths: LASSO vs. ridge regression
+fit <- glmnet(X, y, alpha = 1)
+plot(fit, xvar = "lambda", label = TRUE)        # each line is one variable's coefficient against log(lambda)
+ridge <- glmnet(X, y, alpha = 0)
+plot(ridge, xvar = "lambda", label = TRUE)
+```
+<figure><img src="../R/output/L3-5_lasso_path.png" alt="LASSO coefficient paths" style="max-width:100%"><figcaption>LASSO coefficient paths: from right to left (λ getting smaller), the coefficients leave 0 one by one; from left to right (λ getting larger), more and more coefficients are pushed to exactly 0. The numbers next to the lines are variable numbers (1–4 are the loneliness items, 5–9 the depression items).</figcaption></figure>
+<figure><img src="../R/output/L3-5_ridge_path.png" alt="Ridge regression coefficient paths" style="max-width:100%"><figcaption>Ridge regression coefficient paths: as λ grows, every coefficient moves smoothly toward 0 but never reaches exactly 0.</figcaption></figure>
+<p>Later in the course, <code>clpn_estimate()</code> in <code>_setup.R</code> runs a <code>cv.glmnet()</code> like this once for each of the 9 T2 nodes and puts the 9 sets of coefficients together into a 9 × 9 matrix. That matrix is the CLPN (Lesson 7.1).</p>
+
+<!-- extra:begin -->
+<h3>Worked example: soft thresholding by hand</h3>
+<p>Suppose two predictors are uncorrelated and both standardized, with OLS coefficients \(\hat\beta_1^{\text{OLS}} = 0.30\) and \(\hat\beta_2^{\text{OLS}} = 0.05\). In this simplified case, the LASSO solution is the soft-threshold formula from section ②; set the threshold \(c\lambda = 0.1\).</p>
+<ol><li>First coefficient: \(|0.30| - 0.1 = 0.20 > 0\), and the sign is positive, so \(\hat\beta_1^{\text{LASSO}} = 0.20\). It is kept, but it loses a full 0.1.</li>
+<li>Second coefficient: \(|0.05| - 0.1 = -0.05 < 0\); taking \(\max(\cdot, 0) = 0\) gives \(\hat\beta_2^{\text{LASSO}} = 0\). It is dropped.</li>
+<li>If the first coefficient were −0.30, the result would be −0.20: soft thresholding looks at the absolute value first and then puts the original sign back. It shrinks toward 0; it does not just subtract.</li>
+<li>Compare ridge regression. With uncorrelated predictors, ridge multiplies every coefficient by the same factor below 1, \(1/(1+c'\lambda)\). If you pick a penalty that turns 0.30 into 0.20 (a factor of 2/3), 0.05 becomes about 0.033: smaller, but not 0.</li></ol>
+<p>The example shows three properties of LASSO. (1) The amount of shrinkage is a fixed \(c\lambda\), regardless of the coefficient's size, so large coefficients lose relatively little (0.30 loses a third) and coefficients just above the threshold lose a lot. (2) Coefficients below the threshold become exactly 0; this is the variable selection. (3) The coefficients that are kept are also biased toward 0, so LASSO coefficients should not be read directly as unbiased effect sizes. When predictors are correlated (as they always are in real data), there is no closed-form solution like this; <code>glmnet</code> iterates with coordinate descent, but each step still applies this soft-threshold operation.</p>
+<p>You can check the soft-threshold formula in R:</p>
+```r Soft-threshold function
+soft <- function(b, t) sign(b) * pmax(abs(b) - t, 0)
+soft(c(0.30, 0.05, -0.30), 0.1)    # 0.20  0.00 -0.20
+```
+
+<h3>An edge pushed to 0 may be real: the case of lone3</h3>
+<p>In the output above, the OLS coefficient of <code>lone3_t1</code> (Feeling isolated) is −0.021, and both λ.min and λ.1se push it to 0. Going by "Reading this table", this edge looks like noise. But the course data are simulated, so you can compare against the population target. In <code>data/true_B_population.csv</code>, Feeling isolated → Depressed mood is the strongest loneliness → depression edge in the population ({{V:pop_lone3>dep1}}), while the values from Feeling isolated to the other four depression items are close to 0. Because the depression total is the sum of the 5 items, the population coefficient of Feeling isolated on the T2 depression total is also positive. A rough conversion: multiply the item-level standardized coefficient by the item SD (about 0.93) and divide by the SD of the total (about 3.37), which gives about 0.03.</p>
+<p>So LASSO made a {{T:false negative|}} here: there is a weak positive effect in the population, but sampling error put the sample OLS estimate at −0.021, and pushing it to 0 is a reasonable outcome. Three things led to this: the effect itself is weak (about 0.03); it works through only 1 of the 5 depression items, so it is diluted in the total score; and Feeling isolated is moderately correlated with the other three loneliness items, which can take over its "credit" (as lone3 and lone4 did in the Lesson 3.2 exercise). Real studies have no table of true values to check against, so an edge pushed to 0 can only be reported as "not estimated as nonzero", not as "feeling isolated is unrelated to later depression".</p>
+
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li>Treating LASSO coefficients as effect sizes. The coefficients that are kept have been shrunk too (0.30 became 0.20 in the worked example). To report effect sizes, re-estimate them after selecting the variables, or say clearly that the coefficients are shrunken values.</li>
+<li>Treating "kept" as "real". An edge pushed to 0 is not necessarily absent (the lone3 example above), and an edge that is kept is not necessarily a true effect: in Exercise 3.5-A, lambda.min keeps spurious variables.</li>
+<li>Reporting λ.1se or λ.min without saying which one you used. The two can keep very different sets of edges. State the rule for choosing λ in your methods section; the course's CLPN scripts use lambda.min by default ({{L:7.2}}).</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: A model has R² = 0.95 on the training data and R² = 0.20 on new data. What is the most likely reason?
+- Data entry errors in the new data || You can't rule this out, but "excellent on training data, poor on new data" is the textbook sign of overfitting, so consider that first.
++ Overfitting: the model memorized noise in the training sample || Correct.
+- Underfitting: the model is too simple || An underfit model also fits the training data poorly, so its R² would not reach 0.95.
+- The new data have a smaller sample than the training data || A small sample makes the R² on new data less stable, but it does not systematically drop it from 0.95 to 0.20.
+E: Low training error with high error on new data is the sign of overfitting.
+```
+```quiz
+Q: Why standardize the variables before running LASSO?
++ The penalty acts on coefficient size, which depends on units; without standardization, variables in different units are penalized unfairly || Correct.
+- glmnet only accepts numbers between 0 and 1 || glmnet accepts any numbers, and standardized values are not between 0 and 1 either.
+- Standardization removes overfitting || Overfitting comes from many parameters and few cases; changing units does not remove it. The penalty and cross-validation are what guard against it.
+- LASSO requires normally distributed predictors || LASSO has no such requirement, and standardization does not change a distribution's shape (Lesson 1.3).
+E: glmnet standardizes internally by default; the course calls scale() by hand to get comparable standardized coefficients.
+```
+```quiz
+Q: Which is more "conservative" (keeps fewer or smaller coefficients), lambda.min or lambda.1se?
+- lambda.min || λ.min gives the smallest cross-validation error; its penalty is lighter, so it keeps more and larger coefficients.
++ lambda.1se || Correct: it is the largest λ whose error is within 1 standard error of the minimum, so the penalty is heavier.
+- They are exactly the same || In the course data, λ.min = 0.0128 and λ.1se = 0.0906, about 7 times larger.
+E: A larger λ means a heavier penalty, and λ.1se ≥ λ.min.
+```
+```quiz
+Q: If LASSO pushes a coefficient to 0, does that mean the two variables are "truly unrelated"?
+- Yes, LASSO proves the relationship is 0 || It proves nothing of the kind: in this lesson's lone3 example, there is a weak positive effect in the population, and LASSO still pushed it to 0.
+- Yes, as long as you use the more conservative lambda.1se || A heavier penalty pushes more weak effects to 0; changing the rule does not turn "pushed to 0" into "proven to be 0".
++ No: it only means that in this sample and with this penalty, its predictive gain was not enough to keep it; it may be a weak relationship, too small a sample, or collinearity || Correct.
+E: "Not estimated as nonzero" is the more accurate way to report it.
+```
+```quiz
+Q: What is the main difference between ridge regression and LASSO?
+- Ridge regression does not need a λ || It does, and it is chosen by cross-validation in the same way; just set alpha = 0 in cv.glmnet.
++ Ridge penalizes squared coefficients and only shrinks them, never to 0; LASSO penalizes absolute values and can push coefficients to exactly 0 || Correct.
+- LASSO only works for binary outcomes || LASSO works for continuous outcomes (this lesson) and binary outcomes (family = "binomial" in Lesson 3.4).
+- Ridge penalizes absolute values and LASSO penalizes squares || It's the other way around: ridge regression penalizes squares, which is why it can only shrink coefficients and cannot push them to 0.
+E: In cv.glmnet, alpha = 0 is ridge regression and alpha = 1 is LASSO.
+```
+```quiz
+Q: When λ = 0, what does LASSO give you?
+T: OLS || ordinary least squares || ordinary regression || least squares || linear regression || ols
+H: What is left once the penalty term disappears?
+E: With λ = 0 the penalty is 0, so the objective is just the sum of squared residuals: ordinary least squares regression.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 3.5-A: OLS vs. LASSO (simulated data)</h4>
+<p>Using simulated data with 15 predictors and n = 150, compare the coefficients from <code>lm()</code> and <code>cv.glmnet()</code>. Plot the LASSO coefficient paths and describe what happens as λ increases. (Only the first 3 variables are given a real effect, so you know the truth.)</p>
+<details class="answer"><summary>Reference code and results</summary>
+```r
+library(glmnet)
+set.seed(25)
+n <- 150; p <- 15
+X <- matrix(rnorm(n * p), n, p, dimnames = list(NULL, paste0("x", 1:p)))
+beta_true <- c(0.5, 0.4, 0.3, rep(0, p - 3))      # only the first 3 variables have a real effect
+y <- drop(X %*% beta_true + rnorm(n))
+ols   <- coef(lm(y ~ X))[-1]
+cvfit <- cv.glmnet(X, y, alpha = 1, nfolds = 10)
+las   <- coef(cvfit, s = "lambda.1se")[-1, 1]
+las_min <- coef(cvfit, s = "lambda.min")[-1, 1]   # the rule the course CLPN scripts use by default
+round(cbind(true = beta_true, OLS = ols, LASSO_min = las_min, LASSO_1se = las), 3)
+plot(glmnet(X, y, alpha = 1), xvar = "lambda", label = TRUE)
+# compare prediction error on 1000 new individuals
+Xn <- matrix(rnorm(1000 * p), 1000, p); yn <- drop(Xn %*% beta_true + rnorm(1000))
+mean((yn - cbind(1, Xn) %*% coef(lm(y ~ X)))^2)          # OLS
+mean((yn - predict(cvfit, Xn, s = "lambda.1se"))^2)      # LASSO
+```
+<p>Reference results: OLS gives all 15 variables nonzero coefficients; the 12 spurious variables range from −0.27 to 0.10 (x9 is as large as −0.272). LASSO (λ.1se) keeps only x1, x2 and x3 (0.314, 0.355, 0.186) and sets the other 12 to 0. The cost is that the kept coefficients are shrunk below their true values. With lambda.min instead (the default rule in the course's CLPN scripts), LASSO keeps {{V:sol25_min_n}} variables, {{V:sol25_min_false}} of them spurious: lambda.min aims for the smallest prediction error and leaves in some false positives. "Automatic variable selection" does not mean that only the true variables survive; you will see this again on the course data in Lesson 7.2. Mean squared error on new data: OLS 1.208, LASSO 1.120 (the OLS training error is only 0.941; that gap is overfitting).</p>
+<p>Describing the path plot: when λ is very small, all 15 lines are away from 0; as λ grows, the noise variables' lines return to 0 first until only x1–x3 remain, and with an even larger λ those are pushed to 0 too.</p></details></div>
+<div class="exitem"><h4>Exercise 3.5-B: Try another random seed</h4>
+<p>In R/L3-5.R, change <code>set.seed(2026)</code> to <code>set.seed(1)</code> and then <code>set.seed(2)</code>, and run the script each time. Do lambda.min, lambda.1se and the items pushed to 0 change? What does this mean for conclusions about whether a given edge exists?</p>
+<details class="answer"><summary>Hint</summary><p>Reference results: with seed = 1, λ.min = 0.0155 and λ.1se = 0.120, and under λ.1se <code>lone1_t1</code> is pushed to 0 (leaving 6 nonzero coefficients); with seed = 2, λ.min = 0.0155 and λ.1se = 0.0906, and <code>lone1_t1</code> is back at 0.010. When the cross-validation split changes, the chosen λ moves a little, and small coefficients near the boundary (like <code>lone1_t1</code>) come and go, while the large coefficients (the depression items) stay. Conclusion: don't read too much into a weak edge that was only just kept or only just dropped; Module 8 uses the bootstrap to assess edge stability systematically.</p></details></div>
+<div class="exitem"><h4>Exercise 3.5-C: Ridge regression</h4>
+<p>Change <code>alpha = 1</code> to <code>alpha = 0</code> and run <code>cv.glmnet()</code> again. Compare the coefficients at <code>lambda.min</code> with the LASSO coefficients. Which variables are still nonzero under ridge regression?</p>
+<details class="answer"><summary>Hint</summary><p>Reference results (seed 2026): at ridge λ.min all 9 coefficients are nonzero, for example lone2 0.017, lone3 −0.003, lone4 0.092 and dep1 0.160; lone3 is very close to 0 but not 0. Every coefficient is nonzero (only shrunk); this is what "ridge regression does not select variables" means. If you want a sparse network plot, use LASSO; if you care more about prediction and the variables are highly correlated, ridge regression or the elastic net may be more stable.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li>With many variables and few cases, a model memorizes noise (overfitting); judge it by its error on new data, not its training error.</li>
+<li>LASSO = sum of squared residuals + λ·Σ|β|: small coefficients are pushed to 0, which gives a sparse network; ridge regression only shrinks and never reaches 0. Standardize first.</li>
+<li>Choose λ by k-fold cross-validation: lambda.min has the smallest error, lambda.1se is more conservative. Pushed to 0 does not mean unrelated. This ends Module 3; the next module turns to longitudinal and panel data: {{L:4.1}}.</li></ul>
+</section>

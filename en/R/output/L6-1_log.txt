@@ -1,0 +1,8 @@
+          Lonely Insomnia Fatigue Depressed Support
+Lonely       0.0      0.3     0.0       0.4    -0.3
+Insomnia     0.3      0.0     0.5       0.0     0.0
+Fatigue      0.0      0.5     0.0       0.2     0.0
+Depressed    0.4      0.0     0.2       0.0    -0.2
+Support     -0.3      0.0     0.0      -0.2     0.0
+Symmetric? TRUE 
+Density = number of non-zero edges / possible edges = 6 / 10 

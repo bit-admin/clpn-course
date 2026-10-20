@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.6 Measurement Invariance and Sample Size Planning · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L7-6.md" title="Plain text">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="7.6" style="--c:#ef4444">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L7-6">CLPN Syllabus</a><span class="crumb">M7 Cross-Lagged Panel Networks (CLPN) / 7.6</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L7-6.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L7-6.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details open style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html" class="cur" aria-current="page"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 7 · Cross-Lagged Panel Networks · Lesson 7.6</div>
+<h1>Measurement Invariance and Sample Size Planning</h1>
+<div class="facts"><span>Optional advanced lesson (not part of the standard pace)</span><span>Study time 2 hr</span><span>Prerequisites: <a href="L5-2.html">5.2 Fitting CLPM with lavaan and Evaluating Model Fit</a>, <a href="L7-2.html">7.2 Nodewise CLPN Estimation with glmnet</a></span><span>R script: <a href="../R/L7-6.R">R/L7-6.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Explain measurement invariance with social work examples: does the same item measure the same thing at different waves or in different groups?</li><li>Fit models in lavaan in the order configural → metric → scalar, judging each level with Δχ², ΔCFI and ΔRMSEA; if a level fails, use score tests to find the problem items and consider partial invariance</li><li>Explain, given that a CLPN uses observed items directly as nodes, why equal loadings are the prerequisite for comparing relationships (edges) across waves, and equal intercepts the prerequisite for comparing means</li><li>Use simulation to estimate the sample size needed to recover target edges, and name the assumptions that estimate depends on (true network, λ rule, number of nodes)</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>configural invariance</b></li><li><b>metric / weak invariance</b></li><li><b>scalar / strong invariance</b></li><li><b>partial invariance</b></li><li><b>factor loading</b></li><li><b>item intercept</b></li><li><b>multi-group CFA</b></li><li><b>score test / Lagrange multiplier test</b></li><li><b>ΔCFI</b><span class="en">change in CFI (ΔCFI)</span></li><li><b>Monte Carlo simulation</b></li><li><b>false positive rate</b></li></ul>
+<p>After you have estimated a CLPN and before you interpret it, two questions come first. Do the items still measure the same thing at every wave (measurement invariance)? And is the sample large enough (sample size planning)? This lesson answers both with the simulated course data and a real public data set.</p>
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① Intuition</span>The same ruler, and a “dry run”</h2>
+<h3>1. Why ask whether the ruler has changed</h3>
+<p>Imagine a community service center tracking residents' loneliness with the same questionnaire in three surveys. For the third survey a new translator changes “I often feel left out” to “I often feel nobody pays attention to me.” The new wording is more colloquial and easier to agree with, so everyone scores half a point higher on this item, although nobody has actually become lonelier. If you compare the mean scores directly, the report will say “residents have become lonelier,” when what changed was the ruler. Lesson 4.1 mentioned this problem, called <span class="term">measurement invariance</span>: whether the same item measures the same thing, on the same scale, at different waves (or in different groups, such as men and women). This lesson shows you how to test it.</p>
+
+<h3>2. Split an item score into three parts</h3>
+<p>Suppose each person has an unobserved “true loneliness level,” called a factor (the latent variable from Lesson 0.2), and the 4 loneliness items are its “readings.” Each item score can be split into:</p>
+<div class="box story"><b class="bt">Item score = intercept + loading × true loneliness level + the item's own error</b><ul><li><span class="term">item intercept</span>: the expected score on this item when true loneliness is at the reference level (e.g., the average at wave 1); like the zero point of a scale.</li>
+<li><span class="term">factor loading</span>: how much higher the item score is, on average, for each 1-unit increase in true loneliness; like the sensitivity of a scale.</li>
+<li>Residual: what is specific to this item plus random error, unrelated to true loneliness.</li></ul></div>
+<p>“The ruler has not changed” means using the same scale each time: same zero point, same sensitivity. In the translation example, the intercept of lone2 went up at wave 3; the loading may not have changed.</p>
+
+<h3>3. Three steps: each extra equality allows one more kind of comparison</h3>
+<div class="tablewrap"><table><tr><th>Level</th><th>What must be equal across waves (or groups)</th><th>What you can compare once it holds</th><th>Social work example</th></tr><tr><td>① <span class="term">configural invariance</span></td><td>Only the structure: the same items belong to the same factors (all 4 loneliness items measure only loneliness). Loadings and intercepts may differ</td><td>Only that you are “broadly measuring the same kind of thing”; you can't compare numbers yet</td><td>In both surveys the loneliness items measure loneliness; no item has drifted to measuring depression</td></tr><tr><td>② <span class="term">metric invariance<span class="en"> (weak invariance)</span></span></td><td>On top of ①, each item's loading is equal (same sensitivity)</td><td><b>Relations</b>: correlations, regression coefficients, CLPN edges</td><td>Is the link between loneliness and depression as strong at wave 3 as at wave 1?</td></tr><tr><td>③ <span class="term">scalar invariance<span class="en"> (strong invariance)</span></span></td><td>On top of ②, each item's intercept is equal too (same zero point)</td><td><b>Means</b>: who is higher, whether levels rise</td><td>After a year of services, has residents' loneliness gone down on average?</td></tr></table></div>
+<p>A fourth level, equal residuals (strict invariance), is not required in most studies; just be aware of it.</p>
+
+<h3>4. How to decide whether a level holds</h3>
+<p>Each step up adds a set of <span class="term">equality constraints</span> (Lesson 5.2). More constraints can only make the fit worse or leave it unchanged; the question is how much worse. Look at two things:</p>
+<ol><li>The chi-square difference test (Δχ², <code>anova()</code> / <code>lavTestLRT()</code> from Lesson 5.2): p &gt; .05 means the constraints did not make the fit noticeably worse. But the larger the sample, the more sensitive it is: with hundreds or thousands of people, trivial differences become significant.</li>
+<li>Changes in fit indices: a common rule of thumb is that <span class="term">change in CFI<span class="en"> (ΔCFI)</span></span> should not drop below −0.01 (Cheung &amp; Rensvold, 2002) and ΔRMSEA should not exceed 0.015 (Chen, 2007). These do not inflate with sample size, so they are more useful in large samples. Chen's (2007) cutoffs are meant for a fairly large total sample (N &gt; 300) with groups of similar size; for smaller samples (N ≤ 300) she recommends the stricter ΔCFI ≥ −0.005 and ΔRMSEA ≤ 0.010, together with ΔSRMR: at most 0.030 when testing loadings and at most 0.010 when testing intercepts (0.025 and 0.005 in small samples).</li></ol>
+<p>Report both. When they disagree (typically “significant chi-square, but tiny ΔCFI”), give more weight to the fit indices and report both results in the paper.</p>
+
+<h3>5. Results for the course data</h3>
+<p>R/L7-6.R tests the three levels for the 4 loneliness items × 3 waves (N = 800, robust estimator MLR):</p>
+<div class="tablewrap"><table><tr><th>Model</th><th>χ²</th><th>df</th><th>CFI</th><th>RMSEA</th><th>ΔCFI</th><th>ΔRMSEA</th><th>Chi-square difference p</th></tr><tr><td>Configural</td><td>51.73</td><td>39</td><td>0.996</td><td>0.021</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Metric</td><td>54.73</td><td>45</td><td>0.997</td><td>0.017</td><td>+0.001</td><td>−0.004</td><td>0.886</td></tr><tr><td>Scalar</td><td>60.88</td><td>51</td><td>0.997</td><td>0.016</td><td>0.000</td><td>−0.001</td><td>0.410</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">Source: R/output/L7-6_log.txt, Part 1.</p>
+<p>Read it in order. The configural model itself fits well (if it already fits poorly, e.g., CFI &lt; .90, even the structure differs, and you need to go back and check the factor model first). At both the metric and the scalar step, the chi-square difference is not significant, CFI barely changes, and RMSEA even drops a little (it rewards more parsimonious models). All three levels hold, so you can compare the loneliness means of the three waves: the factor means at waves 2 and 3 are 0.030 and 0.035 higher than at wave 1, neither significant (p = 0.380, 0.399), which fits the fact that the data were generated by a process that does not change over time. In a paper, put the χ², df, CFI, and RMSEA of the three models and the ΔCFI, ΔRMSEA, and Δχ² of each step in one table (the minimum reporting recommended by Putnick &amp; Bornstein, 2016), and state the estimator and the decision rules.</p>
+<p>Comparing the 5 depression items by gender (T1, 373 men, 427 women) also passes all three levels (equal loadings p = 0.559, equal intercepts p = 0.766), so the means can be compared: the depression factor mean of women is 0.154 higher than that of men (SE = 0.048, p = 0.001). In the simulated data, the same amount was added to every depression item for women: the difference lies in the people, not in the wording of any one item, so invariance holds.</p>
+
+<h3>6. Breaking the ruler on purpose: what failure looks like</h3>
+<p>The script adds 0.5 to everyone's lone2 (Feeling left out) score at wave 3, mimicking the translation story from the beginning:</p>
+<ul><li><b>The scalar level fails</b>: χ² jumps from 54.73 to 270.40, ΔCFI = −0.060, far beyond −0.01. The configural and metric levels are unaffected: adding a constant does not change the sensitivity.</li>
+<li><b>Finding the “broken item”</b>: a <span class="term">score test</span> estimates, constraint by constraint, how much χ² would drop if that one equality constraint were freed. The largest is the equality of the lone2_t1 intercept and the lone2_t3 intercept (X² = 193.62), far above the next one (43.65). It points straight at the item that was changed.</li>
+<li><b>The fix</b>: <span class="term">partial invariance</span>. Free only this item's intercept at wave 3 and keep all other constraints: ΔCFI goes back to 0.000, and the model holds.</li></ul>
+<p>The consequence shows up in the means. If you force the intercepts to be equal, the wave 3 loneliness factor mean is pushed from 0.035 up to 0.182: a change in one item's wording is taken for “everyone became lonelier.” With partial invariance, the mean returns to 0.026, close to the original data.</p>
+<div class="box warnbox"><b class="bt">When partial invariance is acceptable</b><p>Free as few items as possible (a common recommendation is that at least half of the items of each factor stay equal), have a reason for every item you free (e.g., its wording was changed), and state in the paper which parameters you freed. Do not free items one by one just to make the model “pass.”</p></div>
+
+<h3>7. What this has to do with CLPN</h3>
+<p>A CLPN does not use factors; it takes each observed item directly as a node. That makes item-level invariance even more important:</p>
+<ul><li>A loading changes (metric invariance fails): the item's correlations with the other items change, and so do its autoregressive and cross-lagged edges. A “network change” between T1 → T2 and T2 → T3 may just be a change in the item's sensitivity.</li>
+<li>An intercept changes (scalar invariance fails): if everyone simply gets the same amount added, the correlations do not change and neither do the CLPN edges, but the means across waves (the descriptive table, “did the symptoms get worse?”) will be wrong. Real changes in wording often change the sensitivity at the same time.</li></ul>
+<p>The equality-across-time test in the full procedure of Lesson 7.5 constrains paths (whether the T1 → T2 edges equal the T2 → T3 edges), not item loadings and intercepts, so it cannot replace the tests in this lesson. Whichever CLPN you use, run this lesson's tests as part of your descriptive statistics, or state in the limitations that you did not.</p>
+
+<h3>8. Worked example: how large a sample? A “dry run” by simulation</h3>
+<p>There is no ready-made sample size formula for a CLPN, but you can rehearse: ① assume a “true network” (here the population target matrix <code>true_B_population</code> of the course data, so the simulation answers “what N do I need to recover the population target,” not the within-person truth; for your own study you can use estimates from a pilot study or the literature); ② generate a data set of N people from it, estimate a CLPN once, and record which edges are recovered and which are falsely reported; ③ do this for several values of N, many times each. This is called a <span class="term">Monte Carlo simulation</span> (Constantin et al., 2026, describe the general method for network models). Record two numbers:</p>
+<ul><li><span class="term">statistical power</span>: the proportion of the 8 “target edges” (the stronger edges of the generating model, |B| ≥ 0.08) that are recovered with the correct sign.</li>
+<li><span class="term">false positive rate</span>: the proportion of the 35 near-zero edges (|B| &lt; 0.02) that are estimated as nonzero.</li></ul>
+<div class="tablewrap"><table><tr><th>N</th><th><code>lambda.min</code>: power</th><th><code>lambda.min</code>: all 8 recovered</th><th><code>lambda.min</code>: false positive rate</th><th><code>lambda.min</code>: r with population target</th><th><code>lambda.1se</code>: power</th><th><code>lambda.1se</code>: false positive rate</th></tr><tr><td>150</td><td>0.64</td><td>0.00</td><td>0.27</td><td>0.45</td><td>0.22</td><td>0.01</td></tr><tr><td>300</td><td>0.86</td><td>0.25</td><td>0.43</td><td>0.56</td><td>0.37</td><td>0.01</td></tr><tr><td>500</td><td>0.91</td><td>0.60</td><td>0.43</td><td>0.65</td><td>0.51</td><td>0.02</td></tr><tr><td>800</td><td>0.98</td><td>0.85</td><td>0.46</td><td>0.76</td><td>0.69</td><td>0.02</td></tr><tr><td>1200</td><td>0.99</td><td>0.90</td><td>0.52</td><td>0.82</td><td>0.73</td><td>0.01</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">Source: R/output/L7-6_power.csv (20 replications per N).</p>
+<ol><li><b><code>lambda.min</code> (the course default):</b> power exceeds 0.80 already at N = 300; to recover all 8 target edges in more than 80% of the simulations you need N ≈ 800. But the false positive rate stays between 0.27 and 0.52 and does not fall as N grows. There are two reasons: the larger N is, the smaller the λ chosen by cross-validation, so weak edges slip in more easily; and most of these “near-zero edges” are not exactly 0 in the population, so with a larger N LASSO increasingly detects these tiny but real coefficients. Either way, under <code>lambda.min</code> you cannot treat very weak edges in the plot as meaningful findings.</li>
+<li><b><code>lambda.1se</code> (more conservative):</b> the false positive rate is only 0.01–0.02, but power is only 0.73 even at N = 1200. This is the trade-off from Lesson 3.5: a lenient rule recovers more and also reports more false positives. A sample size plan should report both numbers and state the λ rule.</li>
+<li><b>These proportions have Monte Carlo error of their own.</b> Each proportion is the average of 20 results. For a proportion near 0.5, the standard error is about \(\sqrt{0.5 \times 0.5 / 20}\), i.e., about 0.1, and the 95% interval is roughly ±0.2. So read “N ≈ 800” as “somewhere around the neighboring values of N”: with another seed, the point where it crosses 0.80 could move one step up or down. For a research proposal, raise <code>REPS</code> to several hundred before you read off this number, and report the number of replications.</li></ol>
+<div class="box warnbox"><b class="bt">A dry run only holds under its assumptions</b><p>A different true network (weaker edges), more nodes (more predictors per regression), more skewed items, missing data or attrition all increase the N you need. In the research plan, state clearly what network you assumed, how many nodes, which λ rule, and whether the goal is power of 0.80 or recovering every edge.</p></div>
+<h3>Common questions and pitfalls</h3><details class="ans faq"><summary>My items are 1–4 Likert items. Can I treat them as continuous for invariance testing?</summary><p>With 5 or more categories and distributions that are not too skewed, treating items as continuous with MLR is common practice. With only 2–4 categories, or strongly skewed distributions, it is more appropriate to treat items as ordered categories (lavaan's <code>ordered = </code> with WLSMV estimation), and the constraints then apply to thresholds instead of intercepts. The course items have only 4 categories, so strictly they belong to the second case; this lesson treats them as continuous to stay consistent with Lessons 5.2 and 7.5 and to keep the "intercept = zero point" intuition clear. That is a simplification. The original paper on the coaches data (6 categories) used the ordered-category approach. In your own paper, choose by the number of categories and the shape of the distributions, and give your reasons in the methods section.</p></details><details class="ans faq"><summary>Social Work Connection</summary><p>Agencies often use the same scale to compare groups: local residents and migrants, different language versions of a questionnaire, before and after a service. Any comparison of "higher or lower" assumes scalar invariance. When you see a report that "group X scores higher", first ask: does this item mean the same thing to people in both groups?</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② Essential Math</span>Writing the three parts as an equation</h2>
+<h4>1. The measurement equation</h4>
+<div class="mathbox">\[x_{kti}=\tau_{kt}+\lambda_{kt}\,\eta_{ti}+\varepsilon_{kti}\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(x_{kti}\)</td><td>Score of person i on item k at wave t</td></tr><tr><td>\(\eta_{ti}\)</td><td>Greek eta: the factor (true loneliness level) of person i at wave t</td></tr><tr><td>\(\lambda_{kt}\)</td><td>Greek lambda: the loading (sensitivity) of item k at wave t</td></tr><tr><td>\(\tau_{kt}\)</td><td>Greek tau: the intercept (zero point) of item k at wave t</td></tr><tr><td>\(\varepsilon_{kti}\)</td><td>Residual: what is specific to this item plus random error</td></tr></table>
+<h4>2. The three levels of constraints</h4>
+<div class="mathbox">\[\text{Configural: same structure at every wave};\quad \text{Metric: }\lambda_{k1}=\lambda_{k2}=\lambda_{k3};\quad \text{Scalar: also }\tau_{k1}=\tau_{k2}=\tau_{k3}\]</div>
+<p>Why can you compare means only under scalar invariance? Average over people at wave t: \(\bar x_{kt}=\tau_{kt}+\lambda_{kt}\,\bar\eta_t\). The difference between the mean scores of two waves = the difference in intercepts + loading × the difference in factor means (when the loadings are equal). Only when the intercepts are equal does the change in the item mean come entirely from the change in the factor mean. Otherwise a shift of the ruler's zero point and a change in the people are mixed together and cannot be separated.</p>
+<h4>3. Identification: giving the factor a scale</h4>
+<p>The factor is unobserved, so its unit has to be fixed by convention. In this lesson, the wave 1 factor variance is fixed to 1 and its mean to 0. Once the loadings are equal, the variances at waves 2 and 3 can be estimated freely; once the intercepts are equal, the means at waves 2 and 3 can be estimated freely, and those are what we want to compare. In the script, <code>F1 ~~ 1*F1</code> and <code>F2 ~ NA*1</code> make these settings.</p>
+<h4>4. Chi-square differences under robust estimation</h4>
+<p>ΔCFI and ΔRMSEA are both “the stricter model minus the looser model.” With the robust estimator (MLR), you cannot simply subtract the two χ² values: the difference needs a scaling correction (Satorra–Bentler), which <code>lavTestLRT()</code> applies automatically. Course data, metric vs. configural: corrected Δχ² = 2.335, Δdf = 6, p = 0.886.</p>
+<h4>5. The two measures of the sample size simulation</h4>
+<div class="mathbox">\[\text{Power}=\frac{1}{R}\sum_{r=1}^{R}\frac{1}{|T|}\sum_{(k,j)\in T}\mathbf 1\big[\hat\beta^{(r)}_{kj}\neq 0\ \text{and correct sign}\big],\qquad \text{FPR}=\frac{1}{R}\sum_{r=1}^{R}\frac{1}{|Z|}\sum_{(k,j)\in Z}\mathbf 1\big[\hat\beta^{(r)}_{kj}\neq 0\big]\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(R\)</td><td>Number of simulation replications (the script uses 20 per N)</td></tr><tr><td>\(T,\ |T|\)</td><td>The set of target edges and their number (8)</td></tr><tr><td>\(Z,\ |Z|\)</td><td>The set of near-zero edges and their number (35)</td></tr><tr><td>\(\mathbf 1[\cdot]\)</td><td>Indicator function: 1 if the condition in brackets holds, 0 otherwise</td></tr></table>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R Code</span>Implement in R</h2><div class="codeblk"><div class="ctitle">Core of R/L7-6.R (invariance)</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(lavaan)
+dat &lt;- read_course_data()
+# 1. Model syntax: same label = same parameter (equality constraint)
+#    Configural: loading labels l1_1, l1_2, ... all differ; metric: l1-l4 at every wave; scalar: intercepts i1-i4 too
+#    R/L7-6.R writes the three models with a small function lone_model(level); waves 1 and 2 of the metric model look like this:
+#    F1 =~ NA*lone1_t1 + l1*lone1_t1 + NA*lone2_t1 + l2*lone2_t1 + ...
+#    F2 =~ NA*lone1_t2 + l1*lone1_t2 + NA*lone2_t2 + l2*lone2_t2 + ...
+#    lone1_t1 ~~ lone1_t2 + lone1_t3   # residual correlations of the same item across waves (what is specific to the item)
+f_conf &lt;- cfa(lone_model(&quot;configural&quot;), data = dat, estimator = &quot;MLR&quot;, meanstructure = TRUE)
+f_metr &lt;- cfa(lone_model(&quot;metric&quot;),     data = dat, estimator = &quot;MLR&quot;, meanstructure = TRUE)
+f_scal &lt;- cfa(lone_model(&quot;scalar&quot;),     data = dat, estimator = &quot;MLR&quot;, meanstructure = TRUE)
+lavTestLRT(f_conf, f_metr, f_scal)                       # scaled chi-square difference tests
+sapply(list(f_conf, f_metr, f_scal), fitMeasures, c(&quot;cfi.robust&quot;, &quot;rmsea.robust&quot;))
+
+# 2. Multiple groups: group.equal adds the constraints in one line
+dat$sex &lt;- factor(dat$gender, levels = c(0, 1), labels = c(&quot;Male&quot;, &quot;Female&quot;))
+g_scal &lt;- cfa(&quot;Dep =~ dep1_t1 + dep2_t1 + dep3_t1 + dep4_t1 + dep5_t1&quot;, data = dat,
+              group = &quot;sex&quot;, estimator = &quot;MLR&quot;, group.equal = c(&quot;loadings&quot;, &quot;intercepts&quot;))
+
+# 3. Find the worst-fitting equality constraint: score test (computed under ML)
+bad &lt;- dat; bad$lone2_t3 &lt;- bad$lone2_t3 + 0.5     # raise the wave 3 lone2 intercept by 0.5 on purpose
+b_scal_ml &lt;- cfa(lone_model(&quot;scalar&quot;), data = bad, estimator = &quot;ML&quot;, meanstructure = TRUE)
+head(lavTestScore(b_scal_ml)$uni[order(-lavTestScore(b_scal_ml)$uni$X2), ], 3)
+b_part &lt;- cfa(lone_model(&quot;scalar&quot;, free_int = &quot;lone2_t3&quot;), data = bad, estimator = &quot;MLR&quot;, meanstructure = TRUE)</code></pre></div>
+<p><b>Notes:</b> <code>NA*lone1_t1</code> frees the first loading too (lavaan fixes it to 1 by default), because we set the scale with “wave 1 factor variance = 1” instead. <code>lavTestScore()</code> labels parameters with internal codes (such as <code>.p5.</code>); the script uses <code>parTable()</code> to translate them into item names. In multiple-group models, <code>group.equal</code> adds the constraints for you, which is easier than writing labels; in longitudinal models the constraints span different variables, so you have to write the labels by hand.</p>
+<div class="codeblk"><div class="ctitle">Actual output: excerpt from R/output/L7-6_log.txt (Part 1)</div><pre class="out"><code>===== Part 1: Longitudinal Measurement Invariance of 4 Loneliness Items (N = 800 , 3 waves, MLR) =====
+      model chisq df     p   CFI RMSEA  dCFI dRMSEA      judge
+ Configural 51.73 39 0.083 0.996 0.021    NA     NA (Baseline)
+     Metric 54.73 45 0.152 0.997 0.017 0.001 -0.004  Supported
+     Scalar 60.88 51 0.162 0.997 0.016 0.000 -0.001  Supported
+
+Nested model chi-square difference test (Satorra-Bentler correction):
+       Df Chisq diff Df diff Pr(&gt;Chisq)
+f_conf 39         NA      NA         NA
+f_metr 45      2.335       6      0.886
+f_scal 51      6.123       6      0.410
+
+Loneliness factor means across 3 waves in scalar model (Wave 1 fixed to 0):
+ lhs   est    se pvalue
+  F1 0.000 0.000     NA
+  F2 0.030 0.034  0.380
+  F3 0.035 0.041  0.399</code></pre></div>
+<p>Columns: <code>dCFI</code> and <code>dRMSEA</code> are the changes from the row above; <code>judge</code> applies ΔCFI ≥ −0.01 and ΔRMSEA ≤ 0.015. <code>Chisq diff</code> is the scaled chi-square difference.</p>
+<div class="codeblk"><div class="ctitle">Actual output: excerpt from R/output/L7-6_log.txt (Part 3: breaking the ruler on purpose)</div><pre class="out"><code>===== Part 3: Artificially Adding +0.5 to Wave 3 lone2 Intercept =====
+      model  chisq df     p   CFI RMSEA   dCFI dRMSEA         judge
+ Configural  51.73 39 0.083 0.996 0.021     NA     NA    (Baseline)
+     Metric  54.73 45 0.152 0.997 0.017  0.001 -0.004     Supported
+     Scalar 270.40 51 0.000 0.937 0.074 -0.060  0.057 Not supported
+
+Partial invariance model compared with metric model:
+                                    model chisq df    p   CFI RMSEA dCFI dRMSEA     judge
+ Partial scalar (free lone2_t3 intercept) 60.36 50 0.15 0.997 0.016    0 -0.001 Supported
+
+Metric vs. scalar (modified data): chi-square difference p = &lt;2e-16 
+Top 3 most problematic equality constraints (larger X2 indicates greater misfit):
+                                    Constraint     X2
+ Intercept of lone2_t1 = Intercept of lone2_t3 193.62
+ Intercept of lone2_t1 = Intercept of lone2_t2  43.65
+ Intercept of lone3_t1 = Intercept of lone3_t3  29.00
+
+Wave 3 loneliness factor mean: Original data 0.035; Modified with forced scalar invariance 0.182; Modified with partial invariance 0.026
+-&gt; If intercepts are forced to be equal, item wording changes are mistaken for &#x27;everyone becoming more lonely&#x27;.</code></pre></div><div class="codeblk"><div class="ctitle">Core of R/L7-6.R (sample size simulation)</div><pre><code class="language-r"># 4. Sample size simulation (REPS replications per N)
+B  &lt;- true_B()                                   # the assumed true network
+R1 &lt;- cor(dat[, vars_t(1)]); R2 &lt;- cor(dat[, vars_t(2)])
+Se &lt;- R2 - t(B) %*% R1 %*% B                     # residual covariance: keeps the simulated T2 item variances near 1
+off    &lt;- row(B) != col(B)                       # positions of the cross-lagged edges (no autoregression)
+target &lt;- off &amp; abs(B) &gt;= 0.08                   # target edges
+near0  &lt;- off &amp; abs(B) &lt; 0.02                    # near-zero edges
+for (N in c(150, 300, 500, 800, 1200)) for (rep in 1:REPS) {
+  X &lt;- rmvn(N, R1); Y &lt;- X %*% B + rmvn(N, Se)  # generate a data set from the true network
+  e &lt;- est_both(X, Y)                            # one cross-validation, taking both lambda.min and lambda.1se
+  # score(): power = share of target edges nonzero with the correct sign; FPR = share of near-zero edges nonzero
+}</code></pre></div>
+<div class="codeblk"><div class="ctitle">Actual output: excerpt from R/output/L7-6_log.txt (Part 4)</div><pre class="out"><code>Each N repeated 20 times. power_target = proportion of target edges recovered (non-zero and correct sign); p_all8 = proportion of all 8 edges recovered;
+ fpr_near0 = proportion of near-zero edges falsely identified as non-zero; r_with_true = correlation between estimated and true cross-lagged edges.
+    N rule power_target p_all8 fpr_near0 r_with_true
+  150  1se         0.22   0.00      0.01        0.31
+  300  1se         0.37   0.00      0.01        0.42
+  500  1se         0.51   0.00      0.02        0.53
+  800  1se         0.69   0.00      0.02        0.64
+ 1200  1se         0.73   0.00      0.01        0.67
+  150  min         0.64   0.00      0.27        0.45
+  300  min         0.86   0.25      0.43        0.56
+  500  min         0.91   0.60      0.43        0.65
+  800  min         0.98   0.85      0.46        0.76
+ 1200  min         0.99   0.90      0.52        0.82</code></pre></div>
+<p><b>Run time:</b> the whole script takes about 40 seconds to 1 minute, most of it in Part 4 (20 × 5 = 100 CLPN estimations). For smoother curves, set <code>REPS</code> to 50 (about 2–3 minutes); the numbers will then differ slightly from those on this page.</p><div class="box warnbox"><b class="bt">Common mistakes in invariance testing</b><ul>
+<li><b>Fixing both the first loading and the factor variance in the measurement model.</b> Use one way of setting the scale, not both. This lesson fixes the wave-1 factor variance to 1, so every loading gets <code>NA*</code> to free lavaan's default "first loading = 1".</li>
+<li><b>Making loadings equal but forgetting to free the factor variances at waves 2 and 3</b> (or making intercepts equal without freeing the factor means). This forces variances or means that really differ to be equal; fit gets worse, and you wrongly conclude that invariance does not hold.</li>
+<li><b>Leaving out the residual correlations of the same item across waves.</b> Each item carries its own quirks every time it is answered (its wording, how each person reads that sentence), and these quirks correlate across waves. Without them, the configural model fits poorly.</li>
+<li><b>Subtracting two χ² values directly under MLR.</b> The robust chi-square needs a scaling correction: use <code>lavTestLRT()</code>. For ΔCFI use <code>cfi.robust</code>; don't mix the ordinary and robust CFI.</li></ul></div><h3>Companion Script &amp; Output</h3><details class="more rsrc"><summary>Complete companion script <code>R/L7-6.R</code> (198 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-6.R  Measurement Invariance and Sample Size Planning
+#   (Measurement invariance &amp; sample-size planning)
+# Advanced optional lesson. Uses only lavaan (fixed course version), no semTools required.
+# Part 1: Longitudinal measurement invariance across 3 waves for 4 loneliness items (configural -&gt; metric -&gt; scalar)
+# Part 2: Multi-group measurement invariance of 5 depression items between males and females (group.equal)
+# Part 3: Artificially induced intercept shift on wave 3 lone2: see how scalar invariance fails and how partial invariance salvages it
+# Part 4: Sample size planning via simulation: how large must N be to recover 8 &quot;target edges&quot;?
+# Runtime: ~1 minute (mostly Part 4; changing REPS to 50 takes ~2–3 minutes)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(lavaan)
+library(glmnet)
+options(width = 110)                         # Prevent wide tables from wrapping in log
+log_open(&quot;L7-6_log.txt&quot;)
+dat &lt;- read_course_data()
+
+# ---- Helper: Extract fit indices to report ----------------------------
+fit_row &lt;- function(fit, name) {
+  fm &lt;- fitMeasures(fit, c(&quot;chisq.scaled&quot;, &quot;df&quot;, &quot;pvalue.scaled&quot;, &quot;cfi.robust&quot;, &quot;rmsea.robust&quot;))
+  data.frame(model = name, chisq = round(fm[[&quot;chisq.scaled&quot;]], 2), df = fm[[&quot;df&quot;]],
+             p = round(fm[[&quot;pvalue.scaled&quot;]], 3), CFI = round(fm[[&quot;cfi.robust&quot;]], 3),
+             RMSEA = round(fm[[&quot;rmsea.robust&quot;]], 3))
+}
+# Comparison between adjacent models: Delta CFI &gt;= -0.01 and Delta RMSEA &lt;= 0.015 -&gt; more constrained level supported (Chen, 2007)
+compare_step &lt;- function(tab) {
+  tab$dCFI &lt;- c(NA, round(diff(tab$CFI), 3))
+  tab$dRMSEA &lt;- c(NA, round(diff(tab$RMSEA), 3))
+  tab$judge &lt;- c(&quot;(Baseline)&quot;, ifelse(tab$dCFI[-1] &gt;= -0.01 &amp; tab$dRMSEA[-1] &lt;= 0.015, &quot;Supported&quot;, &quot;Not supported&quot;))
+  tab
+}
+
+# =====================================================================
+# Part 1: Longitudinal Measurement Invariance (4 Loneliness items x 3 waves)
+# One loneliness factor per wave (F1, F2, F3); residuals of the same item correlated across waves
+# =====================================================================
+lone_model &lt;- function(level = c(&quot;configural&quot;, &quot;metric&quot;, &quot;scalar&quot;), free_int = character(0)) {
+  level &lt;- match.arg(level)
+  s &lt;- &quot;&quot;
+  for (t in 1:3) {
+    v &lt;- paste0(lone_items, &quot;_t&quot;, t)
+    # Factor loadings: configural freely estimated; metric / scalar constrained equal via shared labels l1–l4
+    lab &lt;- if (level == &quot;configural&quot;) paste0(&quot;l&quot;, 1:4, &quot;_&quot;, t) else paste0(&quot;l&quot;, 1:4)
+    s &lt;- paste0(s, &quot;F&quot;, t, &quot; =~ &quot;, paste0(&quot;NA*&quot;, v, &quot; + &quot;, lab, &quot;*&quot;, v, collapse = &quot; + &quot;), &quot;\n&quot;)
+    # Intercepts: scalar constrained equal via shared labels i1–i4; items in free_int left unconstrained (partial invariance)
+    ilab &lt;- if (level == &quot;scalar&quot;) paste0(&quot;i&quot;, 1:4) else paste0(&quot;i&quot;, 1:4, &quot;_&quot;, t)
+    ilab[v %in% free_int] &lt;- paste0(&quot;i_free_&quot;, v[v %in% free_int])
+    s &lt;- paste0(s, paste0(v, &quot; ~ &quot;, ilab, &quot;*1&quot;, collapse = &quot;\n&quot;), &quot;\n&quot;)
+  }
+  # Identification: wave 1 factor variance = 1, mean = 0; once loadings are equal, waves 2 and 3 variances can be freely estimated;
+  # once intercepts are equal, factor means can be freely estimated
+  s &lt;- paste0(s, &quot;F1 ~~ 1*F1\nF1 ~ 0*1\n&quot;)
+  for (t in 2:3) {
+    s &lt;- paste0(s, if (level == &quot;configural&quot;) paste0(&quot;F&quot;, t, &quot; ~~ 1*F&quot;, t, &quot;\n&quot;) else paste0(&quot;F&quot;, t, &quot; ~~ F&quot;, t, &quot;\n&quot;))
+    s &lt;- paste0(s, if (level == &quot;scalar&quot;) paste0(&quot;F&quot;, t, &quot; ~ NA*1\n&quot;) else paste0(&quot;F&quot;, t, &quot; ~ 0*1\n&quot;))
+  }
+  for (it in lone_items)                       # Residual covariance of the same item across waves
+    s &lt;- paste0(s, it, &quot;_t1 ~~ &quot;, it, &quot;_t2 + &quot;, it, &quot;_t3\n&quot;, it, &quot;_t2 ~~ &quot;, it, &quot;_t3\n&quot;)
+  s
+}
+fit_long &lt;- function(d, level, free_int = character(0))
+  cfa(lone_model(level, free_int), data = d, estimator = &quot;MLR&quot;, meanstructure = TRUE)
+
+cat(&quot;===== Part 1: Longitudinal Measurement Invariance of 4 Loneliness Items (N =&quot;, nrow(dat), &quot;, 3 waves, MLR) =====\n&quot;)
+f_conf &lt;- fit_long(dat, &quot;configural&quot;); f_metr &lt;- fit_long(dat, &quot;metric&quot;); f_scal &lt;- fit_long(dat, &quot;scalar&quot;)
+tab1 &lt;- compare_step(rbind(fit_row(f_conf, &quot;Configural&quot;), fit_row(f_metr, &quot;Metric&quot;), fit_row(f_scal, &quot;Scalar&quot;)))
+print(tab1, row.names = FALSE)
+cat(&quot;\nNested model chi-square difference test (Satorra-Bentler correction):\n&quot;)
+lrt1 &lt;- lavTestLRT(f_conf, f_metr, f_scal)
+print(round(as.data.frame(lrt1)[, c(&quot;Df&quot;, &quot;Chisq diff&quot;, &quot;Df diff&quot;, &quot;Pr(&gt;Chisq)&quot;)], 3))
+cat(&quot;\nLoneliness factor means across 3 waves in scalar model (Wave 1 fixed to 0):\n&quot;)
+pe &lt;- parameterEstimates(f_scal)
+print(transform(pe[pe$op == &quot;~1&quot; &amp; pe$lhs %in% c(&quot;F1&quot;, &quot;F2&quot;, &quot;F3&quot;), c(&quot;lhs&quot;, &quot;est&quot;, &quot;se&quot;, &quot;pvalue&quot;)],
+                est = round(est, 3), se = round(se, 3), pvalue = round(pvalue, 3)), row.names = FALSE)
+
+# =====================================================================
+# Part 2: Multi-Group Measurement Invariance (5 Depression items, T1, Male vs. Female)
+# lavaan group.equal adds constraints concisely: unconstrained -&gt; equal loadings -&gt; equal loadings + intercepts
+# =====================================================================
+cat(&quot;\n===== Part 2: Multi-Group Measurement Invariance of 5 Depression Items (T1) Across Genders =====\n&quot;)
+dat$sex &lt;- factor(dat$gender, levels = c(0, 1), labels = c(&quot;Male&quot;, &quot;Female&quot;))
+cat(&quot;Sample size per group:&quot;); print(table(dat$sex))
+dep_model &lt;- paste(&quot;Dep =~&quot;, paste0(dep_items, &quot;_t1&quot;, collapse = &quot; + &quot;))
+g_conf &lt;- cfa(dep_model, data = dat, group = &quot;sex&quot;, estimator = &quot;MLR&quot;)
+g_metr &lt;- cfa(dep_model, data = dat, group = &quot;sex&quot;, estimator = &quot;MLR&quot;, group.equal = &quot;loadings&quot;)
+g_scal &lt;- cfa(dep_model, data = dat, group = &quot;sex&quot;, estimator = &quot;MLR&quot;, group.equal = c(&quot;loadings&quot;, &quot;intercepts&quot;))
+tab2 &lt;- compare_step(rbind(fit_row(g_conf, &quot;Configural&quot;), fit_row(g_metr, &quot;Metric&quot;), fit_row(g_scal, &quot;Scalar&quot;)))
+print(tab2, row.names = FALSE)
+lrt2 &lt;- lavTestLRT(g_conf, g_metr, g_scal)
+print(round(as.data.frame(lrt2)[, c(&quot;Df&quot;, &quot;Chisq diff&quot;, &quot;Df diff&quot;, &quot;Pr(&gt;Chisq)&quot;)], 3))
+pe2 &lt;- parameterEstimates(g_scal)
+lm2 &lt;- pe2[pe2$op == &quot;~1&quot; &amp; pe2$lhs == &quot;Dep&quot; &amp; pe2$group == 2, ]
+cat(sprintf(&quot;\nWith scalar invariance established, females have a higher depression factor mean than males by %.3f (SE = %.3f, p = %.3f); male factor mean fixed to 0.\n&quot;,
+            lm2$est, lm2$se, lm2$pvalue))
+cat(&quot;(In the simulated data, females had an identical +0.2 added to each depression item: difference is at the factor level rather than item-specific, so invariance holds.)\n&quot;)
+
+# =====================================================================
+# Part 3: Creating a Non-Invariant Example
+# Suppose Wave 3 lone2 (&#x27;Feeling left out&#x27;) wording was altered to make endorsement easier:
+# each participant gains +0.5 on this item, but true loneliness did not change.
+# Intercept changed -&gt; scalar invariance should fail.
+# =====================================================================
+cat(&quot;\n===== Part 3: Artificially Adding +0.5 to Wave 3 lone2 Intercept =====\n&quot;)
+bad &lt;- dat; bad$lone2_t3 &lt;- bad$lone2_t3 + 0.5
+b_conf &lt;- fit_long(bad, &quot;configural&quot;); b_metr &lt;- fit_long(bad, &quot;metric&quot;); b_scal &lt;- fit_long(bad, &quot;scalar&quot;)
+b_part &lt;- fit_long(bad, &quot;scalar&quot;, free_int = &quot;lone2_t3&quot;)
+tab3 &lt;- compare_step(rbind(fit_row(b_conf, &quot;Configural&quot;), fit_row(b_metr, &quot;Metric&quot;), fit_row(b_scal, &quot;Scalar&quot;)))
+print(tab3, row.names = FALSE)
+pt &lt;- fit_row(b_part, &quot;Partial scalar (free lone2_t3 intercept)&quot;)
+pt$dCFI &lt;- round(pt$CFI - tab3$CFI[2], 3); pt$dRMSEA &lt;- round(pt$RMSEA - tab3$RMSEA[2], 3)
+pt$judge &lt;- ifelse(pt$dCFI &gt;= -0.01 &amp; pt$dRMSEA &lt;= 0.015, &quot;Supported&quot;, &quot;Not supported&quot;)
+cat(&quot;\nPartial invariance model compared with metric model:\n&quot;); print(pt, row.names = FALSE)
+lrt3 &lt;- lavTestLRT(b_metr, b_scal)
+cat(&quot;\nMetric vs. scalar (modified data): chi-square difference p =&quot;, format.pval(lrt3[2, &quot;Pr(&gt;Chisq)&quot;], digits = 3), &quot;\n&quot;)
+# Use score test (Lagrange multiplier test) to identify the most problematic equality constraint:
+# It estimates how much chi-square drops if this single constraint is freed.
+# Evaluated under standard ML estimation, so re-fit with ML first.
+b_scal_ml &lt;- cfa(lone_model(&quot;scalar&quot;), data = bad, estimator = &quot;ML&quot;, meanstructure = TRUE)
+mi &lt;- lavTestScore(b_scal_ml)$uni
+mi &lt;- mi[order(-mi$X2), ][1:3, ]
+pt_tab &lt;- parTable(b_scal_ml)
+lab_of &lt;- function(p) { r &lt;- pt_tab[pt_tab$plabel == p, ]; if (r$op == &quot;~1&quot;) paste0(&quot;Intercept of &quot;, r$lhs) else paste0(r$lhs, &quot; &quot;, r$op, &quot; &quot;, r$rhs) }
+cat(&quot;Top 3 most problematic equality constraints (larger X2 indicates greater misfit):\n&quot;)
+print(data.frame(Constraint = paste(sapply(mi$lhs, lab_of), &quot;=&quot;, sapply(mi$rhs, lab_of)), X2 = round(mi$X2, 2)), row.names = FALSE)
+pb &lt;- parameterEstimates(b_scal); pp &lt;- parameterEstimates(b_part)
+mean_F3 &lt;- function(p) round(p$est[p$op == &quot;~1&quot; &amp; p$lhs == &quot;F3&quot;], 3)
+cat(sprintf(&quot;\nWave 3 loneliness factor mean: Original data %.3f; Modified with forced scalar invariance %.3f; Modified with partial invariance %.3f\n&quot;,
+            mean_F3(pe), mean_F3(pb), mean_F3(pp)))
+cat(&quot;-&gt; If intercepts are forced to be equal, item wording changes are mistaken for &#x27;everyone becoming more lonely&#x27;.\n&quot;)
+
+write.csv(rbind(cbind(part = &quot;1 Longitudinal&quot;, tab1), cbind(part = &quot;2 Multi-group gender&quot;, tab2),
+                cbind(part = &quot;3 Modified&quot;, rbind(tab3, pt))),
+          out(&quot;L7-6_invariance_fit.csv&quot;), row.names = FALSE)
+
+# =====================================================================
+# Part 4: Sample Size Planning (by simulation)
+# Logic: Assume a &#x27;true&#x27; network, generate many datasets of size N, estimate a CLPN on each,
+#        and count how many target edges are recovered and how many near-zero edges are falsely detected.
+# The true network here uses true_B_population (the course population target); in practice use pilot data or literature estimates.
+# =====================================================================
+cat(&quot;\n===== Part 4: Sample Size Simulation =====\n&quot;)
+REPS &lt;- 20                                   # 20 repetitions per N; change to 50 for smoother curves
+N_GRID &lt;- c(150, 300, 500, 800, 1200)
+B &lt;- true_B()
+R1 &lt;- cor(dat[, vars_t(1)]); R2 &lt;- cor(dat[, vars_t(2)])
+Se &lt;- R2 - t(B) %*% R1 %*% B                 # Residual covariance: standardizes simulated T2 item variances to ~1
+Se &lt;- (Se + t(Se)) / 2
+off &lt;- row(B) != col(B)
+target &lt;- off &amp; abs(B) &gt;= 0.08               # 8 &quot;target edges&quot; (cross-lagged and within-construct edges set in generative model)
+near0  &lt;- off &amp; abs(B) &lt; 0.02                # Near-zero edges: non-zero estimate counts as false discovery
+cat(&quot;Target edges&quot;, sum(target), &quot;:&quot;, paste(edge_list(B * target)$from, &quot;-&gt;&quot;, edge_list(B * target)$to, collapse = &quot;, &quot;), &quot;\n&quot;)
+cat(&quot;Near-zero edges (|B| &lt; 0.02):&quot;, sum(near0), &quot;\n&quot;)
+rmvn &lt;- function(n, S) matrix(rnorm(n * ncol(S)), n) %*% chol(S)
+# Single cross-validation retrieves both lambda.min and lambda.1se rules
+est_both &lt;- function(X, Y) {
+  X &lt;- scale(X); Y &lt;- scale(Y); p &lt;- ncol(X)
+  Bm &lt;- B1 &lt;- matrix(0, p, p)
+  for (j in 1:p) {
+    cv &lt;- cv.glmnet(X, Y[, j], alpha = 1, nfolds = 10)
+    Bm[, j] &lt;- as.numeric(coef(cv, s = &quot;lambda.min&quot;))[-1]
+    B1[, j] &lt;- as.numeric(coef(cv, s = &quot;lambda.1se&quot;))[-1]
+  }
+  list(min = Bm, `1se` = B1)
+}
+score &lt;- function(Bh) c(power = mean(Bh[target] != 0 &amp; sign(Bh[target]) == sign(B[target])),
+                        all8 = all(Bh[target] != 0), fpr = mean(Bh[near0] != 0),
+                        r = cor(Bh[off], B[off]))
+set.seed(2026)
+res &lt;- list()
+for (N in N_GRID) for (rep in 1:REPS) {
+  X &lt;- rmvn(N, R1); Y &lt;- X %*% B + rmvn(N, Se)
+  e &lt;- est_both(X, Y)
+  for (rule in names(e)) res[[length(res) + 1]] &lt;- data.frame(N = N, rep = rep, rule = rule, t(score(e[[rule]])))
+}
+res &lt;- do.call(rbind, res)
+pw &lt;- aggregate(cbind(power, all8, fpr, r) ~ N + rule, data = res, FUN = mean)
+pw &lt;- pw[order(pw$rule, pw$N), ]
+pw[, c(&quot;power&quot;, &quot;all8&quot;, &quot;fpr&quot;, &quot;r&quot;)] &lt;- round(pw[, c(&quot;power&quot;, &quot;all8&quot;, &quot;fpr&quot;, &quot;r&quot;)], 2)
+names(pw) &lt;- c(&quot;N&quot;, &quot;rule&quot;, &quot;power_target&quot;, &quot;p_all8&quot;, &quot;fpr_near0&quot;, &quot;r_with_true&quot;)
+cat(&quot;Each N repeated&quot;, REPS, &quot;times. power_target = proportion of target edges recovered (non-zero and correct sign); p_all8 = proportion of all 8 edges recovered;\n&quot;,
+    &quot;fpr_near0 = proportion of near-zero edges falsely identified as non-zero; r_with_true = correlation between estimated and true cross-lagged edges.\n&quot;)
+print(pw, row.names = FALSE)
+write.csv(pw, out(&quot;L7-6_power.csv&quot;), row.names = FALSE)
+cat(sprintf(&quot;\nSimulation completed %d CLPN estimations in total (9 cross-validated LASSOs each).\n&quot;, length(N_GRID) * REPS))
+png_open(&quot;L7-6_power.png&quot;, 1800, 1100)
+par(mfrow = c(1, 2), mar = c(4.2, 4.2, 3, 1))
+for (k in c(&quot;power_target&quot;, &quot;fpr_near0&quot;)) {
+  plot(NA, xlim = range(N_GRID), ylim = c(0, 1), xlab = &quot;Sample size N&quot;, ylab = &quot;Proportion&quot;,
+       main = if (k == &quot;power_target&quot;) &quot;Recovery rate of target edges (power)&quot; else &quot;False discovery rate of near-zero edges&quot;)
+  for (rule in c(&quot;min&quot;, &quot;1se&quot;)) {
+    s &lt;- pw[pw$rule == rule, ]
+    lines(s$N, s[[k]], type = &quot;b&quot;, pch = 16, lwd = 2, col = if (rule == &quot;min&quot;) &quot;steelblue&quot; else &quot;darkorange&quot;)
+  }
+  if (k == &quot;power_target&quot;) abline(h = 0.8, lty = 2, col = &quot;grey50&quot;)
+  legend(if (k == &quot;power_target&quot;) &quot;bottomright&quot; else &quot;topleft&quot;, c(&quot;lambda.min&quot;, &quot;lambda.1se&quot;), col = c(&quot;steelblue&quot;, &quot;darkorange&quot;), lwd = 2, pch = 16, bty = &quot;n&quot;)
+}
+invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L7-6_power.png" alt="L7-6_power.png" loading="lazy"><figcaption>Figure: <code>R/output/L7-6_power.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L7-6_log.txt</code></div><pre class="out"><code>===== Part 1: Longitudinal Measurement Invariance of 4 Loneliness Items (N = 800 , 3 waves, MLR) =====
+      model chisq df     p   CFI RMSEA  dCFI dRMSEA      judge
+ Configural 51.73 39 0.083 0.996 0.021    NA     NA (Baseline)
+     Metric 54.73 45 0.152 0.997 0.017 0.001 -0.004  Supported
+     Scalar 60.88 51 0.162 0.997 0.016 0.000 -0.001  Supported
+
+Nested model chi-square difference test (Satorra-Bentler correction):
+       Df Chisq diff Df diff Pr(&gt;Chisq)
+f_conf 39         NA      NA         NA
+f_metr 45      2.335       6      0.886
+f_scal 51      6.123       6      0.410
+
+Loneliness factor means across 3 waves in scalar model (Wave 1 fixed to 0):
+ lhs   est    se pvalue
+  F1 0.000 0.000     NA
+  F2 0.030 0.034  0.380
+  F3 0.035 0.041  0.399
+
+===== Part 2: Multi-Group Measurement Invariance of 5 Depression Items (T1) Across Genders =====
+Sample size per group:
+  Male Female 
+   373    427 
+      model chisq df     p   CFI RMSEA  dCFI dRMSEA      judge
+ Configural 15.58 10 0.112 0.993 0.041    NA     NA (Baseline)
+     Metric 18.42 14 0.188 0.994 0.031 0.001  -0.01  Supported
+     Scalar 20.72 18 0.294 0.996 0.021 0.002  -0.01  Supported
+       Df Chisq diff Df diff Pr(&gt;Chisq)
+g_conf 10         NA      NA         NA
+g_metr 14      2.992       4      0.559
+g_scal 18      1.836       4      0.766
+
+With scalar invariance established, females have a higher depression factor mean than males by 0.154 (SE = 0.048, p = 0.001); male factor mean fixed to 0.
+(In the simulated data, females had an identical +0.2 added to each depression item: difference is at the factor level rather than item-specific, so invariance holds.)
+
+===== Part 3: Artificially Adding +0.5 to Wave 3 lone2 Intercept =====
+      model  chisq df     p   CFI RMSEA   dCFI dRMSEA         judge
+ Configural  51.73 39 0.083 0.996 0.021     NA     NA    (Baseline)
+     Metric  54.73 45 0.152 0.997 0.017  0.001 -0.004     Supported
+     Scalar 270.40 51 0.000 0.937 0.074 -0.060  0.057 Not supported
+
+Partial invariance model compared with metric model:
+                                    model chisq df    p   CFI RMSEA dCFI dRMSEA     judge
+ Partial scalar (free lone2_t3 intercept) 60.36 50 0.15 0.997 0.016    0 -0.001 Supported
+
+Metric vs. scalar (modified data): chi-square difference p = &lt;2e-16 
+Top 3 most problematic equality constraints (larger X2 indicates greater misfit):
+                                    Constraint     X2
+ Intercept of lone2_t1 = Intercept of lone2_t3 193.62
+ Intercept of lone2_t1 = Intercept of lone2_t2  43.65
+ Intercept of lone3_t1 = Intercept of lone3_t3  29.00
+
+Wave 3 loneliness factor mean: Original data 0.035; Modified with forced scalar invariance 0.182; Modified with partial invariance 0.026
+-&gt; If intercepts are forced to be equal, item wording changes are mistaken for &#x27;everyone becoming more lonely&#x27;.
+
+===== Part 4: Sample Size Simulation =====
+Target edges 8 : dep3 -&gt; dep4, lone2 -&gt; lone4, dep1 -&gt; dep5, lone3 -&gt; dep1, lone1 -&gt; dep2, dep4 -&gt; lone2, lone4 -&gt; dep5, dep2 -&gt; lone3 
+Near-zero edges (|B| &lt; 0.02): 35 
+Each N repeated 20 times. power_target = proportion of target edges recovered (non-zero and correct sign); p_all8 = proportion of all 8 edges recovered;
+ fpr_near0 = proportion of near-zero edges falsely identified as non-zero; r_with_true = correlation between estimated and true cross-lagged edges.
+    N rule power_target p_all8 fpr_near0 r_with_true
+  150  1se         0.22   0.00      0.01        0.31
+  300  1se         0.37   0.00      0.01        0.42
+  500  1se         0.51   0.00      0.02        0.53
+  800  1se         0.69   0.00      0.02        0.64
+ 1200  1se         0.73   0.00      0.01        0.67
+  150  min         0.64   0.00      0.27        0.45
+  300  min         0.86   0.25      0.43        0.56
+  500  min         0.91   0.60      0.43        0.65
+  800  min         0.98   0.85      0.46        0.76
+ 1200  min         0.99   0.90      0.52        0.82
+
+Simulation completed 100 CLPN estimations in total (9 cross-validated LASSOs each).</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L7-6_invariance_fit.csv</code></div><pre class="out"><code>&quot;part&quot;,&quot;model&quot;,&quot;chisq&quot;,&quot;df&quot;,&quot;p&quot;,&quot;CFI&quot;,&quot;RMSEA&quot;,&quot;dCFI&quot;,&quot;dRMSEA&quot;,&quot;judge&quot;
+&quot;1 Longitudinal&quot;,&quot;Configural&quot;,51.73,39,0.083,0.996,0.021,NA,NA,&quot;(Baseline)&quot;
+&quot;1 Longitudinal&quot;,&quot;Metric&quot;,54.73,45,0.152,0.997,0.017,0.001,-0.004,&quot;Supported&quot;
+&quot;1 Longitudinal&quot;,&quot;Scalar&quot;,60.88,51,0.162,0.997,0.016,0,-0.001,&quot;Supported&quot;
+&quot;2 Multi-group gender&quot;,&quot;Configural&quot;,15.58,10,0.112,0.993,0.041,NA,NA,&quot;(Baseline)&quot;
+&quot;2 Multi-group gender&quot;,&quot;Metric&quot;,18.42,14,0.188,0.994,0.031,0.001,-0.01,&quot;Supported&quot;
+&quot;2 Multi-group gender&quot;,&quot;Scalar&quot;,20.72,18,0.294,0.996,0.021,0.002,-0.01,&quot;Supported&quot;
+&quot;3 Modified&quot;,&quot;Configural&quot;,51.73,39,0.083,0.996,0.021,NA,NA,&quot;(Baseline)&quot;
+&quot;3 Modified&quot;,&quot;Metric&quot;,54.73,45,0.152,0.997,0.017,0.001,-0.004,&quot;Supported&quot;
+&quot;3 Modified&quot;,&quot;Scalar&quot;,270.4,51,0,0.937,0.074,-0.06,0.057,&quot;Not supported&quot;
+&quot;3 Modified&quot;,&quot;Partial scalar (free lone2_t3 intercept)&quot;,60.36,50,0.15,0.997,0.016,0,-0.001,&quot;Supported&quot;</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L7-6_power.csv</code></div><pre class="out"><code>&quot;N&quot;,&quot;rule&quot;,&quot;power_target&quot;,&quot;p_all8&quot;,&quot;fpr_near0&quot;,&quot;r_with_true&quot;
+150,&quot;1se&quot;,0.22,0,0.01,0.31
+300,&quot;1se&quot;,0.37,0,0.01,0.42
+500,&quot;1se&quot;,0.51,0,0.02,0.53
+800,&quot;1se&quot;,0.69,0,0.02,0.64
+1200,&quot;1se&quot;,0.73,0,0.01,0.67
+150,&quot;min&quot;,0.64,0,0.27,0.45
+300,&quot;min&quot;,0.86,0.25,0.43,0.56
+500,&quot;min&quot;,0.91,0.6,0.43,0.65
+800,&quot;min&quot;,0.98,0.85,0.46,0.76
+1200,&quot;min&quot;,0.99,0.9,0.52,0.82</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ Concept Check</span>Instant Check</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">At wave 3, the wording of one item is changed so that everyone scores 0.5 higher on it, while nothing real has changed. Which level of invariance breaks first?</p><ul class="opts"><li><button type="button" data-ok="0">A. Configural invariance</button><div class="ofb" hidden>The structure is unchanged; the item still measures loneliness.</div></li><li><button type="button" data-ok="0">B. Metric invariance</button><div class="ofb" hidden>Adding the same amount to everyone does not change the sensitivity (loading).</div></li><li><button type="button" data-ok="1">C. Scalar invariance</button><div class="ofb" hidden>Correct: the intercept (zero point) changed, so scalar invariance fails; you can no longer compare the means of the waves directly.</div></li><li><button type="button" data-ok="0">D. None</button><div class="ofb" hidden>The intercept changed, so scalar invariance fails.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Metric invariance holds but scalar invariance does not. Which comparison is still reasonable?</p><ul class="opts"><li><button type="button" data-ok="0">A. Comparing the mean loneliness score at wave 1 and wave 3</button><div class="ofb" hidden>Comparing means needs scalar invariance: with unequal intercepts, the change in the mean includes a shift of the zero point.</div></li><li><button type="button" data-ok="1">B. Comparing the correlation between loneliness and depression at the two waves</button><div class="ofb" hidden>Correct: equal loadings let you compare relations (correlations, regression coefficients, edges).</div></li><li><button type="button" data-ok="0">C. Saying “people were lonelier at wave 3”</button><div class="ofb" hidden>That sentence compares means, which needs scalar invariance.</div></li><li><button type="button" data-ok="0">D. Nothing can be compared</button><div class="ofb" hidden>Metric invariance holds, so relations (correlations, regression coefficients, edges) can still be compared.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">With N = 2000, the chi-square difference test of scalar vs. metric gives p = .004, but ΔCFI = −0.002 and ΔRMSEA = 0.001. What is the most reasonable conclusion?</p><ul class="opts"><li><button type="button" data-ok="0">A. Scalar invariance definitely fails</button><div class="ofb" hidden>With a large sample, chi-square reacts even to tiny differences, so don't decide on it alone; ΔCFI and ΔRMSEA are both within bounds.</div></li><li><button type="button" data-ok="1">B. With a large sample, chi-square is oversensitive; the fit indices barely change, so scalar invariance roughly holds, and you report both results</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. The two results contradict each other, so the analysis is wrong</button><div class="ofb" hidden>This kind of disagreement is common in large samples and does not mean the analysis is wrong.</div></li><li><button type="button" data-ok="0">D. Drop half the sample and test again</button><div class="ofb" hidden>Dropping cases to make a test nonsignificant is manipulating the result.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">What does the score test do in an invariance analysis?</p><ul class="opts"><li><button type="button" data-ok="0">A. Tests whether the whole model fits</button><div class="ofb" hidden>Overall fit is judged with the chi-square test and fit indices; the score test looks at single constraints.</div></li><li><button type="button" data-ok="1">B. Estimates how much χ² would drop if one equality constraint were freed, to find the worst-fitting constraint</button><div class="ofb" hidden>Correct: the course script used it to find the altered lone2_t3 intercept directly.</div></li><li><button type="button" data-ok="0">C. Computes the factor means</button><div class="ofb" hidden>Factor means are parameter estimates of the model, not output of the score test.</div></li><li><button type="button" data-ok="0">D. Replaces cross-validation for choosing λ</button><div class="ofb" hidden>The score test is a diagnostic for SEM constraints and has nothing to do with choosing λ for LASSO.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">A CLPN uses the observed items directly as nodes. Which of these is most likely to change the CLPN's edges?</p><ul class="opts"><li><button type="button" data-ok="0">A. Everyone scores 0.5 higher on an item at wave 3</button><div class="ofb" hidden>Adding a constant does not change correlations, so it does not change the edges; but it misleads mean comparisons.</div></li><li><button type="button" data-ok="1">B. An item's loading gets smaller at wave 3 (its relation to loneliness weakens)</button><div class="ofb" hidden>Correct: a change in loading changes the item's correlations with the other items, and so changes the edges.</div></li><li><button type="button" data-ok="0">C. The sample's mean age is 1 year higher at wave 3</button><div class="ofb" hidden>This is a small change in who is in the sample, not a measurement problem; a 1-year difference in mean age hardly changes how the items relate to each other.</div></li><li><button type="button" data-ok="0">D. All items at wave 3 are linearly rescaled to 0–100</button><div class="ofb" hidden>A linear rescaling does not change correlations; a CLPN standardizes first, so the edges stay the same.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">In the course's sample size simulation, the false positive rate of <code>lambda.min</code> does not fall as N grows. What is the most likely reason?</p><ul class="opts"><li><button type="button" data-ok="0">A. The larger N, the larger the sampling noise</button><div class="ofb" hidden>The opposite: the larger N, the smaller the sampling noise. The false positive rate stays because λ also shrinks with N, and most near-zero edges are not exactly 0 in the population.</div></li><li><button type="button" data-ok="1">B. The larger N, the smaller the λ chosen by cross-validation, so very weak edges are kept more easily</button><div class="ofb" hidden>Correct: that is why a sample size plan should report both power and the false positive rate and state the λ rule. Another reason is that most of these near-zero edges are not exactly 0 in the population.</div></li><li><button type="button" data-ok="0">C. <code>lambda.min</code> never reports false positives</button><div class="ofb" hidden>In the course data the false positive rate of <code>lambda.min</code> is between 0.27 and 0.52.</div></li><li><button type="button" data-ok="0">D. glmnet stops standardizing when N is large</button><div class="ofb" hidden>glmnet always standardizes internally by default, whatever N is.</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2><div class="exitem"><h4>Exercise 1: Read the table: invariance across gender<span class="lvl">Foundational</span></h4><p>Results from Part 2 of R/L7-6.R: configural χ²(10) = 15.58, CFI = 0.993; metric ΔCFI = +0.001, chi-square difference p = 0.559; scalar ΔCFI = +0.002, p = 0.766.</p>
+<p>(1) Which levels hold? (2) Can you write “women are more depressed than men”? (3) What would you do if ΔCFI at the scalar step were −0.03?</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>(1) All three levels hold: at neither step does ΔCFI drop below −0.01 (CFI even rises slightly), and neither chi-square difference is significant.</p>
+<p>(2) You can compare the means: the depression factor mean of women is 0.154 higher than that of men (SE = 0.048, p = 0.001). Still word it carefully: this is a difference in group averages and does not apply to any individual woman; and the data are simulated.</p>
+<p>(3) Scalar invariance fails, so don't compare the means yet. Use the score test to find the item whose intercept fits worst, and check whether its content gives a reason why it might “read differently” for men and women (e.g., items about crying often show gender differences). If only one or two items are affected, you can free just their intercepts (partial invariance), then compare the means, and state in the paper which items you freed.</p></details></div>
+<div class="exitem"><h4>Exercise 2: Hands-on: longitudinal invariance of the 5 depression items<span class="lvl">Hands-On</span></h4><p>Following Part 1 of R/L7-6.R, test configural → metric → scalar invariance for the 5 depression items × 3 waves of the course data (hint: replace <code>lone_items</code> with <code>dep_items</code> in <code>lone_model()</code>, and note that the number of items goes from 4 to 5). Report χ², df, CFI, RMSEA, ΔCFI, and the chi-square difference p for the three models, and decide whether each level holds.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Reference solution <code>R/solutions/L7-6_solution.R</code> (log <code>R/output/sol_L7-6_log.txt</code>):</p>
+<div class="tablewrap"><table><tr><th>Model</th><th>χ²</th><th>df</th><th>CFI</th><th>RMSEA</th><th>ΔCFI</th></tr><tr><td>Configural</td><td>95.92</td><td>72</td><td>0.993</td><td>0.022</td><td>—</td></tr><tr><td>Metric</td><td>109.69</td><td>80</td><td>0.991</td><td>0.023</td><td>−0.002</td></tr><tr><td>Scalar</td><td>116.19</td><td>88</td><td>0.992</td><td>0.021</td><td>+0.001</td></tr></table></div>
+<p>Chi-square difference p: metric vs. configural = 0.083, scalar vs. metric = 0.668; both ΔCFI values are within −0.01. All three levels hold. The depression factor means at waves 2 and 3 (wave 1 = 0) are −0.019 and 0.004: almost no change. The df are larger than in the loneliness model because there is one more item.</p></details></div>
+<div class="exitem"><h4>Exercise 3: Real data: social well-being of coaches<span class="lvl">Hands-On + Writing</span></h4><p>data/coaches_mhc_raw.csv is a real public data set (422 sports coaches in Switzerland, 3 waves, CC0; read the last section of the <a href="../data/data_dictionary.html">data dictionary</a> first). The 5 social well-being items (items 4–8: having something to contribute to society, belonging to a community, society is getting better, people are basically good, the way society works makes sense) are closely related to community work.</p>
+<ol><li>Read the data with <code>read.csv2("data/coaches_mhc_raw.csv", dec = ".")</code>. Start with a data check: recompute each wave's social well-being mean from the item columns and correlate it with the file's own <code>t1socwb</code>, <code>t2socwb</code>, <code>t3socwb</code>. What do you find?</li>
+<li>Test three levels of longitudinal invariance for <code>t1w4</code>–<code>t1w8</code>, <code>t2w4</code>–<code>t2w8</code>, <code>t3w4</code>–<code>t3w8</code>. Waves 2 and 3 have attrition; use <code>missing = "ml"</code> (FIML, Lesson 4.3) so that all 422 people enter the model.</li>
+<li>Write a report of about 150 words: which levels hold, what you can and cannot compare, and the limitations of these data.</li></ol><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Reference solution <code>R/solutions/L7-6_solution.R</code>:</p>
+<p>(1) The file's own subscale mean columns do not match the item columns: for social well-being the correlations at the three waves are only 0.15, 0.22, 0.09 (they should be close to 1). So compute the scores yourself from the item columns only. This is a step you must take whenever you work with someone else's data.</p>
+<p>(2) Results (FIML, N = 422; only 258 people have all three waves):</p>
+<div class="tablewrap"><table><tr><th>Model</th><th>χ²</th><th>df</th><th>CFI</th><th>RMSEA</th><th>ΔCFI</th></tr><tr><td>Configural</td><td>141.97</td><td>72</td><td>0.958</td><td>0.062</td><td>—</td></tr><tr><td>Metric</td><td>155.61</td><td>80</td><td>0.956</td><td>0.060</td><td>−0.002</td></tr><tr><td>Scalar</td><td>179.63</td><td>88</td><td>0.948</td><td>0.063</td><td>−0.008</td></tr></table></div>
+<p>At the metric step both kinds of evidence say it holds (p = 0.111, ΔCFI = −0.002). The scalar step is borderline: the chi-square difference is significant (p = 0.001), and ΔCFI = −0.008 is still within the common −0.01 rule; but only 258 people have all three waves, and by Chen's (2007) stricter −0.005 rule for small samples it fails. The score test shows that the worst-fitting constraint is the equality of the t1w4 and t2w4 intercepts (X² = 11.21, “having something to contribute to society”). Freeing only the intercept of t2w4 gives ΔCFI = −0.004 compared with the metric model. The conclusion about the means hardly changes: the factor means at waves 2 and 3 are −0.059 and 0.022 under full scalar invariance and −0.011 and 0.019 under partial scalar invariance (SE about 0.057 each), all close to 0. Note also that the configural model itself fits only acceptably (CFI = 0.958, RMSEA = 0.062).</p>
+<p>(3) Sample report: “Tests of longitudinal measurement invariance of the 5 social well-being items across three waves (MLR, FIML, N = 422) supported metric invariance (ΔCFI = −0.002). The scalar model had a significant chi-square difference and ΔCFI = −0.008, which fails the small-sample criterion (only 258 participants completed all three waves). After freeing the intercept of t2w4 (wave 2, ‘having something to contribute to society’), partial scalar invariance held, and the factor means of the later waves did not differ noticeably from wave 1. Relations can therefore be compared across waves; mean comparisons should rely on the partial invariance model. Limitations: the documentation describes the intervals between waves inconsistently (3 / 6 months or 6 / 12 months), so we do not interpret the rate of change; retention at wave 3 was about 61%; and there are no demographic variables, so group comparisons are not possible.”</p></details></div>
+<div class="exitem"><h4>Exercise 4: Sample size: one sentence for a research plan<span class="lvl">Conceptual</span></h4><p>You plan a two-wave CLPN with 9 items (4 loneliness, 5 depression) and expect N = 300. Using this lesson's sample size table, answer: (1) What can you expect with <code>lambda.min</code> and with <code>lambda.1se</code>? (2) How would the conclusion change if your network had 15 nodes and weaker true edges than the course data? (3) Write a one-sentence sample size statement for the research plan.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>(1) At N = 300, <code>lambda.min</code> has power of about 0.86 but a false positive rate of about 0.43, and the probability of recovering all 8 target edges is only 0.25; <code>lambda.1se</code> has a false positive rate of only 0.01 but power of only 0.37. You will see most of the stronger edges, but quite a few very weak false edges will slip in, so whether a single edge is there has to be checked with the bootstrap of M8.</p>
+<p>(2) More nodes mean more predictors in each regression; weaker edges are harder to tell from 0. Both raise the N you need. You cannot apply this lesson's table directly; rerun the simulation with your own assumed network (change <code>B</code> and <code>N_GRID</code>).</p>
+<p>(3) Example: “Taking the population coefficients of the simulated course data as the assumed true network (9 nodes), a simulation with 20 replications per sample size showed that at N = 300 with the <code>lambda.min</code> rule, about 0.86 of the stronger edges (|B| ≥ 0.08) were recovered, but the false positive rate for near-zero edges was about 0.43; we therefore treat the presence or absence of edges as exploratory and assess their stability with the bootstrap.” (Replace the numbers with those from your own simulation.)</p></details></div><h3>Integrative Exercise</h3><div class="box sw"><p>Test 3-wave longitudinal invariance of the 5 depression items in the course data, reporting χ², df, CFI, RMSEA and ΔCFI for the three levels; then run the same test on the 5 social well-being items of a real dataset (a panel study of sports coaches&#x27; mental health, data/coaches_mhc_raw.csv), and write a 150-word report saying which level holds, what can be compared and what cannot.</p></div><h3>Self-Check Questions</h3><ol><li>What does metric invariance let you compare, and what does scalar invariance let you compare?</li><li>With a large sample the χ² difference test is almost always significant; what else should you look at?</li><li>What must you assume before a sample size simulation? Why do the conclusions only hold under those assumptions?</li></ol><p class='muted' style='font-size:.88rem'>Tip: Before starting the next lesson, answer each question above in one or two sentences without looking at the text.</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">Summary</span>Key Takeaways &amp; Further Reading</h2><ul><li>Measurement invariance = different waves / groups use the same ruler: configural (same structure) → metric (equal loadings; relations comparable) → scalar (equal intercepts too; means comparable).</li><li>Decision: Δχ² plus ΔCFI ≥ −0.01 and ΔRMSEA ≤ 0.015; with large samples chi-square is oversensitive, so rely mainly on the fit indices and report both.</li><li>All three levels hold in the course data; after one item's intercept is changed on purpose, scalar invariance fails, the score test finds the item, and partial invariance fixes it; otherwise the means would be misjudged.</li><li>A CLPN uses observed items as nodes: changed loadings change the edges; changed intercepts mislead mean comparisons.</li><li>Plan the sample size with a simulated dry run: <code>lambda.min</code> has high power but a false positive rate of 0.27–0.52; <code>lambda.1se</code> has few false positives but low power. The conclusions hold only for the assumed network, number of nodes, and λ rule.</li><li>Check real data first: the coaches data's own subscale columns do not match the item columns, so use the item columns only.</li></ul><h3>Further Reading</h3><ul class="refs"><li>Putnick, D. L., & Bornstein, M. H. (2016). Measurement invariance conventions and reporting: The state of the art and future directions for psychological research. <i>Developmental Review, 41</i>, 71–90. <a href="https://doi.org/10.1016/j.dr.2016.06.004" target="_blank" rel="noopener">doi.org/10.1016/j.dr.2016.06.004</a><div class="muted" style="font-size:.84rem">A review of measurement invariance: what the configural, metric and scalar levels mean, and which numbers to report. Lesson 7.6.</div></li><li>Cheung, G. W., & Rensvold, R. B. (2002). Evaluating goodness-of-fit indexes for testing measurement invariance. <i>Structural Equation Modeling, 9</i>(2), 233–255. <a href="https://doi.org/10.1207/S15328007SEM0902_5" target="_blank" rel="noopener">doi.org/10.1207/S15328007SEM0902_5</a><div class="muted" style="font-size:.84rem">The source of the rule of thumb ΔCFI ≥ −0.01. Lesson 7.6.</div></li><li>Chen, F. F. (2007). Sensitivity of goodness of fit indexes to lack of measurement invariance. <i>Structural Equation Modeling, 14</i>(3), 464–504. <a href="https://doi.org/10.1080/10705510701301834" target="_blank" rel="noopener">doi.org/10.1080/10705510701301834</a><div class="muted" style="font-size:.84rem">A simulation study comparing fit indices, which proposes looking at ΔCFI together with ΔRMSEA ≤ 0.015. Lesson 7.6.</div></li><li>Constantin, M. A., Schuurman, N. K., & Vermunt, J. K. (2026). A general Monte Carlo method for sample size analysis in the context of network models. <i>Psychological Methods, 31</i>(3), 385–405. <a href="https://doi.org/10.1037/met0000555" target="_blank" rel="noopener">doi.org/10.1037/met0000555</a><div class="muted" style="font-size:.84rem">A general method for sample size planning in network models: assume a true network, then simulate to find the N needed. The simulation in Lesson 7.6 is a simplified version.</div></li><li>Ackeret, N., Röthlin, P., Horvath, S., & Allemand, M. (2023). <i>Positive mental health among sports coaches: A six-month longitudinal study</i> [Data set, version 3]. Dryad. <a href="https://doi.org/10.5061/dryad.8931zcrws" target="_blank" rel="noopener">doi.org/10.5061/dryad.8931zcrws</a><div class="muted" style="font-size:.84rem">The real data (CC0) used in the Lesson 7.6 exercises, included as data/coaches_mhc_raw.csv; known issues are listed in the data dictionary.</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">The published version of the CLPN method paper (June 2025), revised from the 2022 PsyArXiv preprint &#x27;Cross-lagged network models&#x27;, with McCarthy added as a co-author. The main reference for Module 7; cite this version where you can.</div></li></ul></section>
+<nav class="pager"><a href="L7-5.html" class="pv"><small>Previous</small>7.5 Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a><a href="L7-7.html" class="nx"><small>Next</small>7.7 Between-Group Comparisons: Are Two Group CLPNs Identical?</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 7.6 · <a href="../index.html#L7-6">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.7 Between-Group Comparisons: Are Two Group CLPNs Identical? · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L7-7.md" title="Plain text">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="7.7" style="--c:#ef4444">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L7-7">CLPN Syllabus</a><span class="crumb">M7 Cross-Lagged Panel Networks (CLPN) / 7.7</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L7-7.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L7-7.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details open style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html" class="cur" aria-current="page"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 7 · Cross-Lagged Panel Networks · Lesson 7.7</div>
+<h1>Between-Group Comparisons: Are Two Group CLPNs Identical?</h1>
+<div class="facts"><span>Optional advanced lesson (not part of the standard pace)</span><span>Study time 2 hr</span><span>Prerequisites: <a href="L7-2.html">7.2 Nodewise CLPN Estimation with glmnet</a>, <a href="L6-4.html">6.4 Estimating and Visualizing Networks with qgraph and bootnet</a></span><span>R script: <a href="../R/L7-7.R">R/L7-7.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Turn a question like &#x27;are men&#x27;s and women&#x27;s loneliness–depression networks the same?&#x27; into a statistical question: what is compared, and what is the null hypothesis?</li><li>Understand the logic of a permutation test: shuffle the group labels and re-estimate to get the null distribution &#x27;if the groups did not differ,&#x27; then see where the observed value falls</li><li>Calculate and interpret M (the edge with the largest difference), S (the difference in global strength) and differences in single edges, and know the multiple comparisons problem</li><li>Know that &#x27;not significant ≠ the same,&#x27; and that group comparisons need very large samples</li><li>Know that NCT (NetworkComparisonTest) is used for cross-sectional networks, and the limits of applying it directly to a CLPN</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>permutation test</b></li><li><b>null distribution</b></li><li><b>group label</b></li><li><b>network structure invariance test (M)</b></li><li><b>global strength invariance test (S)</b></li><li><b>edge invariance test</b></li><li><b>Holm correction</b></li><li><b>pre-specified hypothesis</b></li><li><b>NetworkComparisonTest</b><span class="en">NetworkComparisonTest (NCT)</span></li></ul>
+<p>Social work research often asks whether two groups are the same: do men and women, urban and rural residents, people who received a service and people who did not, have the same loneliness–depression network? This lesson answers that question with a permutation test (shuffle the group labels and re-estimate the networks).</p>
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① Intuition</span>Shuffling: if the grouping doesn't matter, shuffling the labels changes nothing</h2>
+<h3>1. First, state the question clearly</h3>
+<p>“Are the networks of men and women the same?” is too vague. When you compare two CLPNs (the coefficient matrix \(B^{(1)}\) of group 1 and \(B^{(2)}\) of group 2), you usually ask three more specific questions (van Borkulo et al., 2023):</p>
+<div class="tablewrap"><table><tr><th>Question</th><th>Statistic</th><th>What it answers</th></tr><tr><td>① Is there any edge that differs a lot?</td><td><span class="term">network structure invariance test</span>; statistic <b>M</b> = the largest absolute difference among the 72 cross-lagged edges</td><td>Whether the overall “shape” of the two networks differs</td></tr><tr><td>② Are the networks equally tightly connected overall?</td><td><span class="term">global strength invariance test</span>; statistic <b>S</b> = the difference between the two groups' sums of absolute cross-lagged edge weights</td><td>Whether the symptoms are, overall, equally interconnected in the two groups</td></tr><tr><td>③ Is one particular edge the same?</td><td><span class="term">edge invariance test</span>; the difference for each edge</td><td>For example, “does the loneliness item Feeling isolated predict later Depressed mood differently in men and women?”</td></tr></table></div>
+<p>The three questions share one null hypothesis: the data of both groups come from the same population (so their population networks are also the same), and the differences between the samples are due only to sampling. Strictly speaking, the permutation test tests “the two groups' data have the same distribution,” which is stronger than “the networks are the same”: differences in means, variances, or skewness between the groups can also make M or S significant.</p>
+
+<h3>2. Why you can't just compare the plots by eye</h3>
+<p>If you estimate a separate CLPN for men and for women, the two plots will certainly differ. When the course data were generated, both genders used the same lagged coefficients; only women's continuous depression scores were raised by 0.2 before being cut into 0–3 categories. Because the shift happened before the cutting, the networks on the observed scale may differ very slightly; below we treat the two groups as having “the same generating network.” Estimated separately, the edge that differs most is lone4 → lone3: men 0.188, women 0.000. Someone looking at the plots might well say “this edge exists only in men,” but with only about 400 people per group, it is quite ordinary for a weak edge to be kept in one group and shrunk to 0 in the other. So the question to ask is: is the observed difference larger than the differences you would usually see if the two groups were really the same and people had just been split at random?</p>
+
+<h3>3. Shuffling: building a world where the two groups are the same</h3>
+<div class="box story"><b class="bt">The logic of a permutation test</b><ol><li>Compute the statistic for the real grouping, e.g., M.</li>
+<li>If gender really has nothing to do with the network, the <span class="term">group label</span> (“who is a man, who is a woman”) can be swapped freely. Shuffle the labels of the 800 people (keeping the group sizes), split them into two groups again, estimate a CLPN for each, and compute M again.</li>
+<li>Repeat 1000 times to get 1000 values of M for a world where the two groups are the same: the <span class="term">null distribution</span>.</li>
+<li>The proportion of shuffled M values that are ≥ the real M is the permutation p-value.</li></ol></div>
+<p>Compare this with the bootstrap of Lesson 8.1: the bootstrap resamples cases with replacement and answers “how unstable is this estimate?”, giving an interval; a permutation shuffles labels and answers “would we see a difference this large if the two groups were the same?”, giving a p-value. Both replace formulas with repeated computation, so the <span class="term">permutation test</span> needs almost no distributional assumptions and works for statistics like those of a CLPN, for which formulas are hard to derive. The figure in the R Code section draws the null distributions of the three data sets as histograms, with a red line at the observed M: if the red line falls within the bulk of the histogram, such a difference is common under the null hypothesis; if it falls beyond the right tail, it is rare.</p>
+
+<h3>4. Results for three data sets</h3>
+<div class="tablewrap"><table><tr><th>Data</th><th>People per group</th><th>M (permutation p)</th><th>S (permutation p)</th><th>lone3 → dep1 single-edge p</th><th>Of 72 edges, unadjusted p &lt; .05</th><th>After Holm correction</th></tr><tr><td>① Course data: men vs. women (no real difference)</td><td>373 / 427</td><td>0.188 (0.082)</td><td>0.381 (0.539)</td><td>0.001</td><td>3 edges</td><td>0 edges</td></tr><tr><td>② Simulation: group 2 lone3 → dep1 +0.20</td><td>600 / 600</td><td>0.228 (0.001)</td><td>0.362 (0.395)</td><td>0.001</td><td>1 edges</td><td>0 edges</td></tr><tr><td>③ Simulation: same difference, half the people</td><td>300 / 300</td><td>0.169 (0.426)</td><td>0.122 (0.821)</td><td>0.043</td><td>6 edges</td><td>0 edges</td></tr></table></div>
+<p class="muted" style="font-size:.88rem">Source: R/output/L7-7_perm_summary.csv (1000 permutations per data set).</p>
+<ul><li><b>① No real difference:</b> neither M nor S is significant, which matches the truth. The 95th percentile of the null distribution of M is 0.197, and the observed 0.188 is still below it. The edge that “exists only in men” in the previous section is a random difference of exactly this size.</li>
+<li><b>② A real difference, enough people:</b> M is significant (p = 0.001), and the edge that differs most is the one that was changed, lone3 → dep1 (group 1 0.035, group 2 0.263). S, however, is not significant: only one edge changed, so the total strength is hardly affected. M and S answer different questions and cannot stand in for each other.</li>
+<li><b>③ The same difference, half the people:</b> M is no longer significant (p = 0.426), and the edge that differs most is now dep2 → dep3, an edge that is the same in both groups. The real difference is drowned out by noise.</li></ul>
+<p>The 600 and 300 people per group were picked for the demonstration, not as recommended sample sizes; ② and ③ are each a single generated data set (seeds 2027 and 2028), and with another seed the results could be reversed. <span class="term">Statistical power</span> has to be estimated with repeated simulations as in Lesson 7.6 (hundreds of data sets × thousands of permutations each, not done in this lesson). From ② and ③ you can only draw a qualitative conclusion: the same difference is more easily drowned out by noise when there are fewer people.</p>
+<div class="box warnbox"><b class="bt">Not significant ≠ the same</b><p>The two groups in ③ really are different, yet the test did not find it. A nonsignificant network comparison can only be reported as “we found no evidence that the two networks differ.” Group comparisons usually have low power: each group is only part of the total sample, yet the network has dozens of edges to estimate.</p></div>
+
+<h3>5. Single-edge tests and multiple comparisons</h3>
+<p>If you compare all 72 edges one by one, each at p &lt; .05, then even if the two groups are exactly the same, on average 72 × 0.05 ≈ 3.6 edges will be “significant.” Course data ① has exactly 3, among them lone3 → dep1 (men 0.000, women 0.176) with p of only 0.001. Both genders were generated with the same coefficient for this edge, so it is very likely just the smallest of 72 tests (in Exercise 2, with the T2 → T3 data, it is no longer significant). This is the <span class="term">multiple comparisons</span> problem from Lesson 1.6. Two remedies:</p>
+<ol><li><b>Correct:</b> for example with the <span class="term">Holm correction</span>. The smallest possible permutation p-value is 1 / (B + 1) (B = number of permutations), which is 0.0010 with 1000 permutations; multiplied by 72 it is at least 0.072, which is why the “after Holm correction” column shows 0 everywhere. For a corrected p to have any chance of falling below .05, you need B + 1 &gt; 72 / .05 = 1440, and in practice far more, e.g., 10000 (derivation in Essential Math); the run time of each part then goes from about 1 minute to about 7–10 minutes.</li>
+<li><b>Specify in advance:</b> before looking at the data, write 1–2 theoretically motivated edges into your analysis plan (Lesson 10.1) and test only those. A <span class="term">pre-specified hypothesis</span> pays no price for the edges you don't test: in ③, for example, M is not significant, but the pre-specified single-edge test of lone3 → dep1 gives p = 0.043. Only what you wrote down beforehand counts: “specifying” the most significant edge after seeing the results takes you right back into the multiple-comparisons trap.</li></ol>
+
+<h3>6. Why λ is chosen by EBIC here</h3>
+<p>Each permutation needs a CLPN for each of the two groups (18 LASSO regressions), so 1000 permutations mean 18,000 regressions. The course default, <code>lambda.min</code>, needs 10-fold cross-validation, which would take about 12 minutes per part, and the random fold splits would add another layer of noise to every estimate. So this lesson uses <code>clpn_estimate(rule = "ebic")</code> (introduced in Lesson 7.2): no cross-validation, exactly the same result every time for the same data, about 45 seconds per part. What matters is that the real grouping and every shuffle use the same rule; the rule affects the power and the conclusions of the test, so state it in the paper.</p>
+
+<h3>7. NCT: a ready-made tool for cross-sectional networks</h3>
+<p>The R package <span class="term">NetworkComparisonTest<span class="en"> (NCT; R package, for awareness)</span></span> (van Borkulo et al., 2023) wraps the M, S, and single-edge tests above into one function and is often used to compare the cross-sectional networks of two groups (the GGM of Lesson 6.2). The course does not install it; the code below is for illustration only:</p>
+<div class="codeblk"><div class="ctitle">Illustration only: comparing men's and women's T1 cross-sectional networks with NCT (not run by the course scripts)</div><pre><code class="language-r"># install.packages(&quot;NetworkComparisonTest&quot;)    # not installed by the course; illustration only
+library(NetworkComparisonTest)
+dat &lt;- read_course_data()
+men   &lt;- dat[dat$gender == 0, vars_t(1)]       # the 9 items at wave 1: a cross-sectional network
+women &lt;- dat[dat$gender == 1, vars_t(1)]
+nct &lt;- NCT(men, women, it = 1000, test.edges = TRUE, edges = &quot;all&quot;,
+           p.adjust.methods = &quot;holm&quot;)
+nct$nwinv.pval      # permutation p for M (network structure)
+nct$glstrinv.pval   # permutation p for S (global strength)
+nct$einv.pvals      # p for each edge (Holm-corrected)</code></pre></div>
+<p>By default NCT estimates an undirected network (partial correlations) within one time point, whereas a CLPN is a directed T1 → T2 regression network; conclusions from one cannot be carried over to the other. Newer versions of NCT accept a custom estimation function, but directed edges and whether to include the autoregressions need careful setup; the hand-written permutation test of this lesson is easier to check step by step. Also, shuffling assumes the two groups are different people; you cannot shuffle like this to compare the T1 → T2 and T2 → T3 networks of the same people (NCT has a paired option, <code>paired = TRUE</code>; paired comparisons of CLPNs are beyond this lesson).</p>
+<div class="box sw"><b class="bt">Social work perspective: the ethics of group comparisons</b><p>When you compare groups defined by gender, ethnicity, household registration status (hukou, China's residence registration), and the like, any difference is at the level of group averages and does not apply to any one person; not finding a difference does not mean there is none. When you report, avoid presenting a statistical difference as a “characteristic” of a group, so as not to reinforce stereotypes.</p></div>
+<h3>Common questions and pitfalls</h3><details class="ans faq"><summary>Can I compare three or more groups?</summary><p>You can compare them in pairs (a permutation test for each pair), but with more comparisons you again have to deal with multiple testing. Or decide on the single most important comparison beforehand and write it into your analysis plan.</p></details><details class="ans faq"><summary>Social Work Connection</summary><p>"Does this service work equally well for men and women?" is a question agencies are often asked. Network comparison can tell you whether the links between symptoms differ between groups, for example whether loneliness and depressed mood are more closely linked in one group, which may point to different service priorities. But this assumes the samples are large enough and the groups were planned in advance, not picked after looking at the data.</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② Essential Math</span>The three statistics and the permutation p-value</h2>
+<div class="mathbox">\[M=\max_{k\neq j}\big|\hat\beta^{(1)}_{kj}-\hat\beta^{(2)}_{kj}\big|,\qquad S=\Big|\sum_{k\neq j}\big|\hat\beta^{(1)}_{kj}\big|-\sum_{k\neq j}\big|\hat\beta^{(2)}_{kj}\big|\Big|,\qquad D_{kj}=\hat\beta^{(1)}_{kj}-\hat\beta^{(2)}_{kj}\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(\hat\beta^{(1)}_{kj}\)</td><td>Estimated CLPN coefficient of group 1: k at T1 → j at T2</td></tr><tr><td>\(\max_{k\neq j}\)</td><td>The maximum over all 72 cross-lagged edges (autoregressions excluded)</td></tr><tr><td>\(\sum_{k\neq j}|\cdot|\)</td><td>The sum of the absolute values of the 72 cross-lagged edges: the overall connection strength of the network</td></tr><tr><td>\(D_{kj}\)</td><td>The difference for a single edge; the test uses its absolute value</td></tr></table>
+<h4>The permutation p-value</h4>
+<div class="mathbox">\[p=\frac{\#\{b:\ M^{*}_b\ \ge\ M_{\text{obs}}\}+1}{B+1}\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(M^{*}_b\)</td><td>M computed after the b-th shuffle of the labels</td></tr><tr><td>\(M_{\text{obs}}\)</td><td>M observed with the real grouping</td></tr><tr><td>\(B\)</td><td>Number of permutations (1000 in this lesson)</td></tr><tr><td>\(+1\)</td><td>Counts the observed data as one possible grouping; this way p is never 0, and its minimum is 1/(B+1)</td></tr></table>
+<p>S and the p-value of each edge are computed the same way (a single edge compares \(|D^{*}_{kj}|\) with \(|D_{kj}|\)).</p>
+<h4>Holm correction</h4>
+<p>Sort the m p-values from smallest to largest, \(p_{(1)}\le p_{(2)}\le\dots\le p_{(m)}\), and multiply the i-th by \(m-i+1\) (making sure the corrected values do not decrease with i and do not exceed 1). The smallest p is multiplied by m = 72. That is why, with 1000 permutations, the Holm-corrected p is at least 72 / 1001 ≈ 0.072. In R: <code>p.adjust(p, "holm")</code>.</p>
+<p>This gives a lower bound on the number of permutations: the smallest possible p is \(1/(B+1)\); for it to stay below α after multiplying by m, you need \(B + 1 > m/\alpha\). With m = 72 and α = .05, m/α = 1440. Just exceeding it is not enough, because the p-values need enough resolution, so in practice B should be far larger, e.g., B ≥ 10000.</p>
+<h4>Why shuffling represents the null hypothesis</h4>
+<p>If the data of the two groups come from the same population (so the networks are also the same) and each person's data are drawn independently, then which group a person belongs to carries no information about the network. Any shuffling of the labels gives data that are “just as likely” as the real data (the statistical term is exchangeability). So the distribution of the statistic over shuffles is the distribution of the statistic under the null hypothesis.</p>
+
+<h3>Worked example: a permutation p-value by hand from 10 shuffles</h3>
+<p>Suppose M = 0.20 under the real grouping. Ten shuffles give these values of M (sorted): 0.09, 0.11, 0.12, 0.13, 0.14, 0.15, 0.17, 0.18, 0.21, 0.24.</p>
+<ol><li><b>Count how many are ≥ 0.20:</b> 0.21 and 0.24, so 2.</li>
+<li><b>Apply the formula:</b> p = (2 + 1) / (10 + 1) = 3/11 ≈ 0.27.</li>
+<li><b>Interpret:</b> in a world where the two groups are really the same, about one random grouping in four produces a difference this large. So this M is not unusual, and there is no evidence that the groups differ.</li>
+<li><b>Precision:</b> with 10 permutations the smallest possible p is 1/11 ≈ 0.09, which can never reach .05. This is why a real analysis uses 1000 permutations or more.</li></ol>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R Code</span>Implement in R</h2><div class="codeblk"><div class="ctitle">Core of R/L7-7.R (simplified)</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(glmnet)
+dat &lt;- read_course_data()
+est &lt;- function(d) clpn_estimate(d[, vars_t(1)], d[, vars_t(2)], rule = &quot;ebic&quot;)
+off &lt;- matrix(TRUE, 9, 9); diag(off) &lt;- FALSE            # positions of the cross-lagged edges
+stats &lt;- function(B1, B2) {
+  D &lt;- B1 - B2
+  list(M = max(abs(D[off])), S = abs(sum(abs(B1[off])) - sum(abs(B2[off]))), D = D)
+}
+perm_test &lt;- function(d, grp, nperm = 1000) {
+  obs &lt;- stats(est(d[grp == 0, ]), est(d[grp == 1, ]))   # the real grouping
+  nullM &lt;- nullS &lt;- numeric(nperm); exceedD &lt;- matrix(0, 9, 9)
+  for (b in seq_len(nperm)) {
+    g &lt;- sample(grp)                                     # shuffle: permute the group labels, group sizes unchanged
+    s &lt;- stats(est(d[g == 0, ]), est(d[g == 1, ]))
+    nullM[b] &lt;- s$M; nullS[b] &lt;- s$S
+    exceedD &lt;- exceedD + (abs(s$D) &gt;= abs(obs$D))
+  }
+  list(pM = (sum(nullM &gt;= obs$M) + 1) / (nperm + 1),     # permutation p-value
+       pS = (sum(nullS &gt;= obs$S) + 1) / (nperm + 1),
+       pD = (exceedD + 1) / (nperm + 1))                 # permutation p for each edge
+}
+set.seed(2026)
+rA &lt;- perm_test(dat, dat$gender)
+p.adjust(rA$pD[off], &quot;holm&quot;)                             # Holm correction over all 72 edges</code></pre></div>
+<p><b>Notes:</b> <code>sample(grp)</code> randomly reorders the group vector: the numbers of men and women stay the same, only who is a man and who is a woman is shuffled. <code>exceedD</code> is a 9 × 9 count matrix that records, for each edge, how often a shuffle produced a difference as large or larger. The full script also prints the 6 edges that differ most and applies the correction with <code>p.adjust(…, "holm")</code>; its comparisons use a small tolerance, <code>- 1e-12</code>, so that floating-point error doesn't turn “equal” into “less than.”</p>
+<div class="codeblk"><div class="ctitle">Actual output excerpt from R/output/L7-7_log.txt (Part 1)</div><pre class="out"><code>===== Part 1: Course Data, Male vs. Female ( 1000 permutations per part, EBIC) =====
+Sample size per group: Male n = 373, Female n = 427 
+M (maximum edge difference) = 0.188: lone4 -&gt; lone3 (Male 0.188, Female 0.000); permutation p = 0.082
+S (global strength difference) = 0.381 (Male 1.587, Female 1.206); permutation p = 0.539
+Individual edges: Out of 72 cross-lagged edges, uncorrected p &lt; .05 for 3 edge(s); Holm-corrected for 0 edge(s)
+Permutation null distribution: 95th percentile of M = 0.197, 95th percentile of S = 1.154
+Top 6 edges with largest differences (diff = Group 1 - Group 2; p = uncorrected edge permutation p, p_holm = Holm-corrected):
+  from    to  B_g1  B_g2   diff     p p_holm
+ lone4 lone3 0.188 0.000  0.188 0.004  0.284
+ lone3  dep1 0.000 0.176 -0.176 0.001  0.072
+ lone4 lone1 0.121 0.000  0.121 0.051  1.000
+ lone4  dep4 0.000 0.116 -0.116 0.124  1.000
+  dep4  dep3 0.114 0.000  0.114 0.028  1.000
+ lone4  dep1 0.112 0.000  0.112 0.123  1.000</code></pre></div>
+<p>Columns: <code>B_g1</code> and <code>B_g2</code> are the two groups' coefficients, <code>diff</code> = group 1 − group 2, <code>p</code> is the single-edge permutation p, and <code>p_holm</code> is the p after Holm correction over all 72 edges.</p>
+<div class="codeblk"><div class="ctitle">Actual output excerpt from R/output/L7-7_log.txt (Part 2)</div><pre class="out"><code>===== Part 2: Simulating Two Groups of 600 Each, Group 2 lone3 -&gt; dep1 +0.20 =====
+Sample size per group: Group 1 n = 600, Group 2 n = 600 
+M (maximum edge difference) = 0.228: lone3 -&gt; dep1 (Group 1 0.035, Group 2 0.263); permutation p = 0.001
+S (global strength difference) = 0.362 (Group 1 2.012, Group 2 1.650); permutation p = 0.395
+Individual edges: Out of 72 cross-lagged edges, uncorrected p &lt; .05 for 1 edge(s); Holm-corrected for 0 edge(s)
+Permutation null distribution: 95th percentile of M = 0.167, 95th percentile of S = 0.844
+Top 6 edges with largest differences (diff = Group 1 - Group 2; p = uncorrected edge permutation p, p_holm = Holm-corrected):
+  from    to  B_g1  B_g2   diff     p p_holm
+ lone3  dep1 0.035 0.263 -0.228 0.001  0.072
+  dep5  dep3 0.116 0.000  0.116 0.059  1.000
+ lone4 lone2 0.114 0.000  0.114 0.060  1.000
+  dep2  dep3 0.083 0.000  0.083 0.187  1.000
+  dep4  dep5 0.082 0.000  0.082 0.119  1.000
+  dep4  dep2 0.000 0.081 -0.081 0.135  1.000
+A priori specified edge lone3 -&gt; dep1: Group 1 0.035, Group 2 0.263, difference -0.228, single-edge permutation p = 0.001</code></pre></div><div class="codeblk"><div class="ctitle">Actual output excerpt from R/output/L7-7_log.txt (Note)</div><pre class="out"><code>Note: With 1000 permutations, minimum possible p = 1/1001 = 0.0010; for 72 edges with Holm correction, minimum p is multiplied by 72 -&gt; 0.072,
+ meaning testing all 72 edges with Holm correction cannot reach significance under 1000 permutations. Single-edge tests should be reserved for a few a priori specified edges.</code></pre></div>
+<p><b>Run time:</b> about 2–4 minutes on one core (3 parts × 1000 permutations, about 45 seconds to 1 minute per part). With <code>set.seed()</code> fixed and no cross-validation in EBIC, the results are reproducible to the last digit. For a quicker run, set <code>NPERM</code> to 200; the p-values become coarser (the minimum is then 1/201).</p><div class="box warnbox"><b class="bt">Common mistakes when comparing networks between groups</b><ul>
+<li><b>Putting two plots side by side and saying, by eye, "this edge exists only in women".</b> An edge kept by LASSO in one group and shrunk to 0 in the other does not, by itself, show a significant difference. You need a test.</li>
+<li><b>Using different λ rules or different preprocessing in the two groups.</b> For example, <code>lambda.min</code> in one group and EBIC in the other, or standardizing one group and not the other. Any difference may then come from the methods alone. The real grouping and every shuffle must go through exactly the same pipeline.</li>
+<li><b>Testing 72 edges and reporting only the significant ones.</b> Either specify the edges in advance, or report all of them with a correction, and state the number of permutations.</li>
+<li><b>Reading the size of S as a population difference when the groups differ a lot in size.</b> The smaller group's network is sparser and less stable. Because group sizes stay fixed during permutation, the null distribution already includes the effect of unequal sizes, so the test itself is still valid. But the size and direction of the observed S partly reflect the difference in group size. Report each group's N, and keep this in mind when you interpret the size of S.</li></ul></div><h3>Companion Script &amp; Output</h3><details class="more rsrc"><summary>Complete companion script <code>R/L7-7.R</code> (131 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-7.R  Between-Group Comparisons: Are Two Group CLPNs Identical?
+#   (Group comparison with a permutation test)
+# Advanced optional lesson. Handcrafted permutation test without requiring new R packages.
+# Part 1: Course data, Male vs. Female (data-generating lagged network is identical -&gt; demonstrates null scenario)
+# Part 2: Simulated two groups of 600 participants each, Group 2 lone3 -&gt; dep1 coefficient +0.20 (demonstrates detecting true differences)
+# Part 3: Identical difference, but with only 300 participants per group (demonstrates power under insufficient sample size)
+# For speed and reproducibility, each estimation uses EBIC to select lambda (clpn_estimate(rule = &quot;ebic&quot;), without cross-validation).
+# Runtime: single core ~2–4 minutes (3 parts x 1000 permutations; reducing NPERM is faster but yields coarser p-values)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(glmnet)
+options(width = 110)
+log_open(&quot;L7-7_log.txt&quot;)
+dat &lt;- read_course_data()
+NPERM &lt;- 1000                                # Permutations per part
+
+# ---- Helpers ---------------------------------------------------------
+est &lt;- function(d) clpn_estimate(d[, vars_t(1)], d[, vars_t(2)], rule = &quot;ebic&quot;)
+off &lt;- matrix(TRUE, length(items), length(items)); diag(off) &lt;- FALSE   # Cross-lagged edge positions
+# Three test statistics (following logic of van Borkulo et al., 2023, adapted for CLPN cross-lagged edges):
+#   M = absolute difference of the single most divergent edge between two groups (network structure invariance)
+#   S = absolute difference in the sum of absolute cross-lagged edge weights (global strength invariance)
+#   D = difference for every individual edge (edge invariance), 72 edges
+stats &lt;- function(B1, B2) {
+  D &lt;- B1 - B2
+  list(M = max(abs(D[off])), S = abs(sum(abs(B1[off])) - sum(abs(B2[off]))), D = D,
+       S1 = sum(abs(B1[off])), S2 = sum(abs(B2[off])))
+}
+perm_test &lt;- function(d, grp, nperm = NPERM) {
+  lev &lt;- sort(unique(grp))
+  B1 &lt;- est(d[grp == lev[1], ]); B2 &lt;- est(d[grp == lev[2], ])
+  obs &lt;- stats(B1, B2)
+  nullM &lt;- nullS &lt;- numeric(nperm); exceedD &lt;- matrix(0, nrow(B1), ncol(B1))
+  for (b in seq_len(nperm)) {
+    g &lt;- sample(grp)                           # Shuffle group labels while preserving group sample sizes
+    s &lt;- stats(est(d[g == lev[1], ]), est(d[g == lev[2], ]))
+    nullM[b] &lt;- s$M; nullS[b] &lt;- s$S
+    exceedD &lt;- exceedD + (abs(s$D) &gt;= abs(obs$D) - 1e-12)
+  }
+  pD &lt;- (exceedD + 1) / (nperm + 1)
+  list(B1 = B1, B2 = B2, obs = obs, nullM = nullM, nullS = nullS,
+       pM = (sum(nullM &gt;= obs$M - 1e-12) + 1) / (nperm + 1),
+       pS = (sum(nullS &gt;= obs$S - 1e-12) + 1) / (nperm + 1),
+       pD = pD, n = table(grp))
+}
+edge_table &lt;- function(r, k = 6) {
+  e &lt;- data.frame(from = rownames(r$B1)[row(r$B1)[off]], to = colnames(r$B1)[col(r$B1)[off]],
+                  B_g1 = round(r$B1[off], 3), B_g2 = round(r$B2[off], 3), diff = round(r$obs$D[off], 3),
+                  p = round(r$pD[off], 3))
+  e$p_holm &lt;- round(p.adjust(e$p, &quot;holm&quot;), 3)
+  e[order(-abs(e$diff), e$p), ][1:k, ]
+}
+report &lt;- function(r, labs) {
+  cat(&quot;Sample size per group:&quot;, paste0(labs, &quot; n = &quot;, r$n, collapse = &quot;, &quot;), &quot;\n&quot;)
+  w &lt;- which(abs(r$obs$D) == r$obs$M &amp; off, arr.ind = TRUE)[1, ]
+  cat(sprintf(&quot;M (maximum edge difference) = %.3f: %s -&gt; %s (%s %.3f, %s %.3f); permutation p = %.3f\n&quot;, r$obs$M,
+              rownames(r$B1)[w[1]], colnames(r$B1)[w[2]], labs[1], r$B1[w[1], w[2]], labs[2], r$B2[w[1], w[2]], r$pM))
+  cat(sprintf(&quot;S (global strength difference) = %.3f (%s %.3f, %s %.3f); permutation p = %.3f\n&quot;, r$obs$S, labs[1], r$obs$S1, labs[2], r$obs$S2, r$pS))
+  cat(sprintf(&quot;Individual edges: Out of 72 cross-lagged edges, uncorrected p &lt; .05 for %d edge(s); Holm-corrected for %d edge(s)\n&quot;,
+              sum(r$pD[off] &lt; 0.05), sum(p.adjust(r$pD[off], &quot;holm&quot;) &lt; 0.05)))
+  cat(sprintf(&quot;Permutation null distribution: 95th percentile of M = %.3f, 95th percentile of S = %.3f\n&quot;, quantile(r$nullM, 0.95), quantile(r$nullS, 0.95)))
+  cat(&quot;Top 6 edges with largest differences (diff = Group 1 - Group 2; p = uncorrected edge permutation p, p_holm = Holm-corrected):\n&quot;)
+  print(edge_table(r), row.names = FALSE)
+}
+
+# =====================================================================
+# Part 1: Course Data, Male vs. Female
+# In data simulation, genders differed only in depression item means (females +0.2); cross-lagged networks are identical.
+# =====================================================================
+cat(&quot;===== Part 1: Course Data, Male vs. Female (&quot;, NPERM, &quot;permutations per part, EBIC) =====\n&quot;)
+t0 &lt;- Sys.time()
+set.seed(2026)
+rA &lt;- perm_test(dat, dat$gender)
+report(rA, c(&quot;Male&quot;, &quot;Female&quot;))
+cat(sprintf(&quot;Elapsed time: %.0f seconds\n&quot;, as.numeric(difftime(Sys.time(), t0, units = &quot;secs&quot;))))
+
+# =====================================================================
+# Part 2: Simulating Truly Different Groups
+# Both groups generated from course population target true_B_population;
+# Group 2 has lone3 -&gt; dep1 coefficient increased by +0.20 (0.118 -&gt; 0.318), all else identical.
+# Part 3: Same difference, but only 300 participants per group: can it still be detected?
+# =====================================================================
+Bp &lt;- true_B()
+R1 &lt;- cor(dat[, vars_t(1)]); R2 &lt;- cor(dat[, vars_t(2)])
+Se &lt;- R2 - t(Bp) %*% R1 %*% Bp; Se &lt;- (Se + t(Se)) / 2      # Both groups share identical residual covariance
+rmvn &lt;- function(n, S) matrix(rnorm(n * ncol(S)), n) %*% chol(S)
+sim_group &lt;- function(n, B) {
+  X &lt;- rmvn(n, R1); Y &lt;- X %*% B + rmvn(n, Se)
+  setNames(as.data.frame(cbind(X, Y)), c(vars_t(1), vars_t(2)))
+}
+run_sim &lt;- function(n, delta, seed) {
+  t0 &lt;- Sys.time(); set.seed(seed)
+  Bg2 &lt;- Bp; Bg2[&quot;lone3&quot;, &quot;dep1&quot;] &lt;- Bg2[&quot;lone3&quot;, &quot;dep1&quot;] + delta
+  sim &lt;- rbind(sim_group(n, Bp), sim_group(n, Bg2))
+  r &lt;- perm_test(sim, rep(c(1, 2), each = n))
+  report(r, c(&quot;Group 1&quot;, &quot;Group 2&quot;))
+  cat(sprintf(&quot;A priori specified edge lone3 -&gt; dep1: Group 1 %.3f, Group 2 %.3f, difference %.3f, single-edge permutation p = %.3f\n&quot;,
+              r$B1[&quot;lone3&quot;, &quot;dep1&quot;], r$B2[&quot;lone3&quot;, &quot;dep1&quot;], r$obs$D[&quot;lone3&quot;, &quot;dep1&quot;], r$pD[&quot;lone3&quot;, &quot;dep1&quot;]))
+  cat(sprintf(&quot;Elapsed time: %.0f seconds\n&quot;, as.numeric(difftime(Sys.time(), t0, units = &quot;secs&quot;))))
+  r
+}
+cat(&quot;\n===== Part 2: Simulating Two Groups of 600 Each, Group 2 lone3 -&gt; dep1 +0.20 =====\n&quot;)
+rB &lt;- run_sim(600, 0.20, 2027)
+cat(&quot;\n===== Part 3: Same Difference, with Only 300 Participants Per Group =====\n&quot;)
+rC &lt;- run_sim(300, 0.20, 2028)
+cat(sprintf(&quot;\nNote: With 1000 permutations, minimum possible p = 1/1001 = %.4f; for 72 edges with Holm correction, minimum p is multiplied by 72 -&gt; %.3f,\n&quot;, 1 / (NPERM + 1), 72 / (NPERM + 1)),
+    &quot;meaning testing all 72 edges with Holm correction cannot reach significance under 1000 permutations. Single-edge tests should be reserved for a few a priori specified edges.\n&quot;)
+
+# ---- Output ----------------------------------------------------------
+rs &lt;- list(rA, rB, rC)
+summ &lt;- data.frame(part = c(&quot;1 Course data Male vs Female&quot;, &quot;2 Sim n=600 lone3-dep1 +0.20&quot;, &quot;3 Sim n=300 lone3-dep1 +0.20&quot;),
+                   n1 = sapply(rs, function(r) r$n[[1]]), n2 = sapply(rs, function(r) r$n[[2]]), nperm = NPERM,
+                   M = round(sapply(rs, function(r) r$obs$M), 3), p_M = round(sapply(rs, function(r) r$pM), 3),
+                   S = round(sapply(rs, function(r) r$obs$S), 3), p_S = round(sapply(rs, function(r) r$pS), 3),
+                   p_lone3_dep1 = round(sapply(rs, function(r) r$pD[&quot;lone3&quot;, &quot;dep1&quot;]), 3),
+                   edges_p05 = sapply(rs, function(r) sum(r$pD[off] &lt; 0.05)),
+                   edges_holm05 = sapply(rs, function(r) sum(p.adjust(r$pD[off], &quot;holm&quot;) &lt; 0.05)))
+print(summ, row.names = FALSE)
+write.csv(summ, out(&quot;L7-7_perm_summary.csv&quot;), row.names = FALSE)
+png_open(&quot;L7-7_null_M.png&quot;, 2400, 1000)
+par(mfrow = c(1, 3), mar = c(4.2, 4.2, 4, 1))
+for (r in list(list(rA, &quot;Course data: Male vs. Female&quot;), list(rB, &quot;Simulation: n = 600 per group, with difference&quot;), list(rC, &quot;Simulation: n = 300 per group, with difference&quot;))) {
+  hist(r[[1]]$nullM, breaks = 30, col = &quot;grey85&quot;, border = &quot;white&quot;, xlim = range(c(r[[1]]$nullM, r[[1]]$obs$M * 1.05)),
+       main = &quot;&quot;, xlab = &quot;M (maximum edge difference across permuted groups)&quot;, ylab = &quot;Frequency&quot;)
+  title(r[[2]], line = 2)
+  mtext(sprintf(&quot;Red line = observed M = %.3f, permutation p = %.3f&quot;, r[[1]]$obs$M, r[[1]]$pM), side = 3, line = 0.5, col = &quot;firebrick&quot;, cex = 0.85)
+  abline(v = r[[1]]$obs$M, col = &quot;firebrick&quot;, lwd = 3)
+}
+invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L7-7_null_M.png" alt="L7-7_null_M.png" loading="lazy"><figcaption>Figure: <code>R/output/L7-7_null_M.png</code> (generated by running the companion script on the simulated dataset)</figcaption></figure>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L7-7_log.txt</code></div><pre class="out"><code>===== Part 1: Course Data, Male vs. Female ( 1000 permutations per part, EBIC) =====
+Sample size per group: Male n = 373, Female n = 427 
+M (maximum edge difference) = 0.188: lone4 -&gt; lone3 (Male 0.188, Female 0.000); permutation p = 0.082
+S (global strength difference) = 0.381 (Male 1.587, Female 1.206); permutation p = 0.539
+Individual edges: Out of 72 cross-lagged edges, uncorrected p &lt; .05 for 3 edge(s); Holm-corrected for 0 edge(s)
+Permutation null distribution: 95th percentile of M = 0.197, 95th percentile of S = 1.154
+Top 6 edges with largest differences (diff = Group 1 - Group 2; p = uncorrected edge permutation p, p_holm = Holm-corrected):
+  from    to  B_g1  B_g2   diff     p p_holm
+ lone4 lone3 0.188 0.000  0.188 0.004  0.284
+ lone3  dep1 0.000 0.176 -0.176 0.001  0.072
+ lone4 lone1 0.121 0.000  0.121 0.051  1.000
+ lone4  dep4 0.000 0.116 -0.116 0.124  1.000
+  dep4  dep3 0.114 0.000  0.114 0.028  1.000
+ lone4  dep1 0.112 0.000  0.112 0.123  1.000
+Elapsed time: 16 seconds
+
+===== Part 2: Simulating Two Groups of 600 Each, Group 2 lone3 -&gt; dep1 +0.20 =====
+Sample size per group: Group 1 n = 600, Group 2 n = 600 
+M (maximum edge difference) = 0.228: lone3 -&gt; dep1 (Group 1 0.035, Group 2 0.263); permutation p = 0.001
+S (global strength difference) = 0.362 (Group 1 2.012, Group 2 1.650); permutation p = 0.395
+Individual edges: Out of 72 cross-lagged edges, uncorrected p &lt; .05 for 1 edge(s); Holm-corrected for 0 edge(s)
+Permutation null distribution: 95th percentile of M = 0.167, 95th percentile of S = 0.844
+Top 6 edges with largest differences (diff = Group 1 - Group 2; p = uncorrected edge permutation p, p_holm = Holm-corrected):
+  from    to  B_g1  B_g2   diff     p p_holm
+ lone3  dep1 0.035 0.263 -0.228 0.001  0.072
+  dep5  dep3 0.116 0.000  0.116 0.059  1.000
+ lone4 lone2 0.114 0.000  0.114 0.060  1.000
+  dep2  dep3 0.083 0.000  0.083 0.187  1.000
+  dep4  dep5 0.082 0.000  0.082 0.119  1.000
+  dep4  dep2 0.000 0.081 -0.081 0.135  1.000
+A priori specified edge lone3 -&gt; dep1: Group 1 0.035, Group 2 0.263, difference -0.228, single-edge permutation p = 0.001
+Elapsed time: 17 seconds
+
+===== Part 3: Same Difference, with Only 300 Participants Per Group =====
+Sample size per group: Group 1 n = 300, Group 2 n = 300 
+M (maximum edge difference) = 0.169: dep2 -&gt; dep3 (Group 1 0.169, Group 2 0.000); permutation p = 0.426
+S (global strength difference) = 0.122 (Group 1 1.860, Group 2 1.982); permutation p = 0.821
+Individual edges: Out of 72 cross-lagged edges, uncorrected p &lt; .05 for 6 edge(s); Holm-corrected for 0 edge(s)
+Permutation null distribution: 95th percentile of M = 0.239, 95th percentile of S = 0.970
+Top 6 edges with largest differences (diff = Group 1 - Group 2; p = uncorrected edge permutation p, p_holm = Holm-corrected):
+  from   to  B_g1  B_g2   diff     p p_holm
+  dep2 dep3 0.169 0.000  0.169 0.030      1
+ lone3 dep1 0.072 0.241 -0.168 0.043      1
+  dep2 dep5 0.000 0.149 -0.149 0.019      1
+ lone4 dep5 0.149 0.000  0.149 0.046      1
+  dep1 dep5 0.144 0.000  0.144 0.142      1
+  dep1 dep3 0.000 0.113 -0.113 0.080      1
+A priori specified edge lone3 -&gt; dep1: Group 1 0.072, Group 2 0.241, difference -0.168, single-edge permutation p = 0.043
+Elapsed time: 16 seconds
+
+Note: With 1000 permutations, minimum possible p = 1/1001 = 0.0010; for 72 edges with Holm correction, minimum p is multiplied by 72 -&gt; 0.072,
+ meaning testing all 72 edges with Holm correction cannot reach significance under 1000 permutations. Single-edge tests should be reserved for a few a priori specified edges.
+                         part  n1  n2 nperm     M   p_M     S   p_S p_lone3_dep1 edges_p05 edges_holm05
+ 1 Course data Male vs Female 373 427  1000 0.188 0.082 0.381 0.539        0.001         3            0
+ 2 Sim n=600 lone3-dep1 +0.20 600 600  1000 0.228 0.001 0.362 0.395        0.001         1            0
+ 3 Sim n=300 lone3-dep1 +0.20 300 300  1000 0.169 0.426 0.122 0.821        0.043         6            0</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L7-7_perm_summary.csv</code></div><pre class="out"><code>&quot;part&quot;,&quot;n1&quot;,&quot;n2&quot;,&quot;nperm&quot;,&quot;M&quot;,&quot;p_M&quot;,&quot;S&quot;,&quot;p_S&quot;,&quot;p_lone3_dep1&quot;,&quot;edges_p05&quot;,&quot;edges_holm05&quot;
+&quot;1 Course data Male vs Female&quot;,373,427,1000,0.188,0.082,0.381,0.539,0.001,3,0
+&quot;2 Sim n=600 lone3-dep1 +0.20&quot;,600,600,1000,0.228,0.001,0.362,0.395,0.001,1,0
+&quot;3 Sim n=300 lone3-dep1 +0.20&quot;,300,300,1000,0.169,0.426,0.122,0.821,0.043,6,0</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ Concept Check</span>Instant Check</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">Why does a permutation test shuffle the group labels?</p><ul class="opts"><li><button type="button" data-ok="0">A. To make the two groups the same size</button><div class="ofb" hidden>Shuffling keeps the group sizes unchanged; size is not the point.</div></li><li><button type="button" data-ok="1">B. To build the distribution of the statistic for a world where grouping has nothing to do with the network (the null distribution), and see whether the observed value is rare</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. To estimate a confidence interval for each edge, like the bootstrap</button><div class="ofb" hidden>That is what the bootstrap is for (resampling cases with replacement); a permutation shuffles labels and gives a p-value.</div></li><li><button type="button" data-ok="0">D. To check whether the estimates depend on the random seed</button><div class="ofb" hidden>The seed only affects whether results can be reproduced; shuffling is about getting the distribution under the null hypothesis.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">In 1000 permutations, 81 give an M ≥ the observed M. What is the permutation p-value?</p><ul class="opts"><li><button type="button" data-ok="0">A. 81 / 1000</button><div class="ofb" hidden>You also have to count the observed data itself: (81 + 1) / (1000 + 1).</div></li><li><button type="button" data-ok="1">B. (81 + 1) / (1000 + 1)</button><div class="ofb" hidden>Correct: (81 + 1) / 1001, about 0.08.</div></li><li><button type="button" data-ok="0">C. (1000 − 81) / 1000</button><div class="ofb" hidden>That is the proportion “smaller than the observed value”: the wrong direction.</div></li><li><button type="button" data-ok="0">D. 1 / 1001</button><div class="ofb" hidden>That is the smallest possible p with 1000 permutations, which you get only if no shuffle is ≥ the observed value.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">In simulation ②, M is significant and S is not. What does that tell you?</p><ul class="opts"><li><button type="button" data-ok="0">A. The test was done wrong</button><div class="ofb" hidden>This is exactly what the simulation was designed to show: change only one edge, and M detects it while S is insensitive.</div></li><li><button type="button" data-ok="1">B. The edge that differs most stands out, but S finds no difference: one edge's change is a small share of the total strength, so the S test is not sensitive to it; M and S answer different questions</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. S is more reliable than M</button><div class="ofb" hidden>Neither is more reliable; they answer different questions.</div></li><li><button type="button" data-ok="0">D. The two groups are exactly the same</button><div class="ofb" hidden>A significant M says the groups differ in at least one edge.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">A comparison of two groups' networks is not significant. What is the most appropriate way to write it?</p><ul class="opts"><li><button type="button" data-ok="0">A. The two groups' networks are the same</button><div class="ofb" hidden>Not significant ≠ the same: the two groups in simulation ③ really differ, yet the test did not find it.</div></li><li><button type="button" data-ok="1">B. We found no evidence that the two groups' networks differ; the comparison may lack power</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. Gender has no effect on the network</button><div class="ofb" hidden>This treats “not found” as “not there,” and also stretches a network comparison into “the effect of gender.”</div></li><li><button type="button" data-ok="0">D. The result is not worth reporting</button><div class="ofb" hidden>Negative results should be reported too, along with the limits of the power.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Testing the 72 edges one by one, the course data (both groups generated with the same lagged coefficients) have 3 edges with unadjusted p &lt; .05. What is the most reasonable explanation?</p><ul class="opts"><li><button type="button" data-ok="0">A. Gender really affects these edges</button><div class="ofb" hidden>Both genders were generated with the same lagged coefficients; only the means of the depression items differ.</div></li><li><button type="button" data-ok="1">B. Multiple comparisons: of 72 tests, about 3.6 on average reach p &lt; .05 by chance</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. The EBIC rule went wrong</button><div class="ofb" hidden>The real grouping and every shuffle use the same EBIC rule; chance “significance” comes from the number of tests, not from the rule.</div></li><li><button type="button" data-ok="0">D. You should try another random seed</button><div class="ofb" hidden>Changing the seed to pick results is p-hacking, and it does not solve the multiple-comparisons problem either.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Why not just use NCT to compare two groups' CLPNs?</p><ul class="opts"><li><button type="button" data-ok="0">A. NCT is commercial software</button><div class="ofb" hidden>It is an open-source R package, available from CRAN.</div></li><li><button type="button" data-ok="1">B. By default NCT compares undirected networks within one time point (GGMs), whereas a CLPN is a directed T1 → T2 regression network; also, paired data cannot be shuffled freely</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. NCT cannot do permutation tests</button><div class="ofb" hidden>Permutation tests (M, S, and single edges) are exactly what it does.</div></li><li><button type="button" data-ok="0">D. NCT works only with binary variables</button><div class="ofb" hidden>It handles continuous variables by default (binary data have their own option); it is the grouping that is binary, not the variables.</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2><div class="exitem"><h4>Exercise 1: Read the plot<span class="lvl">Foundational</span></h4><p>Open <code>R/output/L7-7_null_M.png</code> (the figure under “Companion Script &amp; Output” on this page). For each panel: where does the red line fall relative to the null distribution, and what do you conclude? Then explain in one sentence why the same difference (lone3 → dep1 +0.20) is significant in the middle panel but not in the right panel.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Left panel (course data): the red line, M = 0.188, is on the right side of the histogram but still within the bulk (95th percentile of the null distribution 0.197), p = 0.082: no evidence of a difference, which matches the truth. Middle panel (600 per group): the red line lies to the right of the whole null distribution, p = 0.001: a difference. Right panel (300 per group): the red line falls in the middle of the bulk, p = 0.426. The difference is just as large, but with fewer people each group's estimates are less stable and the null distribution is wider (the 95th percentile goes from 0.167 to 0.239), so the real difference is drowned out by noise.</p></details></div>
+<div class="exitem"><h4>Exercise 2: Hands-on: compare men's and women's T2 → T3 networks<span class="lvl">Hands-On</span></h4><p>In R/L7-7.R, replace <code>vars_t(1)</code> and <code>vars_t(2)</code> in <code>est()</code> with <code>vars_t(2)</code> and <code>vars_t(3)</code>, and compare men's and women's T2 → T3 networks (200 permutations are enough). Report M and S with their permutation p-values, and look at the single-edge p of lone3 → dep1. Compared with p = 0.001 in Part 1 (T1 → T2), what do you learn?</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Reference solution <code>R/solutions/L7-7_solution.R</code> (log <code>R/output/sol_L7-7_log.txt</code>): M = 0.133 (dep5 → dep1: men 0.000, women 0.133), permutation p = 0.766; S = 0.382 (men 1.255, women 1.637), p = 0.448. Of the 72 edges, 4 have unadjusted p &lt; .05. lone3 → dep1: men 0.000, women 0.072, p = 0.333.</p>
+<p>In T1 → T2 this edge had p = 0.001; in T2 → T3 it is not significant at all: the first was very likely just the smallest of 72 tests by chance. Had you looked only at T1 → T2 and written “the prediction of depressed mood by loneliness differs by gender,” it would most likely have been a false positive: the two groups were generated with the same lagged coefficients, and the result did not replicate in another time interval (“most likely” because the shift before the cutting into categories may create a very small difference on the observed scale). Also, with 200 permutations the smallest possible p is 0.0050, so the p-values are coarser than with 1000.</p></details></div>
+<div class="exitem"><h4>Exercise 3: Writing: report a network comparison<span class="lvl">Writing</span></h4><p>Take simulation ② (pretend it is real data: group 1 are clients before receiving a service, group 2 another set of clients after receiving it) and write a 120–150 word results paragraph that covers the method (estimation rule, number of permutations), the results for M and S, the edge that differs most, and one careful sentence of interpretation.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Sample: “We compared the two groups' cross-lagged networks with a permutation test (1000 permutations, λ chosen by EBIC in both groups). The network structure invariance test was significant (M = 0.228, p = 0.001); the edge with the largest difference was lone3 → dep1 (group 1 0.035, group 2 0.263). The global strength invariance test was not significant (S = 0.362, p = 0.395). The S test found no difference in overall strength, but its null distribution is wide and insensitive to changes in single edges, so this does not show that the overall connectivity of the groups is the same. The difference lies mainly in individual edges. Because none of the 72 edges remained significant after correction in the edge-by-edge tests, single-edge differences should be treated as exploratory findings to be tested in independent samples; and since the two groups are different people, the difference cannot be read as a causal effect of the service on individuals.”</p></details></div>
+<div class="exitem"><h4>Exercise 4: Analysis plan: pre-specification + sample size<span class="lvl">Conceptual</span></h4><p>You plan to compare the CLPNs of urban and rural community residents, and theoretically you care most about the edge “Feeling isolated (lone3) → later Depressed mood (dep1).” (1) Write a pre-specified hypothesis for your analysis plan (Lesson 10.1). (2) Based on simulation ③, if you can only recruit 300 people per group, what should the plan say?</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>(1) Example: “Primary hypothesis: the cross-lagged coefficient lone3 → dep1 differs between urban and rural residents; this one edge's group difference is tested with a permutation test (1000 permutations, λ chosen by EBIC in both groups), α = .05, without multiple-comparison correction. The other comparisons (M, S, and edge-by-edge) are exploratory, and the edge-by-edge comparisons use the Holm correction.”</p>
+<p>(2) Simulation ③ shows that for the same difference of 0.20, with 300 people per group the M test did not find it (p = 0.426), and the pre-specified single-edge p = 0.043, right around .05. That is one sample, not power. The plan should state that power is limited with 300 people per group and that a nonsignificant result cannot be read as “no difference”; if possible, estimate the needed sample size with the simulation method of Lesson 7.6 (adapted to two groups), or aim for a larger sample.</p></details></div><h3>Integrative Exercise</h3><div class="box sw"><p>With the course data, compare men&#x27;s and women&#x27;s T2 → T3 networks (200 permutations are enough), report M, S and their permutation p-values, and write a 100-word interpretation explaining why &#x27;not significant&#x27; cannot be written as &#x27;the two networks are the same&#x27;; then explain how, if you cared only about the single edge lone3 → dep1, the test should be written into the analysis plan in advance.</p></div><h3>Self-Check Questions</h3><ol><li>Why does a permutation test shuffle the group labels? What &#x27;should&#x27; you see after shuffling?</li><li>What goes wrong if you test 72 edges one by one, each at p &lt; .05?</li><li>If the comparison of two networks is not significant, can you say the two networks are the same?</li></ol><p class='muted' style='font-size:.88rem'>Tip: Before starting the next lesson, answer each question above in one or two sentences without looking at the text.</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">Summary</span>Key Takeaways &amp; Further Reading</h2><ul><li>Before comparing groups, be clear about the question: the edge that differs most (M), overall strength (S), or one particular edge. Null hypothesis: the two groups' data come from the same population (so their networks are also the same).</li><li>Permutation test: shuffle the group labels and re-estimate to get the null distribution; p = (number of shuffles ≥ the observed value + 1) / (number of permutations + 1).</li><li>Course data (no real difference): neither M nor S significant; simulation ②: M found the changed edge, S was not significant; simulation ③: with half the people the difference is no longer found.</li><li>Not significant ≠ the same; group comparisons need large samples. ② and ③ are single samples; power has to be estimated with repeated simulations (Lesson 7.6).</li><li>Testing 72 edges one by one produces chance “significance”; the smallest possible p is 1/(B+1), so correcting all edges together needs B far larger than m/α (1440 here; ≥ 10000 recommended). Better: test only a few edges specified in advance.</li><li>NCT is for cross-sectional networks and cannot directly replace a CLPN comparison; paired comparisons (the same people) cannot be shuffled this way.</li></ul><h3>Further Reading</h3><ul class="refs"><li>van Borkulo, C. D., van Bork, R., Boschloo, L., Kossakowski, J. J., Tio, P., Schoevers, R. A., Borsboom, D., & Waldorp, L. J. (2023). Comparing network structures on three aspects: A permutation test. <i>Psychological Methods, 28</i>(6), 1273–1285. <a href="https://doi.org/10.1037/met0000476" target="_blank" rel="noopener">doi.org/10.1037/met0000476</a><div class="muted" style="font-size:.84rem">The Network Comparison Test (NCT): three tests, M (network structure), S (global strength) and single edges. The hand-written permutation test in Lesson 7.7 follows its approach.</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">The published version of the CLPN method paper (June 2025), revised from the 2022 PsyArXiv preprint &#x27;Cross-lagged network models&#x27;, with McCarthy added as a co-author. The main reference for Module 7; cite this version where you can.</div></li><li>Epskamp, S., Borsboom, D., & Fried, E. I. (2018). Estimating psychological networks and their accuracy: A tutorial paper. <i>Behavior Research Methods, 50</i>(1), 195–212. <a href="https://doi.org/10.3758/s13428-017-0862-1" target="_blank" rel="noopener">doi.org/10.3758/s13428-017-0862-1</a><div class="muted" style="font-size:.84rem">The standard tutorial on bootnet and stability checks (CS-coefficient); Modules 6 and 8.</div></li></ul></section><div class="box key"><b class="bt">Module quiz</b><p>Once you have studied this module's optional advanced lessons, you can do the <a href="../materials/assess_m7.html#adv">advanced questions at the end of the M7 module quiz</a> (they do not count toward the module score).</p></div>
+<nav class="pager"><a href="L7-6.html" class="pv"><small>Previous</small>7.6 Measurement Invariance and Sample Size Planning</a><a href="L8-1.html" class="nx"><small>Next</small>8.1 The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 7.7 · <a href="../index.html#L7-7">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

@@ -1,0 +1,16 @@
+lone: beta = 0.26, 95% CI [0.19, 0.33], p < .001
+support: beta = -0.06, 95% CI [-0.13, 0.01], p = .109
+sleep: beta = -0.11, 95% CI [-0.18, -0.05], p < .001
+APA: Controlling for social support and sleep duration, T1 loneliness positively predicted T2 depression, beta = 0.26, 95% CI [0.19, 0.33], p < .001.
+
+3.3-A: beta, 95% CI, p (tabular format for the same model)
+              beta  2.5 % 97.5 %     p
+(Intercept)  0.000 -0.066  0.066 1.000
+lone         0.258  0.185  0.331 0.000
+support     -0.059 -0.132  0.013 0.109
+sleep       -0.112 -0.179 -0.046 0.001
+R^2 = 0.103 
+
+3.3-B: b(T1 depression) = 0.534  s(T1 depression) = 3.398  s(T2 depression) = 3.365 
+beta = b * s_x / s_y = 0.539 ; Estimated directly after standardization:  0.539 
+Gender (0/1) SD = 0.499 

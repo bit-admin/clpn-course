@@ -1,0 +1,17 @@
+variable,label_zh,label_en,values,notes
+id,被试编号,participant ID,P001–P800,唯一标识
+lone1_t1 / _t2 / _t3,孤独1：缺少陪伴,Loneliness 1: lack companionship,1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often,类似 UCLA-3 题目；_t1/_t2/_t3 = 第1/2/3波
+lone2_t1 / _t2 / _t3,孤独2：被冷落,Loneliness 2: feel left out,1–4 同上,
+lone3_t1 / _t2 / _t3,孤独3：与人隔绝,Loneliness 3: feel isolated from others,1–4 同上,
+lone4_t1 / _t2 / _t3,孤独4：无人理解,Loneliness 4: no one really understands me,1–4 同上,
+dep1_t1 / _t2 / _t3,抑郁1：情绪低落,Depression 1: depressed mood,0=完全不会 not at all;1=好几天 several days;2=一半以上天数 more than half the days;3=几乎每天 nearly every day,类似 PHQ-9；右偏分布
+dep2_t1 / _t2 / _t3,抑郁2：兴趣丧失,Depression 2: loss of interest (anhedonia),0–3 同上,
+dep3_t1 / _t2 / _t3,抑郁3：睡眠问题,Depression 3: sleep problems,0–3 同上,
+dep4_t1 / _t2 / _t3,抑郁4：疲乏无力,Depression 4: fatigue,0–3 同上,
+dep5_t1 / _t2 / _t3,抑郁5：无价值感,Depression 5: worthlessness / guilt,0–3 同上,
+gender,性别,gender,0=男 male;1=女 female,协变量 covariate（7.5 课）
+age,年龄,age (years),18–85,
+social_support_t1,社会支持（T1）,perceived social support (T1),1–5（越高越好）,3.1 课回归练习
+sleep_hours_t1,每晚睡眠时长（T1）,sleep hours per night (T1),3–11 小时,
+life_sat_t1,生活满意度（T1）,life satisfaction (T1),0–100,1.3 课标准化练习
+help_seek_t2,是否寻求专业帮助（T2）,sought professional help (T2),0=否 no;1=是 yes,3.4 课逻辑回归

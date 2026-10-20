@@ -1,0 +1,66 @@
+ELSOC Real-Data Case: CLPN of PHQ-8
+Data: Reproducible Research, Centre for Social Conflict and Cohesion Studies COES, 2022, "Estudio Longitudinal Social de Chile 2016-2021",
+      https://doi.org/10.7910/DVN/LQMURF, Harvard Dataverse, V1
+Preprocessing: R/data_elsoc.R (original sample; negative missing codes set to NA; PHQ items 1–8)
+
+== 1 Descriptive Statistics ==
+Analysis sample (complete PHQ-8 across Waves 1–3) N = 2026 
+ item                   label M_2016 SD_2016 M_2017 M_2018
+ phq1         Little interest   1.86    1.01   1.88   1.93
+ phq2          Depressed mood   1.76    0.89   1.77   1.85
+ phq3          Sleep problems   1.92    1.13   1.89   2.05
+ phq4                 Fatigue   2.11    1.08   2.07   2.17
+ phq5         Appetite change   1.82    1.07   1.77   1.88
+ phq6   Trouble concentrating   1.62    0.98   1.61   1.70
+ phq7          Low self-worth   1.43    0.83   1.39   1.46
+ phq8 Psychomotor retardation   1.44    0.86   1.43   1.49
+PHQ-8 total score (8–40): 2016 M = 13.95, 2017 M = 13.81, 2018 M = 14.53; correlation between 2016 and 2017 total scores r = 0.39
+
+== 2 CLPN: 2016 -> 2017 (lambda.min, 10-fold cross-validation, seed 2026) ==
+Autoregressive edges (AR):
+ phq1  phq2  phq3  phq4  phq5  phq6  phq7  phq8 
+0.016 0.132 0.157 0.140 0.125 0.172 0.219 0.121 
+Non-zero cross-lagged edges: 45 / 56 edges; maximum |B| = 0.113
+Strongest 8 cross-lagged edges:
+ from               from_en   to                   to_en weight
+ phq2        Depressed mood phq1         Little interest  0.113
+ phq4               Fatigue phq5         Appetite change  0.113
+ phq3        Sleep problems phq4                 Fatigue  0.092
+ phq6 Trouble concentrating phq2          Depressed mood  0.090
+ phq6 Trouble concentrating phq1         Little interest  0.085
+ phq2        Depressed mood phq8 Psychomotor retardation  0.084
+ phq3        Sleep problems phq5         Appetite change  0.081
+ phq5       Appetite change phq3          Sleep problems  0.074
+
+== 3 Out- / In-Expected Influence (cross-lagged edges only, excluding autoregressions) ==
+ node                   label outEI  inEI
+ phq2          Depressed mood 0.423 0.278
+ phq6   Trouble concentrating 0.388 0.214
+ phq4                 Fatigue 0.352 0.282
+ phq3          Sleep problems 0.345 0.244
+ phq5         Appetite change 0.244 0.241
+ phq8 Psychomotor retardation 0.133 0.244
+ phq1         Little interest 0.062 0.292
+ phq7          Low self-worth 0.021 0.171
+
+== 4 Replication: 2017 -> 2018 ==
+2017 -> 2018 non-zero cross-lagged edges: 41 / 56 edges; correlation with 2016 -> 2017 56 cross-lagged edges r = 0.43
+Among the 8 strongest edges, 7 have the same sign and remain non-zero in 2017 -> 2018
+
+== 5 Sensitivity: adding sex and age as covariates (unpenalized) ==
+N = 2026; non-zero cross-lagged edges 47 / 56 edges; correlation with primary cross-lagged edges r = 0.987
+
+== 6 Nonparametric edge bootstrap (B_BOOT = 200 iterations, for demonstration; use >= 1000 for formal analysis) ==
+Bootstrap intervals (2.5% and 97.5% quantiles) and proportion shrunk to 0 for the 8 strongest cross-lagged edges:
+      edge sample  q2.5 q97.5 prop0
+ phq2>phq1  0.113 0.054 0.167  0.00
+ phq4>phq5  0.113 0.040 0.179  0.00
+ phq3>phq4  0.092 0.044 0.145  0.00
+ phq6>phq2  0.090 0.035 0.136  0.00
+ phq6>phq1  0.085 0.035 0.132  0.00
+ phq2>phq8  0.084 0.011 0.144  0.01
+ phq3>phq5  0.081 0.024 0.153  0.01
+ phq5>phq3  0.074 0.022 0.132  0.00
+Among the 8 strongest edges, 8 have intervals excluding 0
+
+Figure: R/output/case_elsoc_clpn.png

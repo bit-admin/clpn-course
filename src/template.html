@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>交叉滞后面板网络分析（CLPN）从零开始 · 课程大纲</title>
+<link rel="stylesheet" href="lessons/assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="lessons/assets/course.css">
+<style>
+__CSS__
+</style>
+</head>
+<body>
+<header class="sitebar">
+ <div class="sitebar-in">
+  <button id="menuBtn" type="button" aria-label="打开目录">目录</button>
+  <label class="qwrap"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 10.2L13.2 13.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="搜索课程或术语，如 LASSO、偏相关…" aria-label="搜索课程"></label>
+  <div class="tools"><button id="expand" type="button">全部展开</button><button id="collapse" type="button">全部收起</button><a class="act langSwitch" href="en/index.html">English</a><button id="theme" type="button">深色</button><button id="reset" type="button">重置进度</button></div>
+ </div>
+</header>
+<div class="layout">
+<aside id="side">
+ <div class="brand">CLPN 从零开始<small>交叉滞后面板网络分析 · 课程大纲</small></div>
+ <div class="overall">学习进度：<b id="pText">0 / __NLES__</b> 节<div class="bar"><i id="pBar"></i></div></div>
+ <nav>
+  <ul class="navtop"><li><a href="#materials">学习资料</a></li><li><a href="#overview">课程概况</a></li><li><a href="#method">教学方法</a></li><li><a href="#pacing">学习节奏</a></li><li><a href="#assessment">考核与反馈</a></li><li><a href="downloads/index.html">下载</a></li></ul>
+  <ul>__NAV__</ul>
+  <ul class="navtop" style="margin-top:10px"><li><a href="#readings">阅读书目</a></li><li><a href="#glossary">术语表</a></li><li><a href="#setup">软件与 R 包</a></li></ul>
+ </nav>
+</aside>
+<main>
+<div class="hero">
+ <h1>交叉滞后面板网络分析（CLPN）从零开始</h1>
+ <p>Cross-Lagged Panel Network Analysis: From Zero to Your First Analysis</p>
+ <p>简体中文自学课程。起点假设：学过基础微积分，尚未使用过 R。关键术语首次出现时附英文。课程数据为模拟数据，不含真实个人信息。</p>
+ <div class="facts"><span>__NMOD__ 个模块</span><span>{{C:size}}</span><span>__SESS__ 次学习 · {{C:weeks}} 周</span><span>课文学习约 __HOURS__ 小时 + 练习</span></div>
+</div>
+
+<section class="card" id="materials">
+ <h2>学习资料</h2>
+ <p>先读 <a href="START_HERE.html">学习指南</a>：这个网站怎么用、按什么顺序学、每周学什么。读完后打开 <a href="downloads/index.html">下载页</a>，取得整门课的压缩包 <code>clpn-course.zip</code>：解压后双击 <code>index.html</code> 可离线学习，双击 <code>clpn-course.Rproj</code> 运行 R。</p>
+ <div class="llm">
+  <h3>通过 LLM 学习</h3>
+  <div class="llmrow"><code id="llmPrompt">阅读 llm.md</code><button type="button" id="llmCopy">复制提示词</button></div>
+ </div>
+ <div class="matgrid">
+  <a class="mat" href="START_HERE.html"><b>学习指南</b><span>网站上有什么、学习顺序、{{C:weeks}} 周周计划、每节课怎么学</span></a>
+  <a class="mat" href="materials/glossary.html"><b>双语术语表</b><span>全部核心概念中英对照，按模块排列，附首次出现的课</span></a>
+  <a class="mat" href="materials/cheatsheets.html#r"><b>速查卡 1：R 基础</b><span>对象、数据框、读数据、常见报错</span></a>
+  <a class="mat" href="materials/cheatsheets.html#reg"><b>速查卡 2：回归结果怎么读</b><span>系数、SE、p、R²、标准化、LASSO</span></a>
+  <a class="mat" href="materials/cheatsheets.html#pipe"><b>速查卡 3：CLPN 分析流程</b><span>从原始数据到图、中心性、稳定性的 10 步</span></a>
+  <a class="mat" href="materials/cheatsheets.html#report"><b>速查卡 4：报告清单</b><span>方法与结果部分必须写清楚的事项</span></a>
+  <a class="mat" href="materials/formulas.html"><b>公式表</b><span>全课程用到的公式，逐个符号说明</span></a>
+  <a class="mat" href="materials/faq.html"><b>常见问题</b><span>安装、运行、统计概念、解读与写作中的常见疑问</span></a>
+  <a class="mat" href="materials/study_log.html"><b>学习日志</b><span>在页面上填写每次学习和每周的记录，可下载 Markdown 或打印</span></a>
+  <a class="mat" href="materials/writing.html"><b>写作工作坊</b><span>方法、结果、局限怎么写：四个改写前后的范例，附改写任务与评分标准</span></a>
+  <a class="mat" href="materials/reading.html"><b>论文阅读包</b><span>精选论文（只给 DOI 链接），每篇附阅读问题和配套课程</span></a>
+  <a class="mat" href="materials/case_elsoc.html"><b>真实数据案例</b><span>ELSOC 抑郁症状的 CLPN。分析文件随课程提供，运行 case_elsoc.R 即可复现</span></a>
+  <a class="mat" href="materials/assessment.html"><b>测评</b><span>前测、每个模块的阶段测验、期末考试，附评分标准</span></a>
+  <a class="mat" href="downloads/index.html"><b>下载</b><span>整门课一个压缩包：离线网站、数据、R 脚本、练习解答</span></a>
+  <a class="mat" href="R/README.html"><b>R 代码使用说明</b><span>安装 R/RStudio、打开项目、运行脚本、依赖顺序</span></a>
+  <a class="mat" href="data/data_dictionary.html"><b>数据字典</b><span>课程模拟数据（N = 800，三波）每个变量的含义</span></a>
+ </div>
+</section>
+
+<section class="card" id="overview">
+ <h2>课程概况</h2>
+ <p><b>课程目标。</b>完成本课程后，你将能够：</p>
+ <ol>
+  <li>用通俗语言解释交叉滞后面板网络（cross-lagged panel network, CLPN）是什么、能回答什么问题、不能回答什么问题；</li>
+  <li>在 R 中独立完成一次从数据清理、正则化（regularization）估计、可视化、中心性（centrality）分析到稳定性检验的完整 CLPN 分析；</li>
+  <li>批判性阅读已发表的 CLPN 论文，识别常见的过度解读；</li>
+  <li>按学术规范撰写方法与结果部分。</li>
+ </ol>
+ <p><b>为什么社会工作需要它？</b>社工与心理研究常用量表“总分”描述一个人的状况（抑郁总分、孤独感总分）。但实务中我们面对的是具体的困扰：睡不好、没力气、觉得没人可以倾诉……CLPN 让我们在<b>题目/症状层面</b>、跨越<b>时间</b>去看：哪一个早期困扰最能预测之后其他困扰的变化？这为设计更有针对性的干预提供线索——但它给出的是<b>预测性关系</b>，仍需干预或实验研究来检验因果。</p>
+ <h3>知识路径</h3>
+ <div class="flow">__FLOW__</div>
+ <p class="muted" style="font-size:.88rem;margin-top:8px">模块编号就是学习的先后：M1 统计和 M2 R 并排学（第 2–5 周交替进行），M3 回归在它们之后，见“学习节奏”。每节课都列出了先修课，可点击跳转。</p>
+ <h3>模块一览</h3>
+ <div class="tablewrap"><table><thead><tr><th>模块</th><th>主题</th><th>课数</th><th>学习小时</th></tr></thead><tbody>__MODSUM__</tbody></table></div>
+</section>
+
+<section class="card" id="method">
+ <h2>教学方法</h2>
+ <p>每一节课都是一个<b>交互式 HTML 课件</b>（在 <code>lessons/</code> 文件夹，点击下方各课的“学习”按钮即可进入），全部 {{C:all}} 节课使用同一套版式和导航，统一采用五段结构：</p>
+ <div class="grid">
+  <div class="step"><b>① 直觉先行</b><p>先用社工场景、图示和可拖动的小模拟建立“这是在干什么”的感觉，暂不出现公式。</p></div>
+  <div class="step"><b>② 最少数学</b><p>只保留理解所必需的 1–2 个公式，逐个符号解释；用到微积分处会明确指出。</p></div>
+  <div class="step"><b>③ R 代码</b><p>逐行注释、可复制的代码：先在小数据上跑，再在课程数据上跑；附常见报错说明。</p></div>
+  <div class="step"><b>④ 理解检查</b><p>课件中穿插选择题、判断题、“预测输出”题，即时反馈；答错时先给提示而非直接给答案。</p></div>
+  <div class="step"><b>⑤ 练习与自评</b><p>每课练习以 R 脚本、Quarto 报告或短文完成，再对照参考答案（代码题在 <code>R/solutions/</code>）和评分要点自评，可修改后重做；开始下一课之前，先不看答案回答上一课的自测问题。</p></div>
+ </div>
+ <h3>学习原则</h3>
+ <ul>
+  <li><b>螺旋上升：</b>同一个概念（如“控制其他变量”）会在多元回归、偏相关、CLPN 中反复出现，每次加深一层。</li>
+  <li><b>一个贯穿案例：</b>全程使用已知真实结构的“孤独感 ↔ 抑郁”模拟数据，最后在毕业项目中独立完成分析。</li>
+  <li><b>先会说，再会算：</b>每个结果都要用一句“说给社工同事听的话”解释，并避免过度因果化表述。</li>
+  <li><b>允许卡住：</b>提问时附上代码、报错信息和你自己的猜测（最小可复现例子），这本身就是要练的技能。</li>
+ </ul>
+ <p class="note">本页每节课左侧的复选框用于记录学习进度，保存在本浏览器的 localStorage 中（仅限本机、本浏览器；清除浏览器数据会丢失）。</p>
+</section>
+
+<section class="card" id="pacing">
+ <h2>建议学习节奏</h2>
+ <p><b>标准节奏：{{C:weeks}} 周，每周学 3 次（第 14、15 周各 4 次），每次 60–150 分钟</b>；另加每周约 2–3 小时练习，合计每周约 5–7 小时。</p>
+ <div class="tablewrap"><table><thead><tr><th>周次</th><th>课程</th><th>重点</th></tr></thead><tbody>__PACE__</tbody></table></div>
+ <h3>可选节奏</h3>
+ <ul>
+  <li><b>压缩版（约 12 周）：</b>每周学 4 次，适合假期集中学习；阶段复习并入练习；不含进阶选学课。</li>
+  <li><b>宽松版（约 19 周）：</b>每周学 2–3 次，在第 5、8、13 周后各加 1 周缓冲/复习周，适合与学期课程同时进行；第 13 周后的缓冲周可以学进阶选学课 {{C:optlist}}。</li>
+ </ul>
+ <p><b>进阶选学课</b>（{{C:optlist}}，在模块 7 末尾，大纲和导航里标“选学”）不在上面的标准节奏里，也不计入学习次数和学习小时：学有余力时在第 13 周之后自学。</p>
+</section>
+
+<section class="card" id="assessment">
+ <h2>考核与反馈</h2>
+ <div class="tablewrap"><table><thead><tr><th>组成</th><th>比重</th><th>说明</th></tr></thead><tbody>
+  <tr><td>每课练习</td><td>30%</td><td>R 脚本 / Quarto 报告 / 短文写作，对照参考答案和评分要点自评，可修改后重做</td></tr>
+  <tr><td>理解检查与自测</td><td>10%</td><td>课件内即时测验 + 开始下一课前回顾上一课的自测问题</td></tr>
+  <tr><td><a href="materials/assessment.html">阶段测验</a></td><td>10%</td><td>每个模块学完后做一次，取各次“一次答对”比例的平均；第 5 周做 M1 + M2、第 8 周做 M3 + M4</td></tr>
+  <tr><td>论文审稿意见（9.2）</td><td>10%</td><td>批判性评估一篇已发表的 CLPN 论文</td></tr>
+  <tr><td><a href="materials/assessment.html">期末考试</a></td><td>10%</td><td>学完 10.3 后做：自动判分题、解读简答题、R 小任务</td></tr>
+  <tr><td>毕业项目（M10）</td><td>30%</td><td>可复现性 25% · 分析正确性 30% · 结果写作 25% · 局限性与诚实解读 10% · 汇报 10%</td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.88rem">这些比重只用于自我追踪与反馈，不是正式学分评定。<a href="materials/assess_pre.html">前测</a>不计分，推荐在开始学习前做一次，但不强制。</p>
+ <!-- 维护说明：考核比重只写在本表里；要调整，只改这一处（src/template.html 的 #assessment）。 -->
+</section>
+
+__MODULES__
+
+<section class="card" id="readings">
+ <h2>阅读书目</h2>
+ <p class="note"><b>关于 Wysocki 等人的 CLPN 论文：</b>2022 年版本是 PsyArXiv 预印本，题为 <i>Cross-Lagged Network Models</i>，作者顺序为 Wysocki, van Bork, Cramer, Rhemtulla；正式发表版为 2025 年的 <i>Cross-lagged panel networks</i>（<i>advances.in/psychology</i>，增加合著者 McCarthy）。引用时请优先引用正式发表版。注意：正式版推荐的完整流程是“合并冗余题目 → LASSO 选边 → lavaan 无惩罚重估 → in-/out-prediction”；本课程 7.1–7.4、M8、M10 的主线是应用文献常见的“仅 LASSO”简化版，完整流程见 7.5 课（<code>R/L7-5b.R</code>）。写论文时请如实说明你用的是哪一种。</p>
+ __REFS__
+</section>
+
+<section class="card" id="glossary">
+ <h2>术语表</h2>
+ <p class="muted">自动汇总自各课“核心概念”，并链接到正式讲解该术语的课（此前可能已作为预告出现）。也可用页顶的搜索框查找。</p>
+ <div class="tablewrap"><table><thead><tr><th>中文</th><th>English</th><th>正式讲解</th></tr></thead><tbody>__GLOSS__</tbody></table></div>
+</section>
+
+<section class="card" id="setup">
+ <h2>软件与 R 包清单</h2>
+ <div class="tablewrap"><table><thead><tr><th>工具 / 包</th><th>用途</th><th>首次使用</th></tr></thead><tbody>
+  <tr><td>R + RStudio (Posit)</td><td>统计计算环境与编辑器（均免费）</td><td>2.1</td></tr>
+  <tr><td>tidyverse（dplyr、tidyr、ggplot2、readr）</td><td>数据整理、整形、绘图</td><td>2.3</td></tr>
+  <tr><td>readxl、haven</td><td>导入 Excel、SPSS 数据</td><td>2.4</td></tr>
+  <tr><td>psych</td><td>描述统计、相关</td><td>2.5</td></tr>
+  <tr><td>Quarto / rmarkdown</td><td>可复现报告</td><td>2.6</td></tr>
+  <tr><td>mice</td><td>多重插补</td><td>4.3</td></tr>
+  <tr><td>lavaan</td><td>CLPM / RI-CLPM（结构方程模型）</td><td>5.2</td></tr>
+  <tr><td>glmnet</td><td>LASSO 正则化回归（CLPN 估计核心）</td><td>3.5 / 7.2</td></tr>
+  <tr><td>qgraph</td><td>网络可视化、中心性</td><td>6.1</td></tr>
+  <tr><td>bootnet</td><td>网络估计与 bootstrap 稳定性检验</td><td>6.4 / 8.2</td></tr>
+  <tr><td>networktools</td><td>桥接中心性、期望影响</td><td>6.5</td></tr>
+ </tbody></table></div>
+ <p class="muted" style="font-size:.88rem">各课的“R 代码预览”只是几行示意；完整、可运行的代码在 <code>R/</code> 文件夹（每课一个脚本，均已在 R 4.5 上实际运行，输出在 <code>R/output/</code>）。</p>
+</section>
+<p class="copy" style="text-align:center;margin-top:28px">__COPYRIGHT__</p>
+</main>
+</div>
+<script>
+__JS__
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+行数（个案 cases）= 800 ；列数（变量 variables）= 34 
+
+    id lone1_t1 lone2_t1 lone3_t1 lone4_t1 dep1_t1 dep2_t1 dep3_t1 dep4_t1
+1 P001        3        2        2        2       0       0       1       0
+2 P002        1        2        1        2       0       0       1       0
+3 P003        2        1        2        2       1       2       1       2
+4 P004        2        2        2        2       1       0       2       1
+5 P005        3        4        3        3       1       2       0       3
+6 P006        4        2        2        4       1       0       0       1
+  dep5_t1
+1       0
+2       1
+3       0
+4       0
+5       1
+6       2
+'data.frame':	800 obs. of  6 variables:
+ $ id               : chr  "P001" "P002" "P003" "P004" ...
+ $ lone1_t1         : int  3 1 2 2 3 4 2 2 3 1 ...
+ $ dep1_t1          : int  0 0 1 1 1 1 2 0 1 0 ...
+ $ gender           : int  0 0 1 0 1 1 0 0 0 1 ...
+ $ age              : int  49 38 48 47 29 54 27 48 19 55 ...
+ $ social_support_t1: num  3.6 4.9 3.5 3 4.4 2.7 3.6 3.3 2.3 4.3 ...
+               variable               label_zh
+1                    id               被试编号
+2  lone1_t1 / _t2 / _t3        孤独1：缺少陪伴
+3  lone2_t1 / _t2 / _t3          孤独2：被冷落
+4  lone3_t1 / _t2 / _t3        孤独3：与人隔绝
+5  lone4_t1 / _t2 / _t3        孤独4：无人理解
+6   dep1_t1 / _t2 / _t3        抑郁1：情绪低落
+7   dep2_t1 / _t2 / _t3        抑郁2：兴趣丧失
+8   dep3_t1 / _t2 / _t3        抑郁3：睡眠问题
+9   dep4_t1 / _t2 / _t3        抑郁4：疲乏无力
+10  dep5_t1 / _t2 / _t3        抑郁5：无价值感
+11               gender                   性别
+12                  age                   年龄
+13    social_support_t1         社会支持（T1）
+14       sleep_hours_t1     每晚睡眠时长（T1）
+15          life_sat_t1       生活满意度（T1）
+16         help_seek_t2 是否寻求专业帮助（T2）
+                                                                                                           values
+1                                                                                                       P001–P800
+2                                                        1=从不 never;2=很少 rarely;3=有时 sometimes;4=经常 often
+3                                                                                                        1–4 同上
+4                                                                                                        1–4 同上
+5                                                                                                        1–4 同上
+6  0=完全不会 not at all;1=好几天 several days;2=一半以上天数 more than half the days;3=几乎每天 nearly every day
+7                                                                                                        0–3 同上
+8                                                                                                        0–3 同上
+9                                                                                                        0–3 同上
+10                                                                                                       0–3 同上
+11                                                                                          0=男 male;1=女 female
+12                                                                                                          18–85
+13                                                                                                1–5（越高越好）
+14                                                                                                      3–11 小时
+15                                                                                                          0–100
+16                                                                                               0=否 no;1=是 yes
+         变量                   测量水平
+1          id       定类 nominal（标签）
+2      gender        定类 nominal（0/1）
+3    lone1_t1 定序 ordinal（李克特 1–4）
+4     dep1_t1        定序 ordinal（0–3）
+5         age                 定比 ratio
+6 life_sat_t1        常当作定距 interval
+
+ lone1_t1 的取值分布：
+
+  1   2   3   4 
+230 288 181 101 
+
+ dep1_t1 的取值分布：
+
+  0   1   2   3 
+416 229 101  54 
+
+Cronbach's α（T1）：孤独 4 题、抑郁 5 题
+[1] 0.78
+[1] 0.78

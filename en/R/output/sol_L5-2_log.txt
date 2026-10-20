@@ -1,0 +1,16 @@
+dep1 → lone2: beta = 0.02, 95% CI [-0.04, 0.07], p = 0.588
+lone1 → dep2: beta = 0.13, 95% CI [0.07, 0.19], p < .001
+dep2 → lone3: beta = 0.07, 95% CI [0.01, 0.13], p = 0.029
+lone2 → dep3: beta = 0.05, 95% CI [-0.01, 0.11], p = 0.120
+Fit: chi^2(4) = 67.99, CFI = 0.962, RMSEA = 0.141, SRMR = 0.031
+
+Nested model chi^2 difference test anova(fit_eq, fit):
+
+Chi-Squared Difference Test
+
+       Df   AIC   BIC  Chisq Chisq diff Df diff Pr(>Chisq)
+fit     4 23199 23306 67.986                              
+fit_eq  8 23196 23285 72.854     4.8683       4     0.3011
+Delta chi^2(4) = 4.87, p = 0.301
+AIC: constrained model 23196, unconstrained model 23199; BIC: constrained model 23285, unconstrained model 23306
+Fit of constrained model itself: chi^2(8) = 72.85, CFI = 0.961, RMSEA = 0.101

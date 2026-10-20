@@ -1,0 +1,17 @@
+variable,label,values,notes
+id,Participant ID,P001–P800,Unique identifier
+lone1_t1 / _t2 / _t3,Loneliness 1: Lack of companionship,1=never;2=rarely;3=sometimes;4=often,Modeled on UCLA-3 items; _t1/_t2/_t3 = waves 1/2/3
+lone2_t1 / _t2 / _t3,Loneliness 2: Feeling left out,1–4 as above,
+lone3_t1 / _t2 / _t3,Loneliness 3: Feeling isolated,1–4 as above,
+lone4_t1 / _t2 / _t3,Loneliness 4: No one understands me,1–4 as above,
+dep1_t1 / _t2 / _t3,Depression 1: Depressed mood,0=not at all;1=several days;2=more than half the days;3=nearly every day,Modeled on PHQ-9 items; right-skewed
+dep2_t1 / _t2 / _t3,Depression 2: Loss of interest,0–3 as above,
+dep3_t1 / _t2 / _t3,Depression 3: Sleep problems,0–3 as above,
+dep4_t1 / _t2 / _t3,Depression 4: Fatigue,0–3 as above,
+dep5_t1 / _t2 / _t3,Depression 5: Worthlessness,0–3 as above,
+gender,Gender,0=male;1=female,Covariate (Lesson 7.5)
+age,Age (years),18–85,
+social_support_t1,Perceived social support (T1),1–5 (higher = more support),Regression exercise in Lesson 3.1
+sleep_hours_t1,Sleep hours per night (T1),3–11 hours,
+life_sat_t1,Life satisfaction (T1),0–100,Standardization exercise in Lesson 1.3
+help_seek_t2,Sought professional help (T2),0=no;1=yes,Logistic regression in Lesson 3.4

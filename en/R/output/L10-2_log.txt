@@ -1,0 +1,53 @@
+         mean   sd skew kurtosis
+lone1_t1 2.19 0.99 0.39    -0.90
+lone2_t1 2.19 1.00 0.40    -0.91
+lone3_t1 2.24 0.99 0.30    -0.97
+lone4_t1 2.18 0.98 0.39    -0.88
+dep1_t1  0.74 0.92 1.05     0.09
+dep2_t1  0.77 0.92 0.99     0.00
+dep3_t1  0.79 0.94 0.92    -0.22
+dep4_t1  0.77 0.95 1.00    -0.08
+dep5_t1  0.76 0.93 0.98    -0.10
+lone1_t2 2.20 0.98 0.36    -0.89
+lone2_t2 2.21 0.98 0.37    -0.88
+lone3_t2 2.23 0.96 0.30    -0.87
+lone4_t2 2.23 0.97 0.34    -0.86
+dep1_t2  0.78 0.93 0.97    -0.07
+dep2_t2  0.74 0.90 1.00     0.02
+dep3_t2  0.78 0.94 0.96    -0.17
+dep4_t2  0.74 0.93 1.03     0.01
+dep5_t2  0.74 0.92 1.06     0.14
+
+Autoregressive edges:
+lone1 lone2 lone3 lone4  dep1  dep2  dep3  dep4  dep5 
+0.416 0.434 0.341 0.445 0.315 0.310 0.331 0.281 0.361 
+
+Strongest 5 cross-lagged edges:
+  from    to weight              type               from_en                 to_en
+  dep3  dep4 0.1353 CL (cross-lagged)        Sleep problems               Fatigue
+ lone2 lone4 0.1269 CL (cross-lagged)      Feeling left out No one understands me
+ lone4  dep4 0.1084 CL (cross-lagged) No one understands me               Fatigue
+ lone4 lone2 0.1010 CL (cross-lagged) No one understands me      Feeling left out
+ lone4 lone3 0.0962 CL (cross-lagged) No one understands me      Feeling isolated
+   node                 label  community   outEI   inEI bridgeOutEI bridgeInEI
+1 lone1 Lack of companionship Loneliness  0.2520 0.0924     0.21723     0.0000
+2 lone2      Feeling left out Loneliness  0.2374 0.0550     0.03900    -0.0501
+3 lone3      Feeling isolated Loneliness -0.0266 0.2475    -0.04647     0.0813
+4 lone4 No one understands me Loneliness  0.6083 0.1980     0.34718     0.0478
+5  dep1        Depressed mood Depression  0.3521 0.3491     0.04478     0.1767
+6  dep2      Loss of interest Depression  0.1931 0.3157     0.05482     0.1160
+7  dep3        Sleep problems Depression  0.2503 0.1918     0.00000     0.0256
+8  dep4               Fatigue Depression  0.0679 0.4005    -0.02779     0.0973
+9  dep5         Worthlessness Depression  0.2242 0.3087     0.00706     0.1414
+
+CS-coefficients:
+ inExpectedInfluence outExpectedInfluence 
+                0.52                 0.20 
+
+Sensitivity analyses (primary analysis CL edges = 52 ):
+               analysis r_with_main n_CL_edges
+1            lambda.1se       0.665         17
+2 covariates gender+age       0.997         54
+3     T2→T3 replication       0.640         55
+
+Correlation with true population coefficients (CL edges) = 0.654 ; AR edges = 0.779 

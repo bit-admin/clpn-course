@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.3 RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations · CLPN From Scratch</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L5-3.md" title="Plain text">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="5.3" style="--c:#8b5cf6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="Open table of contents">Contents</button><a class="home" href="../index.html#L5-3">CLPN Syllabus</a><span class="crumb">M5 Traditional Cross-Lagged Panel Models (CLPM) and RI-CLPM / 5.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">Mark lesson complete</button><a class="act" id="readView" href="L5-3.md" target="_blank" rel="noopener">Plain text</a><button id="readBtn" type="button">Copy for LLM</button><a class="act langSwitch" href="../../lessons/L5-3.html">中文</a><button id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="Lesson table of contents"><div class="toc-local"></div><div class="allnav"><b>All Lessons</b><details style="--mc:#6366f1"><summary>M0 Course Overview</summary><ul><li><a href="L0-1.html"><span>0.1</span>Course Map, Learning Methods, and Tool Preparation</a></li><li><a href="L0-2.html"><span>0.2</span>From Total Scores to Symptom Interactions: Why CLPN Matters</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 Statistics Foundations</summary><ul><li><a href="L1-1.html"><span>1.1</span>Variables and Measurement: Where Data Come From</a></li><li><a href="L1-2.html"><span>1.2</span>Distributions and Descriptive Statistics: Mean, Variance, and Standard Deviation</a></li><li><a href="L1-3.html"><span>1.3</span>Standardization and z-Scores</a></li><li><a href="L1-4.html"><span>1.4</span>Covariance and Correlation: How Two Variables Co-Vary</a></li><li><a href="L1-5.html"><span>1.5</span>Sampling, Standard Errors, and Confidence Intervals</a></li><li><a href="L1-6.html"><span>1.6</span>Hypothesis Testing, p-Values, and Effect Sizes</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R and RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>Installing R and RStudio and Running Your First Line of Code</a></li><li><a href="L2-2.html"><span>2.2</span>R Basic Syntax: Vectors, Data Types, and Functions</a></li><li><a href="L2-3.html"><span>2.3</span>Data Frames and Introduction to the Tidyverse</a></li><li><a href="L2-4.html"><span>2.4</span>Installing Packages, Importing Data, and Project Management</a></li><li><a href="L2-5.html"><span>2.5</span>Descriptive Statistics, Correlation, and Regression in R</a></li><li><a href="L2-6.html"><span>2.6</span>Data Visualization with ggplot2 and Reproducible Reporting with Quarto / R Markdown</a></li></ul></details><details style="--mc:#10b981"><summary>M3 Regression Analysis</summary><ul><li><a href="L3-1.html"><span>3.1</span>Simple Linear Regression: Making Predictions with a Straight Line</a></li><li><a href="L3-2.html"><span>3.2</span>Multiple Regression and &#x27;Controlling for Other Variables&#x27;</a></li><li><a href="L3-3.html"><span>3.3</span>Standardized Coefficients and Results Interpretation</a></li><li><a href="L3-4.html"><span>3.4</span>Introduction to Logistic Regression: Binary Outcomes</a></li><li><a href="L3-5.html"><span>3.5</span>Overfitting and Regularization: Ridge, LASSO, and Cross-Validation</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 Longitudinal and Panel Data</summary><ul><li><a href="L4-1.html"><span>4.1</span>The Language of Longitudinal Design: Waves, Time Lags, Within-Person and Between-Person Effects</a></li><li><a href="L4-2.html"><span>4.2</span>Wide vs. Long Formats: Data Reshaping</a></li><li><a href="L4-3.html"><span>4.3</span>Missing Data and Participant Attrition</a></li></ul></details><details open style="--mc:#8b5cf6"><summary>M5 Traditional Cross-Lagged Panel Models</summary><ul><li><a href="L5-1.html"><span>5.1</span>Intuition of the CLPM: Autoregressive and Cross-Lagged Paths</a></li><li><a href="L5-2.html"><span>5.2</span>Fitting CLPM with lavaan and Evaluating Model Fit</a></li><li><a href="L5-3.html" class="cur" aria-current="page"><span>5.3</span>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</a></li><li><a href="L5-4.html"><span>5.4</span>From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 Foundations of Network Psychometrics</summary><ul><li><a href="L6-1.html"><span>6.1</span>The Language of Networks: Nodes, Edges, Weights, and Adjacency Matrices</a></li><li><a href="L6-2.html"><span>6.2</span>Partial Correlation Networks and Gaussian Graphical Models (GGMs)</a></li><li><a href="L6-3.html"><span>6.3</span>Regularized Network Estimation: LASSO, Graphical LASSO, and EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>Estimating and Visualizing Networks with qgraph and bootnet</a></li><li><a href="L6-5.html"><span>6.5</span>Centrality Indices: Strength, Expected Influence, and Bridge Centrality</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 Cross-Lagged Panel Networks</summary><ul><li><a href="L7-1.html"><span>7.1</span>Model Logic of CLPN: Unpacking CLPM to the Item Level</a></li><li><a href="L7-2.html"><span>7.2</span>Nodewise CLPN Estimation with glmnet</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN Visualization and Interpretation</a></li><li><a href="L7-4.html"><span>7.4</span>Out-Expected Influence, In-Expected Influence, and Cross-Construct Bridging</a></li><li><a href="L7-5.html"><span>7.5</span>Design Choices and Extensions: Multi-Wave Data, Covariates, and Within-Person Disentanglement</a></li><li><a href="L7-6.html"><span>7.6</span>Measurement Invariance and Sample Size Planning (optional)</a></li><li><a href="L7-7.html"><span>7.7</span>Between-Group Comparisons: Are Two Group CLPNs Identical? (optional)</a></li></ul></details><details style="--mc:#64748b"><summary>M8 Stability and Accuracy Assessment</summary><ul><li><a href="L8-1.html"><span>8.1</span>The Idea of the Bootstrap: Using the Sample to Simulate &#x27;Running the Study Again&#x27;</a></li><li><a href="L8-2.html"><span>8.2</span>Edge-Weight Accuracy: bootnet and a Custom CLPN Estimation Function</a></li><li><a href="L8-3.html"><span>8.3</span>Case-Dropping Bootstrap and the CS-Coefficient</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 Reading, Critique, and Reporting Standards</summary><ul><li><a href="L9-1.html"><span>9.1</span>How to Read an Empirical CLPN Paper</a></li><li><a href="L9-2.html"><span>9.2</span>Critical Appraisal: A Checklist of Common CLPN Problems</a></li><li><a href="L9-3.html"><span>9.3</span>Reporting Standards: Writing Methods and Results Others Can Check</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 Capstone Project</summary><ul><li><a href="L10-1.html"><span>10.1</span>Project Design, Data Preparation, and Analysis Plan</a></li><li><a href="L10-2.html"><span>10.2</span>Complete Analysis: Estimation, Visualization, Centrality, and Stability</a></li><li><a href="L10-3.html"><span>10.3</span>Writing the Results and Presenting Them</a></li></ul></details><div class="matlinks"><b>Study Materials</b><a href="../START_HERE.html">Study Guide</a><a href="../materials/glossary.html">Glossary</a><a href="../materials/cheatsheets.html">Cheat Sheets</a><a href="../materials/formulas.html">Formula Reference</a><a href="../materials/faq.html">FAQ</a><a href="../materials/study_log.html">Study Log</a><a href="../materials/writing.html">Writing Workshop</a><a href="../materials/reading.html">Paper Reading Pack</a><a href="../materials/case_elsoc.html">Real-Data Case (ELSOC)</a><a href="../materials/assessment.html">Assessments</a><a href="../downloads/index.html">Download</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">Module 5 · Cross-Lagged Panel Models · Lesson 5.3</div>
+<h1>RI-CLPM: Separating Stable Trait Differences from Within-Person Fluctuations</h1>
+<div class="facts"><span>Study time 2 hr</span><span>Prerequisites: <a href="L5-2.html">5.2 Fitting CLPM with lavaan and Evaluating Model Fit</a></span><span>R script: <a href="../R/L5-3.R">R/L5-3.R</a></span></div></header>
+<section class="card goals"><h2>Learning Objectives</h2><div class="obj"><ol><li>Understand the core criticism by Hamaker, Kuiper &amp; Grasman (2015): the CLPM mixes up between-person and within-person effects</li><li>Understand that the random intercept represents stable, trait-like differences between individuals</li><li>Compare CLPM and RI-CLPM results and explain the differences</li><li>Know that an RI-CLPM needs at least 3 waves</li></ol></div>
+<h3>Core Concepts</h3><ul class="concepts"><li><b>random-intercept CLPM, RI-CLPM</b></li><li><b>random intercept</b></li><li><b>trait-like stability</b></li><li><b>within-person effect</b></li><li><b>between-person effect</b></li><li><b>centering</b></li></ul>
+<p>This lesson separates between-person questions from within-person questions and introduces the RI-CLPM, which can tell the two apart. The limitations section of a CLPN paper has to discuss this point, and reviewers often ask: "Are your results between-person or within-person?"</p>
+<p class="muted structnote">Lesson structure: Intuition → Essential Math → R Code → Concept Check → Exercises → Summary. You can drag or click the interactive figures; a wrong quiz answer first gets a hint, and after two wrong answers you can see the explanation.</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① Intuition</span>Build the Mental Picture</h2>
+<h3>Two questions that sound alike but are completely different</h3>
+<ul><li><b>Between-person question:</b> "Are people who are lonelier than others also more depressed than others?" This compares different people.</li>
+<li><b>Within-person question:</b> "When a person is lonelier than they usually are, do they later become more depressed than they usually are?" This compares the same person at different times.</li></ul>
+<p>What social work interventions really care about is usually the second question: if we help a resident become less lonely (relative to their own usual level), will their depression improve as a result? But CLPM coefficients mix the two kinds of information.</p>
+<p>In the demonstration below, 12 people are each measured 6 times. You can set the "between-person" and "within-person" correlations separately. By default, people with high trait loneliness also have high trait depression (ρ<sub>B</sub> = 0.7), but for any one person, times when loneliness is higher than usual are times when depression is slightly lower (ρ<sub>W</sub> = −0.4). Switch between the three views and see.</p>
+<div class="widget w2" data-widget="bw"><noscript>Interactive widget (requires JavaScript).</noscript></div>
+<p>You will find that a correlation computed on all the points pooled together is driven mainly by "differences between people," and it can have the opposite sign from "the relationship within each person." In statistics this phenomenon has the same roots as Simpson's paradox and the ecological fallacy.</p>
+<h3>The critique by Hamaker et al. (2015)</h3>
+<p>Hamaker, Kuiper and Grasman pointed out that many psychological characteristics have <span class="term">trait-like stability</span>: some people are simply lonelier than others over long periods. The autoregressive paths of a CLPM treat these "stable individual differences" as "carryover from T1 to T2," with three consequences:</p>
+<ol><li>The autoregressive paths are overestimated (things look very stable, but it is "people being different," not "states carrying over");</li>
+<li>The cross-lagged paths may be overestimated, underestimated, or even get the wrong sign, because they are mixed with "the correlation between the traits";</li>
+<li>Researchers believe they have found a within-person dynamic process when much of it is actually between-person difference.</li></ol>
+<h3>The RI-CLPM's solution: give each person a "personal baseline"</h3>
+<p>The <span class="term">random-intercept CLPM<span class="en"> (RI-CLPM)</span></span> splits each observed score into two parts:</p>
+<div class="box story"><b class="bt">Decomposition:</b><p>Observed score = grand mean + the person's stable deviation (<span class="term">random intercept</span>, constant over time) + this occasion's deviation from the person's baseline (<span class="term">within-person component</span>, changes over time)</p></div>
+<p>The autoregressive and cross-lagged paths are then placed only between the within-person components. The cross-lagged path now means: <i>if a person is lonelier than they usually are at T1, are they more depressed than they usually are at T2?</i> That is a question much closer to a "process." The correlation between the two random intercepts expresses the between-person relationship separately ("people who are lonely in the long run are also depressed in the long run").</p>
+<h3>Comparison on the course data</h3>
+<p>The simulated data were deliberately generated with fairly strong stable traits (loneliness and depression traits correlated .50). Actual results from the companion script <code>R/L5-3.R</code>:</p>
+<div class="tablewrap"><table><tr><th>Path</th><th>CLPM (standardized)</th><th>RI-CLPM within-person (standardized)</th></tr><tr><td>Loneliness T1 → loneliness T2 (autoregressive)</td><td>0.607</td><td>0.348</td></tr><tr><td>Depression T1 → depression T2 (autoregressive)</td><td>0.539</td><td>0.218</td></tr><tr><td>Loneliness T1 → depression T2 (cross-lagged)</td><td>0.128</td><td>0.265</td></tr><tr><td>Depression T1 → loneliness T2 (cross-lagged)</td><td>0.016</td><td>0.083</td></tr><tr><td>Loneliness T2 → loneliness T3 (autoregressive)</td><td>0.559</td><td>0.198</td></tr><tr><td>Depression T2 → loneliness T3 (cross-lagged)</td><td>0.068</td><td>0.245</td></tr><tr><td>Model comparison</td><td>χ²(4) = 67.99</td><td>χ²(1) = 0.33; Δχ²(3) = 67.65, p &lt; .001</td></tr></table></div>
+<p>Two observations: (1) The autoregressive paths of the RI-CLPM are much smaller: a large part of the CLPM's "stability" comes from between-person differences. (2) The cross-lagged values change too; for example, "depression T2 → loneliness T3" goes from 0.068 to 0.245. Be careful with point (2): when you compare with the large-sample values in the next section, you will see that this change is mainly sampling fluctuation in this one sample, so you cannot conclude from it that "depression → loneliness" is stronger within persons. (Note: the within-person components have smaller variances, so their standardized values cannot be compared one by one with the CLPM's, but the drop in the autoregressive paths is robust. Also, strictly speaking, the CLPM is the RI-CLPM with the random-intercept variances fixed at 0; since a variance cannot be below 0, that value lies on the boundary of the parameter space, which makes the ordinary χ² difference test conservative. Here the difference is huge (Δχ² = 67.65), so the conclusion is not affected.)</p>
+<h3>Against large-sample values: how far is one sample from the population?</h3>
+<p>The course data are simulated, so the generating model is known. The companion script <code>R/L5-3b.R</code> fits the same two models to a sample of 200,000 people to get the standardized paths for an infinitely large sample (the "large-sample value" in the table below). The objects here are total scores, not the 9 items, so these are not the two item-level matrices used from Lesson 7.2 on: the large-sample value in a CLPM row is the CLPM's population target (trait confounding included), and the large-sample values in the RI-CLPM within-person rows correspond to the within-person process at the total-score level in the generating model. The script then generates 200 datasets of N = 800 from the same generating model, to show how far a single sample's estimate wanders around the large-sample value.</p>
+<div class="tablewrap"><table><tr><th>Path (RI-CLPM within-person, standardized)</th><th>Large-sample value</th><th>Course sample</th><th>90% range over 200 samples of N = 800</th></tr><tr><td>Loneliness T1 → loneliness T2 (autoregressive)</td><td>0.332</td><td>0.348</td><td>[0.215, 0.440]</td></tr><tr><td>Loneliness T1 → depression T2 (cross-lagged)</td><td>0.093</td><td>0.265</td><td>[−0.016, 0.197]</td></tr><tr><td>Depression T1 → loneliness T2 (cross-lagged)</td><td>0.012</td><td>0.083</td><td>[−0.121, 0.093]</td></tr><tr><td>Depression T2 → loneliness T3 (cross-lagged)</td><td>0.011</td><td>0.245</td><td>[−0.095, 0.124]</td></tr><tr><td>Random-intercept correlation (between-person)</td><td>0.459</td><td>0.200</td><td>[0.325, 0.588]</td></tr></table></div><div class="box story"><b class="bt">What the table shows:</b><ol><li><b>The drop in the autoregressive paths is real.</b> The large-sample value of the within-person autoregressive path is 0.332, while the CLPM gives 0.605 even with an infinite sample: the CLPM's "stability" really is inflated by the stable traits.</li><li><b>The true direction is the same as in the CLPM, but the course sample overestimates both directions.</b> The within-person large-sample values are about 0.093 for loneliness → depression and about 0.012 for depression → loneliness, the same direction as the CLPM (loneliness → depression is stronger). The course sample's "loneliness T1 → depression T2 = 0.265" is larger than all 200 replicate estimates, and "depression T2 → loneliness T3 = 0.245" is also larger than all 200 replicate estimates; at the same time, the random-intercept correlation of 0.200 is at or above only 1 of 200 replicate samples. These numbers are off together: the random intercepts absorbed too little of the between-person association of loneliness with depression, and that part of the association moved into the within-person cross-lagged paths. The course data happen to be a rather untypical sample.</li><li><b>With 3 waves and N = 800, the within-person cross-lagged paths of an RI-CLPM are very imprecise.</b> One sample's estimate can land anywhere in a range as wide as the fourth column above; if you compare the two directions by their point estimates alone, you can easily reach the opposite conclusion.</li></ol><p>So the value of the RI-CLPM is that it removes between-person confounding, and the price is precision. Always report confidence intervals; to compare the two directions, test their difference instead of comparing two point estimates.</p></div>
+<div class="box warnbox"><b class="bt">What this means for CLPN:</b><p>A CLPN (both the simplified "LASSO-only" version that is this course's main approach and the full procedure of Wysocki et al., 2025) uses observed item scores and has <b>no</b> random intercepts, so, like the CLPM, it mixes between-person and within-person information. In the course data, <code>data/true_B_within.csv</code> (the within-person truth: the within-person structure used to generate the data) and <code>data/true_B_population.csv</code> (the population target: what a CLPN converges to in an infinitely large sample) are clearly different; the latter has many extra small positive edges caused by the stable traits. From Lesson 7.2 on, the two appear side by side, and Lesson 7.5 discusses them in detail.</p></div>
+<h3>Requirements and limitations of the RI-CLPM</h3>
+<ul><li>It needs at least 3 waves: with 2 waves, the "stable part" and the "changing part" cannot be separated (the model is not identified).</li>
+<li>It assumes the trait part is completely constant over time; if there are long-term trends, you may need a more complex model (e.g., adding random slopes or a linear trend; the three extensions discussed by Mulder and Hamaker (2021) add time-invariant predictors and outcomes, multiple-group comparisons, and multiple-indicator models).</li>
+<li>It is still only "prediction over time within persons"; it does not turn into causation automatically (Lesson 5.4).</li></ul>
+<h3>Common questions and pitfalls</h3><details class="ans faq"><summary>Doesn't the CLPM already control for T1 through the autoregressive paths? Why do stable traits still leak into the cross-lagged paths?</summary><p>Because the CLPM controls for the T1 <b>observed score</b>, and observed score = stable trait + this occasion's state (plus measurement error). Controlling for a score that only partly reflects the trait absorbs only part of the trait, much like "controlling" for a construct with one noisy item. The part of the trait that is not absorbed still affects both T2 loneliness and T2 depression. If the loneliness trait and the depression trait are correlated, T1 loneliness predicts T2 depression through this channel, and it shows up as a cross-lagged path. The larger the share of state in the observed score and the stronger the correlation between traits, the more leaks in. The random intercepts of the RI-CLPM model the traits separately and put the cross-lagged paths only between the within-person components, which cuts this channel (provided the traits do not change over time).</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② Essential Math</span>Write the Intuition as Equations</h2>
+<p>Take loneliness as an example. For person \(i\) at time \(t\), the observed score is:</p>
+<div class="mathbox">\[\text{Loneliness}_{it} = \mu_t + \kappa_i + w_{it}\]</div><div class="mathbox">\[w^{L}_{i,t+1} = \alpha\, w^{L}_{it} + \gamma\, w^{D}_{it} + u^{L}_{i,t+1}\]</div><table class="sym"><tr><th>Symbol</th><th>Reading / Meaning</th></tr><tr><td>\(i,\ t\)</td><td>Subscripts: person i, measurement t</td></tr><tr><td>\(\mu_t\)</td><td>Greek letter mu: the overall mean at wave t (the average of everyone)</td></tr><tr><td>\(\kappa_i\)</td><td>Greek letter kappa: person i's random intercept = how far they are stably above/below the mean (constant over time)</td></tr><tr><td>\(w_{it}\)</td><td>Within-person component: how far this occasion is from the person's own baseline (within)</td></tr><tr><td>\(w^{L},\ w^{D}\)</td><td>Superscript L = loneliness, D = depression: their within-person components</td></tr><tr><td>\(\alpha\)</td><td>Alpha: within-person autoregressive path (how much a lonelier-than-usual state carries over)</td></tr><tr><td>\(\gamma\)</td><td>Gamma: within-person cross-lagged path (more depressed than usual → lonelier than usual next time)</td></tr><tr><td>\(u_{i,t+1}\)</td><td>Residual of the within-person equation (a new shock, the innovation)</td></tr></table>
+<h4>Why is the CLPM biased? A two-line derivation</h4>
+<p>If you ignore \(\kappa_i\) and predict \(\text{Loneliness}_{t+1}\) from \(\text{Loneliness}_t\), their covariance is</p>
+<div class="mathbox">\[\mathrm{Cov}(\text{Loneliness}_t,\text{Loneliness}_{t+1}) = \underbrace{\mathrm{Var}(\kappa)}_{\text{between-person}} + \underbrace{\mathrm{Cov}(w_t, w_{t+1})}_{\text{within-person}}\]</div>
+<p>The first term has nothing to do with any process over time, yet the CLPM treats it as "stability." In the same way, the covariance of the loneliness and depression random intercepts, \(\mathrm{Cov}(\kappa^L,\kappa^D)\), leaks into the cross-lagged paths. The RI-CLPM separates these parts by estimating \(\kappa\) as its own latent variable.</p>
+<div class="box analogy"><b class="bt">How to do it in lavaan:</b><p>A random intercept is a latent variable whose loadings on the three waves of observed scores are all fixed at 1 (<code>RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3</code>); each observed score also gets a within-person latent variable (loading 1), and the error variance of the observed variable itself is fixed at 0.</p></div></section><section class="sec s-code" id="code"><h2><span class="stag">③ R Code</span>Implement in R</h2><div class="codeblk"><div class="ctitle">Core of R/L5-3.R (structure follows the lavaan example by Mulder & Hamaker)</div><pre><code class="language-r">riclpm &lt;- &#x27;
+  # 1) Random intercepts: each person&#x27;s stable &quot;trait level,&quot; loadings fixed at 1
+  RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3
+  RI_dep  =~ 1*dep1  + 1*dep2  + 1*dep3
+  # 2) Within-person components
+  wl1 =~ 1*lone1; wl2 =~ 1*lone2; wl3 =~ 1*lone3
+  wd1 =~ 1*dep1;  wd2 =~ 1*dep2;  wd3 =~ 1*dep3
+  # 3) Within-person autoregressive and cross-lagged paths
+  wl2 ~ wl1 + wd1;  wd2 ~ wd1 + wl1
+  wl3 ~ wl2 + wd2;  wd3 ~ wd2 + wl2
+  # 4) Within-wave correlations and (residual) variances
+  wl1 ~~ wd1; wl2 ~~ wd2; wl3 ~~ wd3
+  wl1 ~~ wl1; wd1 ~~ wd1; wl2 ~~ wl2; wd2 ~~ wd2; wl3 ~~ wl3; wd3 ~~ wd3
+  RI_lone ~~ RI_lone; RI_dep ~~ RI_dep; RI_lone ~~ RI_dep
+  # 5) Random intercepts uncorrelated with the T1 within-person components; observed-variable errors fixed at 0
+  RI_lone ~~ 0*wl1 + 0*wd1;  RI_dep ~~ 0*wl1 + 0*wd1
+  lone1 ~~ 0*lone1; lone2 ~~ 0*lone2; lone3 ~~ 0*lone3
+  dep1 ~~ 0*dep1;   dep2 ~~ 0*dep2;   dep3 ~~ 0*dep3
+&#x27;
+fit_ri &lt;- lavaan(riclpm, data = wide, missing = &quot;fiml&quot;,
+                 meanstructure = TRUE, int.ov.free = TRUE)
+summary(fit_ri, standardized = TRUE, fit.measures = TRUE)
+anova(fit_c, fit_ri)    # Compare with the CLPM (the CLPM is nested in the RI-CLPM)</code></pre></div>
+<p><b>Block by block:</b> block 1 defines the two random intercepts; block 2 gives each observed score a within-person latent variable; block 3 is the within-person dynamics we care about; block 4 holds the within-wave correlations and the variances; block 5 contains the fixed constraints needed for identification. <code>wide</code> and <code>fit_c</code> come from the earlier part of the script (the same total scores and CLPM as in 5.2).</p>
+<div class="box key"><b class="bt">What to look at in the results:</b><p>(1) The standardized value of <code>RI_lone ~~ RI_dep</code> = the between-person correlation; (2) whether the random-intercept variances are clearly above 0 (if they are close to 0, the RI-CLPM and the CLPM reach similar conclusions); (3) the within-person cross-lagged paths such as <code>wl2 ~ wd1</code>; (4) the model comparison from <code>anova()</code>.</p></div><h3>Companion Script &amp; Output</h3><details class="more rsrc"><summary>Complete companion script <code>R/L5-3.R</code> (46 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L5-3.R  RI-CLPM: separating stable trait differences from within-person fluctuations
+# Syntax structure follows the lavaan example in Mulder &amp; Hamaker (2021)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(lavaan)
+log_open(&quot;L5-3_log.txt&quot;)
+dat &lt;- read_course_data()
+wide &lt;- data.frame(id = dat$id)
+for (t in 1:3) {
+  wide[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)])
+  wide[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)])
+}
+riclpm &lt;- &#x27;
+  # 1) Random intercepts: stable individual &quot;trait levels&quot;, factor loadings fixed to 1
+  RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3
+  RI_dep  =~ 1*dep1  + 1*dep2  + 1*dep3
+  # 2) Within-person components
+  wl1 =~ 1*lone1; wl2 =~ 1*lone2; wl3 =~ 1*lone3
+  wd1 =~ 1*dep1;  wd2 =~ 1*dep2;  wd3 =~ 1*dep3
+  # 3) Within-person autoregressions and cross-lags
+  wl2 ~ wl1 + wd1;  wd2 ~ wd1 + wl1
+  wl3 ~ wl2 + wd2;  wd3 ~ wd2 + wl2
+  # 4) Synchronous covariances and (residual) variances
+  wl1 ~~ wd1; wl2 ~~ wd2; wl3 ~~ wd3
+  wl1 ~~ wl1; wd1 ~~ wd1; wl2 ~~ wl2; wd2 ~~ wd2; wl3 ~~ wl3; wd3 ~~ wd3
+  RI_lone ~~ RI_lone; RI_dep ~~ RI_dep; RI_lone ~~ RI_dep
+  # 5) Random intercepts uncorrelated with T1 within-person components; indicator measurement errors fixed to 0
+  RI_lone ~~ 0*wl1 + 0*wd1;  RI_dep ~~ 0*wl1 + 0*wd1
+  lone1 ~~ 0*lone1; lone2 ~~ 0*lone2; lone3 ~~ 0*lone3
+  dep1 ~~ 0*dep1;   dep2 ~~ 0*dep2;   dep3 ~~ 0*dep3
+&#x27;
+fit_ri &lt;- lavaan(riclpm, data = wide, missing = &quot;fiml&quot;, meanstructure = TRUE, int.ov.free = TRUE)
+print(summary(fit_ri, standardized = TRUE, fit.measures = TRUE))   # print(): ensures output is logged when running via source() or run_all.R
+
+clpm &lt;- &#x27;lone2 ~ lone1 + dep1; dep2 ~ dep1 + lone1; lone3 ~ lone2 + dep2; dep3 ~ dep2 + lone2
+         lone1 ~~ dep1; lone2 ~~ dep2; lone3 ~~ dep3&#x27;
+fit_c &lt;- sem(clpm, data = wide, missing = &quot;fiml&quot;)
+get &lt;- function(f) { pe &lt;- standardizedSolution(f); pe &lt;- pe[pe$op == &quot;~&quot;, ]
+  setNames(round(pe$est.std, 3), paste(pe$rhs, &quot;→&quot;, pe$lhs)) }
+cat(&quot;\n===== CLPM vs. RI-CLPM Standardized Paths =====\nCLPM:\n&quot;); print(get(fit_c))
+cat(&quot;RI-CLPM (within-person):\n&quot;); print(get(fit_ri))
+print(anova(fit_c, fit_ri))
+cat(&quot;Simulated data were generated with strong stable traits: RI-CLPM autoregressions drop markedly, showing that\n&quot;,
+    &quot;much of the CLPM&#x27;s \&quot;stability\&quot; arises from between-person differences. Standard CLPN shares this limitation (Lesson 7.5).\n&quot;)
+log_close()</code></pre></div></details>
+<details class="more rsrc"><summary>Supplementary script <code>R/L5-3b.R</code> (112 lines, click to expand)</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L5-3b.R  How far is one sample from the truth in RI-CLPM?
+# Course data are simulated, so the data-generating model is known. This script does two things:
+#   1. Fit the same CLPM and RI-CLPM to a massive sample of N = 200,000 to obtain standardized paths when sample size is infinite (truth)
+#   2. Repeatedly generate 200 samples of N = 800 to see how much a single sample&#x27;s estimates fluctuate around the truth
+# Takes about 1–3 minutes to run. Output written to R/output/L5-3b_log.txt and L5-3b_truth.csv.
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(lavaan)
+log_open(&quot;L5-3b_log.txt&quot;)
+
+# ---- Load data-generating model ------------------------------------------
+# Execute only the &quot;model definition&quot; portion of data/simulate_data.R (before N &lt;- 800: B, Psi, gen_panel(), to_likert()),
+# without regenerating or overwriting the course data file.
+ex &lt;- parse(&quot;data/simulate_data.R&quot;)
+stop_at &lt;- which(vapply(ex, function(e) identical(deparse(e)[1], &quot;N &lt;- 800&quot;), logical(1)))
+stopifnot(length(stop_at) == 1)
+sim &lt;- new.env()
+for (e in ex[seq_len(stop_at - 1)]) eval(e, sim)
+
+# Sum items into 3-wave construct scores (same as L5-3.R)
+to_sums &lt;- function(X) {
+  out &lt;- list()
+  for (t in 1:3) {
+    lik &lt;- sim$to_likert(X[[t]])
+    out[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(lik[, 1:4])
+    out[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(lik[, 5:9])
+  }
+  as.data.frame(out)
+}
+
+riclpm &lt;- &#x27;
+  RI_lone =~ 1*lone1 + 1*lone2 + 1*lone3
+  RI_dep  =~ 1*dep1  + 1*dep2  + 1*dep3
+  wl1 =~ 1*lone1; wl2 =~ 1*lone2; wl3 =~ 1*lone3
+  wd1 =~ 1*dep1;  wd2 =~ 1*dep2;  wd3 =~ 1*dep3
+  wl2 ~ wl1 + wd1;  wd2 ~ wd1 + wl1
+  wl3 ~ wl2 + wd2;  wd3 ~ wd2 + wl2
+  wl1 ~~ wd1; wl2 ~~ wd2; wl3 ~~ wd3
+  wl1 ~~ wl1; wd1 ~~ wd1; wl2 ~~ wl2; wd2 ~~ wd2; wl3 ~~ wl3; wd3 ~~ wd3
+  RI_lone ~~ RI_lone; RI_dep ~~ RI_dep; RI_lone ~~ RI_dep
+  RI_lone ~~ 0*wl1 + 0*wd1;  RI_dep ~~ 0*wl1 + 0*wd1
+  lone1 ~~ 0*lone1; lone2 ~~ 0*lone2; lone3 ~~ 0*lone3
+  dep1 ~~ 0*dep1;   dep2 ~~ 0*dep2;   dep3 ~~ 0*dep3
+&#x27;
+clpm &lt;- &#x27;lone2 ~ lone1 + dep1; dep2 ~ dep1 + lone1; lone3 ~ lone2 + dep2; dep3 ~ dep2 + lone2
+         lone1 ~~ dep1; lone2 ~~ dep2; lone3 ~~ dep3&#x27;
+
+# Extract standardized paths; rewrite RI-CLPM within-person variable names wl/wd to lone/dep to align with CLPM
+paths &lt;- function(fit) {
+  pe &lt;- standardizedSolution(fit)
+  pe &lt;- pe[pe$op == &quot;~&quot; | (pe$op == &quot;~~&quot; &amp; pe$lhs == &quot;RI_lone&quot; &amp; pe$rhs == &quot;RI_dep&quot;), ]
+  nm &lt;- ifelse(pe$op == &quot;~&quot;, paste(pe$rhs, &quot;→&quot;, pe$lhs), &quot;RI_lone ~~ RI_dep&quot;)
+  nm &lt;- gsub(&quot;wl&quot;, &quot;lone&quot;, gsub(&quot;wd&quot;, &quot;dep&quot;, nm))
+  setNames(pe$est.std, nm)
+}
+# Note: lavaan saves and restores random number generator state during estimation. If to_sums(gen_panel(...)) is passed directly
+# as an argument, data generation occurs inside lavaan and the RNG state is subsequently restored, drawing the identical sample every time.
+# Therefore, use force(d) to generate data outside lavaan first.
+fit_both &lt;- function(d, ...) {
+  force(d)
+  list(
+    CLPM    = paths(sem(clpm, data = d, ...)),
+    RICLPM  = paths(lavaan(riclpm, data = d, meanstructure = TRUE, int.ov.free = TRUE, ...)))
+}
+
+# ---- 1. Course dataset (same model as L5-3.R) -----------------------------
+dat &lt;- read_course_data()
+wide &lt;- data.frame(row.names = seq_len(nrow(dat)))
+for (t in 1:3) {
+  wide[[paste0(&quot;lone&quot;, t)]] &lt;- rowSums(dat[, paste0(lone_items, &quot;_t&quot;, t)])
+  wide[[paste0(&quot;dep&quot;, t)]]  &lt;- rowSums(dat[, paste0(dep_items, &quot;_t&quot;, t)])
+}
+course &lt;- fit_both(wide, missing = &quot;fiml&quot;)
+
+# ---- 2. Truth: large sample of N = 200,000 -------------------------------
+set.seed(5302)
+truth &lt;- fit_both(to_sums(sim$gen_panel(200000)$X))
+
+# ---- 3. Sampling variability: 200 samples of N = 800 ----------------------
+R_REP &lt;- 200
+set.seed(5303)
+reps &lt;- lapply(seq_len(R_REP), function(r) {
+  res &lt;- tryCatch(suppressWarnings(fit_both(to_sums(sim$gen_panel(800)$X))), error = function(e) NULL)
+  res
+})
+ok &lt;- !vapply(reps, is.null, logical(1))
+cat(&quot;Successfully converged across 200 replications:&quot;, sum(ok), &quot;times\n\n&quot;)
+
+rows &lt;- list()
+for (m in c(&quot;CLPM&quot;, &quot;RICLPM&quot;)) {
+  sims &lt;- do.call(rbind, lapply(reps[ok], `[[`, m))
+  for (p in names(truth[[m]])) {
+    rows[[length(rows) + 1]] &lt;- data.frame(
+      model = m, path = p,
+      truth = truth[[m]][[p]], course = course[[m]][[p]],
+      q05 = unname(quantile(sims[, p], .05)), q95 = unname(quantile(sims[, p], .95)),
+      sd = sd(sims[, p]),
+      pct = mean(sims[, p] &lt;= course[[m]][[p]]))   # Percentile rank of course sample estimate across 200 samples
+  }
+}
+tab &lt;- do.call(rbind, rows)
+write.csv(tab, out(&quot;L5-3b_truth.csv&quot;), row.names = FALSE)
+
+cat(&quot;===== Standardized paths: truth (N = 200,000), course sample, and 90% range across 200 samples of N = 800 =====\n&quot;)
+show &lt;- tab; show[, 3:7] &lt;- round(show[, 3:7], 3); show$pct &lt;- round(tab$pct, 2)
+print(show, row.names = FALSE)
+cat(&quot;\nInterpretation: truth is the value when sample size is infinite; course is the estimate from course data (N = 800);\n&quot;,
+    &quot;[q05, q95] is the 90% range of estimates across 200 samples of N = 800 under the same data-generating model;\n&quot;,
+    &quot;pct is the percentile rank of the course sample estimate.\n&quot;,
+    &quot;Within-person cross-lagged paths in RI-CLPM fluctuate widely with 3 waves and N = 800: directional claims from a single sample are unreliable.\n&quot;)
+log_close()</code></pre></div></details>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L5-3_log.txt</code></div><pre class="out"><code>lavaan 0.7-3 ended normally after 116 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        26
+
+  Number of observations                           800
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                                      
+  Test statistic                                 0.333
+  Degrees of freedom                                 1
+  P-value (Chi-square)                           0.564
+                                                      
+  Browne&#x27;s residual (NT model-based) test             
+  Test statistic                                 0.333
+  Degrees of freedom                                 1
+  P-value (Chi-square)                           0.564
+
+Model Test Baseline Model:
+
+  Test statistic                              1685.320
+  Degrees of freedom                                15
+  P-value                                        0.000
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    1.000
+  Tucker-Lewis Index (TLI)                       1.006
+                                                      
+  Robust Comparative Fit Index (CFI)             1.000
+  Robust Tucker-Lewis Index (TLI)                1.006
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -11542.526
+  Loglikelihood unrestricted model (H1)     -11542.359
+                                                      
+  Akaike (AIC)                               23137.052
+  Bayesian (BIC)                             23258.852
+  Sample-size adjusted Bayesian (SABIC)      23176.287
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.078
+  P-value H_0: RMSEA &lt;= 0.050                    0.822
+  P-value H_0: RMSEA &gt;= 0.080                    0.044
+                                                      
+  Robust RMSEA                                   0.000
+  90 Percent confidence interval - lower         0.000
+  90 Percent confidence interval - upper         0.078
+  P-value H_0: Robust RMSEA &lt;= 0.050             0.822
+  P-value H_0: Robust RMSEA &gt;= 0.080             0.044
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.003
+
+Goodness of Fit Index:
+
+  Goodness of Fit Index (GFI)                    1.000
+  90 Percent confidence interval - lower         0.998
+  90 Percent confidence interval - upper         1.000
+                                                      
+  Robust GFI                                     1.000
+  90 Percent confidence interval - lower         0.998
+  90 Percent confidence interval - upper         1.000
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  RI_lone =~                                                            
+    lone1             1.000                               1.844    0.598
+    lone2             1.000                               1.844    0.628
+    lone3             1.000                               1.844    0.613
+  RI_dep =~                                                             
+    dep1              1.000                               2.086    0.615
+    dep2              1.000                               2.086    0.620
+    dep3              1.000                               2.086    0.610
+  wl1 =~                                                                
+    lone1             1.000                               2.469    0.801
+  wl2 =~                                                                
+    lone2             1.000                               2.285    0.778
+  wl3 =~                                                                
+    lone3             1.000                               2.374    0.790
+  wd1 =~                                                                
+    dep1              1.000                               2.674    0.789
+  wd2 =~                                                                
+    dep2              1.000                               2.638    0.784
+  wd3 =~                                                                
+    dep3              1.000                               2.710    0.792
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  wl2 ~                                                                 
+    wl1               0.322    0.070    4.607    0.000    0.348    0.348
+    wd1               0.071    0.055    1.286    0.198    0.083    0.083
+  wd2 ~                                                                 
+    wd1               0.215    0.071    3.044    0.002    0.218    0.218
+    wl1               0.284    0.064    4.452    0.000    0.265    0.265
+  wl3 ~                                                                 
+    wl2               0.206    0.086    2.395    0.017    0.198    0.198
+    wd2               0.221    0.061    3.620    0.000    0.245    0.245
+  wd3 ~                                                                 
+    wd2               0.210    0.077    2.728    0.006    0.205    0.205
+    wl2               0.231    0.083    2.790    0.005    0.195    0.195
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  wl1 ~~                                                                
+    wd1               2.490    0.542    4.597    0.000    0.377    0.377
+ .wl2 ~~                                                                
+   .wd2               2.245    0.319    7.028    0.000    0.441    0.441
+ .wl3 ~~                                                                
+   .wd3               2.273    0.291    7.822    0.000    0.409    0.409
+  RI_lone ~~                                                            
+    RI_dep            0.770    0.522    1.476    0.140    0.200    0.200
+    wl1               0.000                               0.000    0.000
+    wd1               0.000                               0.000    0.000
+  RI_dep ~~                                                             
+    wl1               0.000                               0.000    0.000
+    wd1               0.000                               0.000    0.000
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .lone1             8.804    0.109   80.810    0.000    8.804    2.857
+   .lone2             8.869    0.104   85.431    0.000    8.869    3.020
+   .lone3             8.885    0.106   83.592    0.000    8.885    2.955
+   .dep1              3.836    0.120   31.993    0.000    3.836    1.131
+   .dep2              3.784    0.119   31.820    0.000    3.784    1.125
+   .dep3              3.849    0.121   31.831    0.000    3.849    1.125
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+    wl1               6.094    0.612    9.953    0.000    1.000    1.000
+    wd1               7.151    0.709   10.081    0.000    1.000    1.000
+   .wl2               4.439    0.385   11.531    0.000    0.850    0.850
+   .wd2               5.834    0.511   11.414    0.000    0.838    0.838
+   .wl3               4.791    0.352   13.606    0.000    0.850    0.850
+   .wd3               6.452    0.446   14.458    0.000    0.879    0.879
+    RI_lone           3.401    0.585    5.818    0.000    1.000    1.000
+    RI_dep            4.351    0.698    6.238    0.000    1.000    1.000
+   .lone1             0.000                               0.000    0.000
+   .lone2             0.000                               0.000    0.000
+   .lone3             0.000                               0.000    0.000
+   .dep1              0.000                               0.000    0.000
+   .dep2              0.000                               0.000    0.000
+   .dep3              0.000                               0.000    0.000
+
+===== CLPM vs. RI-CLPM Standardized Paths =====
+CLPM:
+lone1 → lone2  dep1 → lone2   dep1 → dep2  lone1 → dep2 lone2 → lone3 
+        0.607         0.016         0.539         0.128         0.559 
+ dep2 → lone3   dep2 → dep3  lone2 → dep3 
+        0.068         0.548         0.049 
+RI-CLPM (within-person):
+wl1 → wl2 wd1 → wl2 wd1 → wd2 wl1 → wd2 wl2 → wl3 wd2 → wl3 wd2 → wd3 wl2 → wd3 
+    0.348     0.083     0.218     0.265     0.198     0.245     0.205     0.195 
+
+Chi-Squared Difference Test
+
+       Df   AIC   BIC   Chisq Chisq diff Df diff Pr(&gt;Chisq)    
+fit_ri  1 23137 23259  0.3334                                  
+fit_c   4 23199 23306 67.9855     67.652       3  1.358e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Simulated data were generated with strong stable traits: RI-CLPM autoregressions drop markedly, showing that
+ much of the CLPM&#x27;s &quot;stability&quot; arises from between-person differences. Standard CLPN shares this limitation (Lesson 7.5).</code></pre></div>
+<div class="codeblk"><div class="ctitle">Actual output: <code>R/output/L5-3b_log.txt</code></div><pre class="out"><code>Successfully converged across 200 replications: 200 times
+
+===== Standardized paths: truth (N = 200,000), course sample, and 90% range across 200 samples of N = 800 =====
+  model              path truth course    q05   q95    sd  pct
+   CLPM     lone1 → lone2 0.605  0.607  0.566 0.651 0.026 0.48
+   CLPM      dep1 → lone2 0.037  0.016 -0.018 0.070 0.030 0.30
+   CLPM       dep1 → dep2 0.587  0.539  0.537 0.629 0.027 0.06
+   CLPM      lone1 → dep2 0.088  0.128  0.035 0.138 0.032 0.89
+   CLPM     lone2 → lone3 0.603  0.559  0.564 0.644 0.025 0.03
+   CLPM      dep2 → lone3 0.037  0.068 -0.016 0.092 0.032 0.82
+   CLPM       dep2 → dep3 0.584  0.548  0.543 0.625 0.025 0.08
+   CLPM      lone2 → dep3 0.090  0.049  0.037 0.134 0.029 0.09
+ RICLPM     lone1 → lone2 0.332  0.348  0.215 0.440 0.069 0.60
+ RICLPM      dep1 → lone2 0.012  0.083 -0.121 0.093 0.070 0.91
+ RICLPM       dep1 → dep2 0.308  0.218  0.156 0.423 0.077 0.14
+ RICLPM      lone1 → dep2 0.093  0.265 -0.016 0.197 0.064 1.00
+ RICLPM     lone2 → lone3 0.331  0.198  0.197 0.433 0.071 0.06
+ RICLPM      dep2 → lone3 0.011  0.245 -0.095 0.124 0.068 1.00
+ RICLPM       dep2 → dep3 0.303  0.205  0.159 0.418 0.080 0.14
+ RICLPM      lone2 → dep3 0.096  0.195 -0.022 0.188 0.064 0.96
+ RICLPM RI_lone ~~ RI_dep 0.459  0.200  0.325 0.588 0.084 0.00
+
+Interpretation: truth is the value when sample size is infinite; course is the estimate from course data (N = 800);
+ [q05, q95] is the 90% range of estimates across 200 samples of N = 800 under the same data-generating model;
+ pct is the percentile rank of the course sample estimate.
+ Within-person cross-lagged paths in RI-CLPM fluctuate widely with 3 waves and N = 800: directional claims from a single sample are unreliable.</code></pre></div>
+<div class="codeblk"><div class="ctitle">Table file (first rows): <code>R/output/L5-3b_truth.csv</code></div><pre class="out"><code>&quot;model&quot;,&quot;path&quot;,&quot;truth&quot;,&quot;course&quot;,&quot;q05&quot;,&quot;q95&quot;,&quot;sd&quot;,&quot;pct&quot;
+&quot;CLPM&quot;,&quot;lone1 → lone2&quot;,0.604687936077752,0.607145327060687,0.566281326663995,0.65099686559002,0.0261988686125308,0.485
+&quot;CLPM&quot;,&quot;dep1 → lone2&quot;,0.0365239538527359,0.015956047271949,-0.0180250562917844,0.0700710214917912,0.0298692844095738,0.3
+&quot;CLPM&quot;,&quot;dep1 → dep2&quot;,0.587303778740626,0.539074595547164,0.537270005205912,0.62914009844375,0.0270707551049227,0.06
+&quot;CLPM&quot;,&quot;lone1 → dep2&quot;,0.0879165282495845,0.128018802981637,0.0351141755917081,0.137820843987588,0.0323403845530846,0.89
+&quot;CLPM&quot;,&quot;lone2 → lone3&quot;,0.602829791245302,0.559441253464314,0.564206295460295,0.64434221575027,0.0254205738885859,0.03
+&quot;CLPM&quot;,&quot;dep2 → lone3&quot;,0.0365473728844299,0.0676264370941587,-0.01642407971199,0.0923787927984511,0.0321890576421487,0.825
+&quot;CLPM&quot;,&quot;dep2 → dep3&quot;,0.584396017528112,0.548481264111531,0.543022518149386,0.624724366297519,0.0246760440515826,0.08
+&quot;CLPM&quot;,&quot;lone2 → dep3&quot;,0.0899066941954487,0.0490983453922623,0.0370380924254594,0.13383150229977,0.0290795315603217,0.09
+&quot;RICLPM&quot;,&quot;lone1 → lone2&quot;,0.332133116022926,0.348090025437253,0.215025926527238,0.439698824847042,0.0694062495076092,0.605
+&quot;RICLPM&quot;,&quot;dep1 → lone2&quot;,0.0121205959605814,0.0827767761710593,-0.120852560457725,0.0927026835830503,0.0695152763269765,0.91
+&quot;RICLPM&quot;,&quot;dep1 → dep2&quot;,0.308402012099213,0.218407810203266,0.156291754482405,0.423243537773567,0.0771091225286179,0.14
+… (17 rows total; showing first 11 rows)</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ Concept Check</span>Instant Check</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">"When a person is lonelier than they usually are, they later become more depressed than they usually are" describes:</p><ul class="opts"><li><button type="button" data-ok="0">A. A between-person effect</button><div class="ofb" hidden>Between-person compares different people; the reference point in this sentence is the person themselves.</div></li><li><button type="button" data-ok="1">B. A within-person effect</button><div class="ofb" hidden>Correct: the reference point is "their own usual level."</div></li><li><button type="button" data-ok="0">C. A within-wave correlation</button><div class="ofb" hidden>A within-wave correlation describes change together at the same moment and says nothing about "later."</div></li><li><button type="button" data-ok="0">D. Measurement error</button><div class="ofb" hidden>Measurement error is random noise in the scores, not a relationship about "later."</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">What does the random intercept in an RI-CLPM stand for?</p><ul class="opts"><li><button type="button" data-ok="0">A. The overall mean at each wave</button><div class="ofb" hidden>The overall mean at each wave is μ_t, shared by everyone; the random intercept is each person's own stable deviation.</div></li><li><button type="button" data-ok="1">B. Each person's stable individual difference that does not change over time (the trait-like part)</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. The cross-lagged coefficients</button><div class="ofb" hidden>The cross-lagged paths sit between the within-person components, not on the random intercepts.</div></li><li><button type="button" data-ok="0">D. Measurement error</button><div class="ofb" hidden>In this model the observed errors are fixed at 0; the random intercept is the part that is stable over time, not error.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Why does the RI-CLPM need at least 3 waves?</p><ul class="opts"><li><button type="button" data-ok="0">A. A software limitation</button><div class="ofb" hidden>It is a statistical identification problem; any software has it.</div></li><li><button type="button" data-ok="1">B. With 2 waves the stable part and the changing part cannot be separated (not identified)</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. Because estimating cross-lagged paths needs at least two time intervals</button><div class="ofb" hidden>Two waves give one interval, and a CLPM can still estimate cross-lagged paths; the RI-CLPM needs 3 waves to separate the stable part from the changing part.</div></li><li><button type="button" data-ok="0">D. Because equality constraints have to be estimated</button><div class="ofb" hidden>Equality constraints are optional; without them, a 2-wave RI-CLPM is still not identified.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">In the course data, the autoregressive coefficients drop clearly when you switch from the CLPM to the RI-CLPM. What is the most reasonable explanation?</p><ul class="opts"><li><button type="button" data-ok="0">A. The RI-CLPM fits worse, so the coefficients are pushed down</button><div class="ofb" hidden>The RI-CLPM fits clearly better (Δχ²(3) = 67.65); the coefficients shrink because the random intercepts take over the stable individual differences.</div></li><li><button type="button" data-ok="1">B. Much of the CLPM's "stability" comes from stable between-person differences</button><div class="ofb" hidden>Correct.</div></li><li><button type="button" data-ok="0">C. Within-person states actually have no inertia</button><div class="ofb" hidden>The within-person autoregressive paths are still positive (e.g., 0.348), just smaller than in the CLPM: there is inertia, but less than the CLPM shows.</div></li><li><button type="button" data-ok="0">D. The within-person process is more stable</button><div class="ofb" hidden>The opposite: smaller within-person autoregressive paths mean that states carry over less than the CLPM suggests.</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">Does a standard CLPN already separate between-person from within-person?</p><ul class="opts"><li><button type="button" data-ok="0">A. Yes, a CLPN is a within-person model by nature</button><div class="ofb" hidden>A common misunderstanding: a CLPN uses observed scores and has no random intercepts.</div></li><li><button type="button" data-ok="1">B. No; it is based on observed scores and, like the CLPM, mixes the two, which you must say when you interpret results and write the limitations</button><div class="ofb" hidden>Correct: this is a point every CLPN paper must make in its limitations.</div></li><li><button type="button" data-ok="0">C. Only when lambda.1se is used</button><div class="ofb" hidden>λ only decides how many edges are shrunk away; it does not separate the stable traits from the scores.</div></li><li><button type="button" data-ok="0">D. Standardizing is enough to separate them</button><div class="ofb" hidden>Standardizing only changes units; it cannot remove stable traits.</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2><div class="exitem"><h4>Exercise 1: One between-person and one within-person example<span class="lvl">Basic</span></h4><p>Using "social participation" and "loneliness," write one between-person and one within-person research question, and imagine a situation in which the two relationships go in opposite directions.</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Between-person: "Are residents who participate more socially less lonely than residents who participate less?" (probably a negative correlation). Within-person: "When a resident takes part in more activities than usual for a while, are they lonelier than usual?" This could be positive: for example, a resident who has just moved to a new neighborhood is invited to lots of activities while still settling in, and feels lonely precisely then. The two levels can go in opposite directions.</p></details></div>
+<div class="exitem"><h4>Exercise 2: Read the table and explain it in 200 words<span class="lvl">Writing</span></h4><p>Using the CLPM vs. RI-CLPM table above, write an explanation of about 200 words for "a social work colleague who has never studied statistics."</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>Key points: ① The ordinary model (CLPM) shows loneliness and depression as "very stable," with loneliness mainly predicting depression. ② But in these data, some people are lonelier and more depressed than others over the long run, and the ordinary model mistakes these "long-term differences" for a process of change. ③ Once each person's long-term level is taken out (RI-CLPM), we see the relationship between fluctuations of the kind "lonelier / more depressed than usual." In this sample both directions are estimated as fairly large, but the comparison with the large-sample values (the section "Against large-sample values" on this page) shows that, with 3 waves and N = 800, these within-person cross-lagged estimates vary a lot, so you cannot tell from them which direction is stronger. ④ So if an intervention aims to change a person's state, look at the results with the long-term differences removed, while admitting that such estimates are imprecise and are still statistical prediction, not causation.</p></details></div>
+<div class="exitem"><h4>Exercise 3: Hands-on: random-intercept variances<span class="lvl">Hands-on</span></h4><p>Run <code>R/L5-3.R</code>, find the standardized estimates of <code>RI_lone ~~ RI_lone</code>, <code>RI_dep ~~ RI_dep</code> and <code>RI_lone ~~ RI_dep</code> in <code>summary(fit_ri)</code>, and answer: how large is the between-person correlation? Is it close to the 0.50 set in the simulation?</p><details class="answer"><summary>Show Reference Solution / Walkthrough</summary><p>In the <code>Covariances:</code> part, look up the <code>Std.all</code> of <code>RI_lone ~~ RI_dep</code>: that is the correlation of the two random intercepts. The simulation set the trait correlation to 0.50, but the observed scores were built from "trait + item-specific part + within-person state" and then cut into Likert categories, so the estimate need not equal 0.50. The actual result in this data (<code>R/solutions/L5-3_solution.R</code>) is a random-intercept correlation of 0.20, 95% CI [−0.02, 0.42], clearly below 0.50 and with a very wide interval. The main reason is sampling error: under the same generating model, the random-intercept correlation for an infinite sample is 0.459 (<code>R/L5-3b.R</code>); the 90% range over 200 samples of N = 800 is [0.325, 0.588], and the course sample's 0.200 is at or above only 1 of 200 replicate samples. With only 3 waves the RI-CLPM is just identified, and the "stable part" and the "within-person part" are hard to tell apart, so the estimate is very imprecise. The large-sample value itself is also a little below 0.50; that is a secondary reason: each item also has its own independent stable component, women have a stable offset on the depression items, and Likert categories weaken correlations. Also, the random-intercept variances (loneliness 3.40, depression 4.35) are about 38% of the variance of the observed totals (the average of the per-wave variances: loneliness 9.07, depression 11.52). That is smaller than the depression ICC from the multilevel model in Lesson 4.1 (0.53): the multilevel model attributes all of the covariance across waves to stable differences between people, while the RI-CLPM attributes part of it to within-person deviations carrying over (see the paragraph "Why does Lesson 5.3 say 'the stable part is about 38%'?" in Lesson 4.1). With only 3 waves these two sources are hard to separate, so 0.38 is as imprecise as the random-intercept correlation. Even when the model's "structure is right," with 3 waves and N = 800 the between-person estimates can be far from the large-sample values, so report them with confidence intervals.</p></details></div><h3>Integrative Exercise</h3><div class="box sw"><p>Following the structure of the lavaan example code from Mulder &amp; Hamaker, fit an RI-CLPM to the same simulated data (simulated with fairly strong stable traits); compare the two models&#x27; cross-lagged estimates and write a 200-word explanation.</p></div><h3>Self-Check Questions</h3><ol><li>Why might the cross-lagged effects of a CLPM be &#x27;fake&#x27;?</li><li>Does an RI-CLPM cross-lagged path answer &#x27;who is higher than others...&#x27; or &#x27;when a person is higher than their own usual level...&#x27;?</li><li>Does a standard CLPN already separate between-person and within-person effects? What does that mean for interpretation?</li></ol><p class='muted' style='font-size:.88rem'>Tip: Before starting the next lesson, answer each question above in one or two sentences without looking at the text.</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">Summary</span>Key Takeaways &amp; Further Reading</h2><ul><li>Between-person: comparing people with each other; within-person: comparing a person with their own usual level. The two can go in opposite directions.</li><li>Hamaker et al. (2015): the CLPM mixes stable traits into the autoregressive and cross-lagged paths.</li><li>RI-CLPM = random intercepts (the stable part) + within-person components (the dynamic part); needs at least 3 waves.</li><li>Course data: the RI-CLPM's autoregressive paths drop sharply and the model fits significantly better; with 3 waves and N = 800 the within-person cross-lagged paths are very imprecise, and a single sample cannot tell you the direction (large-sample values in L5-3b.R).</li><li>A standard CLPN has no random intercepts; say so when you interpret the results and write the limitations.</li></ul><h3>Further Reading</h3><ul class="refs"><li>Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a><div class="muted" style="font-size:.84rem">Introduced the RI-CLPM; required reading for Lesson 5.3.</div></li><li>Mulder, J. D., & Hamaker, E. L. (2021). Three extensions of the random intercept cross-lagged panel model. <i>Structural Equation Modeling: A Multidisciplinary Journal, 28</i>(4), 638–648. <a href="https://doi.org/10.1080/10705511.2020.1784738" target="_blank" rel="noopener">doi.org/10.1080/10705511.2020.1784738</a><div class="muted" style="font-size:.84rem">Website with lavaan / Mplus example code: jeroendmulder.github.io/RI-CLPM</div></li><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">The published version of the CLPN method paper (June 2025), revised from the 2022 PsyArXiv preprint &#x27;Cross-lagged network models&#x27;, with McCarthy added as a co-author. The main reference for Module 7; cite this version where you can.</div></li></ul></section>
+<nav class="pager"><a href="L5-2.html" class="pv"><small>Previous</small>5.2 Fitting CLPM with lavaan and Evaluating Model Fit</a><a href="L5-4.html" class="nx"><small>Next</small>5.4 From Prediction to Causality: What Longitudinal Models Can and Cannot Claim</a></nav>
+<p class="foot">CLPN From Scratch · Lesson 5.3 · <a href="../index.html#L5-3">Back to Syllabus</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

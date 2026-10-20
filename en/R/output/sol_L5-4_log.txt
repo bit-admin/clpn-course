@@ -1,0 +1,5 @@
+Interval  1 months: Matrix power yields 0.050; formula Delta*a^(Delta-1)*c = 0.050
+Interval  3 months: Matrix power yields 0.122; formula Delta*a^(Delta-1)*c = 0.122
+Interval  6 months: Matrix power yields 0.177; formula Delta*a^(Delta-1)*c = 0.177
+Interval 12 months: Matrix power yields 0.188; formula Delta*a^(Delta-1)*c = 0.188
+Peak is around 9.5 months (-1/ln(a)); maximum across months 1-24 occurs at month 9

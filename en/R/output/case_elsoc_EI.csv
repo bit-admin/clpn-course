@@ -1,0 +1,9 @@
+"node","label","outEI","inEI"
+"phq1","Little interest",0.062,0.292
+"phq2","Depressed mood",0.423,0.278
+"phq3","Sleep problems",0.345,0.244
+"phq4","Fatigue",0.352,0.282
+"phq5","Appetite change",0.244,0.241
+"phq6","Trouble concentrating",0.388,0.214
+"phq7","Low self-worth",0.021,0.171
+"phq8","Psychomotor retardation",0.133,0.244

@@ -1,0 +1,194 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>How much two variables "move together"</h2>
+<div class="box story"><b class="bt">A plot full of dots</b>
+<p>Chen, the social worker, puts the 800 residents on one plot: T1 loneliness total on the horizontal axis, T1 depression total on the vertical axis, one dot per person. She sees that the cloud of dots as a whole "tilts up to the right": people with higher loneliness scores tend to have higher depression scores too. But there are many exceptions: some people are very lonely but not depressed, others are not lonely but very depressed. How strong is this "tendency"? We need one number to sum it up.</p></div>
+<p>This kind of plot is called a {{T:scatter plot|}}. Below is the real scatter plot of the course data (drawn by <a href="../R/L1-4.R">R/L1-4.R</a>; to keep dots from sitting on top of each other, each one is moved by a small random amount, called "jitter"):</p>
+<figure style="margin:10px 0;text-align:center"><img src="../R/output/L1-4_scatter.png" alt="Scatter plot of the T1 loneliness and depression totals, r = 0.31" style="max-width:min(100%,520px);border:1px solid var(--line);border-radius:10px"><figcaption class="muted" style="font-size:.85rem">Figure: loneliness and depression totals (T1); the red line is the regression line ({{L:3.1}}). r = 0.31: a positive correlation, moderate to weak, and the cloud is very spread out.</figcaption></figure>
+
+<h3>Covariance: think in quadrants</h3>
+<p>Draw a cross through the middle of the cloud: the vertical line at the mean of loneliness, the horizontal line at the mean of depression. Every dot now falls in one of four quadrants:</p>
+<ul><li>top right: both above average → deviations (+)(+) = positive;</li><li>bottom left: both below average → (−)(−) = positive;</li><li>top left and bottom right: one high, one low → negative.</li></ul>
+<p>Add up everyone's "product of deviations" and average it, and you have the {{T:covariance|}}. If most dots are in the top-right and bottom-left quadrants, the covariance is positive; if most are top-left and bottom-right, it is negative; if the four quadrants are about even, it is close to 0.</p>
+<div class="widget" data-widget="corr"></div>
+<p>In the simulation above, tick "Show z-product quadrants" and drag ρ (read "rho"; it stands for the population correlation): the closer ρ is to 1, the more the dots gather in the green quadrants and the more they look like a straight line; at ρ = 0 the cloud is a round blob; when ρ is negative the dots gather in the red quadrants. Then set the sample size to 10 and click "Resample" a few times: in a small sample, the r you compute jumps around a lot around the population ρ. That is the topic of the next lesson.</p>
+
+<h3>From covariance to the correlation coefficient</h3>
+<p>Covariance has a drawback: its size depends on the scale. Whether loneliness is scored 4–16 or 0–100 changes the covariance many times over. You already know the fix: first turn both variables into z-scores, then compute the covariance. That is the {{T:correlation coefficient|}}, and its most common version is {{T:Pearson's r|}}. It always lies between −1 and 1:</p>
+<div class="tablewrap"><table><thead><tr><th>r</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>+1</td><td>Perfect positive correlation: all dots lie exactly on a rising straight line</td></tr>
+<tr><td>0</td><td>No <b>linear</b> relation (there may be a curved one)</td></tr>
+<tr><td>−1</td><td>Perfect negative correlation: all dots lie exactly on a falling straight line</td></tr></tbody></table></div>
+<p>The sign gives the direction, the absolute value gives the strength: r = −0.6 is stronger than r = 0.3. Psychologists often quote Cohen's rough guide: |r| ≈ 0.1 small, 0.3 medium, 0.5 large. It is only a guide, though; what counts as "large" differs between fields.</p>
+
+<h3>Other correlations: when the data are ordinal</h3>
+<ul><li>{{T:Spearman's rank correlation|}}: replace each variable's values with ranks (1st, 2nd, ...) and compute the Pearson correlation of the ranks. English-language papers often write it as Spearman's ρ; this course uses ρ only for the population correlation, so to avoid confusion we always write the Spearman correlation as \(r_s\). It only cares whether "the orderings agree," so it is more robust to skew and extreme values.</li>
+<li>{{T:polychoric correlation|}}: assumes that behind each Likert item there is a continuous, normally distributed "underlying tendency" that has been cut into a few categories; it estimates the correlation between these two underlying continuous variables. It is often used when items have few categories (such as 0–3) and are clearly skewed. <code>qgraph::cor_auto()</code>, widely used in network analysis, detects this automatically: variables with few categories (by default ≤ 7) are treated as ordinal, and it computes polychoric correlations.</li></ul>
+<p>In the course data, for "Depressed mood" and "Sleep problems" (T1): Pearson r = 0.40, Spearman \(r_s\) = 0.39, polychoric correlation = 0.48. The polychoric correlation is usually somewhat larger than the Pearson one, because the coarse 4 categories and the floor effect "push down" the Pearson correlation.</p>
+
+<h3>What affects the size of r? Restriction of range</h3>
+<p>A correlation depends not only on how tightly two variables are related, but also on how much the variables vary in the sample. If you only study people with "very high social support," almost everyone has the same social support, and its correlations with other variables are pushed down. In the course data, the correlation between social support and the loneliness total is −0.42 across all 800 people; among only the 185 people with social support ≥ 4, it shrinks to −0.22. This is called {{T:restriction of range|}}. Social work studies often sample only "service users" (whose problems are already concentrated in the higher range); the correlations found there may be weaker than in the general population, but that does not necessarily mean the relationship itself is weaker.</p>
+<h3>The correlation matrix: raw material for network analysis</h3>
+<p>With p variables, every pair has a correlation; arranged in a p × p table, they form a {{T:correlation matrix|}}. The diagonal is all 1s (each variable with itself), and the table is symmetric (the correlation of A with B = the correlation of B with A). With 9 items there are 9 × 8 / 2 = 36 different correlations. In Module 6 you will see that a cross-sectional network is "processed" almost entirely from this table; CLPN instead runs regressions on the relations between T1 and T2. The raw material of both kinds of network is a correlation (covariance) matrix of this kind.</p>
+
+<h3>Correlation ≠ causation: confounders</h3>
+<div class="box analogy"><b class="bt">The classic example</b><p>In summer, ice cream sales and the number of drownings are strongly positively correlated. Does ice cream cause drowning? Of course not: hot weather makes people both buy ice cream and go swimming. A third variable that affects both like this is called a {{T:confounder|}}.</p></div>
+<p>An example from social work: "number of community activities attended" is negatively correlated with "depression score." There are at least these possible explanations: (1) taking part in activities lowers depression; (2) reverse causation: depressed people don't want to go out to activities in the first place; (3) confounding: people in good physical health are both able to attend activities and less likely to be depressed; (4) selection bias: only people who were doing relatively well answered the questionnaire. One correlation coefficient cannot tell these four explanations apart.</p>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>Covariance and r</h2>
+<div class="mathbox">$$\operatorname{cov}(X,Y) = \frac{\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y)}{n-1} \qquad r = \frac{\operatorname{cov}(X,Y)}{s_X\, s_Y} = \frac{1}{n-1}\sum_{i=1}^{n} z_{x_i}\, z_{y_i}$$</div>
+<dl class="sym"><dt>\((x_i-\bar x)(y_i-\bar y)\)</dt><dd>The product of person \(i\)'s two deviations: positive if they have the same sign, negative if not (the quadrant picture).</dd>
+<dt>\(n-1\)</dt><dd>As with the variance, divide by \(n-1\).</dd><dt>\(s_X, s_Y\)</dt><dd>The standard deviation of each variable; dividing by them = removing the scale.</dd>
+<dt>\(z_{x_i} z_{y_i}\)</dt><dd>The product of the two z-scores; r is the "average" of these products (dividing by \(n-1\)).</dd></dl>
+<p>A quick check: what is the covariance of a variable with itself? \(\operatorname{cov}(X,X) = \sum (x_i-\bar x)^2/(n-1)\), which is the variance. So \(r(X,X) = s_X^2/(s_X s_X) = 1\).</p>
+<h3>A small example by hand</h3>
+<p>3 people: loneliness \(x\) = 2, 4, 6; depression \(y\) = 1, 3, 2.</p>
+<ol><li>\(\bar x = 4,\ \bar y = 2\). Deviations: \(x\): −2, 0, 2; \(y\): −1, 1, 0.</li>
+<li>Products: 2, 0, 0, sum = 2; \(\operatorname{cov} = 2/2 = 1\).</li>
+<li>\(s_X = \sqrt{8/2}=2,\ s_Y=\sqrt{2/2}=1\); \(r = 1/(2\times1) = 0.5\).</li></ol>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span><code>cov()</code>, <code>cor()</code>, and the correlation matrix</h2>
+<p>Script: <a href="../R/L1-4.R">R/L1-4.R</a>.</p>
+```r R/L1-4.R (excerpt)
+source("R/_setup.R")
+dat <- read_course_data()
+dat$lone_sum_t1 <- rowSums(dat[, paste0(lone_items, "_t1")])
+dat$dep_sum_t1  <- rowSums(dat[, paste0(dep_items, "_t1")])
+x <- dat$lone_sum_t1; y <- dat$dep_sum_t1
+cov_hand <- sum((x - mean(x)) * (y - mean(y))) / (length(x) - 1)  # Covariance
+r_hand   <- cov_hand / (sd(x) * sd(y))                             # Correlation
+cat("Covariance: manual", round(cov_hand, 3), " cov()", round(cov(x, y), 3), "\n")
+cat("Correlation r: manual", round(r_hand, 3), " cor()", round(cor(x, y), 3), "\n")
+vars <- c("lone_sum_t1", "dep_sum_t1", "social_support_t1", "sleep_hours_t1", "life_sat_t1")
+round(cor(dat[, vars]), 2)                               # Correlation matrix
+cat("\nSpearman r(loneliness, depression) =", round(cor(x, y, method = "spearman"), 3), "\n")   # Spearman correlation
+```
+```out Output (R/output/L1-4_log.txt, excerpt)
+Covariance: Manual = 3.268  cov() = 3.268 
+Correlation r: Manual = 0.312  cor() = 0.312 
+
+                  lone_sum_t1 dep_sum_t1 social_support_t1 sleep_hours_t1
+lone_sum_t1              1.00       0.31             -0.42          -0.12
+dep_sum_t1               0.31       1.00             -0.18          -0.29
+social_support_t1       -0.42      -0.18              1.00           0.05
+sleep_hours_t1          -0.12      -0.29              0.05           1.00
+life_sat_t1             -0.33      -0.25              0.35           0.06
+                  life_sat_t1
+lone_sum_t1             -0.33
+dep_sum_t1              -0.25
+social_support_t1        0.35
+sleep_hours_t1           0.06
+life_sat_t1              1.00
+
+Spearman r(Loneliness, Depression) = 0.316 
+```
+<p>The correlation matrix has 5 columns; when they don't fit on one line, R wraps the last column and prints it separately below (on a wider console it may not wrap). It is the same 5 × 5 table either way.</p>
+<p>Reading the correlation matrix: the diagonal is all 1s, and the upper and lower triangles mirror each other. The strongest relation is between loneliness and social support (r = −0.42: the more social support, the less lonely). Sleep hours and depression: r = −0.29. These five variables are the table that Exercise 1.4-A asks you to "predict."</p>
+```r Ordinal items: comparing three correlations
+x2 <- dat[, c("dep1_t1", "dep3_t1")]          # Depressed mood, Sleep problems (0–3)
+round(cor(x2)[1, 2], 3)                        # Pearson
+round(cor(x2, method = "spearman")[1, 2], 3)   # Spearman
+round(psych::polychoric(x2)$rho[1, 2], 3)      # Polychoric
+```
+```out Output (R/output/L1-4_log.txt, end)
+[1] 0.4
+[1] 0.387
+[1] 0.479
+```
+<div class="box warnbox"><b class="bt">Missing values</b><p>If the data contain NA, <code>cor()</code> returns NA by default. You can add <code>use = "pairwise.complete.obs"</code> (each pair of variables uses the cases that have both) or <code>use = "complete.obs"</code> (only cases with no missing values on any variable). {{L:2.5}} and {{L:4.3}} discuss the difference in detail.</p></div>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: covariance and r by hand</h3>
+<p>5 people with loneliness x = 1, 2, 3, 4, 5 and depression y = 2, 4, 5, 4, 5.</p>
+<ol><li>Means: x̄ = 3, ȳ = 4.</li>
+<li>Deviations: x: −2, −1, 0, 1, 2; y: −2, 0, 1, 0, 1.</li>
+<li>Products of deviations: 4, 0, 0, 0, 2, sum = 6, covariance = 6 ÷ 4 = 1.5.</li>
+<li>Standard deviations: the sum of squared deviations is 10 for x, SD = √(10/4) ≈ 1.581; 6 for y, SD = √(6/4) ≈ 1.225.</li>
+<li>r = 1.5 ÷ (1.581 × 1.225) ≈ 0.775.</li></ol>
+<p>You can check it in R: <code>cor(c(1,2,3,4,5), c(2,4,5,4,5))</code>. Notice that the dots with positive products (persons 1 and 5: both below, or both above, the means) push r up, while dots with a product of 0 (one variable exactly at its mean) contribute no information.</p>
+<div class="box warnbox"><b class="bt">Common mistakes</b>
+<ul><li>Ignoring outliers. In a small sample, a single extreme case can move r from 0.1 to 0.4. Draw a scatter plot, or compute the Spearman correlation as a comparison.</li>
+<li>Labeling r "strong" or "weak" without context. r = 0.3 is very common in psychosocial research and not small: r² = 0.09, so about 9% of the variance is "shared."</li></ul></div>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: r = −0.6 or r = 0.3: which relation is stronger?
++ r = −0.6 || Correct: strength is the absolute value, and 0.6 &gt; 0.3; the minus sign only gives the direction.
+- r = 0.3, because it is positive || The sign gives the direction, not the strength.
+- They are equally strong || The absolute values differ: 0.6 is twice 0.3.
+- They can't be compared, because one is positive and the other negative || Strength depends only on the absolute value, so correlations with different directions can still be compared for strength.
+E: "Negative correlation" does not mean "weak correlation."
+```
+```quiz
+Q: Data for 3 people: x = 1, 2, 3; y = 6, 4, 2. What is the Pearson correlation r?
+N: -1 | 0.001
+H: Sketch the 3 points: do they lie exactly on a straight line? Does it go up or down?
+E: The three points lie exactly on a falling line (each time x goes up by 1, y goes down by 2), so r = −1.
+```
+```quiz
+Q: Why is the correlation matrix called the "raw material" of network analysis?
+- Because a network plot is just the correlation matrix drawn as it is || It is usually processed further (partial correlations, regularization); see Module 6.
++ Because the edges between nodes are statistical associations processed from the correlation (or covariance) structure of the variables || Correct.
+- Because once the correlation matrix has been processed into a network, the edges can be read as causal || Neither partial correlations nor regularization turn correlation into causation; confounding, reverse causation, and other explanations are still possible.
+E: A cross-sectional network starts from the correlation matrix and computes partial correlations; CLPN uses regressions across time, but the regressions themselves also depend only on the covariances of the variables.
+```
+```quiz
+Q: Does r = 0 show that two variables have "no relation at all"?
+- Yes || This is the misreading this lesson warns about: r only measures straight-line relations, and a U-shaped relation can have r close to 0.
+- Yes, as long as the sample is large enough || A large sample only makes the estimate of r more precise; for a curved relation, even a precise r is still close to 0.
++ No: r only measures linear relations, and the two may have a strong curved relation (e.g., U-shaped) || Correct. That is why you should always draw a scatter plot.
+E: For example, stress and performance may follow an inverted U: performance is best under moderate stress. The Pearson r of such a relation may be close to 0.
+```
+```quiz
+Q: Among the possible explanations of "social support is negatively correlated with depression," which one is "reverse causation"?
+- Social support lowers depression || This is the direction usually assumed (support → depression), not the reverse.
++ Depressed people reach out to others less, so they get less social support || Correct: the arrow points the opposite way from the usual assumption.
+- Physical health affects both social support and depression || This is a confounder: a third variable affects both, and the two may have no direct effect on each other.
+- Only people with a lot of support filled in the questionnaire || This is selection bias: who gets into the sample creates the association.
+E: Longitudinal data can help separate the directions (which comes first); cross-lagged models were proposed for exactly this.
+```
+```quiz
+Q: How does <code>qgraph::cor_auto()</code>, widely used in network analysis, handle depression items scored 0–3?
+- It computes Pearson correlations directly || It first checks whether variables are ordinal; items with only 4 categories are not treated with Pearson correlations.
++ It treats them as ordinal and computes polychoric correlations || Correct: variables with few categories (by default ≤ 7) are treated as ordinal.
+- It first turns the scores into ranks and computes Spearman correlations || That is how the Spearman correlation works; cor_auto() uses polychoric correlations for ordinal variables.
+E: In Lesson 6.4, when you estimate networks with bootnet, you will see the argument corMethod = "cor_auto".
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-on practice</h2>
+<div class="exitem"><h4>Exercise 1.4-A: Guess first, then check</h4>
+<p>Without looking at the data, draw the correlation matrix you expect for 5 variables (loneliness, sleep, depressed mood, social support, exercise): put + / − / 0 in each cell, and give a reason of a word or two for each cell. Later, in {{L:2.5}}, you will compare it with the real data.</p>
+<details class="answer"><summary>Typical expectations, compared with the course data</summary>
+<p>Common expectations: loneliness–depression +; loneliness–social support −; sleep hours–depression −; social support–depression −; exercise–depression −; exercise–sleep + (the course data have no "exercise" variable, so this row is expectation only).</p>
+<p>Course data at T1 (total scores): loneliness–depression 0.31; loneliness–social support −0.42; sleep hours–depression −0.29; social support–depression −0.18; social support–sleep 0.05 (almost 0). When you write down the differences, think about: why is social support almost unrelated to sleep? (Hint: in the simulated data, sleep hours are driven mainly by the "Sleep problems" item and have nothing to do with the loneliness trait. Real data may be different.)</p></details></div>
+<div class="exitem"><h4>Exercise 1.4-B: "Ice cream and drowning" in social work</h4>
+<p>Write an example of confounding from social work: two variables are correlated, but the correlation comes mainly from a third variable. Draw an arrow diagram of the three.</p>
+<details class="answer"><summary>Example answer</summary>
+<p>"Children in families receiving <i>dibao</i> (China's minimum living allowance) have lower school grades." This does not mean the allowance lowers grades; family financial hardship leads both to applying for the allowance and to fewer resources for learning. Arrows: financial hardship → allowance; financial hardship → grades. If the analysis "controls" for family income, the association between the allowance and grades may become much weaker or even reverse (this is what the multiple regression of {{L:3.2}} does).</p></details></div>
+<div class="exitem"><h4>Exercise 1.4-C: In R</h4>
+<p>Compute the correlation matrix of the 9 items at T1 (<code>cor(dat[, vars_t(1)])</code>) and find: (1) the most strongly correlated pair of items; (2) the most strongly correlated pair across constructs (loneliness item × depression item); (3) for <code>dep2_t1</code> and <code>dep4_t1</code>, compute the Pearson, Spearman, and polychoric correlations (see the code "comparing three correlations" in this lesson), and say in one sentence which is largest and why.</p>
+<details class="answer"><summary>Example code and hints</summary>
+```r
+source("R/_setup.R")
+dat <- read_course_data()
+R <- round(cor(dat[, vars_t(1)]), 2)
+R
+R[paste0(lone_items, "_t1"), paste0(dep_items, "_t1")]   # Rows = loneliness items, columns = depression items: the 4 × 5 cross-construct block
+```
+<p>Hint: the loneliness items correlate about 0.44–0.51 with each other (lone1–lone4 and lone2–lone4 are both 0.51); the depression items about 0.37–0.44; across constructs the correlations are between 0.12 and 0.25, and the strongest is lone3 (Feeling isolated) with dep5 (Worthlessness), r = 0.25. Correlations within a construct are clearly stronger, which is why nodes of the same color cluster together in network plots.</p>
+<p>Question (3): usually the polychoric correlation is the largest, and Pearson and Spearman are close to each other. In the course data, the Pearson, Spearman, and polychoric correlations of <code>dep2_t1</code> and <code>dep4_t1</code> are about 0.44, 0.43, 0.52 (<code>R/solutions/L1-4_solution.R</code>). The reason: 0–3 has only 4 categories and there is a floor effect, so Pearson treats coarse categories as exact numbers and the correlation is "pushed down"; the polychoric correlation estimates the correlation between the underlying continuous tendencies (the same pattern as 0.40 / 0.39 / 0.48 for Depressed mood–Sleep problems).</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three things to take away</h2>
+<ul><li>Covariance = the average product of deviations; correlation r = the standardized covariance, from −1 to 1; the sign gives the direction, the absolute value the strength.</li>
+<li>For ordinal, skewed items, consider the Spearman or polychoric correlation; the correlation matrix is the raw material of network analysis.</li>
+<li>Correlation ≠ causation: reverse causation, confounding, selection bias, and other explanations remain. Next lesson: {{L:1.5}}.</li></ul>
+</section>

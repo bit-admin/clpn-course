@@ -1,0 +1,18 @@
+lone1: β = 0.13, 95% CI [0.07, 0.19], p < .001
+dep1: β = 0.54, 95% CI [0.48, 0.60], p < .001
+
+APA style example: After controlling for T1 depression, T1 loneliness positively predicted T2 depression (β = 0.13). Note the use of "predicted" rather than "caused".
+
+m2: Loneliness + social support + sleep predicting T2 depression, unstandardized b and standardized beta:
+                 b   beta
+(Intercept)  4.672  0.000
+lone1        0.282  0.258
+support     -0.252 -0.059
+sleep       -0.371 -0.112
+
+Hand-calculate beta for loneliness = b * sd(x) / sd(y):
+lone1 
+0.258 
+b after converting sleep to minutes (= b in hours / 60):
+sleep_min 
+  -0.0062 

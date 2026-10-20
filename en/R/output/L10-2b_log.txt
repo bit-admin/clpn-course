@@ -1,0 +1,55 @@
+Check: Is the T1→T2 LASSO coefficient matrix in this script identical to the L10-2.R primary analysis?  TRUE 
+Step 2 LASSO (lambda.min): T1→T2 non-zero cross-lagged edges: 52; T2→T3: 55; cross-lagged paths entering SEM under conservative rule: 67 (per lag, out of 72 possible positions)
+
+Step 3 SEM (unconstrained): χ²(91) = 164.70, p < .001; CFI = 0.988; TLI = 0.959; RMSEA = 0.032 [0.024, 0.040]; SRMR = 0.023
+
+Step 3 Nested χ² test for cross-time invariance (each T1→T2 path = corresponding T2→T3 path):
+Δχ²(76) = 84.69, p = 0.232; AIC: constrained 53607.9 vs unconstrained 53675.2; BIC: constrained 54722.9 vs unconstrained 55146.2
+Final model:  Constrained model (invariance holds; used for subsequent pruning and prediction) 
+Final model fit: χ²(167) = 249.39; CFI = 0.987; TLI = 0.975; RMSEA = 0.025; SRMR = 0.027
+
+Cross-lagged edges retained after pruning at p < 0.01: 16 edges (Loneliness→Depression: 3, Depression→Loneliness: 2, within-construct: 11); at p < .05: 22 edges
+
+Step 4 in-/out-prediction (proportion of explained variance; CL = excluding autoregression):
+      inPred inPred_CL inPred_xconstruct outPred outPred_CL outPred_xconstruct
+lone1  0.264     0.024             0.003   0.021      0.003              0.003
+lone2  0.249     0.032             0.012   0.020      0.004              0.001
+lone3  0.256     0.049             0.010   0.015      0.002              0.002
+lone4  0.318     0.039             0.004   0.025      0.005              0.002
+dep1   0.233     0.039             0.014   0.019      0.006              0.001
+dep2   0.203     0.059             0.018   0.010      0.002              0.002
+dep3   0.196     0.017             0.001   0.018      0.004              0.000
+dep4   0.231     0.070             0.003   0.012      0.004              0.005
+dep5   0.257     0.062             0.013   0.013      0.001              0.000
+Highest cross-construct out-prediction:  dep4 ; highest cross-construct in-prediction:  dep2 
+
+Step 5 Concordance check: Results for top 10 primary analysis cross-lagged edges in full procedure:
+          Edge                                    Items  LASSO     Bootstrap_CI SEM_refit       p Retained
+   dep3 → dep4                 Sleep problems → Fatigue  0.135   [0.050, 0.214]     0.150 9.8e-09      Yes
+ lone2 → lone4 Feeling left out → No one understands me  0.127   [0.059, 0.200]     0.143 1.1e-08      Yes
+  lone4 → dep4          No one understands me → Fatigue  0.108   [0.011, 0.180]     0.031 2.6e-01       No
+ lone4 → lone2 No one understands me → Feeling left out  0.101   [0.023, 0.178]     0.107 7.3e-05      Yes
+ lone4 → lone3 No one understands me → Feeling isolated  0.096   [0.016, 0.176]     0.108 8.0e-05      Yes
+  lone4 → dep5    No one understands me → Worthlessness  0.093   [0.014, 0.161]     0.094 5.5e-04      Yes
+   dep1 → dep2        Depressed mood → Loss of interest  0.092   [0.007, 0.169]     0.110 4.6e-05      Yes
+   dep5 → dep4                  Worthlessness → Fatigue  0.091   [0.002, 0.165]     0.039 1.3e-01       No
+  dep4 → lone2               Fatigue → Feeling left out -0.090 [-0.161, -0.001]    -0.117 7.3e-06      Yes
+   dep1 → dep5           Depressed mood → Worthlessness  0.086   [0.003, 0.165]     0.126 1.3e-06      Yes
+Retained 10 out of top 8 edges; retained 2 out of top 3 edges
+Breakdown of un-retained edges across lags (constrained model estimates common value across lags):
+         Edge LASSO_T1T2 LASSO_T2T3 Free_T1T2 Free_p Constrained
+ lone4 → dep4      0.108          0     0.109 0.0056       0.031
+  dep5 → dep4      0.091          0     0.095 0.0100       0.039
+Of the 52 non-zero edges in primary analysis, 16 were retained in full procedure and 36 were dropped; 0 edges were retained in full procedure but 0 in primary analysis
+Of the 12 edges whose primary analysis bootstrap CI excludes 0, 9 were retained in full procedure
+Correlation between primary analysis LASSO coefficients and SEM re-estimated coefficients (all 72 cross-lagged positions; unentered set to 0) = 0.842
+Construct-level sum of edge weights: Loneliness→Depression primary 0.56, full procedure (pruned) 0.30; Depression→Loneliness primary 0.08, full procedure -0.04
+
+Comparison with population target (data/true_B_population.csv cross-lagged edges with |β| ≥ 0.05, n = 36):
+                                             Recovered False_Positives Missed Estimated_Edges
+Primary analysis: LASSO-only                        33              19      3              52
+Full procedure: SEM re-fit + p < .01 pruning        16               0     20              16
+Comparison with within-person truth (data/true_B_within.csv non-zero cross-lagged edges, n = 8; remaining 'false positives' largely stem from stable traits):
+                                             Recovered False_Positives Missed Estimated_Edges
+Primary analysis: LASSO-only                         8              44      0              52
+Full procedure: SEM re-fit + p < .01 pruning         8               8      0              16

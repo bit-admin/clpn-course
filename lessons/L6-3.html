@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.3 正则化网络估计：LASSO、graphical lasso 与 EBICglasso · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L6-3.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="6.3" style="--c:#14b8a6">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L6-3">CLPN 课程大纲</a><span class="crumb">M6 网络心理测量学基础 / 6.3</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L6-3.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L6-3.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details open style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html" class="cur" aria-current="page"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 6 · Network Psychometrics · 第 6.3 课</div>
+<h1>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L6-2.html">6.2 偏相关网络与高斯图模型（GGM）</a>、<a href="L3-5.html">3.5 过拟合与正则化：岭回归、LASSO 与交叉验证</a></span><span>配套脚本：<a href="../R/L6-3.R">R/L6-3.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>理解为什么样本有限时需要正则化来避免“满屏小边”</li><li>理解 graphical lasso 与 EBIC 模型选择、超参数 γ 的作用</li><li>知道 EBICglasso 的适用条件与局限</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>图形 LASSO</b><span class="en">graphical lasso, glasso</span></li><li><b>扩展贝叶斯信息准则</b><span class="en">extended BIC, EBIC</span></li><li><b>超参数 γ</b><span class="en">hyperparameter gamma</span></li><li><b>稀疏网络</b><span class="en">sparse network</span></li><li><b>假阳性边</b><span class="en">false positive edge</span></li><li><b>非正则化估计</b><span class="en">unregularized estimation, e.g. ggmModSelect</span></li></ul>
+<p>上一课的偏相关网络有一个现实问题：样本有限时，几乎所有偏相关都不会恰好等于 0，于是每对节点之间都有一条小边（课程数据中非正则化偏相关网络 36/36 条边全部非零）。这一课学习如何用正则化去掉噪声造成的小边。它与 CLPN 的 LASSO 回归是同一个思想。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>满屏小边从哪来？</h3>
+<p>即使两个题目在总体中真的条件独立（偏相关 = 0），样本估计值也会因为 <span class="term">抽样变异<span class="en">（sampling variability）</span></span> 而是 0.03、−0.05 之类的小数。9 个节点就有 36 个偏相关要估计，16 个节点就有 120 个；每个都带一点噪声，画出来就是一团“毛线”，其中许多是 <span class="term">假阳性边<span class="en">（false positive edge）</span></span>。</p>
+<h3>LASSO 的直觉：给“复杂”收费</h3>
+<p>复习 <a href="L3-5.html">3.5 过拟合与正则化：岭回归、LASSO 与交叉验证</a>：LASSO 在“拟合数据”的目标上再加一笔“罚款”：所有系数绝对值之和乘以 λ。为了少交罚款，模型会把作用不大的系数直接压成 0，只保留“值得花钱”的那些。λ 越大，罚款越重，留下的边越少。用在网络上，就得到 <span class="term">稀疏网络<span class="en">（sparse network）</span></span>。</p>
+<p>下面的演示中，“真实网络”有 10 条边（勾选“标出真实结构”可看到绿色虚线）。我们从真实网络中抽样估计偏相关，然后用 λ 把小边压掉。试着回答：λ = 0 时有多少假阳性？λ 多大时假阳性降为 0？此时漏掉了几条真实边？把样本量调到 100 再试一次。</p>
+<div class="widget w2" data-widget="lasso"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>graphical lasso 与 EBIC</h3>
+<p><span class="term">图形 LASSO<span class="en">（graphical lasso, glasso）</span></span> 把 LASSO 惩罚直接加在精度矩阵 K 上：在“让 K 尽量符合样本协方差”的同时，惩罚 K 中所有非对角元素的绝对值之和。结果是许多 \(k_{ij}\) 恰好为 0，也就是 GGM 中没有边。</p>
+<p>λ 怎么选？glasso 会尝试一串 λ（通常 100 个，从“全空网络”到“几乎全连”），每个 λ 得到一个候选网络。然后用 <span class="term">扩展贝叶斯信息准则<span class="en">（extended BIC, EBIC）</span></span> 打分，选分数最低的那个。EBIC 在普通 BIC 的基础上，对“边多的网络”额外加罚，罚得多重由 <span class="term">超参数 γ<span class="en">（hyperparameter gamma）</span></span> 决定：γ = 0 时就是普通 BIC，γ 越大越偏爱稀疏网络。bootnet 的默认值是 γ = 0.5（Epskamp & Fried, 2018 推荐的保守选择）；也常见 0.25。</p>
+<div class="box story"><b class="bt">要点：</b><p>EBICglasso = graphical lasso（产生一串候选网络）+ EBIC（选其中一个）。γ 越大 → 越稀疏 → 假阳性越少，但也更可能漏掉真实的弱边。</p></div>
+<h3>课程脚本的实际结果</h3>
+<p>R/L6-3.R 做了两组比较：</p>
+<ol><li><b>课程数据（N = 800，9 题）：</b>γ = 0、0.25、0.5 选出的网络都是 28 条边，完全相同。也就是说，三个 γ 下 EBIC 选中了同一个 λ。样本大、题目间关联强时，γ 带来的额外惩罚相对于对数似然的差距很小，不足以改变选择。这不是 λ 序列的边界造成的：R/L6-3.R 在日志末尾打印了每个 γ 选中的 λ，三个 γ 都选中了 100 个候选 λ 中从大到小的第 81 个（λ = 0.01375），不在序列的最小端。如果选中的是序列最小端，就说明 EBIC 想要的网络比序列能提供的还要稠密，这时应当把序列向下延长再看。bootnet 还可能提示 “A dense regularized network was selected”：这是提醒你所选网络较稠密，不是错误。</li>
+<li><b>已知真实网络的小样本模拟（12 条真实边，n = 150）：</b></li></ol>
+<div class="tablewrap"><table><tr><th>γ</th><th>估计边数</th><th>其中假阳性</th></tr><tr><td>0</td><td>22</td><td>10</td></tr><tr><td>0.25</td><td>15</td><td>3</td></tr><tr><td>0.5</td><td>13</td><td>1</td></tr></table></div>
+<p>注意“估计边数 − 假阳性”在三行都是 12：在这组模拟里，三个 γ 都把 12 条真实边全部找回了，差别只在多出来的假阳性（10 条、3 条、1 条）。γ = 0.5 时 13 条估计边中 12 条为真，既没有漏边，也只多 1 条。这是因为这组模拟的真实边不算太弱；真实边更弱、样本更小时，γ 越大越可能把弱的真实边也压掉。小样本时 γ 很重要；大样本时影响往往很小。</p>
+<h3>正则化的三个局限</h3>
+<ol><li><b>边为 0 ≠ 没有关系。</b>正则化把某条边压成 0，只说明“在当前样本量和惩罚下，证据不足以保留它”。弱的真实边经常被压掉。</li>
+<li><b>保留的边被“缩小”了。</b>LASSO 估计值系统地偏向 0，所以不能把正则化边权重当作无偏估计。</li>
+<li><b>大样本 + 稠密真实网络时 EBICglasso 可能不理想。</b>Epskamp 等人的后续工作提出 <span class="term">非正则化估计<span class="en">（unregularized estimation, e.g. ggmModSelect）</span></span>，在大样本时可作为替代或敏感性分析。bootnet 中只需 <code>default = "ggmModSelect"</code>。</li></ol>
+<h3>与 CLPN 的区别：EBIC vs 交叉验证</h3>
+<p>CLPN 对每个 T2 节点做一个 LASSO 回归（glmnet），用 <span class="term">交叉验证<span class="en">（cross-validation, CV）</span></span> 选 λ（<code>cv.glmnet</code>）：把样本分成 10 份，轮流用 9 份估计、1 份检验预测误差，选预测误差最小的 λ（lambda.min），或更保守的 lambda.1se。本课程主线的“仅 LASSO”简化版到此为止；Wysocki 等人（2025）的完整流程把这一步当作“选边”，之后还要做 SEM 重估（7.5 课）。EBIC 是“信息准则”，偏重找到真实结构；CV 偏重“预测准确”，通常比 EBIC(γ = 0.5) 选出更稠密的网络。课程的 <code>clpn_estimate()</code> 两种都支持（<code>rule = "lambda.min" / "lambda.1se" / "ebic"</code>），7.2 课会比较。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>样本量小时 EBICglasso 会怎样？</summary><p>样本小时，惩罚相对更占上风，网络会很稀疏，只剩最强的几条边，甚至一条边也没有。这时不能说“症状之间没有关系”，只能说“样本不足以检测”。Epskamp 与 Fried（2018）的教程讨论了样本量的影响。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<h4>graphical lasso 的目标函数</h4>
+<div class="mathbox">\[\hat K=\arg\max_{K\succ0}\ \Big[\ \log\det K-\mathrm{tr}(SK)\ -\ \lambda\sum_{i\neq j}|k_{ij}|\ \Big]\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(K\succ0\)</td><td>K 必须是正定矩阵（保证它是一个合法的精度矩阵），了解即可</td></tr><tr><td>\(\log\det K-\mathrm{tr}(SK)\)</td><td>高斯对数似然（去掉常数）：衡量 K 与样本协方差 S 的吻合程度，越大越好</td></tr><tr><td>\(\det,\ \mathrm{tr}\)</td><td>行列式与迹（对角线之和），只需知道它们是矩阵的“汇总数字”</td></tr><tr><td>\(\lambda\)</td><td>惩罚强度。λ = 0 → 不惩罚；λ 越大 → 越多 k<sub>ij</sub> 被压成 0</td></tr><tr><td>\(\sum_{i\neq j}|k_{ij}|\)</td><td>所有非对角元素的绝对值之和，即 L1 惩罚（LASSO 的标志）</td></tr></table>
+<h4>EBIC</h4>
+<div class="mathbox">\[\mathrm{EBIC}=-2L+E\log N+4\gamma E\log p\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(L\)</td><td>该候选网络的对数似然（拟合优度，越大越好）</td></tr><tr><td>\(E\)</td><td>该网络的边数（参数个数）</td></tr><tr><td>\(N,\ p\)</td><td>样本量、节点数</td></tr><tr><td>\(\gamma\)</td><td>EBIC 超参数，常取 0、0.25、0.5</td></tr></table>
+<p>前两项就是普通 BIC：拟合越好越低，边越多越高。第三项是“额外的边数罚款”，γ 越大罚得越重。注意第三项的系数是 4γ（来自 Foygel & Drton, 2010：p 个节点可能的边数约为 p²/2，取对数约为 2 log p，再乘以 EBIC 定义中的 2γ，就得到 4γ log p；Epskamp & Fried, 2018 采用此形式）。</p>
+<h4>为什么 L1 惩罚会产生“恰好为 0”？</h4>
+<p>以一个系数为例：最小化 \((z-\beta)^2/2+\lambda|\beta|\) 的解是 \(\hat\beta=\mathrm{sign}(z)\max(|z|-\lambda,0)\)，称为“软阈值”（soft thresholding）：|z| 不超过 λ 的直接变成 0，超过的减去 λ。上面的交互演示就是用这个公式。|β| 的“尖角”在 0 处，使得 0 成为一个“吸引点”；岭回归（ridge）用 β² 惩罚则没有尖角，系数只会变小、不会恰好为 0。</p>
+
+<h3>完整例题：LASSO 怎样把小系数“压”成 0</h3>
+<p>考虑最简单的情形：预测变量已经标准化，而且彼此不相关。这时 glmnet 的 LASSO 解有一个简单的公式，叫<b>软阈值</b>（soft-thresholding）：</p>
+<div class="mathbox">\[\hat\beta_j^{\text{LASSO}}=\operatorname{sign}(\hat\beta_j^{\text{OLS}})\cdot\max\left(|\hat\beta_j^{\text{OLS}}|-\lambda,\;0\right)\]</div>
+<p>假设普通回归得到 4 个系数：0.30、0.12、−0.05、0.02，取 λ = 0.08：</p>
+<div class="tablewrap"><table><tr><th>OLS 系数</th><th>|b| − λ</th><th>LASSO 系数</th><th>发生了什么</th></tr><tr><td>0.30</td><td>0.22</td><td>0.22</td><td>保留，但向 0 收缩了 0.08</td></tr><tr><td>0.12</td><td>0.04</td><td>0.04</td><td>保留，收缩后已经很小</td></tr><tr><td>−0.05</td><td>−0.03 → 取 0</td><td>0</td><td>被压成 0（从网络中删除）</td></tr><tr><td>0.02</td><td>−0.06 → 取 0</td><td>0</td><td>被压成 0</td></tr></table></div>
+<p>可以看到 LASSO 的两个特点：①绝对值小于 λ 的系数直接变成 0，网络因此变得稀疏；②保留下来的系数也都向 0 收缩了同样的量，所以 LASSO 估计的边权<b>系统性偏小</b>。岭回归（ridge）则不同，它把每个系数按比例缩小，但不会让任何系数正好等于 0，所以无法用来“选边”。</p>
+<p>真实数据中预测变量是相关的，公式不再这么简单，但直觉相同：λ 越大，门槛越高，留下的边越少。EBICglasso 则在一串 λ 中，按 EBIC（拟合好坏 + 对边数的惩罚，γ 越大惩罚越重）挑出一个。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><div class="codeblk"><div class="ctitle">R/L6-3.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(qgraph) })
+dat &lt;- read_course_data()
+items_t1 &lt;- dat[, vars_t(1)]; names(items_t1) &lt;- items     # 只取 T1 的 9 题
+for (g in c(0, 0.25, 0.5)) {
+  net &lt;- estimateNetwork(items_t1, default = &quot;EBICglasso&quot;, tuning = g,
+                         corMethod = &quot;cor_auto&quot;, verbose = FALSE)
+  cat(&quot;γ =&quot;, g, &quot; 边数 =&quot;, sum(net$graph[upper.tri(net$graph)] != 0), &quot;\n&quot;)
+}
+# 对照：非正则化偏相关网络（36 条边全部非零）
+pc &lt;- getWmat(qgraph(cor_auto(items_t1, verbose = FALSE), graph = &quot;pcor&quot;, DoNotPlot = TRUE))
+sum(pc[upper.tri(pc)] != 0)</code></pre></div>
+<p><b>参数说明：</b><code>default = "EBICglasso"</code> 选择估计方法；<code>tuning</code> 就是 γ；<code>corMethod = "cor_auto"</code> 自动检测定序变量并使用多分格相关（polychoric correlation，见下一课）；<code>net$graph</code> 是估计出的权重（偏相关）矩阵。脚本后半部分还用 <code>genGGM()</code> 和 <code>ggmGenerator()</code> 生成已知真实网络的数据，计算假阳性。</p><div class="box warnbox"><b class="bt">使用正则化时的常见错误</b><ul>
+<li><b>直接比较正则化边权与普通回归系数的大小。</b>正则化估计系统性偏小，不能拿来和其他研究的未正则化系数直接比较。</li>
+<li><b>用调参换结果。</b>先试 γ = 0、0.25、0.5，挑一个“边最多”或“结论最好看”的，这是研究者自由度的滥用。应在分析计划中事先写明 γ（通常为 0.5），其他取值只作为敏感性分析报告。</li>
+<li><b>样本很大时仍然以为网络“很稀疏”。</b>N 越大，越弱的边也能通过门槛。课程数据（N = 800）的横断面网络在 γ = 0、0.25、0.5 下都是 28 条边，说明在大样本中 γ 的影响可能很小。</li></ul></div><h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L6-3.R</code>（52 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L6-3.R  正则化网络估计：EBICglasso 与超参数 γ  (Regularized GGM, gamma)
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+suppressPackageStartupMessages({ library(bootnet); library(qgraph) })
+log_open(&quot;L6-3_log.txt&quot;)
+dat &lt;- read_course_data()
+items_t1 &lt;- dat[, vars_t(1)]; names(items_t1) &lt;- items
+res &lt;- data.frame()
+nets &lt;- list()
+# 注意：N = 800 较大时，EBICglasso 可能提示 “A dense regularized network was selected”
+# （选到的 λ 很小 → 网络较稠密）。这是一个“提醒”而不是错误，所以下面用 suppressWarnings() 隐藏。
+for (g in c(0, 0.25, 0.5)) {
+  net &lt;- suppressWarnings(estimateNetwork(items_t1, default = &quot;EBICglasso&quot;, tuning = g,
+                         corMethod = &quot;cor_auto&quot;, verbose = FALSE))  # cor_auto：定序题目→多分格相关
+  nets[[as.character(g)]] &lt;- net
+  res &lt;- rbind(res, data.frame(gamma = g, 边数 = sum(net$graph[upper.tri(net$graph)] != 0)))
+}
+print(res)
+# 本课程数据中，孤独题之间、抑郁题之间的关联都较强，3 个 γ 选出的网络可能完全相同。
+# 下面用一个“已知真实网络、边较弱、n = 150”的模拟数据，γ 的作用会更明显：
+set.seed(63)
+tn &lt;- genGGM(12, p = 0.2, nei = 1, propPositive = 0.8, constant = 1.5)   # 真实网络（12 条边）
+Xs &lt;- ggmGenerator()(150, tn)
+cat(&quot;模拟数据真实边数 =&quot;, sum(tn[upper.tri(tn)] != 0), &quot;\n&quot;)
+for (g in c(0, 0.25, 0.5)) {
+  ns &lt;- suppressWarnings(estimateNetwork(Xs, default = &quot;EBICglasso&quot;, tuning = g, verbose = FALSE))
+  est &lt;- ns$graph[upper.tri(ns$graph)] != 0; tru &lt;- tn[upper.tri(tn)] != 0
+  cat(&quot;γ =&quot;, g, &quot;：估计边数 =&quot;, sum(est), &quot;；其中假阳性 =&quot;, sum(est &amp; !tru), &quot;\n&quot;)
+}
+cat(&quot;γ 越大 → 网络越稀疏（sparse），假阳性边越少，但也可能漏掉真实的弱边。\n&quot;)
+# 对比：不正则化的偏相关网络（满屏小边）
+pcor_full &lt;- qgraph::getWmat(qgraph(cor_auto(items_t1, verbose = FALSE), graph = &quot;pcor&quot;, DoNotPlot = TRUE))
+cat(&quot;非正则化偏相关网络的非零边数 =&quot;, sum(abs(pcor_full[upper.tri(pcor_full)]) &gt; 0), &quot;/ 36\n&quot;)
+png_open(&quot;L6-3_gamma.png&quot;, 2400, 900)
+par(mfrow = c(1, 3)); L &lt;- averageLayout(nets[[1]], nets[[2]], nets[[3]])
+for (g in names(nets)) plot(nets[[g]], layout = L, groups = groups_list, maximum = 0.5,
+                            legend = FALSE, title = paste(&quot;γ =&quot;, g))
+invisible(dev.off())
+# 核对：EBIC 在每个 γ 下选中的 λ，以及它在 λ 序列中的位置（是否落在序列最小端）
+cat(&quot;\nEBIC 选中的 λ（课程数据，N = 800）：\n&quot;)
+for (g in names(nets)) {
+  r &lt;- nets[[g]]$results
+  if (!is.list(r) || is.null(r$lambda) || is.null(r$ebic))  # 万一 bootnet 没有保存全部结果，就直接重算
+    r &lt;- qgraph::EBICglasso(cor_auto(items_t1, verbose = FALSE), n = nrow(items_t1),
+                            gamma = as.numeric(g), returnAllResults = TRUE)
+  lam &lt;- r$lambda; i &lt;- which.min(r$ebic)
+  cat(&quot;γ =&quot;, g, &quot;：λ =&quot;, signif(lam[i], 4), &quot;；序列共&quot;, length(lam), &quot;个 λ（&quot;,
+      signif(min(lam), 4), &quot;–&quot;, signif(max(lam), 4), &quot;），选中的是从大到小第&quot;,
+      rank(-lam)[i], &quot;个；是否为序列最小端：&quot;, if (lam[i] == min(lam)) &quot;是&quot; else &quot;否&quot;, &quot;\n&quot;)
+}
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L6-3_gamma.png" alt="L6-3_gamma.png" loading="lazy"><figcaption>图：<code>R/output/L6-3_gamma.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L6-3_log.txt</code></div><pre class="out"><code>  gamma 边数
+1  0.00   28
+2  0.25   28
+3  0.50   28
+模拟数据真实边数 = 12 
+γ = 0 ：估计边数 = 22 ；其中假阳性 = 10 
+γ = 0.25 ：估计边数 = 15 ；其中假阳性 = 3 
+γ = 0.5 ：估计边数 = 13 ；其中假阳性 = 1 
+γ 越大 → 网络越稀疏（sparse），假阳性边越少，但也可能漏掉真实的弱边。
+非正则化偏相关网络的非零边数 = 36 / 36
+
+EBIC 选中的 λ（课程数据，N = 800）：
+γ = 0 ：λ = 0.01375 ；序列共 100 个 λ（ 0.005681 – 0.5681 ），选中的是从大到小第 81 个；是否为序列最小端： 否 
+γ = 0.25 ：λ = 0.01375 ；序列共 100 个 λ（ 0.005681 – 0.5681 ），选中的是从大到小第 81 个；是否为序列最小端： 否 
+γ = 0.5 ：λ = 0.01375 ；序列共 100 个 λ（ 0.005681 – 0.5681 ），选中的是从大到小第 81 个；是否为序列最小端： 否 </code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">γ 越大，EBICglasso 网络会？</p><ul class="opts"><li><button type="button" data-ok="0">A. 更稠密</button><div class="ofb" hidden>反了：γ 加重对边数的惩罚，网络更稀疏。</div></li><li><button type="button" data-ok="1">B. 更稀疏</button><div class="ofb" hidden>正确：γ 加重对边数的惩罚。</div></li><li><button type="button" data-ok="0">C. 不变</button><div class="ofb" hidden>大样本时可能不变（课程数据三个 γ 都是 28 条边），但方向上 γ 越大越稀疏。</div></li><li><button type="button" data-ok="0">D. 边数不变，只是边权变小</button><div class="ofb" hidden>γ 改变的是 EBIC 选中哪个 λ，从而改变边数；不是在边数不变的前提下缩小边权。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">正则化把某条边压成 0，等于证明两者没有关系吗？</p><ul class="opts"><li><button type="button" data-ok="0">A. 是</button><div class="ofb" hidden>这是最常见的误读：被压成 0 只说明证据不足以保留它。</div></li><li><button type="button" data-ok="1">B. 否：只说明在当前样本量与惩罚下证据不足以保留它</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 只在 γ = 0.5 时是</button><div class="ofb" hidden>γ 只改变惩罚的轻重；任何 γ 下，被压成 0 都不等于证明为 0。</div></li><li><button type="button" data-ok="0">D. 只要 N > 500 就是</button><div class="ofb" hidden>样本大时弱边更容易被保留，但被压成 0 仍然只说明证据不足。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">EBICglasso 与 CLPN 中 cv.glmnet 选 λ 的方式有何不同？</p><ul class="opts"><li><button type="button" data-ok="0">A. 两者都用交叉验证，只是折数不同</button><div class="ofb" hidden>EBICglasso 不做交叉验证：它对每个候选 λ 的网络算 EBIC，选最低的那个。</div></li><li><button type="button" data-ok="1">B. EBICglasso 用信息准则（EBIC），cv.glmnet 用交叉验证的预测误差</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 反过来：EBICglasso 用交叉验证，cv.glmnet 用 EBIC</button><div class="ofb" hidden>反了：cv.glmnet 的 cv 就是交叉验证，EBICglasso 用 EBIC。</div></li><li><button type="button" data-ok="0">D. EBICglasso 不使用 λ</button><div class="ofb" hidden>它先生成一串 λ（通常 100 个）对应的候选网络，再用 EBIC 从中选一个。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">在课程数据（N = 800）上，三个 γ 选出的网络都是 28 条边。这说明？</p><ul class="opts"><li><button type="button" data-ok="0">A. λ 选在了候选序列的边界上，结果不可信</button><div class="ofb" hidden>脚本打印了选中的 λ：三个 γ 都选中 100 个候选中的第 81 个（λ = 0.01375），不在序列最小端。</div></li><li><button type="button" data-ok="1">B. 大样本、强关联时 γ 的影响可能很小</button><div class="ofb" hidden>正确；小样本模拟中 γ 的影响很明显。</div></li><li><button type="button" data-ok="0">C. γ 没有任何作用</button><div class="ofb" hidden>小样本模拟中 γ 从 0 到 0.5，假阳性从 10 条降到 1 条，作用很明显。</div></li><li><button type="button" data-ok="0">D. 应该改用 γ = 1</button><div class="ofb" hidden>γ 应事先确定；看到结果后改用 γ = 1，只会让网络更稀疏，也属于用调参换结果。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">LASSO 估计保留下来的非零边权重通常？</p><ul class="opts"><li><button type="button" data-ok="0">A. 是无偏的</button><div class="ofb" hidden>L1 惩罚带来收缩偏差：保留下来的系数也都被减去了一部分。</div></li><li><button type="button" data-ok="1">B. 被系统性地缩向 0</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 比真实值大</button><div class="ofb" hidden>方向反了：LASSO 把系数向 0 缩小，不会放大。</div></li><li><button type="button" data-ok="0">D. 等于未加惩罚的偏相关</button><div class="ofb" hidden>只有 λ = 0 时才等于未加惩罚的偏相关；λ > 0 时被缩小。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：γ 对比<span class="lvl">动手</span></h4><p>运行 R/L6-3.R，记录课程数据与模拟数据在 γ = 0、0.25、0.5 下的边数和假阳性数，写 3 句观察。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>参考观察：① 课程数据中三个 γ 都得到 28 条边，网络相同；② 小样本模拟中，γ 从 0 到 0.5，边数从 22 降到 13，假阳性从 10 降到 1；③ 真实网络 12 条边，γ = 0.5 时估计 13 条中 12 条为真，即真实边全部找回（γ = 0 和 0.25 时也都是 12 条全中，多出来的都是假阳性）；但这只是一组模拟，换种子会有波动，真实边更弱时 γ 大也可能漏边。结论：γ 在小样本中是重要的研究者自由度，应在分析计划中事先确定，并可做敏感性分析。</p></details></div>
+<div class="exitem"><h4>练习 2：软阈值手算<span class="lvl">基础</span></h4><p>若 λ = 0.1，样本偏相关分别为 0.35、0.08、−0.15、−0.04，软阈值后各是多少？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>0.35 → 0.25；0.08 → 0；−0.15 → −0.05；−0.04 → 0。规则：绝对值减 λ，不够减的变 0，保留原符号。</p></details></div>
+<div class="exitem"><h4>练习 3：在交互演示中找“最佳 λ”<span class="lvl">理解</span></h4><p>在本页演示中，分别在 N = 100、300、1000 下找到“假阳性 = 0 且漏掉的真实边最少”的 λ，记录下来。样本量与最佳 λ 是什么关系？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>样本越大，抽样噪声（约 1/√N）越小，需要的 λ 越小，同时能保留更多弱的真实边。N = 1000 时 λ ≈ 0.05–0.08 可能就足够；N = 100 时需要 λ ≈ 0.15 以上，且会漏掉多条弱边。这就是为什么 EBIC/CV 选出的 λ 依赖样本量，也是为什么小样本网络必然更稀疏。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>阅读 Epskamp &amp; Fried (2018) 的前半部分（6.3 课正文已讲解其中的关键概念，可对照阅读）；用 bootnet 在同一数据上分别设 γ = 0、0.25、0.5，比较边的数量并写下你的观察。</p></div><h3>自测问题</h3><ol><li>γ 越大，网络会更稀疏还是更稠密？</li><li>正则化把某条边压成 0，等于证明两者没有关系吗？</li><li>EBICglasso 与 CLPN 中用的 cv.glmnet 在“如何选 λ”上有何不同？</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>有限样本 → 每个偏相关都有噪声 → 满屏小边，许多是假阳性。</li><li>LASSO / glasso：加 L1 惩罚，把小边压成 0（软阈值），大边被缩小。</li><li>EBICglasso = glasso 产生候选 + EBIC 选择；γ 越大越稀疏（默认 0.5）。</li><li>边为 0 ≠ 无关；正则化权重有收缩偏差。</li><li>CLPN 用 cv.glmnet（交叉验证）选 λ，通常比 EBIC(γ=0.5) 更稠密。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Epskamp, S., & Fried, E. I. (2018). A tutorial on regularized partial correlation networks. <i>Psychological Methods, 23</i>(4), 617–634. <a href="https://doi.org/10.1037/met0000167" target="_blank" rel="noopener">doi.org/10.1037/met0000167</a><div class="muted" style="font-size:.84rem">正则化偏相关网络（EBICglasso）教程，第 6.3 课。</div></li><li>Foygel, R., & Drton, M. (2010). Extended Bayesian information criteria for Gaussian graphical models. <i>Advances in Neural Information Processing Systems, 23</i>, 604–612. <a href="https://proceedings.neurips.cc/paper/2010/hash/072b030ba126b2f4b2374f342be9ed44-Abstract.html" target="_blank" rel="noopener">proceedings.neurips.cc/paper/2010/hash/072b030ba126b2f4b2374f342be9ed44-Abstract.html</a><div class="muted" style="font-size:.84rem">EBIC 用于高斯图模型的原始论文：罚项 4γ|E| log p 的出处，第 6.3 课。</div></li><li>Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. <i>Journal of the Royal Statistical Society: Series B (Methodological), 58</i>(1), 267–288. <a href="https://doi.org/10.1111/j.2517-6161.1996.tb02080.x" target="_blank" rel="noopener">doi.org/10.1111/j.2517-6161.1996.tb02080.x</a><div class="muted" style="font-size:.84rem">LASSO 原始论文（了解即可，数学较深）。</div></li><li>Friedman, J., Hastie, T., & Tibshirani, R. (2010). Regularization paths for generalized linear models via coordinate descent. <i>Journal of Statistical Software, 33</i>(1), 1–22. <a href="https://doi.org/10.18637/jss.v033.i01" target="_blank" rel="noopener">doi.org/10.18637/jss.v033.i01</a><div class="muted" style="font-size:.84rem">glmnet 包的说明论文，第 3.5 / 7.2 课。</div></li></ul></section>
+<nav class="pager"><a href="L6-2.html" class="pv"><small>上一课</small>6.2 偏相关网络与高斯图模型（GGM）</a><a href="L6-4.html" class="nx"><small>下一课</small>6.4 用 qgraph 与 bootnet 估计并可视化网络</a></nav>
+<p class="foot">CLPN 从零开始 · 第 6.3 课 · <a href="../index.html#L6-3">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

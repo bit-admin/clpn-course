@@ -1,0 +1,20 @@
+# Solution L8-1: Writing a 15-line bootstrap from scratch (Exercise 1); sample size and interval width (Exercise 3)
+source("R/_setup.R")
+log_open("sol_L8-1_log.txt")
+dat <- read_course_data()
+x <- rowSums(dat[, paste0(lone_items, "_t1")]); y <- rowSums(dat[, paste0(dep_items, "_t2")])
+n <- length(x); set.seed(2024)
+r_boot <- numeric(1000)
+for (b in 1:1000) { idx <- sample(n, n, replace = TRUE); r_boot[b] <- cor(x[idx], y[idx]) }
+cat("Bootstrap 95% interval:", round(quantile(r_boot, c(.025, .975)), 3),
+    "; cor.test:", round(cor.test(x, y)$conf.int, 3), "\n\n")
+# Exercise 3: Width of bootstrap interval when rho = 0.3 and N = 50 / 200 / 400 (averaged across 20 samples each)
+set.seed(3)
+width <- function(N) mean(replicate(20, {
+  a <- rnorm(N); b <- 0.3 * a + sqrt(1 - 0.09) * rnorm(N)
+  rb <- replicate(1000, { i <- sample(N, N, TRUE); cor(a[i], b[i]) })
+  diff(quantile(rb, c(.025, .975))) }))
+w <- sapply(c(50, 200, 400), width)
+print(data.frame(N = c(50, 200, 400), `Mean interval width` = round(w, 3), `Width × √N` = round(w * sqrt(c(50, 200, 400)), 2), check.names = FALSE))
+cat("-> Width × √N is roughly constant: Interval width ∝ 1/√N.\n")
+log_close()

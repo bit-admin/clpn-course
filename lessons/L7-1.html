@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.1 CLPN 的模型逻辑：把 CLPM 拆到题目层面 · CLPN 从零开始</title>
+<link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<script defer src="assets/vendor/katex/katex.min.js"></script>
+<script defer src="assets/vendor/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="alternate" type="text/markdown" href="L7-1.md" title="阅读文本">
+<script defer src="assets/viz-m5-10.js"></script>
+<script defer src="assets/lesson.js"></script>
+</head>
+<body data-lid="7.1" style="--c:#ef4444">
+<div class="progressline"></div>
+<div class="topbar"><button id="tocBtn" type="button" aria-label="打开目录">目录</button><a class="home" href="../index.html#L7-1">CLPN 课程大纲</a><span class="crumb">M7 交叉滞后面板网络（CLPN） / 7.1</span><span class="sp"></span>
+<button id="doneBtn" type="button">标记本课为已完成</button><a class="act" id="readView" href="L7-1.md" target="_blank" rel="noopener">纯文本查看</a><button id="readBtn" type="button">复制给 LLM</button><a class="act langSwitch" href="../en/lessons/L7-1.html">English</a><button id="themeBtn" type="button" aria-label="切换深浅色">深色</button></div>
+<div class="wrap">
+<nav class="toc" aria-label="本课目录"><div class="toc-local"></div><div class="allnav"><b>全部课程</b><details style="--mc:#6366f1"><summary>M0 课程导论</summary><ul><li><a href="L0-1.html"><span>0.1</span>课程地图、学习方法与工具准备</a></li><li><a href="L0-2.html"><span>0.2</span>从“总分”到“症状之间的互动”：CLPN 为什么重要</a></li></ul></details><details style="--mc:#0ea5e9"><summary>M1 统计学基础</summary><ul><li><a href="L1-1.html"><span>1.1</span>变量与测量：数据从哪里来</a></li><li><a href="L1-2.html"><span>1.2</span>分布与描述统计：均值、方差、标准差</a></li><li><a href="L1-3.html"><span>1.3</span>标准化与 z 分数</a></li><li><a href="L1-4.html"><span>1.4</span>协方差与相关：两个变量如何一起变化</a></li><li><a href="L1-5.html"><span>1.5</span>抽样、标准误与置信区间</a></li><li><a href="L1-6.html"><span>1.6</span>假设检验、p 值与效应量</a></li></ul></details><details style="--mc:#f59e0b"><summary>M2 R 与 RStudio</summary><ul><li><a href="L2-1.html"><span>2.1</span>安装 R 与 RStudio，运行第一行代码</a></li><li><a href="L2-2.html"><span>2.2</span>R 基本语法：向量、数据类型与函数</a></li><li><a href="L2-3.html"><span>2.3</span>数据框与 tidyverse 入门</a></li><li><a href="L2-4.html"><span>2.4</span>安装包、导入数据与项目管理</a></li><li><a href="L2-5.html"><span>2.5</span>用 R 做描述统计、相关与回归</a></li><li><a href="L2-6.html"><span>2.6</span>ggplot2 绘图与 Quarto / R Markdown 可复现报告</a></li></ul></details><details style="--mc:#10b981"><summary>M3 回归分析</summary><ul><li><a href="L3-1.html"><span>3.1</span>简单线性回归：用一条直线做预测</a></li><li><a href="L3-2.html"><span>3.2</span>多元回归与“控制其他变量”</a></li><li><a href="L3-3.html"><span>3.3</span>标准化系数与结果解释</a></li><li><a href="L3-4.html"><span>3.4</span>逻辑回归简介（二分类结果）</a></li><li><a href="L3-5.html"><span>3.5</span>过拟合与正则化：岭回归、LASSO 与交叉验证</a></li></ul></details><details style="--mc:#ec4899"><summary>M4 纵向与面板数据</summary><ul><li><a href="L4-1.html"><span>4.1</span>纵向设计的语言：波次、时间间隔、被试内与被试间</a></li><li><a href="L4-2.html"><span>4.2</span>宽格式与长格式：数据整形</a></li><li><a href="L4-3.html"><span>4.3</span>缺失数据与样本流失</a></li></ul></details><details style="--mc:#8b5cf6"><summary>M5 传统交叉滞后面板模型</summary><ul><li><a href="L5-1.html"><span>5.1</span>CLPM 的直觉：自回归路径与交叉滞后路径</a></li><li><a href="L5-2.html"><span>5.2</span>用 lavaan 拟合 CLPM 并评估模型拟合</a></li><li><a href="L5-3.html"><span>5.3</span>RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a></li><li><a href="L5-4.html"><span>5.4</span>从预测到因果：纵向模型能说什么、不能说什么</a></li></ul></details><details style="--mc:#14b8a6"><summary>M6 网络心理测量学基础</summary><ul><li><a href="L6-1.html"><span>6.1</span>网络的语言：节点、边、权重与邻接矩阵</a></li><li><a href="L6-2.html"><span>6.2</span>偏相关网络与高斯图模型（GGM）</a></li><li><a href="L6-3.html"><span>6.3</span>正则化网络估计：LASSO、graphical lasso 与 EBICglasso</a></li><li><a href="L6-4.html"><span>6.4</span>用 qgraph 与 bootnet 估计并可视化网络</a></li><li><a href="L6-5.html"><span>6.5</span>中心性指标：强度、期望影响与桥接中心性</a></li></ul></details><details open style="--mc:#ef4444"><summary>M7 交叉滞后面板网络</summary><ul><li><a href="L7-1.html" class="cur" aria-current="page"><span>7.1</span>CLPN 的模型逻辑：把 CLPM 拆到题目层面</a></li><li><a href="L7-2.html"><span>7.2</span>用 glmnet 逐节点估计 CLPN</a></li><li><a href="L7-3.html"><span>7.3</span>CLPN 可视化与解读</a></li><li><a href="L7-4.html"><span>7.4</span>出期望影响、入期望影响与跨构念桥接</a></li><li><a href="L7-5.html"><span>7.5</span>设计选择与扩展：多波数据、协变量与被试内问题</a></li><li><a href="L7-6.html"><span>7.6</span>测量不变性与样本量规划（选学）</a></li><li><a href="L7-7.html"><span>7.7</span>组间比较：两组的 CLPN 一样吗？（选学）</a></li></ul></details><details style="--mc:#64748b"><summary>M8 稳定性与准确性检验</summary><ul><li><a href="L8-1.html"><span>8.1</span>Bootstrap 的思想：用样本模拟“再做一次研究”</a></li><li><a href="L8-2.html"><span>8.2</span>边权重准确性：bootnet 与自定义 CLPN 估计函数</a></li><li><a href="L8-3.html"><span>8.3</span>个案删除 bootstrap 与 CS 系数</a></li></ul></details><details style="--mc:#a855f7"><summary>M9 阅读、批判与报告规范</summary><ul><li><a href="L9-1.html"><span>9.1</span>如何读一篇 CLPN 实证论文</a></li><li><a href="L9-2.html"><span>9.2</span>批判性评估：CLPN 常见问题清单</a></li><li><a href="L9-3.html"><span>9.3</span>报告规范：写出一份可被复核的方法与结果</a></li></ul></details><details style="--mc:#0f766e"><summary>M10 毕业项目</summary><ul><li><a href="L10-1.html"><span>10.1</span>项目设计、数据准备与分析计划</a></li><li><a href="L10-2.html"><span>10.2</span>完整分析：估计、可视化、中心性与稳定性</a></li><li><a href="L10-3.html"><span>10.3</span>撰写结果部分并进行汇报</a></li></ul></details><div class="matlinks"><b>学习资料</b><a href="../START_HERE.html">学习指南</a><a href="../materials/glossary.html">术语表</a><a href="../materials/cheatsheets.html">速查卡</a><a href="../materials/formulas.html">公式表</a><a href="../materials/faq.html">常见问题 FAQ</a><a href="../materials/study_log.html">学习日志</a><a href="../materials/writing.html">写作工作坊</a><a href="../materials/reading.html">论文阅读包</a><a href="../materials/case_elsoc.html">真实数据案例</a><a href="../materials/assessment.html">测评</a><a href="../downloads/index.html">下载</a></div></div></nav>
+<main>
+<header class="lhero"><div class="mnum">模块 7 · Cross-Lagged Panel Networks · 第 7.1 课</div>
+<h1>CLPN 的模型逻辑：把 CLPM 拆到题目层面</h1>
+<div class="facts"><span>课文学习 2 小时</span><span>先修：<a href="L5-3.html">5.3 RI-CLPM：把“稳定的个人特质”与“被试内变化”分开</a>、<a href="L6-5.html">6.5 中心性指标：强度、期望影响与桥接中心性</a>、<a href="L3-5.html">3.5 过拟合与正则化：岭回归、LASSO 与交叉验证</a></span><span>配套脚本：<a href="../R/L7-1.R">R/L7-1.R</a></span></div></header>
+<section class="card goals"><h2>本课学习目标</h2><div class="obj"><ol><li>说明 CLPN 与 CLPM（构念层面）和横断面网络（无时间方向）的区别与联系</li><li>理解每个 T2 节点 = 一个回归方程；所有回归系数构成 p × p 的有向权重矩阵</li><li>区分 CLPN 中的自回归边（对角线）与交叉滞后边（非对角线）</li><li>理解 CLPN 边的含义：控制所有 T1 节点后，T1 的 A 对 T2 的 B 的独特预测</li></ol></div>
+<h3>核心概念</h3><ul class="concepts"><li><b>交叉滞后面板网络</b><span class="en">cross-lagged panel network, CLPN</span></li><li><b>有向边</b><span class="en">directed edge</span></li><li><b>自回归边</b><span class="en">autoregressive edge</span></li><li><b>交叉滞后边</b><span class="en">cross-lagged edge</span></li><li><b>逐节点回归</b><span class="en">nodewise regression</span></li><li><b>时间点 t → t+1</b><span class="en">occasion t to t+1</span></li><li><b>跨构念边</b><span class="en">cross-construct edge</span></li></ul>
+<p>前面几个模块已经准备好 CLPN 所需的全部基础：多元回归（M3）、LASSO（3.5、6.3）、CLPM 的自回归与交叉滞后逻辑（M5）、网络与权重矩阵（M6）。本课把它们组合成交叉滞后面板网络（CLPN）。</p>
+<p>先说明本模块教的是哪一种 CLPN。CLPN 由 Wysocki、van Bork、Cramer 与 Rhemtulla 提出（2022 年预印本；2025 年以 “Cross-lagged panel networks” 为题正式发表于 <i>advances.in/psychology</i>，增加合著者 McCarthy）。本课程主线（7.1–7.4，以及 M8、M10）教的是应用研究中最常见的<b>“仅 LASSO”简化版</b>（例如 Funkhouser et al., 2021）：对每个 T2 节点做一次 LASSO 回归，把收缩后的系数直接当作网络的边，再计算期望影响。它不等于 Wysocki 等人 2025 年推荐的完整流程。完整流程只把 LASSO 当作第一步“选边”，之后还要在 lavaan 中做无惩罚的 SEM 重估、检验跨时间等值，并用 in-/out-prediction（被解释方差）概括节点。完整流程放在 <a href="L7-5.html#full-clpn">7.5 课</a>介绍，并附可运行的 R 示例。先学简化版有两个原因：读文献时你最常遇到的就是它，而且它就是完整流程的第 1 步。</p>
+<p class="muted structnote">本课结构：直觉 → 最少数学 → R 代码 → 理解检查 → 练习 → 小结。文中的交互图示可拖动或点击；测验答错会先给提示，答错两次可查看解析。</p></section>
+<section class="sec s-intu" id="intuition"><h2><span class="stag">① 直觉</span>先建立画面</h2>
+<h3>三种模型，一张对照表</h3>
+<div class="tablewrap"><table><tr><th></th><th>CLPM（M5）</th><th>横断面网络 GGM（M6）</th><th>CLPN（本模块）</th></tr><tr><td>变量层面</td><td>构念总分（2 个）</td><td>题目 / 症状（p 个）</td><td>题目 / 症状（p 个）</td></tr><tr><td>时间</td><td>有（T1 → T2）</td><td>无（同一时间点）</td><td>有（T1 → T2）</td></tr><tr><td>边的含义</td><td>回归系数</td><td>偏相关</td><td>回归系数（控制所有 T1 节点）</td></tr><tr><td>方向</td><td>有向</td><td>无向</td><td>有向</td></tr><tr><td>估计方法</td><td>SEM（lavaan）</td><td>EBICglasso</td><td>逐节点 LASSO 回归（glmnet）；完整流程再加 SEM 重估（7.5）</td></tr></table></div>
+<p>换句话说：CLPN = CLPM 的“时间方向” + 网络的“题目层面”。它想回答的问题是：<b>T1 的哪些具体困扰，最能（独特地）预测 T2 的哪些具体困扰？</b></p>
+<h3>每个 T2 节点 = 一个回归方程</h3>
+<p>CLPN 的估计就是把多元回归重复做 p 次。以课程数据的 9 个题目为例：</p>
+<ol><li>把 T2 的“情绪低落”（dep1_t2）当作因变量，用 T1 的全部 9 道题（包括 T1 的 dep1 自己）作为预测变量，做一次回归。得到 9 个系数。</li>
+<li>对 T2 的另外 8 道题重复一遍。共 9 个回归，81 个系数。</li>
+<li>把第 j 个回归的 9 个系数放进矩阵的<b>第 j 列</b>。于是矩阵 B 的第 k 行、第 j 列 = “T1 的 k → T2 的 j”的系数。这就是一个 9 × 9 的有向权重矩阵。</li></ol>
+<p>这种“对每个节点单独做回归”的做法叫 <span class="term">逐节点回归<span class="en">（nodewise regression）</span></span>。下面的矩阵是课程数据的 <span class="term">总体目标值<span class="en">（population target）</span></span>（<code>data/true_B_population.csv</code>：在 20 万人的超大模拟样本中，用和本课相同的方法对观测分数做回归得到的系数，也就是样本无限大时标准 CLPN 会得到的答案）。注意，它还不是“被试内真值”，本页下方的提醒框和 7.2 课会说明两者的区别。把鼠标移到任意格子上，读一读它的含义。</p>
+<div class="widget w2" data-widget="bmat"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>两类边</h3>
+<ul><li><b><span class="term">自回归边<span class="en">（autoregressive edge）</span></span>：</b>矩阵对角线，B[k, k]，T1 的 k → T2 的 k。与 CLPM 的自回归一样，代表该题目的稳定性（控制其他题目后）。课程数据中大约 0.3–0.4。</li>
+<li><b><span class="term">交叉滞后边<span class="en">（cross-lagged edge）</span></span>：</b>非对角线，B[k, j]（k ≠ j），T1 的 k → T2 的 j。其中连接不同构念的（如孤独题 → 抑郁题）称为 <span class="term">跨构念边<span class="en">（cross-construct edge）</span></span>，是“孤独与抑郁如何互相预测”这个问题在题目层面的答案。</li></ul>
+<p>下面是同一矩阵画成的网络。默认显示自回归环（点击节点可查看它的出边和入边）；取消勾选后只剩交叉滞后边，这是论文中最常见的画法。</p>
+<div class="widget w2" data-widget="clpn" data-mode="view1"><noscript>此处为交互组件，需要启用 JavaScript。</noscript></div>
+<h3>一条 CLPN 边到底是什么意思？</h3>
+<p>B["lone3", "dep1"] = 0.118 读作：<i>在 T1 所有 9 道题（包括 T1 的情绪低落本身）都相同的人当中，T1“与人隔绝”高 1 个标准差的人，T2“情绪低落”的预测值高约 0.12 个标准差。</i>三个要点：</p>
+<ol><li><b>独特</b>预测：控制了所有其他 T1 节点，包括“结果节点自己的过去”（这就是自回归在 CLPN 中的作用，和 CLPM 的道理一样）。</li>
+<li><b>有方向</b>：因为 T1 在 T2 之前，箭头从 T1 指向 T2；但这只是时间上的方向，不是因果方向。</li>
+<li><b>标准化</b>：所有变量先标准化，系数可在边之间比较大小。</li></ol>
+<div class="box warnbox"><b class="bt">被试间 / 被试内：</b><p>仔细看上面的矩阵：同一构念内几乎每对题目都有 0.06 左右的小正边（如 lone1 → lone2 = 0.07）。但生成数据时使用的被试内真值（<code>true_B_within.csv</code>）中并没有这些边。它们来自稳定特质：长期孤独的人每道孤独题都高，于是 T1 的任何一道孤独题都能帮助预测 T2 的其他孤独题。标准 CLPN 和 CLPM 一样，不区分被试间与被试内（联系 5.3），7.5 课详细讨论。</p></div>
+<h3>为什么要 LASSO？</h3>
+<p>9 个节点就有 81 个系数，但我们只有 800 个人。若用普通最小二乘（OLS），每个系数都会带着抽样噪声，几乎没有一个恰好为 0（R/L7-1.R 的 4 节点 OLS 例子中，每个格子都非零）。p 一大，“满屏小边”问题就和 6.3 课一样。所以 CLPN 对每个回归使用 LASSO，用交叉验证选 λ，把不重要的系数压成 0。这是下一课的内容。本课程主线（“仅 LASSO”简化版）直接使用这些 LASSO 系数；Wysocki 等人（2025）的完整流程只用 LASSO 来选边，随后再做 SEM 无惩罚重估（7.5 课）。</p>
+<h3>常见问题与误区</h3><details class="ans faq"><summary>有 3 波数据时，能不能把 T1→T2 和 T2→T3 合起来估计一个网络？</summary><p>可以，但要知道代价。一种做法是把两段数据上下堆叠，当作 2N 行估计一次。这样每条边的信息更多，但同一个人出现了两次，行与行不独立：交叉验证分折和 bootstrap 重抽都应该以“人”为单位，否则标准误会偏小。本课程先分别估计两段（7.5 课第一部分），用两段的差异检查复现；Wysocki 等人（2025）的完整流程则在 SEM 中给两段的同一路径加等值约束，先检验“两段相同”是否成立，再合并估计（7.5 课，R/L7-5b.R）。</p></details></section><section class="sec s-math" id="math"><h2><span class="stag">② 最少数学</span>把直觉写成式子</h2>
+<p>对每个 T2 节点 \(j = 1,\dots,p\)：</p>
+<div class="mathbox">\[X_{j,t+1}=\sum_{k=1}^{p}\beta_{kj}\,X_{k,t}+\varepsilon_{j}\]</div><table class="sym"><tr><th>符号</th><th>读法 / 含义</th></tr><tr><td>\(X_{j,t+1}\)</td><td>第 j 个题目在 t+1 时（例如 T2）的标准化得分</td></tr><tr><td>\(X_{k,t}\)</td><td>第 k 个题目在 t 时（例如 T1）的标准化得分，k 从 1 到 p，<b>包括 k = j</b></td></tr><tr><td>\(\beta_{kj}\)</td><td>从 T1 的 k 指向 T2 的 j 的系数；放在矩阵 B 的第 k 行第 j 列</td></tr><tr><td>\(\beta_{jj}\)</td><td>对角线：自回归边</td></tr><tr><td>\(\beta_{kj},\ k\neq j\)</td><td>非对角线：交叉滞后边</td></tr><tr><td>\(\varepsilon_j\)</td><td>第 j 个方程的残差</td></tr><tr><td>\(p\)</td><td>节点数（课程数据 p = 9）</td></tr></table>
+<h4>矩阵写法（了解即可）</h4>
+<p>把 N 个人的 T1 得分排成 \(N\times p\) 矩阵 \(\mathbf{X}_t\)，T2 得分排成 \(\mathbf{X}_{t+1}\)，则所有方程合起来就是</p>
+<div class="mathbox">\[\mathbf{X}_{t+1}=\mathbf{X}_{t}\,B+\mathbf{E}\]</div>
+<p>B 的第 j 列正好是第 j 个方程的系数向量。这就是约定“行 = 出发点（T1），列 = 终点（T2）”的原因：它和矩阵乘法天然对应，也和 qgraph 的有向矩阵约定一致。</p>
+<h4>数一数</h4>
+<ul><li>p 个节点 → p 个回归方程，每个方程 p 个系数 → \(p^2\) 个系数；</li>
+<li>其中 p 个自回归、\(p(p-1)\) 个交叉滞后；</li>
+<li>若节点分为两个构念（\(p_1\) 个孤独、\(p_2\) 个抑郁），跨构念边最多 \(2p_1p_2\) 条：课程数据 \(2\times4\times5=40\) 条。</li></ul>
+
+<h3>完整例题：读一张 3 节点的 CLPN 系数矩阵</h3>
+<p>假设只有 3 个节点：孤独（L）、情绪低落（D1）、疲乏（D2）。逐节点回归后得到矩阵 B（行 = T1 的预测变量，列 = T2 的结果变量）：</p>
+<div class="tablewrap"><table><tr><th>T1 ↓ / T2 →</th><th>L</th><th>D1</th><th>D2</th></tr><tr><td>L</td><td><b>0.40</b></td><td>0.15</td><td>0</td></tr><tr><td>D1</td><td>0</td><td><b>0.35</b></td><td>0.10</td></tr><tr><td>D2</td><td>−0.05</td><td>0</td><td><b>0.30</b></td></tr></table></div>
+<ol><li><b>每一列是一条回归方程。</b>第 2 列表示：D1<sub>T2</sub> = 0.15·L<sub>T1</sub> + 0.35·D1<sub>T1</sub> + 0·D2<sub>T1</sub> + 误差。</li>
+<li><b>对角线是自回归</b>（加粗的 0.40、0.35、0.30）：每个节点的“惯性”，即 T1 的高低能在多大程度上保持到 T2。</li>
+<li><b>非对角线是交叉滞后边：</b>L → D1（0.15）、D1 → D2（0.10）、D2 → L（−0.05）。其中 L → D1 和 D2 → L 跨构念，D1 → D2 在抑郁构念内部。</li>
+<li><b>方向不对称：</b>B[L, D1] = 0.15，但 B[D1, L] = 0。与无向网络不同，CLPN 中 A → B 和 B → A 是两条独立估计的边。</li>
+<li><b>如何读 0.15？</b>变量都已标准化，所以：在 T1 情绪低落和疲乏都相同的人中，T1 孤独高 1 个标准差，T2 情绪低落平均高 0.15 个标准差。这是控制了所有 T1 节点（包括 D1 自己的基线）之后的“额外预测”。</li></ol>
+<p>9 个节点时，矩阵是 9 × 9 = 81 格，原理完全相同。<code>R/L7-2.R</code> 输出的 <code>L7-2_B_lambda_min.csv</code> 就是这样一张表，用 Excel 打开就能逐格对照。</p>
+</section><section class="sec s-code" id="code"><h2><span class="stag">③ R 代码</span>在 R 中实现</h2><p>R/L7-1.R 用 4 个节点（lone1、lone3、dep1、dep2）和普通 <code>lm()</code> 演示“一个 T2 节点一个方程”的逻辑，先不加正则化。</p><div class="codeblk"><div class="ctitle">R/L7-1.R 的核心部分</div><pre><code class="language-r">source(&quot;R/_setup.R&quot;); library(qgraph)
+dat  &lt;- read_course_data()
+four &lt;- c(&quot;lone1&quot;, &quot;lone3&quot;, &quot;dep1&quot;, &quot;dep2&quot;)
+X &lt;- scale(dat[, paste0(four, &quot;_t1&quot;)])          # T1 预测变量（标准化）
+Y &lt;- scale(dat[, paste0(four, &quot;_t2&quot;)])          # T2 结果变量（同样顺序）
+B &lt;- matrix(0, 4, 4, dimnames = list(four, four))   # 行 = from（T1），列 = to（T2）
+for (j in 1:4) {
+  fit &lt;- lm(Y[, j] ~ X)                         # 方程 j：T2 的节点 j ~ 所有 T1 节点
+  B[, j] &lt;- coef(fit)[-1]                       # 去掉截距，放进第 j 列
+}
+round(B, 2)
+CL &lt;- B; diag(CL) &lt;- 0                          # 只保留交叉滞后
+qgraph(CL, directed = TRUE, edge.labels = TRUE, layout = &quot;circle&quot;,
+       groups = list(孤独 = 1:2, 抑郁 = 3:4), theme = &quot;colorblind&quot;)</code></pre></div><div class="codeblk"><div class="ctitle">实际输出摘录：R/output/L7-1_log.txt</div><pre class="out"><code>lone1_T2 = +0.47×lone1_T1 +0.06×lone3_T1 +0.04×dep1_T1 -0.01×dep2_T1
+lone3_T2 = +0.09×lone1_T1 +0.40×lone3_T1 -0.02×dep1_T1 +0.11×dep2_T1
+dep1_T2 = +0.06×lone1_T1 +0.11×lone3_T1 +0.35×dep1_T1 +0.11×dep2_T1
+dep2_T2 = +0.13×lone1_T1 -0.04×lone3_T1 +0.13×dep1_T1 +0.35×dep2_T1</code></pre></div>
+<p><b>对照：</b>第三行 “dep1_T2 = … +0.11×lone3_T1 …” 就是矩阵中 B["lone3", "dep1"] = 0.11（与人隔绝 → 情绪低落）。第一行中 dep2_T1 的系数 −0.01 是噪声级别的小值，这就是 OLS 的“满屏小边”，下一课用 LASSO 处理。</p>
+<h3>完整例题：把 4 节点矩阵的 12 条交叉滞后边逐条对照被试内真值</h3>
+<p>课程数据是模拟的，生成数据用的被试内滞后系数（<code>data/true_B_within.csv</code>）是已知的。把上面 OLS 矩阵的 12 条交叉滞后边按被试内真值分成三类：</p>
+<div class="tablewrap"><table><tr><th>类别</th><th>边（T1 → T2）</th><th>4 节点 OLS</th><th>被试内真值</th></tr><tr><td>① 被试内真值中存在的边</td><td>lone1 → dep2</td><td>0.13</td><td>0.140</td></tr><tr><td></td><td>lone3 → dep1</td><td>0.11</td><td>0.180</td></tr><tr><td></td><td>dep2 → lone3</td><td>0.11</td><td>0.120</td></tr><tr><td>② 同构念的边（被试内真值为 0）</td><td>lone1 → lone3 / lone3 → lone1</td><td>0.09 / 0.06</td><td>0 / 0</td></tr><tr><td></td><td>dep1 → dep2 / dep2 → dep1</td><td>0.13 / 0.11</td><td>0 / 0</td></tr><tr><td>③ 其余跨构念的边（被试内真值为 0）</td><td>lone1 → dep1、lone3 → dep2、dep1 → lone1、dep1 → lone3、dep2 → lone1</td><td>0.06、−0.04、0.04、−0.02、−0.01</td><td>全为 0</td></tr></table></div>
+<ol><li><b>第 ① 类</b>：3 条真实的被试内边都被估计为正，0.11–0.13。但 lone3 → dep1 的估计（0.11）明显小于被试内真值（0.180），7.2 课会解释这段差距从哪里来。</li>
+<li><b>第 ② 类</b>：4 条同构念的边全部为正，而且和第 ① 类一样大：dep1 → dep2（0.13）与真实的 lone1 → dep2（0.13）相同。生成模型里根本没有这些被试内作用，它们来自稳定特质：抑郁特质高的人 T1、T2 的每道抑郁题都偏高，所以 T1 的 dep1 能帮助预测 T2 的 dep2（推导见 7.5 课“最少数学”第 3 部分）。</li>
+<li><b>第 ③ 类</b>：大小在 −0.04 到 0.06 之间、正负都有，是抽样噪声。OLS 不会把它们设为 0。</li></ol>
+<p>这个例子说明两件事。第一，只看系数大小，分不出第 ① 类和第 ② 类：0.13 的被试内边和 0.13 的特质边在矩阵里看起来一模一样。LASSO 能处理第 ③ 类（噪声），处理不了第 ② 类（7.2 课）。第二，一条边的数值取决于回归里控制了哪些节点：同一条 lone3 → dep1，在 4 节点 OLS 中是 0.11，在 9 节点模型的总体目标值中是 0.118。所以不同研究的边权，只有在节点相同时才能直接比较。</p><div class="box warnbox"><b class="bt">理解 CLPN 时的常见错误</b><ul>
+<li><b>以为 CLPN 的边是“T1 与 T2 的相关”。</b>它是控制了所有 T1 节点之后的回归系数，通常比简单的跨时间相关小得多。</li>
+<li><b>忘了自回归的作用。</b>如果不控制 D1 自己的基线，L → D1 的系数会把“孤独与抑郁在 T1 就相关”这部分也算进去，严重高估（5.1 课的练习演示过）。</li>
+<li><b>把 T2 的其他节点也放进预测变量。</b>标准 CLPN 只用 T1 预测 T2。把同一时间点的节点放进去，估计的就是另一种（同期）关系，含义完全不同。</li>
+<li><b>行列读反。</b>论文中的 B 矩阵有的是“行 → 列”，有的是“列 → 行”。每次读表前先确认约定，本课程统一用“行 → 列”。</li></ul></div>
+<p><b>与 CLPM 的对应：</b>如果把 9 道题先加成孤独、抑郁两个总分，再按同样的方法回归，得到的 2 × 2 矩阵就是 5.1 课的 CLPM：两个自回归、两条交叉滞后。CLPN 只是把“总分”拆回了“题目”。这也意味着 CLPM 的局限（稳定特质、间隔选择、未测量混杂）CLPN 一个都没有避开。</p>
+<h3>配套脚本与运行输出</h3><details class="more rsrc"><summary>本课配套完整脚本 <code>R/L7-1.R</code>（26 行，点击展开）</summary><div class="codeblk"><pre><code class="language-r"># =====================================================================
+# L7-1.R  CLPN 的模型逻辑：把 CLPM 拆到题目层面  (CLPN logic, 4-node toy example)
+# 4 个节点 → 4 个回归方程（每个 T2 节点一个）→ 4×4 有向权重矩阵
+# =====================================================================
+source(&quot;R/_setup.R&quot;)
+library(qgraph)
+log_open(&quot;L7-1_log.txt&quot;)
+dat &lt;- read_course_data()
+four &lt;- c(&quot;lone1&quot;, &quot;lone3&quot;, &quot;dep1&quot;, &quot;dep2&quot;)
+X &lt;- scale(dat[, paste0(four, &quot;_t1&quot;)]); Y &lt;- scale(dat[, paste0(four, &quot;_t2&quot;)])
+B &lt;- matrix(0, 4, 4, dimnames = list(four, four))   # 行 = T1 预测变量（from），列 = T2 结果（to）
+for (j in 1:4) {
+  fit &lt;- lm(Y[, j] ~ X)                             # 方程 j：T2 的节点 j ~ 所有 T1 节点
+  B[, j] &lt;- coef(fit)[-1]                           # 去掉截距，放进第 j 列
+  cat(sprintf(&quot;%s_T2 = %s\n&quot;, four[j],
+              paste(sprintf(&quot;%+.2f×%s_T1&quot;, coef(fit)[-1], four), collapse = &quot; &quot;)))
+}
+cat(&quot;\n权重矩阵 B（对角线 = 自回归 AR，非对角线 = 交叉滞后 CL）：\n&quot;); print(round(B, 2))
+cat(&quot;8 个节点的 CLPN：8 个回归；最多 8×7 = 56 条交叉滞后边。\n&quot;)
+CL &lt;- B; diag(CL) &lt;- 0
+png_open(&quot;L7-1_toy_clpn.png&quot;, 1400, 1300)
+qgraph(CL, directed = TRUE, edge.labels = TRUE, asize = 5, layout = &quot;circle&quot;,
+       groups = list(孤独 = 1:2, 抑郁 = 3:4), theme = &quot;colorblind&quot;,
+       title = &quot;4 节点 CLPN（OLS，未正则化；不画自回归）&quot;)
+invisible(dev.off())
+log_close()</code></pre></div></details>
+<figure><img src="../R/output/L7-1_toy_clpn.png" alt="L7-1_toy_clpn.png" loading="lazy"><figcaption>图：<code>R/output/L7-1_toy_clpn.png</code>（由配套脚本在模拟数据上实际运行生成）</figcaption></figure>
+<div class="codeblk"><div class="ctitle">实际输出：<code>R/output/L7-1_log.txt</code></div><pre class="out"><code>lone1_T2 = +0.47×lone1_T1 +0.06×lone3_T1 +0.04×dep1_T1 -0.01×dep2_T1
+lone3_T2 = +0.09×lone1_T1 +0.40×lone3_T1 -0.02×dep1_T1 +0.11×dep2_T1
+dep1_T2 = +0.06×lone1_T1 +0.11×lone3_T1 +0.35×dep1_T1 +0.11×dep2_T1
+dep2_T2 = +0.13×lone1_T1 -0.04×lone3_T1 +0.13×dep1_T1 +0.35×dep2_T1
+
+权重矩阵 B（对角线 = 自回归 AR，非对角线 = 交叉滞后 CL）：
+      lone1 lone3 dep1  dep2
+lone1  0.47  0.09 0.06  0.13
+lone3  0.06  0.40 0.11 -0.04
+dep1   0.04 -0.02 0.35  0.13
+dep2  -0.01  0.11 0.11  0.35
+8 个节点的 CLPN：8 个回归；最多 8×7 = 56 条交叉滞后边。</code></pre></div></section><section class="sec s-check" id="quiz"><h2><span class="stag">④ 理解检查</span>即时测验</h2><p class="quizscore"></p><div class="quiz" data-kind="mc"><p class="qtext">有 8 个节点的 CLPN 需要跑几个回归？最多有多少条交叉滞后边？</p><ul class="opts"><li><button type="button" data-ok="1">A. 8 个；56 条</button><div class="ofb" hidden>正确：每个 T2 节点一个回归；8 × 7 = 56。</div></li><li><button type="button" data-ok="0">B. 8 个；64 条</button><div class="ofb" hidden>64 = 8 × 8，把 8 个自回归也算进去了。</div></li><li><button type="button" data-ok="0">C. 64 个；56 条</button><div class="ofb" hidden>回归个数等于 T2 节点数 8，64 是系数个数。</div></li><li><button type="button" data-ok="0">D. 1 个；28 条</button><div class="ofb" hidden>一个回归只有一个结果变量，无法同时预测 8 个 T2 节点；28 = 8 × 7 / 2 是无向网络的最大边数。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">B["lone3", "dep1"] 表示？</p><ul class="opts"><li><button type="button" data-ok="0">A. T1 情绪低落 → T2 与人隔绝</button><div class="ofb" hidden>反了：行 = 出发点（T1），列 = 终点（T2）。</div></li><li><button type="button" data-ok="1">B. T1 与人隔绝 → T2 情绪低落</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 两者的偏相关</button><div class="ofb" hidden>CLPN 的边是有方向的回归系数，不是对称的偏相关。</div></li><li><button type="button" data-ok="0">D. 与人隔绝的自回归</button><div class="ofb" hidden>自回归在对角线 B["lone3", "lone3"]。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">CLPN 中每个回归方程的预测变量是？</p><ul class="opts"><li><button type="button" data-ok="0">A. 除结果节点外的其他 T1 节点</button><div class="ofb" hidden>必须包括自己的过去，否则交叉滞后会“吸收”结果节点的稳定性，被高估。</div></li><li><button type="button" data-ok="1">B. 所有 T1 节点（包括结果节点自己的 T1 值）</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. 所有 T2 节点</button><div class="ofb" hidden>T2 节点是结果；把同一时间点的节点放进预测变量，估计的是同期关系，不是交叉滞后。</div></li><li><button type="button" data-ok="0">D. 只有另一构念的 T1 节点</button><div class="ofb" hidden>所有 T1 节点都要放进去，包括同构念的题目和结果节点自己的 T1 值。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">CLPN 的边为什么是有向的，而 GGM 的边是无向的？</p><ul class="opts"><li><button type="button" data-ok="0">A. 软件设定</button><div class="ofb" hidden>不是软件设定：方向来自时间先后，T1 只能预测 T2。</div></li><li><button type="button" data-ok="1">B. CLPN 的边是 T1 → T2 的回归系数，有时间先后；GGM 是同一时刻的对称偏相关</button><div class="ofb" hidden>正确。</div></li><li><button type="button" data-ok="0">C. CLPN 用了 LASSO</button><div class="ofb" hidden>GGM 也常用 LASSO（EBICglasso）；有没有方向与是否正则化无关。</div></li><li><button type="button" data-ok="0">D. GGM 不能画箭头</button><div class="ofb" hidden>可以画箭头，但同一时刻的偏相关是对称的，箭头没有依据。</div></li></ul><div class="fb" role="status"></div></div>
+<div class="quiz" data-kind="mc"><p class="qtext">CLPN 的一条边能否区分被试间与被试内效应？</p><ul class="opts"><li><button type="button" data-ok="0">A. 能</button><div class="ofb" hidden>这是常见误解：标准 CLPN 对观测分数做回归，稳定特质与被试内状态一起进入系数。</div></li><li><button type="button" data-ok="1">B. 不能：标准 CLPN 基于观测得分，混合两者</button><div class="ofb" hidden>正确：这是写局限时的必备内容。</div></li><li><button type="button" data-ok="0">C. 只有自回归边能</button><div class="ofb" hidden>自回归同样混合了稳定特质（特质让同一道题每一波都偏高），不能单独代表被试内的惯性。</div></li><li><button type="button" data-ok="0">D. 只要 N 足够大就能</button><div class="ofb" hidden>样本量只减少抽样误差；总体目标值本身就含特质的作用（7.2）。</div></li></ul><div class="fb" role="status"></div></div></section><section class="sec s-ex" id="ex"><h2><span class="stag">⑤ 练习</span>动手练习</h2><div class="exitem"><h4>练习 1：手写 4 个回归方程<span class="lvl">基础</span></h4><p>用 4 个节点（失眠 S、疲劳 F、孤独 L、低落 D）写出 CLPN 的 4 个回归方程，标出哪些系数是自回归、哪些是交叉滞后、哪些是跨构念边（设 S、F 为“躯体”，L、D 为“情绪”），并画出对应的有向网络。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>\(S_2=\beta_{SS}S_1+\beta_{FS}F_1+\beta_{LS}L_1+\beta_{DS}D_1+\varepsilon\)，其余三个同理（把结果换成 F₂、L₂、D₂）。自回归：β<sub>SS</sub>、β<sub>FF</sub>、β<sub>LL</sub>、β<sub>DD</sub>（4 个）；交叉滞后：其余 12 个；跨构念：S、F 与 L、D 之间的 8 个（β<sub>SL</sub>, β<sub>SD</sub>, β<sub>FL</sub>, β<sub>FD</sub>, β<sub>LS</sub>, β<sub>LF</sub>, β<sub>DS</sub>, β<sub>DF</sub>）。注意下标顺序：β<sub>kj</sub> = 从 k 到 j。</p></details></div>
+<div class="exitem"><h4>练习 2：读矩阵<span class="lvl">理解</span></h4><p>在本页矩阵组件中找到：（1）最大的交叉滞后边；（2）唯一一条明显的负边；（3）lone1 所在行的和（不含对角线）。分别用一句话解释。</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>（1）B["dep3","dep4"] = 0.169：T1 睡眠问题 → T2 疲乏。（2）B["dep4","lone2"] = −0.083：T1 疲乏 → T2 被冷落（负）。（3）lone1 行和 ≈ 0.07 + 0.072 + 0.062 + 0.005 + 0.102 + 0.015 + 0.013 + 0.002 ≈ 0.34，表示 T1“缺少陪伴”对其他 T2 题目的总预测量，这就是 7.4 课的 out-EI。</p></details></div>
+<div class="exitem"><h4>练习 3：CLPM 与 CLPN 的翻译<span class="lvl">写作</span></h4><p>5.1 课中 CLPM 的“孤独 → 抑郁”交叉滞后 d ≈ 0.13。在 CLPN 中，对应的信息分散在哪些边上？</p><details class="answer"><summary>查看参考答案 / 思路</summary><p>分散在 4 × 5 = 20 条“孤独题 → 抑郁题”的跨构念边上（孤独行×抑郁列（右上）子矩阵）。CLPN 可以告诉我们是哪几道孤独题（如 lone3 与人隔绝、lone1 缺少陪伴、lone4 无人理解）分别预测哪几道抑郁题，而 CLPM 只给出一个平均意义上的总体系数。两者不是简单的加总关系（因为控制变量不同），但方向上应大体一致。</p></details></div><h3>本课综合练习</h3><div class="box sw"><p>精读 Wysocki 等人论文的模型部分（7.1 课正文按段落讲解了其中的模型设定，可对照阅读）。用 4 个节点手工写出 4 个回归方程，标出哪些系数是自回归、哪些是交叉滞后，并画出对应的有向网络。</p></div><h3>自测问题</h3><ol><li>有 8 个节点的 CLPN 需要跑几个回归？最多有多少条交叉滞后边？</li><li>CLPN 的边为什么是有向的，而横断面 GGM 的边是无向的？</li><li>CLPN 的一条边能否区分被试间与被试内效应？（联系 5.3）</li></ol><p class='muted' style='font-size:.88rem'>提示：开始下一课前，请先不看正文，用自己的一两句话回答上面的问题。</p></section><section class="sec s-sum" id="wrap"><h2><span class="stag">小结</span>本课小结与延伸阅读</h2><ul><li>CLPN = 对每个 T2 节点，用全部 T1 节点做回归；系数拼成 p × p 有向矩阵 B。</li><li>B[k, j] = 从 T1 的 k 到 T2 的 j；对角线 = 自回归，非对角线 = 交叉滞后。</li><li>一条边 = 控制所有 T1 节点（包括结果自己的过去）后的独特预测。</li><li>p 大时 OLS 满屏小边 → 用 LASSO（7.2）。</li><li>标准 CLPN 不区分被试间与被试内（7.5）。</li><li>本课程主线 = 应用文献常见的“仅 LASSO”简化版；Wysocki 等人（2025）的完整流程（LASSO 选边 → SEM 重估 → in/out-prediction）见 7.5。</li></ul><h3>延伸阅读</h3><ul class="refs"><li>Wysocki, A., McCarthy, I., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2025). Cross-lagged panel networks. <i>advances.in/psychology, 2</i>, e739621. <a href="https://doi.org/10.56296/aip00037" target="_blank" rel="noopener">doi.org/10.56296/aip00037</a><div class="muted" style="font-size:.84rem">CLPN 方法论文的正式发表版（2025 年 6 月），由 2022 年的 PsyArXiv 预印本《Cross-lagged network models》修订而成，增加合著者 McCarthy。模块 7 的主要参考文献，引用时优先引用此版。</div></li><li>Wysocki, A., van Bork, R., Cramer, A. O. J., & Rhemtulla, M. (2022). <i>Cross-lagged network models</i> [Preprint]. PsyArXiv. <a href="https://osf.io/preprints/psyarxiv/vjr8z_v1" target="_blank" rel="noopener">osf.io/preprints/psyarxiv/vjr8z_v1</a><div class="muted" style="font-size:.84rem">CLPN 方法的原始预印本（2022 年 10 月 1 日）。即通常所说的“Wysocki et al. (2022)”。</div></li><li>Hamaker, E. L., Kuiper, R. M., & Grasman, R. P. P. P. (2015). A critique of the cross-lagged panel model. <i>Psychological Methods, 20</i>(1), 102–116. <a href="https://doi.org/10.1037/a0038889" target="_blank" rel="noopener">doi.org/10.1037/a0038889</a><div class="muted" style="font-size:.84rem">提出 RI-CLPM，第 5.3 课必读。</div></li></ul></section>
+<nav class="pager"><a href="L6-5.html" class="pv"><small>上一课</small>6.5 中心性指标：强度、期望影响与桥接中心性</a><a href="L7-2.html" class="nx"><small>下一课</small>7.2 用 glmnet 逐节点估计 CLPN</a></nav>
+<p class="foot">CLPN 从零开始 · 第 7.1 课 · <a href="../index.html#L7-1">返回大纲</a></p>
+<p class="copy">© 2026 ZHANG. Content <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a>; code <a href="https://opensource.org/license/mit" rel="license noopener" target="_blank">MIT</a>. <a href="https://github.com/bit-admin/clpn-course" rel="noopener" target="_blank">GitHub</a></p>
+</main></div>
+</body></html>

@@ -1,0 +1,50 @@
+# macOS
+.DS_Store
+
+# R / RStudio user state. R/output/ is course content (figures, logs, .rds
+# read by later lessons) and is tracked.
+.Rhistory
+.Rapp.history
+.RData
+.RDataTmp
+.Ruserdata
+.Rproj.user/
+.Renviron
+
+# knitr / R Markdown caches
+*_cache/
+/cache/
+
+# Python builders
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node (src/test page checks, wrangler)
+node_modules/
+
+# Cloudflare publish tree and local Wrangler state. wrangler.jsonc is the
+# local copy of wrangler.example.jsonc (it holds the deploy route).
+dist/
+.wrangler/
+wrangler.jsonc
+
+# Local tooling: Claude Code notes and settings, maintainer machine scripts
+CLAUDE.md
+.claude/
+scripts/
+
+# Editors
+.idea/
+*.swp
+*~
+
+# check_all.js output
+src/test/check_all_result.json
+
+# ELSOC: the original V1 file (data/elsoc/ELSOC_Wide_2016_2021_v1.00_R.RData,
+# CC0) is tracked and packed on purpose. Anything else R/data_elsoc.R may
+# leave in this folder stays out.
+data/elsoc/*
+!data/elsoc/ELSOC_Wide_2016_2021_v1.00_R.RData

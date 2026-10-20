@@ -1,0 +1,16 @@
+# 练习答案 L2-4-A：导入 CSV 与 SPSS 数据并检查
+source("R/_setup.R")
+suppressPackageStartupMessages({ library(readr); library(haven) })
+log_open("sol_L2-4_log.txt")
+dat  <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)
+spss <- read_sav("data/clpn_sim_wide.sav")
+cat("CSV 维度：", dim(dat), "；SPSS 维度：", dim(spss), "\n")
+print(summary(dat[, c("lone1_t1", "dep1_t1", "age", "gender")]))
+cat("缺失值个数：", sum(is.na(dat)), "\n")
+cat("变量名是否一致：", identical(names(dat), names(spss)), "\n")
+cat("两份数据的数值是否一致（lone1_t1）：", all(dat$lone1_t1 == as.numeric(spss$lone1_t1)), "\n")
+rng <- sapply(dat[, grep("^(lone|dep)[0-9]_t[123]$", names(dat))], range)
+cat("孤独题取值范围：", range(rng[, grep("lone", colnames(rng))]), "；抑郁题：", range(rng[, grep("dep", colnames(rng))]), "\n")
+# 2.4-B 的改正版（只演示写法，不执行建模）
+cat('\n2.4-B 改正：删掉 setwd()，用项目相对路径 read.csv("data/...")；安装放在单独脚本，这里写 library(glmnet)\n')
+log_close()

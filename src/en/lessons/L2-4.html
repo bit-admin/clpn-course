@@ -1,0 +1,235 @@
+<section class="sec s-intu"><h2><span class="stag">① Intuition</span>Toolboxes, Bookshelves, and Files That Can Be Found</h2>
+<div class="box story"><b class="bt">"But it runs on my computer!"</b>
+<p>Xiao Lin sent an analysis script to a collaborator, who got an error the moment they ran it: <code>cannot open file 'C:/Users/XiaoLin/Desktop/thesis/data_final_v2.csv': No such file or directory</code>. Of course the collaborator's computer has no "Xiao Lin's desktop." Then came another error: <code>there is no package called 'qgraph'</code>, because the collaborator hadn't installed that package. This lesson deals with both problems: where packages come from and how to load them, and where to keep files so that other people's computers can find them too.</p></div>
+
+<h3>Packages: adding new tools to R</h3>
+<p>The functions that come with R (such as <code>mean()</code> and <code>lm()</code>) are only the basic tools. Extra tools written by others are bundled as {{T:packages|}} and offered for free download on {{T:CRAN|Comprehensive R Archive Network}} (R's official package repository). The tools CLPN needs, <code>glmnet</code> (LASSO), <code>qgraph</code> (drawing networks), and <code>bootnet</code> (stability analysis), are all packages.</p>
+<div class="box analogy"><b class="bt">Analogy: buying a book vs. taking it off the shelf</b><p><code>install.packages("qgraph")</code> is buying the book: it downloads the package from CRAN and installs it on your computer, once per computer. The exception is upgrading R: packages are stored separately for each "major.minor" version of R, so you must reinstall them not only after a major upgrade (4.x → 5.0) but also after a minor one (such as 4.4 → 4.5); only after a patch upgrade (such as 4.5.0 → 4.5.1) can you keep using the packages you have. <code>library(qgraph)</code> is taking the book off the shelf and putting it on your desk: every time you open R (each new session), you have to take it down once before you can use its functions. So even after a package is installed, you still need <code>library()</code> the next time you open R. This also tells two errors apart: <code>there is no package called 'bootnet'</code> means you haven't bought it yet (not installed), so run <code>install.packages("bootnet")</code>; <code>could not find function "cv.glmnet"</code> often means the book is on the shelf but you didn't take it down (installed, but no <code>library(glmnet)</code>).</p></div>
+<ul><li>In <code>install.packages()</code> the package name needs quotes; in <code>library()</code> it usually doesn't.</li>
+<li>Don't put <code>install.packages()</code> in an analysis script that you run every time (it would download the package again each time). The course scripts use an "install only what is missing" pattern (see R code).</li>
+<li>To use one function without loading the whole package, write <code>package::function</code>, for example <code>psych::describe(dat)</code>. This also avoids confusion when two packages have a function with the same name (such as <code>dplyr::filter()</code> and <code>stats::filter()</code>).</li>
+<li>Red text when a package loads is not necessarily an error: many packages print startup messages or notes that some function has been "masked." Real errors start with <code>Error</code>.</li></ul>
+
+<h3>Working directory and paths: where does R look for files?</h3>
+<p>When R reads or writes a file, it starts from a "current folder" called the {{T:working directory|}}, which you can see with <code>getwd()</code>.</p>
+<ul><li><b>Absolute path</b>: written from the root of the disk, for example <code>C:/Users/XiaoLin/Desktop/thesis/data.csv</code>. It works only on your own computer.</li>
+<li><b>{{T:Relative path|}}</b>: written from the working directory, for example <code>data/clpn_sim_wide.csv</code> ("this file in the data folder inside the working directory"). As long as the other person's working directory is also the project folder, R finds it.</li></ul>
+<p>Windows paths use a backslash <code>\</code>, but inside an R string <code>\</code> is the escape character, so write a forward slash <code>/</code> or a double backslash <code>\\</code> instead.</p>
+<div class="box warnbox"><b class="bt">Why not write setwd("C:/Users/...")?</b><p><code>setwd()</code> changes the working directory with an absolute path. On another computer, under another user name, or after you move the folder, the script stops working; it depends on the folder layout of your own computer, so others cannot reproduce it. A better way is an RStudio project.</p></div>
+
+<h3>RStudio projects: one folder = one analysis</h3>
+<p>An {{T:RStudio project|}} is simply a folder with a <code>.Rproj</code> file in it. When you open RStudio by double-clicking the <code>.Rproj</code>, the working directory is set to that folder automatically, so every relative path works straight away. The course folder already contains <code>clpn-course.Rproj</code>. To create a new project: File → New Project → New Directory (or Existing Directory).</p>
+<p>The recommended folder structure (which is the structure of this course folder <code>clpn-course/</code>, showing only the parts that matter for R; this is what you get after unzipping <code>clpn-course.zip</code>):</p>
+<pre class="out">clpn-course/
+├── clpn-course.Rproj     ← double-click to open the project
+├── data/                 ← raw data (read-only; never edit by hand)
+└── R/                    ← analysis scripts (in this course: R/L2-4.R and others)
+    ├── solutions/        ← exercise solutions
+    └── output/           ← results, figures, and logs written by the scripts</pre>
+<p>The principle: <b>raw data are read-only</b>. All cleaning and computing happen in scripts, and results are written to output/. Then anyone who gets the whole folder can open the .Rproj, run the scripts in order, and reproduce every result from the raw data (the "checkable report" in Lesson 9.3 builds on this). For your own projects, create an RStudio project with the same structure.</p>
+<p>The first line of every course script is <code>source("R/_setup.R")</code>. That is a relative path, so it already requires the working directory to be the <code>clpn-course</code> folder; opening RStudio through <code>clpn-course.Rproj</code> guarantees this. Once loaded, <code>_setup.R</code> checks again: it looks at the current working directory and then up through its parent folders (at most 3 levels up, so 4 folders in all) for a folder that contains <code>data/clpn_sim_wide.csv</code>. If it finds one, it sets that folder as the working directory (and stores results in <code>R/output/</code>); if not, it stops with an error.</p>
+<p>If you see <code>cannot open file 'R/_setup.R'</code> or "Cannot find course root": first run <code>getwd()</code> in the Console to see where you are; then close RStudio and reopen it by double-clicking <code>clpn-course.Rproj</code> (or use the menu Session → Set Working Directory → Choose Directory… and select the <code>clpn-course</code> folder). Also check that you opened the unzipped <code>clpn-course</code> folder and that <code>data/clpn_sim_wide.csv</code> exists.</p>
+
+<h3>Importing data in different formats</h3>
+<div class="tablewrap"><table><thead><tr><th>Format</th><th>Package and function</th><th>Notes</th></tr></thead><tbody>
+<tr><td>CSV (comma-separated text)</td><td>readr: <code>read_csv()</code>; base R: <code>read.csv()</code></td><td>The most universal; recommended. Watch the file encoding</td></tr>
+<tr><td>Excel (.xlsx / .xls)</td><td>readxl: <code>read_excel("file", sheet = 1)</code></td><td>Merged cells, multi-row headers, and color coding all cause problems; tidy it into "one row per person, variable names in the first row"</td></tr>
+<tr><td>SPSS (.sav)</td><td>haven: <code>read_sav()</code></td><td>Keeps variable labels and value labels (such as 1 = female); convert to a factor with <code>as_factor()</code></td></tr>
+<tr><td>Stata (.dta), SAS</td><td>haven: <code>read_dta()</code>, <code>read_sas()</code></td><td></td></tr></tbody></table></div>
+<p>The first thing to do after importing is to check. <code>glimpse()</code> or <code>str()</code> shows the number of rows and columns and each column's type; <code>summary()</code> shows whether the ranges are plausible (a 9 on a 0–3 item may be a "missing" code that should become NA); <code>head()</code> shows the first few rows.</p>
+
+<h3>Garbled Chinese text: an encoding problem</h3>
+<p>Computers store text as numbers according to an {{T:encoding|}}. The international standard is UTF-8, but Excel on Chinese-language Windows often saves CSV files in GBK (also called GB2312 / CP936). If you read a GBK file as UTF-8, the Chinese characters turn into gibberish (such as "鐢锋€�"), and sometimes you get the error <code>invalid multibyte string</code>. Fixes:</p>
+<ul><li>State the encoding when reading: <code>read_csv("file.csv", locale = locale(encoding = "GBK"))</code>, or <code>read.csv("file.csv", fileEncoding = "GBK")</code>.</li>
+<li>In Excel, save as "CSV UTF-8 (Comma delimited)."</li>
+<li>Save the script itself as UTF-8 in RStudio too (File → Save with Encoding → UTF-8); otherwise Chinese comments and labels in the script become garbled. In the long run, keep all data and scripts in UTF-8.</li></ul>
+<div class="box sw"><b class="bt">Social work context: from an online survey platform to R</b><p>Many social work studies collect data on online survey platforms (in China, Wenjuanxing or Tencent Surveys; elsewhere, for example, Qualtrics). The exported Excel / CSV files often have long column names in Chinese, text answers ("strongly agree" instead of 4), and total rows. Good habits: (1) put the original export into data/ unchanged; (2) in the script, rename the columns (such as <code>lone1_t1</code>) and recode text answers into numbers; (3) write a data dictionary (the course's <code>data/data_dictionary.csv</code> is an example) that records what each variable means and what values it takes.</p></div>
+</section>
+
+<section class="sec s-math"><h2><span class="stag">② Essential Math</span>No New Formulas This Lesson</h2>
+<p>This is an "engineering" lesson with no new statistical formulas. You only need to remember one "equation":</p>
+<div class="mathbox">$$\text{reproducible result} = \text{raw data} + \text{script} + \text{software versions}$$</div>
+<p>When all three are fixed, anyone can get the same result. Record software versions with <code>sessionInfo()</code> or <code>packageVersion("glmnet")</code>; when the result involves a random process (cross-validation, bootstrap), also fix the random seed with <code>set.seed()</code> (Lesson 3.5).</p>
+</section>
+
+<section class="sec s-code"><h2><span class="stag">③ R Code</span>Install, Load, Import, Check</h2>
+<p>Script for this lesson: <a href="../R/L2-4.R">R/L2-4.R</a>. The simplest way to install all the required packages at once:</p>
+```r Install all required packages at once (run once when you first set up)
+install.packages(c("tidyverse", "psych", "lavaan", "qgraph",
+                   "bootnet", "glmnet", "networktools", "mice"))
+```
+<p>The course script uses a safer "install only the missing packages" pattern and prints the version numbers:</p>
+```r R/L2-4.R (core part)
+source("R/_setup.R")
+pkgs <- c("tidyverse", "psych", "lavaan", "qgraph", "bootnet", "glmnet",
+          "networktools", "mgm", "igraph", "readxl", "haven", "mice", "knitr", "rmarkdown",
+          "lme4")
+need <- pkgs[!pkgs %in% rownames(installed.packages())]
+if (length(need) > 0) install.packages(need)        # install only what is missing
+for (p in pkgs) cat(sprintf("%-13s %s\n", p, utils::packageDescription(p)$Version))
+
+suppressPackageStartupMessages({ library(tidyverse); library(haven) })
+dat  <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)   # relative path
+spss <- read_sav("data/clpn_sim_wide.sav")
+glimpse(dat[, 1:8])
+cat("Do CSV and SAV match? ", all.equal(as.numeric(dat$dep1_t1), as.numeric(spss$dep1_t1)), "\n", sep = "")
+```
+```out Output (R/output/L2-4_log.txt, excerpt)
+tidyverse     2.0.0
+psych         2.6.9
+lavaan        0.7-3
+qgraph        1.10.1
+bootnet       1.9.1
+glmnet        5.1
+networktools  1.6.0
+mgm           1.2-15
+igraph        2.3.4
+readxl        1.6.0
+haven         2.5.5
+mice          3.19.0
+knitr         1.52
+rmarkdown     2.32
+lme4          2.0-6
+Rows: 800
+Columns: 8
+$ id       <chr> "P001", "P002", "P003", "P004", "P005", "P006", "P007", "P008…
+$ lone1_t1 <dbl> 3, 1, 2, 2, 3, 4, 2, 2, 3, 1, 3, 3, 1, 2, 2, 2, 2, 3, 2, 1, 2…
+$ lone2_t1 <dbl> 2, 2, 1, 2, 4, 2, 1, 2, 3, 1, 4, 3, 2, 1, 2, 1, 1, 3, 3, 2, 4…
+$ lone3_t1 <dbl> 2, 1, 2, 2, 3, 2, 2, 2, 2, 1, 1, 2, 1, 3, 1, 2, 1, 2, 2, 2, 4…
+$ lone4_t1 <dbl> 2, 2, 2, 2, 3, 4, 1, 3, 2, 1, 2, 2, 1, 1, 3, 2, 1, 3, 1, 1, 4…
+$ dep1_t1  <dbl> 0, 0, 1, 1, 1, 1, 2, 0, 1, 0, 1, 3, 0, 1, 1, 2, 0, 1, 0, 0, 1…
+$ dep2_t1  <dbl> 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 0, 3, 1, 1, 1, 1, 0, 3, 0, 0, 0…
+$ dep3_t1  <dbl> 1, 1, 1, 2, 0, 0, 3, 0, 0, 0, 1, 1, 0, 2, 1, 1, 0, 1, 1, 0, 0…
+Do CSV and SAV match? TRUE
+```
+<div class="box key"><b class="bt">Reading this code</b><ul>
+<li><code>%in%</code>: checks whether each element on the left appears on the right; <code>!</code> negates it, giving "the packages not installed."</li>
+<li><code>packageVersion()</code>: the installed version number. Your versions may be newer, which is usually fine; the methods section of a paper should report the versions you actually used.</li>
+<li><code>glimpse()</code>: shows each column's type and first few values sideways, handy for data with many columns.</li>
+<li><code>all.equal()</code>: the same column is identical in both files, so the CSV and the SAV are the same data in two formats.</li></ul></div>
+```r Checking SPSS labels, and common import options (template)
+class(spss$gender)                 # the course .sav has no value labels, so this is plain numeric
+# If a .sav has value labels (such as 1 = "female"), turn it into a factor with haven::as_factor():
+# spss$gender_f <- as_factor(spss$gender)
+
+# Excel (the course has no Excel file; this is a template):
+# library(readxl)
+# xl <- read_excel("data/survey.xlsx", sheet = 1, na = c("", "NA", "999"))
+
+# A Chinese CSV saved in GBK encoding:
+# gbk <- read_csv("data/survey_gbk.csv", locale = locale(encoding = "GBK"))
+
+getwd()                            # confirm that the working directory is the project folder
+```
+```out Illustrative output (getwd() shows your local course folder path)
+[1] "numeric"
+[1] "/workspace/clpn-course"
+```
+<p><code>na = c("", "NA", "999")</code> tells R to treat empty cells, "NA", and 999 as missing. Many survey platforms and SPSS files use 999, 99, or −9 for "not answered." Left as they are, these are treated as real scores, which pushes means up and distorts correlations and network edges.</p>
+
+
+
+
+
+<!-- extra:begin -->
+<h3>Worked example: a five-step checkup after importing new data</h3>
+<p>Suppose a partner agency sends you <code>survey.csv</code>. Don't rush into a model; do these five steps first. Each one catches a common kind of problem:</p>
+```r
+d <- read.csv("data/survey.csv")      # 1. Import (path relative to the project root)
+dim(d)                                  # 2. Rows = number of people? Columns = items + demographics?
+str(d)                                  # 3. Are the column types right? Item scores should be int/num, not chr
+summary(d)                              # 4. Are the ranges right? Do 9, 99, -9 appear on a 1–4 item?
+colSums(is.na(d))                       # 5. How much is missing in each column?
+# If 99 / -9 mean missing, change them to NA in the item columns only (not across the whole table: on a 0–100 variable, 99 may be a real score)
+item_cols <- grep("^(lone|dep)", names(d), value = TRUE)
+for (v in item_cols) d[[v]][d[[v]] %in% c(99, -9)] <- NA
+```
+
+<p>Replace values only in the item columns: on a 0–100 variable such as life satisfaction, 99 may be a real answer. Go column by column, following the questionnaire's codebook.</p>
+<h3>More on SPSS value labels</h3>
+<p>When you read a .sav file with value labels using <code>read_sav()</code>, those columns have the type <code>haven_labelled</code> and print labels such as "1 [never]". Before computing statistics, you usually strip the labels with <code>haven::zap_labels()</code> to keep only the numbers, and turn categorical variables into factors with <code>haven::as_factor()</code>. Also check whether "user-missing values" defined in SPSS (such as 99) have been converted to NA.</p>
+
+<h3>A fixed opening for every script</h3>
+<p>Every script in this course starts the same way: a comment saying what the script does and which lesson it belongs to; then <code>source("R/_setup.R")</code> for the shared preparation (finding the course root folder, creating the R/output folder, setting the plot font, and defining shared functions such as <code>read_course_data()</code>); then <code>library()</code> for the packages this script needs; then reading the data. Use the same order in your own scripts: purpose comment → load packages → read data → analyze → save output. Then anyone who opens the script can see within the first 10 lines what it depends on and which data it reads.</p>
+<!-- extra:end -->
+</section>
+
+<section class="sec s-check"><h2><span class="stag">④ Concept Check</span>Quick Quiz</h2>
+<p class="quizscore"></p>
+```quiz
+Q: Why is setwd("C:/Users/...") in a script a bad idea?
+- Because relative paths are read faster than absolute paths || The reading speed is the same; the problem is that the absolute path exists only on your computer.
++ The absolute path works only on your computer; another computer, another user, or a moved folder breaks it, and others cannot reproduce the analysis || Correct.
+- Because setwd() changes the working directory permanently, affecting all future projects || setwd() affects only the current session; the real problem is that the path doesn't exist on another computer.
+E: Use an RStudio project + relative paths instead.
+```
+```quiz
+Q: Once a package is installed, why do you still need library() the next time you open R?
++ install only puts the package on the computer (buying the book); each new session must load it with library() before you can use it (taking it off the shelf) || Correct.
+- Because packages are removed when R closes and must be reinstalled || The package is still on the computer and doesn't need reinstalling; the new session just hasn't loaded it yet.
+- You don't; once installed it can be used directly || An installed package still has to be loaded with library(), or its functions called as package::function.
+E: install.packages() once; library() once per session.
+```
+```quiz
+Q: When imported Chinese data show up as gibberish, what is the likely cause?
+- The CSV file has missing values || Missing values are read as NA or empty strings; they don't turn Chinese into gibberish.
++ The file's encoding (such as GBK) differs from the encoding assumed when reading (such as UTF-8) || Correct: use locale(encoding = "GBK"), or re-save as UTF-8.
+- R does not support Chinese || R supports Chinese; read with the right encoding, the same file displays correctly.
+E: CSV files saved by Excel on Chinese-language Windows are often GBK-encoded.
+```
+```quiz
+Q: The working directory is /home/learner/clpn-course. Where does the relative path "data/clpn_sim_wide.csv" point?
+- /data/clpn_sim_wide.csv || A relative path starts from the working directory, not from the root.
++ /home/learner/clpn-course/data/clpn_sim_wide.csv || Correct.
+- A file on the desktop || R doesn't look on the desktop; a relative path always starts from the working directory.
+E: Relative path = working directory + the relative part.
+```
+```quiz
+Q: After importing, you find that dep1_t1 (scored 0–3) has a maximum of 999. What is it most likely, and what do you do?
+- A real extreme value; keep it || A 0–3 item cannot score 999.
++ A missing-value code; use na = c("999") when reading, or change 999 to NA afterwards || Correct.
+- A calculation error by the software || R doesn't change values when reading; 999 is a convention survey platforms and SPSS use for "not answered."
+E: After importing, check every variable's range with summary() first.
+```
+```quiz
+Q: install.packages(qgraph) gives the error object 'qgraph' not found. How do you fix it?
+T: install.packages("qgraph") || "qgraph" || add quotes || quote the package name
+H: When installing, the package name is a string.
+E: Without quotes, R thinks qgraph is an object and goes looking for it.
+```
+</section>
+
+<section class="sec s-ex"><h2><span class="stag">⑤ Exercises</span>Hands-On Practice</h2>
+<div class="exitem"><h4>Exercise 2.4-A: Set up the project and import data</h4>
+<p>Open or create the clpn-course project folder (with <code>data/</code>, <code>R/</code>, and <code>R/output/</code>), install all packages the course needs, import a CSV file and a .sav file, and check the variables.</p>
+<details class="answer"><summary>Reference steps</summary>
+<ol><li>File → New Project → Existing Directory, and choose the course folder (the <code>clpn-course</code> you get by unzipping <code>clpn-course.zip</code>; it already contains <code>clpn-course.Rproj</code>, so you can simply double-click that).</li>
+<li>Run <code>R/L2-4.R</code> and confirm that every package prints a version number. If a package fails to install, copy the complete error message and ask for help using the template from Lesson 2.1.</li>
+<li>Create <code>R/week04.R</code>:</li></ol>
+```r
+library(tidyverse); library(haven)
+dat  <- read_csv("data/clpn_sim_wide.csv", show_col_types = FALSE)
+spss <- read_sav("data/clpn_sim_wide.sav")
+dim(dat); dim(spss)                       # same numbers of rows and columns?
+summary(dat[, c("lone1_t1", "dep1_t1", "age", "gender")])   # plausible ranges?
+sum(is.na(dat))                           # number of missing values
+identical(names(dat), names(spss))        # same variable names?
+sessionInfo()                             # record the versions
+```
+<p>What to check: both data sets have 800 rows; loneliness items 1–4, depression items 0–3, age 18–85; no missing values. Write up what you found in 3–4 sentences.</p></details></div>
+<div class="exitem"><h4>Exercise 2.4-B: Find the path problems</h4>
+<p>The code below failed on a collaborator's computer. Point out two problems and fix them:</p>
+```r
+setwd("C:\Users\XiaoLin\Desktop\thesis")
+install.packages("glmnet")
+dat <- read.csv("data_final_v2.csv")
+fit <- cv.glmnet(X, y)
+```
+<details class="answer"><summary>Reference answer</summary><p>(1) <code>setwd()</code> with an absolute path (and the backslashes are not escaped, so this line itself gives an error) → delete it and use an RStudio project; put the data in data/ and write <code>read.csv("data/survey_final.csv")</code> (preferably with an English file name). (2) Running <code>install.packages()</code> every time is unnecessary, while <code>library(glmnet)</code> is missing, so <code>cv.glmnet</code> gives could not find function → move the install command to a separate setup script and write <code>library(glmnet)</code> here. Also, <code>X</code> and <code>y</code> are not defined.</p></details></div>
+</section>
+
+<section class="sec s-sum"><h2><span class="stag">Summary</span>Three Takeaways</h2>
+<ul><li><code>install.packages("pkg")</code> once per computer, <code>library(pkg)</code> once per session.</li>
+<li>Use an RStudio project + relative paths, not <code>setwd("C:/...")</code>; raw data are read-only, and results are produced by scripts.</li>
+<li>After importing, check types, ranges, and missing-value codes first; gibberish text is usually an encoding problem (GBK vs. UTF-8). Next lesson: {{L:2.5}}.</li></ul>
+</section>
